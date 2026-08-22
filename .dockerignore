@@ -1,0 +1,21 @@
+# Build context for the production image: only what `pnpm build` needs.
+.git
+node_modules
+dist
+coverage
+test-results
+playwright-report
+blob-report
+verification
+docs
+e2e
+scripts
+.kamal
+.env
+.env.*
+*.log
+.DS_Store
+# Scratch/test files never belong in the image build
+**/_*.ts
+**/*.test.ts
+**/*.test.tsx
