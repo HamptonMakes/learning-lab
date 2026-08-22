@@ -1,0 +1,10 @@
+/** Public surface of the analytics module. Import from '@/analytics' only. */
+export type { AnalyticsEvents, EventName, EventProps, PlayerAction, TopicRef } from './events'
+export type { AnalyticsProvider } from './provider'
+export { configureAnalytics, getAnalytics, pageview, track } from './analytics'
+export { createDefaultProvider, readAnalyticsEnv, type AnalyticsEnv } from './default-provider'
+export { createUmamiProvider, type UmamiOptions, type UmamiTracker } from './umami'
+export { createConsoleProvider, type Logger } from './console'
+export { createNoopProvider, noopProvider } from './noop'
+export { localeFromPath, UNKNOWN_LOCALE } from './locale-from-path'
+export { AnalyticsRouteTracker } from './route-tracker'

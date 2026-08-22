@@ -34,3 +34,4 @@ blob-report
 
 # Kamal
 .kamal/secrets*
+!.kamal/secrets.example

@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LocaleRouteImport } from './routes/$locale'
 import { Route as LocaleIndexRouteImport } from './routes/$locale/index'
+import { Route as LocaleDesignRouteImport } from './routes/$locale/design'
+import { Route as LocaleModuleIndexRouteImport } from './routes/$locale/$module/index'
+import { Route as LocaleModuleUnitTopicRouteImport } from './routes/$locale/$module/$unit/$topic'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,28 +31,70 @@ const LocaleIndexRoute = LocaleIndexRouteImport.update({
   path: '/',
   getParentRoute: () => LocaleRoute,
 } as any)
+const LocaleDesignRoute = LocaleDesignRouteImport.update({
+  id: '/design',
+  path: '/design',
+  getParentRoute: () => LocaleRoute,
+} as any)
+const LocaleModuleIndexRoute = LocaleModuleIndexRouteImport.update({
+  id: '/$module/',
+  path: '/$module/',
+  getParentRoute: () => LocaleRoute,
+} as any)
+const LocaleModuleUnitTopicRoute = LocaleModuleUnitTopicRouteImport.update({
+  id: '/$module/$unit/$topic',
+  path: '/$module/$unit/$topic',
+  getParentRoute: () => LocaleRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$locale': typeof LocaleRouteWithChildren
+  '/$locale/design': typeof LocaleDesignRoute
   '/$locale/': typeof LocaleIndexRoute
+  '/$locale/$module/': typeof LocaleModuleIndexRoute
+  '/$locale/$module/$unit/$topic': typeof LocaleModuleUnitTopicRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$locale/design': typeof LocaleDesignRoute
   '/$locale': typeof LocaleIndexRoute
+  '/$locale/$module': typeof LocaleModuleIndexRoute
+  '/$locale/$module/$unit/$topic': typeof LocaleModuleUnitTopicRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$locale': typeof LocaleRouteWithChildren
+  '/$locale/design': typeof LocaleDesignRoute
   '/$locale/': typeof LocaleIndexRoute
+  '/$locale/$module/': typeof LocaleModuleIndexRoute
+  '/$locale/$module/$unit/$topic': typeof LocaleModuleUnitTopicRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$locale' | '/$locale/'
+  fullPaths:
+    | '/'
+    | '/$locale'
+    | '/$locale/design'
+    | '/$locale/'
+    | '/$locale/$module/'
+    | '/$locale/$module/$unit/$topic'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$locale'
-  id: '__root__' | '/' | '/$locale' | '/$locale/'
+  to:
+    | '/'
+    | '/$locale/design'
+    | '/$locale'
+    | '/$locale/$module'
+    | '/$locale/$module/$unit/$topic'
+  id:
+    | '__root__'
+    | '/'
+    | '/$locale'
+    | '/$locale/design'
+    | '/$locale/'
+    | '/$locale/$module/'
+    | '/$locale/$module/$unit/$topic'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -80,15 +125,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleIndexRouteImport
       parentRoute: typeof LocaleRoute
     }
+    '/$locale/design': {
+      id: '/$locale/design'
+      path: '/design'
+      fullPath: '/$locale/design'
+      preLoaderRoute: typeof LocaleDesignRouteImport
+      parentRoute: typeof LocaleRoute
+    }
+    '/$locale/$module/': {
+      id: '/$locale/$module/'
+      path: '/$module'
+      fullPath: '/$locale/$module/'
+      preLoaderRoute: typeof LocaleModuleIndexRouteImport
+      parentRoute: typeof LocaleRoute
+    }
+    '/$locale/$module/$unit/$topic': {
+      id: '/$locale/$module/$unit/$topic'
+      path: '/$module/$unit/$topic'
+      fullPath: '/$locale/$module/$unit/$topic'
+      preLoaderRoute: typeof LocaleModuleUnitTopicRouteImport
+      parentRoute: typeof LocaleRoute
+    }
   }
 }
 
 interface LocaleRouteChildren {
+  LocaleDesignRoute: typeof LocaleDesignRoute
   LocaleIndexRoute: typeof LocaleIndexRoute
+  LocaleModuleIndexRoute: typeof LocaleModuleIndexRoute
+  LocaleModuleUnitTopicRoute: typeof LocaleModuleUnitTopicRoute
 }
 
 const LocaleRouteChildren: LocaleRouteChildren = {
+  LocaleDesignRoute: LocaleDesignRoute,
   LocaleIndexRoute: LocaleIndexRoute,
+  LocaleModuleIndexRoute: LocaleModuleIndexRoute,
+  LocaleModuleUnitTopicRoute: LocaleModuleUnitTopicRoute,
 }
 
 const LocaleRouteWithChildren =

@@ -31,8 +31,8 @@ Two things are judged above all else: (1) the clarity and correctness of the les
 | i18n               | English is authored inline in lesson files. Other locales are overlay JSON files keyed by stable step/scene/topic ids in `src/locales/<lang>/`. UI chrome strings go through `t()`. Target locales after English is final: `zh`, `hi`, `es`, `ar` (RTL), `fr`. Layout must be RTL-safe (logical CSS properties). |
 | Analytics          | `src/analytics/` exposes `track(event, props)` and a `Provider` interface. `UmamiProvider` is the only provider for now (configured by `VITE_UMAMI_SCRIPT_URL` + `VITE_UMAMI_WEBSITE_ID`). Nothing else may reference Umami directly.                                                                            |
 | Settings           | Sound on/off, speed, theme, locale, reduced-motion, sidebar state → localStorage via one typed store in `src/settings/`.                                                                                                                                                                                         |
-| Sound              | Web Audio API synthesized tones ("bloop" on arrival, soft tick on step, chord on topic complete). No audio assets. Off by default until the first user gesture enables it; respects the setting.                                                                                                                 |
-| Tests              | Vitest (+ fast-check) for CRDT math, DSL, reducers. Playwright (Chromium, Firefox, WebKit) for real-browser behavior: every topic is walked step-by-step.                                                                                                                                                        |
+| Sound              | Web Audio API synthesized tones ("bloop" on arrival, soft tick on step, chord on topic complete). No audio assets. On by default; audio can only start after the first user gesture (browser autoplay policy); the user can turn it off in settings.                                                             |
+| Tests              | Vitest (+ fast-check) for CRDT math, DSL, reducers. Playwright (Chromium, Firefox, WebKit) for real-browser behavior: every topic is walked step-by-step. Lint: oxlint; format: Prettier.                                                                                                                        |
 | Verification proof | `pnpm verify` walks every step of every topic in a real browser, asserts narration + key stage state, and writes screenshot storyboards to `verification/` (committed). This is the durable proof of animation quality.                                                                                          |
 | Deploy             | Multi-stage `Dockerfile` (build → Caddy serving `dist/` with SPA fallback + health endpoint). `config/deploy.yml` for Kamal 2. Postgres is available in prod but unused in v1.                                                                                                                                   |
 | Package manager    | pnpm. Node 22.                                                                                                                                                                                                                                                                                                   |
@@ -134,7 +134,7 @@ pnpm dev              # Vite dev server (http://localhost:5173)
 pnpm build            # production build to dist/
 pnpm preview          # serve dist/
 pnpm typecheck        # tsc --noEmit
-pnpm lint             # eslint
+pnpm lint             # oxlint (the Vite-official linter; config in .oxlintrc.json)
 pnpm format           # prettier --write ; `pnpm format:check` in CI
 pnpm test             # vitest (unit + property tests + lesson schema validation)
 pnpm check            # typecheck + lint + format:check + test
