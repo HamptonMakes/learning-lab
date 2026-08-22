@@ -32,10 +32,10 @@ for (const t of catalogTopics()) {
     for (let i = 0; i < total; i++) {
       if (i > 0) await labNext(page)
       const cur = await labCurrent(page)
-      const file = `${String(i + 1).padStart(2, '0')}-${cur.sceneId}-${cur.stepId}.jpg`
+      const file = `${String(i + 1).padStart(2, '0')}-${cur.sceneId}-${cur.stepId}.png`
       await page
         .locator('[data-testid=lesson-frame]')
-        .screenshot({ path: join(dir, file), animations: 'disabled', type: 'jpeg', quality: 85 })
+        .screenshot({ path: join(dir, file), animations: 'disabled' })
       steps.push({ index: i, stepId: cur.stepId, sceneId: cur.sceneId, say: cur.say, file })
     }
     writeFileSync(
@@ -55,15 +55,13 @@ for (const t of catalogTopics()) {
       for (let i = 0; i < total; i++) {
         if (i > 0) await labNext(page)
         const cur = await labCurrent(page)
-        const file = `${String(i + 1).padStart(2, '0')}-${cur.sceneId}-${cur.stepId}.jpg`
-        await page
-          .locator('[data-testid=lesson-frame]')
-          .screenshot({
-            path: join(darkDir, file),
-            animations: 'disabled',
-            type: 'jpeg',
-            quality: 85,
-          })
+        const file = `${String(i + 1).padStart(2, '0')}-${cur.sceneId}-${cur.stepId}.png`
+        await page.locator('[data-testid=lesson-frame]').screenshot({
+          path: join(darkDir, file),
+          animations: 'disabled',
+          type: 'jpeg',
+          quality: 85,
+        })
         darkSteps.push({
           index: i,
           stepId: cur.stepId,
@@ -110,7 +108,7 @@ async function contactSheet(
   const sheetPath = join(dir, theme === 'dark' ? 'contact-dark.html' : 'contact.html')
   writeFileSync(sheetPath, html)
   const sheet = await page.context().newPage()
-  await sheet.setViewportSize({ width: 1600, height: 900 })
+  await sheet.setViewportSize({ width: 1280, height: 900 })
   await sheet.goto(`file://${sheetPath}`)
   await sheet.waitForLoadState('load')
   await sheet.screenshot({

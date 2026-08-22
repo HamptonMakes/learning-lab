@@ -22,7 +22,7 @@ for (const mod of readdirSync(ROOT)) {
       topics.push({
         ...data,
         dir: relative(ROOT, tp),
-        hasDark: existsSync(join(tp, 'contact-dark.jpg')),
+        hasDark: existsSync(join(tp, 'contact-dark.png')),
       })
     }
   }
@@ -47,7 +47,7 @@ h1{font-size:22px;margin:0 0 6px}.sub{color:#6b655c;margin:0 0 24px}h2{font-size
 ${topics
   .map(
     (t) =>
-      `<div class="t"><a href="${t.dir}/contact.jpg"><img src="${t.dir}/contact.jpg" alt="contact sheet"></a><div><h3>${esc(t.module)} › ${esc(t.unitNumeral)} ${esc(t.unitTitle)} › ${esc(t.topicTitle)}</h3><p>${t.total} steps · <a href="${t.dir}/contact.jpg">light</a>${t.hasDark ? ` · <a href="${t.dir}/contact-dark.jpg">dark</a>` : ''} · <a href="${t.dir}/steps.json">steps.json</a></p><ol class="steps">${t.steps.map((s) => `<li><a href="${t.dir}/${s.file}">${esc(s.sceneId)}/${esc(s.stepId)}</a> — ${esc(s.say)}</li>`).join('')}</ol></div></div>`,
+      `<div class="t"><a href="${t.dir}/contact.png"><img src="${t.dir}/contact.png" alt="contact sheet"></a><div><h3>${esc(t.module)} › ${esc(t.unitNumeral)} ${esc(t.unitTitle)} › ${esc(t.topicTitle)}</h3><p>${t.total} steps · <a href="${t.dir}/contact.png">light</a>${t.hasDark ? ` · <a href="${t.dir}/contact-dark.png">dark</a>` : ''} · <a href="${t.dir}/steps.json">steps.json</a></p><ol class="steps">${t.steps.map((s) => `<li><a href="${t.dir}/${s.file}">${esc(s.sceneId)}/${esc(s.stepId)}</a> — ${esc(s.say)}</li>`).join('')}</ol></div></div>`,
   )
   .join('\n')}
 </body></html>`
