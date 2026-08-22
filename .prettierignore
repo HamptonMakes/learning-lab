@@ -1,0 +1,9 @@
+dist
+node_modules
+pnpm-lock.yaml
+src/app/routeTree.gen.ts
+verification
+playwright-report
+test-results
+coverage
+*.gen.ts

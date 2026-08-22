@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="description"
+      content="Hampton's Computer Science Concept Learning Lab — interactive, animated lessons that make hard CS ideas practical. Start with CRDTs."
+    />
+    <title>Hampton's CS Concept Lab</title>
+    <script>
+      // Apply the saved theme before first paint to avoid a flash. Mirrors src/settings/theme.ts.
+      try {
+        var s = JSON.parse(localStorage.getItem('cs-lab:settings') || '{}')
+        var t = s.theme || 'system'
+        var dark =
+          t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.classList.toggle('dark', dark)
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

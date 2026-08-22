@@ -1,0 +1,143 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/jetbrains-mono';
+@import './tokens.css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* Map design tokens → Tailwind theme (utilities) and → shadcn semantic variables. */
+@theme inline {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* shadcn semantic colors */
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-card: var(--card);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--card);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--accent);
+  --color-primary-foreground: var(--accent-ink);
+  --color-secondary: var(--paper-2);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--paper-2);
+  --color-muted-foreground: var(--ink-2);
+  --color-accent: var(--paper-3);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--danger);
+  --color-border: var(--line);
+  --color-input: var(--line-2);
+  --color-ring: var(--accent-line);
+  --color-chart-1: var(--actor-a);
+  --color-chart-2: var(--actor-b);
+  --color-chart-3: var(--actor-c);
+  --color-chart-4: var(--actor-d);
+  --color-chart-5: var(--actor-server);
+  --color-sidebar: var(--paper-2);
+  --color-sidebar-foreground: var(--ink);
+  --color-sidebar-primary: var(--accent);
+  --color-sidebar-primary-foreground: var(--accent-ink);
+  --color-sidebar-accent: var(--paper-3);
+  --color-sidebar-accent-foreground: var(--ink);
+  --color-sidebar-border: var(--line);
+  --color-sidebar-ring: var(--accent-line);
+
+  /* Lab tokens as utilities: bg-paper, text-ink-2, border-line, bg-actor-a-soft, text-ok … */
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-paper-3: var(--paper-3);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-grid: var(--grid);
+  --color-teal: var(--accent);
+  --color-teal-ink: var(--accent-ink);
+  --color-teal-soft: var(--accent-soft);
+  --color-teal-line: var(--accent-line);
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-actor-a: var(--actor-a);
+  --color-actor-a-soft: var(--actor-a-soft);
+  --color-actor-b: var(--actor-b);
+  --color-actor-b-soft: var(--actor-b-soft);
+  --color-actor-c: var(--actor-c);
+  --color-actor-c-soft: var(--actor-c-soft);
+  --color-actor-d: var(--actor-d);
+  --color-actor-d-soft: var(--actor-d-soft);
+  --color-actor-server: var(--actor-server);
+  --color-actor-server-soft: var(--actor-server-soft);
+  --color-actor-neutral: var(--actor-neutral);
+  --color-actor-neutral-soft: var(--actor-neutral-soft);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-background text-foreground;
+    min-height: 100dvh;
+  }
+  code,
+  kbd,
+  samp,
+  pre,
+  .font-mono {
+    font-feature-settings:
+      'liga' 0,
+      'calt' 0;
+  }
+  ::selection {
+    background: var(--accent-soft);
+  }
+  /* Reduced motion: kill CSS transitions; Motion-driven animations are handled in the stage context. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility stage-grid {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: center center;
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
