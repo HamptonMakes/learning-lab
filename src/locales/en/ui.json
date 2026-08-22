@@ -126,5 +126,6 @@
   "error.notFound.title": "Page not found",
   "error.goHome": "Go to the home page",
   "error.generic": "Something went wrong.",
-  "topic.tryItSoon": "A sandbox for this topic is coming."
+  "topic.tryItSoon": "A sandbox for this topic is coming.",
+  "topic.scenes": "Scenes"
 }
