@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
 const PORT = 4173
+const BROWSERS = (process.env.PW_BROWSERS ?? 'chromium,firefox,webkit').split(',')
 const baseURL = `http://127.0.0.1:${PORT}`
 
 export default defineConfig({
@@ -27,9 +28,23 @@ export default defineConfig({
     timeout: 60_000,
   },
   projects: [
-    { name: 'chromium', testIgnore: /verify\//, use: { ...devices['Desktop Chrome'] } },
-    { name: 'firefox', testIgnore: /verify\//, use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit', testIgnore: /verify\//, use: { ...devices['Desktop Safari'] } },
+    // PW_BROWSERS=chromium,webkit narrows the behaviour projects (Firefox cannot launch on some
+    // locked-down macOS setups); the default runs all three.
+    ...(['chromium', 'firefox', 'webkit'] as const)
+      .filter((b) => BROWSERS.includes(b))
+      .map((b) => ({
+        name: b,
+        testIgnore: /verify\//,
+        use: {
+          ...devices[
+            b === 'chromium'
+              ? 'Desktop Chrome'
+              : b === 'firefox'
+                ? 'Desktop Firefox'
+                : 'Desktop Safari'
+          ],
+        },
+      })),
     {
       name: 'verify',
       testMatch: /verify\/.*\.spec\.ts/,
