@@ -109,7 +109,7 @@ export function layoutByteAnnotations(
       id: p.id,
       from: p.bits[0],
       to: p.bits[1],
-      reserve: (p.label?.length ?? 0) * 2,
+      reserve: p.label ? (p.label.length + 1.5) * 2 : 0,
     })),
   )
   return prepared.map((p) => ({ ...p, lane: lanes.get(p.id) ?? 0 }))
