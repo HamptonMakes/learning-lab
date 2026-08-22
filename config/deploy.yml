@@ -22,7 +22,7 @@ builder:
     # Vite bakes these into the bundle at build time. They are public values, not secrets.
     VITE_UMAMI_SCRIPT_URL: https://analytics.lin.cat/script.js
     VITE_UMAMI_WEBSITE_ID: <%= ENV.fetch("VITE_UMAMI_WEBSITE_ID", "") %>
-    BASE_PATH: "/"
+    BASE_PATH: '/'
 
 proxy:
   ssl: true

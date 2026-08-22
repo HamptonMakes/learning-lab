@@ -52,7 +52,11 @@ export function flattenTopics(module: ModuleMeta): TopicRef[] {
   return out
 }
 
-export function findTopic(module: ModuleMeta, unitId: string, topicId: string): TopicRef | undefined {
+export function findTopic(
+  module: ModuleMeta,
+  unitId: string,
+  topicId: string,
+): TopicRef | undefined {
   return flattenTopics(module).find((r) => r.unit.id === unitId && r.topic.id === topicId)
 }
 

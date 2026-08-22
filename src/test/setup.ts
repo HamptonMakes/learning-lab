@@ -30,6 +30,9 @@ if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function') {
     }) as MediaQueryList
 }
 
-if (typeof window !== 'undefined' && !('scrollTo' in window && typeof window.scrollTo === 'function')) {
+if (
+  typeof window !== 'undefined' &&
+  !('scrollTo' in window && typeof window.scrollTo === 'function')
+) {
   window.scrollTo = () => {}
 }

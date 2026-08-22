@@ -1,12 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "react",
-    "typescript",
-    "oxc",
-    "import",
-    "jsx-a11y"
-  ],
+  "plugins": ["react", "typescript", "oxc", "import", "jsx-a11y"],
   "categories": {
     "correctness": "error",
     "suspicious": "warn"
@@ -24,21 +18,14 @@
     "no-console": [
       "warn",
       {
-        "allow": [
-          "warn",
-          "error"
-        ]
+        "allow": ["warn", "error"]
       }
     ],
     "react/react-in-jsx-scope": "off",
     "import/no-unassigned-import": [
       "warn",
       {
-        "allow": [
-          "**/*.css",
-          "**/setup.ts",
-          "@testing-library/jest-dom/vitest"
-        ]
+        "allow": ["**/*.css", "**/setup.ts", "@testing-library/jest-dom/vitest"]
       }
     ]
   },
@@ -52,14 +39,19 @@
   ],
   "overrides": [
     {
-      "files": [
-        "src/ui/**",
-        "src/hooks/use-mobile.ts"
-      ],
+      "files": ["src/ui/**", "src/hooks/use-mobile.ts"],
       "rules": {
         "react/only-export-components": "off",
         "jsx-a11y/prefer-tag-over-role": "off",
         "react/set-state-in-effect": "off"
+      }
+    },
+    {
+      "files": ["e2e/**", "scripts/**"],
+      "rules": {
+        "no-console": "off",
+        "no-underscore-dangle": "off",
+        "typescript/no-non-null-assertion": "off"
       }
     }
   ]
