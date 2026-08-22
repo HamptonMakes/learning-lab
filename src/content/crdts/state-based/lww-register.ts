@@ -43,12 +43,12 @@ export default topic({
   ],
   whenNotToUse: [
     'Two edits should both survive (use a set, a counter, or a sequence).',
-    'Device clocks cannot be trusted and a lost edit is costly (Unit IV.1).',
-    'The value is long text edited by several people at once (Unit III.5).',
+    'Device clocks cannot be trusted and a lost edit is costly (Unit IV, Wall clocks lie).',
+    'The value is long text edited by several people at once (Unit III, Sequences).',
     'Writers often tie and users would notice an arbitrary winner.',
   ],
   realWorld:
-    'A status line set from phone and laptop; a cell in Cassandra or DynamoDB (last write wins per cell).',
+    'A status line set from phone and laptop; a cell in Cassandra or an item in DynamoDB global tables (last write wins).',
   scenes: [
     ...lwwRegisterTopic.scenes,
     scene(

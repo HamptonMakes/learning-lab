@@ -121,7 +121,7 @@ export default topic({
         ),
         step(
           's10',
-          "Alice's change is gone. Nobody was told.",
+          "On the server, Alice's change is gone. Nobody was told.",
           cross('alice.doc.title'),
           callout('server.doc.title', 'last write silently won', { tone: 'warn' }),
         ),

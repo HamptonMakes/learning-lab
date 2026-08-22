@@ -88,7 +88,7 @@ export default topic({
         ),
         step(
           's06',
-          'The difference is cost. A wrong balance hurts; a list with one extra item does not.',
+          'The difference is cost. A wrong balance hurts; a list that is wrong for a moment does not.',
           clearMarks(),
           callout('alice.account.balance', 'needs a transaction', { tone: 'danger', sticky: true }),
           callout('alice.list', 'can merge', { tone: 'ok', sticky: true }),

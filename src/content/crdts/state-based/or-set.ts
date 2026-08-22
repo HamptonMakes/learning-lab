@@ -37,11 +37,10 @@ export default topic({
   ],
   whenNotToUse: [
     'Remove should beat a concurrent add (a remove-wins LWW-Element-Set, or a transaction).',
-    'Metadata growth matters and you cannot compact: each add leaves a tag (Unit III.7).',
+    'Metadata growth matters and you cannot compact: each add leaves a tag (Unit III).',
     'Elements are huge: the tags per element add up.',
   ],
-  realWorld:
-    'Riak sets; the set structures inside Automerge and Yjs maps; shared cart or playlist items.',
+  realWorld: 'Riak sets; the ORSet in Akka Distributed Data; shared cart or playlist items.',
   scenes: [
     ...orSetTagsTopic.scenes,
     scene('race', { layout: 'pair', actors: [alice(), bob()] }, [

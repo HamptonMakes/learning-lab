@@ -40,7 +40,7 @@ export default topic({
   whenNotToUse: [
     'Writers are often offline or far away (next topic).',
     'Many people edit the same thing at once; a lock makes them queue.',
-    'A short wrong period is acceptable and cheap to fix (topic I.4).',
+    'A short wrong period is cheap to fix (see Not everything needs a transaction).',
   ],
   realWorld:
     'A database row lock (SELECT ... FOR UPDATE), a wiki page lock, a file "checked out" in a design tool.',

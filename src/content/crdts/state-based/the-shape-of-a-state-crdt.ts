@@ -39,7 +39,7 @@ export default topic({
     'You want the simplest protocol there is: "send me what you have".',
   ],
   whenNotToUse: [
-    'The state is large and changes often (II.11 The cost of state, then Unit III).',
+    'The state is large and changes often (The cost of state, then Unit III).',
     'You need the history of operations, not only the latest merged state.',
     'Two copies must agree right now, not eventually (a lock or a transaction).',
   ],
@@ -135,7 +135,7 @@ export default topic({
       ),
       step(
         's05',
-        "Law 2, **associative**: merge(merge(a, b), c) = merge(a, merge(b, c)). Carol merges Alice, whose copy already holds Bob's 5.",
+        "Law 2, **associative**: merge(merge(a, b), c) = merge(a, merge(b, c)). Carol merges Alice's copy, which already holds Bob's 5.",
         clearMarks(),
         note('rule', '2 · associative: merge(merge(a, b), c) = merge(a, merge(b, c))'),
         crdt.send('alice', 'carol', 'best', { id: 'm3' }),
@@ -242,7 +242,7 @@ export default topic({
         ),
         step.long(
           's10',
-          'Lost, late, duplicated: the laws absorbed all of it. The network only needs to deliver each state eventually.',
+          'Lost, late, duplicated: the laws absorbed all of it. Each copy only needs to hear the newest state eventually, by any route.',
         ),
       ],
       { inContext: true },

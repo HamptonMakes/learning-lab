@@ -44,7 +44,7 @@ export default topic({
     'A short window of disagreement is acceptable.',
   ],
   whenNotToUse: [
-    'The list has a strict order that both users reorder (a sequence CRDT, Unit III.5).',
+    'The list has a strict order that both users reorder (a sequence CRDT, Unit III).',
     'Quantities are inventory with a hard floor.',
     'You need an audit log of who did what (operations, Unit III).',
   ],
@@ -91,7 +91,7 @@ export default topic({
         ),
         step(
           's05',
-          'Both sync through the server. The item set unions; each qty merges row by row; the title has one writer so far.',
+          'Both sync through the server. The item set unions; each qty merges row by row; the title is untouched so far.',
           syncRound(),
           same('server.list', 'alice.list', 'bob.list'),
           expect('alice.list.items[bob:1].qty', 12),

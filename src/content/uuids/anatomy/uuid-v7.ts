@@ -43,7 +43,7 @@ export default topic({
   title: 'UUID v7',
   goal: 'Read a v7 id byte by byte and say why ids made later sort after ids made earlier.',
   whenToUse: [
-    'Database keys that should sort by creation time (index locality, time-range scans).',
+    'Database keys that should sort by creation time (new rows land together in the index).',
     'Ids minted on many machines with no coordination.',
     'Logs and events where "roughly when" is useful on its own.',
   ],
@@ -96,7 +96,7 @@ export default topic({
         ),
         step(
           's05',
-          'Everything else stays random: 74 bits.',
+          'Everything else stays random: 74 bits (simplified).',
           view('laptop.id', 'hex'), // range cleared; bit annotations snap to nibbles in hex
           annotate('laptop.id', 52, 64, 'random', { unit: 'bit', tone: 'info' }),
           annotate('laptop.id', 66, 128, 'random', { unit: 'bit', tone: 'info' }),

@@ -38,7 +38,7 @@ export const orSetTagsTopic = topic({
     scene('tags', { layout: 'pair', actors: [alice(), bob()] }, [
       step(
         's01',
-        'An OR-Set remembers, for each element, the tags of the adds that put it there.',
+        'An **OR-Set** remembers, for each element, the tags of the adds that put it there.',
         crdt.init(['alice', 'bob'], 'cart', 'or-set'),
         note(
           'rule',

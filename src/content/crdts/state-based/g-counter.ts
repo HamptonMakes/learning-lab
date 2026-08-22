@@ -44,7 +44,7 @@ export default topic({
     'A slightly stale total is fine.',
   ],
   whenNotToUse: [
-    'The count must go down (II.5 PN-Counter).',
+    'The count must go down (PN-Counter, next topic).',
     'You need an exact, instantly consistent number (a transaction).',
     'The set of writers is huge and unbounded: the table grows one row per node, forever.',
   ],
@@ -210,7 +210,7 @@ export default topic({
         ),
         step(
           's04',
-          'The edges gossip: US and EU sync. Rows merge by max, and both totals read 5.',
+          'The two edges sync with each other. Rows merge by max, and both totals read 5.',
           crdt.sync('edge-us', 'edge-eu', 'post'),
           expect('edge-us.post.views', 5),
           expect('edge-eu.post.views', 5),

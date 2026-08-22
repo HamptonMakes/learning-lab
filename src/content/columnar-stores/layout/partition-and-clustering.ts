@@ -53,7 +53,7 @@ export default topic({
     'Find rows where the text contains a word: a search index.',
   ],
   realWorld:
-    'A chat messages table in Cassandra or ScyllaDB: PRIMARY KEY ((channel_id), sent_at DESC).',
+    'A chat messages table in Cassandra or ScyllaDB: PRIMARY KEY ((channel_id), sent_at), clustering order sent_at DESC.',
   scenes: [
     scene(
       'partition-key',
@@ -65,7 +65,7 @@ export default topic({
       [
         step(
           's01',
-          'Three nodes; each owns a range of tokens, 0 to 99 in all (simplified). The table messages has a **partition key**, channel.',
+          'Three nodes; each owns a range of hash values, called tokens: 0 to 99 in all (simplified). The table messages has a **partition key**, channel.',
           note('schema', 'messages: PRIMARY KEY ((channel), sent)', { label: 'table' }),
           highlight(['node-a', 'node-b', 'node-c']),
         ),
@@ -237,7 +237,7 @@ export default topic({
         ),
         step(
           's05',
-          'A question like messages per country is still not one for this table. That is a job for a column store: see [Rows vs columns](/columnar-stores/layout/rows-vs-columns).',
+          'A question like messages per country does not fit this table. That is a job for a column store: see [Rows vs columns](/columnar-stores/layout/rows-vs-columns).',
           clearMarks(),
           callout('client', 'analytics → column store', {
             tone: 'info',

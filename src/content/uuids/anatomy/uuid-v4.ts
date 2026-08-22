@@ -45,7 +45,7 @@ export default topic({
     'Any key where random and unique is all you need.',
   ],
   whenNotToUse: [
-    'Primary keys in an insert-heavy B-tree table: use v7 (next topic).',
+    'Primary keys in a table with many inserts: use v7 (next topic).',
     'Ids that humans must read or type: use short codes.',
     'Sorting by id should mean sorting by time: use v7.',
   ],
@@ -81,9 +81,9 @@ export default topic({
         'Everything else stays random: 122 bits. Six fixed bits, 122 rolled ones.',
         view('laptop.id', 'hex'),
         unannotate('laptop.id', 'rand'),
-        annotate('laptop.id', 0, 48, 'random', { unit: 'bit', tone: 'info', id: 'rand' }),
-        annotate('laptop.id', 52, 64, 'random', { unit: 'bit', tone: 'info', id: 'rand' }),
-        annotate('laptop.id', 66, 128, 'random', { unit: 'bit', tone: 'info', id: 'rand' }),
+        annotate('laptop.id', 0, 48, 'random', { unit: 'bit', tone: 'info', id: 'rand-a' }),
+        annotate('laptop.id', 52, 64, 'random', { unit: 'bit', tone: 'info', id: 'rand-b' }),
+        annotate('laptop.id', 66, 128, 'random', { unit: 'bit', tone: 'info', id: 'rand-c' }),
         expect('laptop.id', '3fa85c129be44771ad66c0158af341b9'),
       ),
       step(

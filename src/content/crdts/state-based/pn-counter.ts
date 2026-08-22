@@ -170,7 +170,7 @@ export default topic({
         ),
         step.long(
           's06',
-          'A counter cannot say no. If a floor or a ceiling matters, that decision needs a **transaction** or a lock, not a CRDT (topic I.4).',
+          'A counter cannot say no. If a floor or a ceiling matters, use a **transaction** or a lock, not a CRDT (see Not everything needs a transaction).',
         ),
       ],
     ),
@@ -231,7 +231,7 @@ export default topic({
         ),
         step.long(
           's06',
-          'Composing CRDTs is nesting them: each field brings its own merge rule. Topic II.10 builds a whole shopping list this way.',
+          'Composing CRDTs is nesting them: each field brings its own merge rule. Later in this unit, a shared shopping list is built this way.',
         ),
       ],
       { inContext: true },

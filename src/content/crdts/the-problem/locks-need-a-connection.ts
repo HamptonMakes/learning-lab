@@ -39,7 +39,7 @@ export default topic({
   whenToUse: [
     'Writers are servers in one data center with fast, reliable links.',
     'Writes are rare and short, so nobody queues for long.',
-    'A writer that cannot reach the lock server can simply wait or fail.',
+    'A writer that cannot reach the lock server can wait or fail.',
   ],
   whenNotToUse: [
     'Devices go offline: tunnels, planes, flaky Wi-Fi.',
@@ -84,7 +84,7 @@ export default topic({
         ),
         step.long(
           's05',
-          'Whoops — she edits anyway, and we are back in topic 1. The lock did not help.',
+          'Whoops — she edits anyway, and we are back in More than one copy. The lock did not help.',
           clearMarks(),
           set('alice.doc.title', 'Q3 plan v2'),
           cross('server.lock'),

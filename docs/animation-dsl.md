@@ -982,6 +982,17 @@ to sync/send/offline/drop buttons; every click becomes a `crdt.update` / `crdt.s
 `offline` command through the reducer, so the sandbox can never show a state the real code did not
 compute. Unit II topics expose exactly the ops their scenes use.
 
+A `TryIt` declaration is optional. Without one, the sandbox derives its controls from the world
+(`src/lesson/sandbox/derive.ts`): per replica type — registers `set`, `lww-map` set/remove field,
+counters `inc`/`dec`, sets `add`/`remove` (pick an item), `rga` type/delete last, clocks `tick`,
+composed documents `set` of their top-level LWW fields — plus `sync(a, b)` per pair of a state-wired
+slot, `broadcast` + "deliver all" for an `ops`-wired slot, an offline/online toggle per actor and
+`tick` when the clock shows or a type stamps with it. A write whose stamp comes from the wall clock
+is preceded by a `tick` unless the scene `autoTick`s (otherwise a sandbox write at the current time
+would lose the tie-break and visibly change nothing). The panel (`src/app/components/try-it/`)
+starts from the lesson's **current** frame and runs each press as one synthetic step (`x1`, `x2` …)
+through `applyStep`; reducer errors are shown inline, never thrown.
+
 ---
 
 ## 12. i18n hooks
@@ -1221,7 +1232,7 @@ between the two values.
 scene('tags', { layout: 'pair', actors: [alice(), bob()] }, [
   step(
     's01',
-    'An OR-Set remembers, for each element, the tags of the adds that put it there.',
+    'An **OR-Set** remembers, for each element, the tags of the adds that put it there.',
     crdt.init(['alice', 'bob'], 'cart', 'or-set'),
     note('rule', 'add → new tag · remove → drop the tags you have seen · in set = has a live tag'),
   ),

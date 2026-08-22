@@ -44,7 +44,7 @@ export default topic({
     'Data whose merge rule would surprise the people using it.',
   ],
   realWorld:
-    'Figma (multiplayer design), Apple Notes and Automerge/Yjs-based apps (offline editing), Riak and Redis Enterprise (multi-region data). Names are examples; details simplified.',
+    'Figma (multiplayer design, CRDT-inspired), Apple Notes and Automerge/Yjs-based apps (offline editing), Riak and Redis Enterprise (multi-region data). Names are examples; details simplified.',
   scenes: [
     scene('gallery', { layout: 'grid', actors: [] }, [
       step(

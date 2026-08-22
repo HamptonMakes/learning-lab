@@ -42,12 +42,12 @@ export default topic({
     'You would rather keep everyone working than make them wait.',
   ],
   whenNotToUse: [
-    'A wrong value, even for a moment, is expensive (topic I.4).',
+    'A wrong value, even for a moment, is expensive (see Not everything needs a transaction).',
     'You need exactly one winner decided right now (a seat, a username).',
     'The merge rule would surprise users (two edits to one paragraph must not both survive).',
   ],
   realWorld:
-    'Tags on a shared task: two people add tags while offline; later both see both tags (a G-Set, Unit II.6).',
+    'Tags on a shared task: two people add tags while offline; later both see both tags (a G-Set, Unit II).',
   scenes: [
     scene('rule-up-front', { layout: 'triangle', actors: [alice(), bob(), carol()] }, [
       step(
@@ -69,7 +69,7 @@ export default topic({
       ),
       step(
         's04',
-        'Three copies, three different states. In topic 1 this was the problem.',
+        'Three copies, three different states. In More than one copy, this was the problem.',
         highlight(['alice.tags', 'bob.tags', 'carol.tags']),
       ),
       step(
@@ -175,7 +175,7 @@ export default topic({
       [
         step(
           's01',
-          'Back to the title from topic 1. This time we pick a rule first: the newest write wins (a preview of Unit II).',
+          'Back to the title from More than one copy. This time we pick a rule first: the newest write wins (a preview of Unit II).',
           note('rule', 'Rule: newest timestamp wins'),
           crdt.init(['server', 'alice', 'bob'], 'title', 'lww-register', {
             seed: [seed('set', 'Q3 plan')],

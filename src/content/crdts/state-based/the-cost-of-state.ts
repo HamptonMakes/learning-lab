@@ -132,7 +132,7 @@ export default topic({
         ),
         step(
           's03',
-          'Bob merges the delta with the same merge() as before. A delta is just a small state, so the three laws still hold.',
+          'Bob merges the delta with the same merge() as before. A delta is itself a small state, so the three laws still hold.',
           clearMarks(),
           merge('m3'),
           same('alice.list', 'bob.list'),

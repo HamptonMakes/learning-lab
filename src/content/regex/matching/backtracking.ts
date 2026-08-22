@@ -56,7 +56,7 @@ export default topic({
       ),
       step(
         's03',
-        '`.*` is **greedy**: it takes as much as it can. First the X: its run holds 1 character, and a **choice point** c1 remembers that.',
+        '`.*` is **greedy**: it takes as much as it can. First the X: its run, the span it holds, is 1 character, and a **choice point** c1 remembers that.',
         regex.advance(M, 'step'),
         expect(`${M}.text@cursor`, 2),
         expect(`${M}.stack`, ['p1 @ 1 ×1']),
@@ -90,7 +90,7 @@ export default topic({
       ),
       step(
         's07',
-        '**Backtracking**: pop c1, the run gives one character back (now 3), and b is tested at position 4: a b. Match, 0 to 5, 8 tries.',
+        '**Backtracking**: back to c1, the run gives one character back (now 3), and b is tested at position 4: a b. Match, 0 to 5, 8 tries.',
         regex.advance(M, 'step'),
         check(`${M}.text`),
         expect(`${M}.stack`, ['p1 @ 1 ×3']),

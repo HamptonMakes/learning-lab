@@ -45,7 +45,8 @@ export default topic({
     'Device clocks cannot be trusted (Unit IV).',
     'You need remove-only-what-I-saw semantics rather than newest-stamp-wins (OR-Set).',
   ],
-  realWorld: 'Follow and unfollow lists; favorites synced across devices; Riak-style LWW sets.',
+  realWorld:
+    'Follow and unfollow lists; favorites synced across devices; Cassandra set columns (one timestamp per element; a tie goes to the remove).',
   scenes: [
     scene(
       'two-times-per-element',

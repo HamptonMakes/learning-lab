@@ -154,7 +154,7 @@ export default topic({
       ),
       step.long(
         's08',
-        'The question mark is a **quantifier**, like plus and star: one test that may take a different number of characters. Each one is a place the engine may come back to.',
+        'The question mark is a **quantifier**, like plus and star: one test that may take more or fewer characters. Each one is a place the engine may come back to.',
         expect(`${M}.pattern`, 'colou?r'),
       ),
     ]),
@@ -206,7 +206,7 @@ export default topic({
         ),
         step(
           's06',
-          'The fourth digit, 2, passes: a match from 16 to 24. The group captured 0042, so $1 hands you just the number.',
+          'The fourth digit, 2, passes: a match from 16 to 24. The group captured 0042, so $1 hands you only the number.',
           regex.advance(M, 'step'),
           check(`${M}.captures.$1`),
           expect(`${M}.text@cursor`, 24),

@@ -49,7 +49,7 @@ export default topic({
     'Two people often edit the same field at once and both edits matter.',
     'Fields depend on each other (start before end): per-field LWW can break the pair.',
     'A field is long text (use a sequence CRDT, Unit III).',
-    'Keys come and go all the time (every removed key leaves a tombstone; II.11).',
+    'Keys come and go all the time (every removed key leaves a tombstone; The cost of state).',
   ],
   realWorld:
     'A task card in a tracker (owner, status, due date) edited by two teammates; Riak maps; the maps of registers inside Automerge and Yjs.',
@@ -146,7 +146,7 @@ export default topic({
         ),
         step(
           's05',
-          "Alice's Thu is gone. Same deal as the single register, just smaller.",
+          "Alice's Thu is gone. Same deal as the single register, only smaller.",
           cross('alice.task.due'),
           same('alice.task', 'bob.task'),
         ),
