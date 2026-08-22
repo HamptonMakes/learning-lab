@@ -34,7 +34,7 @@ for (const t of catalogTopics()) {
       const cur = await labCurrent(page)
       const file = `${String(i + 1).padStart(2, '0')}-${cur.sceneId}-${cur.stepId}.png`
       await page
-        .locator('[data-testid=lesson-player]')
+        .locator('[data-testid=lesson-frame]')
         .screenshot({ path: join(dir, file), animations: 'disabled' })
       steps.push({ index: i, stepId: cur.stepId, sceneId: cur.sceneId, say: cur.say, file })
     }
@@ -57,7 +57,7 @@ for (const t of catalogTopics()) {
         const cur = await labCurrent(page)
         const file = `${String(i + 1).padStart(2, '0')}-${cur.sceneId}-${cur.stepId}.png`
         await page
-          .locator('[data-testid=lesson-player]')
+          .locator('[data-testid=lesson-frame]')
           .screenshot({ path: join(darkDir, file), animations: 'disabled' })
         darkSteps.push({
           index: i,
