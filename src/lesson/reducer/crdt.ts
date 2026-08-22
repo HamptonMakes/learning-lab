@@ -893,9 +893,13 @@ type GcPred = {
 
 function gcPredicate(replica: Replica, upTo: VectorClock, unsafe: boolean): GcPred {
   const isDoc = replica.type === 'doc'
+  // An item is stable when its kill record (or, failing that, its own dot) is covered by `upTo`.
   const stable = (d: Dot | undefined): boolean => {
     if (d === undefined) return unsafe
     const { node, seq } = parseDot(d)
+    // Seed dots are outside every version vector, so a proof can never cover them: only an
+    // unsafe gc may collect a seeded item (the "collect too early" lesson).
+    if (node === SEED_NODE) return unsafe
     return seq <= (upTo[node] ?? 0)
   }
   const killer = (path: string, pred: (op: Rec) => boolean): Dot | undefined => {
