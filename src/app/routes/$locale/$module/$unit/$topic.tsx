@@ -224,41 +224,43 @@ function LessonPlayer({
         </ol>
       )}
 
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={frame.sceneId}
-          initial={instant ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={instant ? undefined : { opacity: 0 }}
-          transition={{ duration: instant ? 0 : 0.2 / player.state.speed }}
-          className="flex flex-1 flex-col"
-        >
-          <Stage
-            frame={frame}
-            speed={player.state.speed}
-            reducedSetting={reducedPref === 'on'}
-            instant={instant}
-            dir={dir}
-            className="flex-1"
-          />
-        </motion.div>
-      </AnimatePresence>
+      <div className="flex flex-1 flex-col gap-3" data-testid="lesson-frame">
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={frame.sceneId}
+            initial={instant ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={instant ? undefined : { opacity: 0 }}
+            transition={{ duration: instant ? 0 : 0.2 / player.state.speed }}
+            className="flex flex-1 flex-col"
+          >
+            <Stage
+              frame={frame}
+              speed={player.state.speed}
+              reducedSetting={reducedPref === 'on'}
+              instant={instant}
+              dir={dir}
+              className="flex-1"
+            />
+          </motion.div>
+        </AnimatePresence>
 
-      <Narration say={frame.step.say} stepId={frame.step.id} />
+        <Narration say={frame.step.say} stepId={frame.step.id} />
 
-      <TransportBar
-        index={player.state.index}
-        total={player.state.total}
-        status={player.state.status}
-        speed={player.state.speed}
-        onPrev={player.prev}
-        onNext={player.next}
-        onToggle={player.toggle}
-        onRestart={player.restart}
-        onSeek={player.seek}
-        onSpeed={player.setSpeed}
-        stepIds={built.frames.map((f) => `${f.sceneId}/${f.step.id}`)}
-      />
+        <TransportBar
+          index={player.state.index}
+          total={player.state.total}
+          status={player.state.status}
+          speed={player.state.speed}
+          onPrev={player.prev}
+          onNext={player.next}
+          onToggle={player.toggle}
+          onRestart={player.restart}
+          onSeek={player.seek}
+          onSpeed={player.setSpeed}
+          stepIds={built.frames.map((f) => `${f.sceneId}/${f.step.id}`)}
+        />
+      </div>
 
       {ended && (
         <div
