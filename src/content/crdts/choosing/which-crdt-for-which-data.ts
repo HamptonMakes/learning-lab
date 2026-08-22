@@ -102,7 +102,7 @@ export default topic({
   whenNotToUse: [
     'A rule must hold across all copies (balance >= 0, unique username): coordinate instead.',
     'Only one writer ever exists: a plain value is enough; a CRDT adds metadata for nothing.',
-    'The value is an opaque blob (image, PDF): store it by hash and LWW the reference.',
+    'Opaque blobs (image, PDF): store by hash; the reference is the LWW register.',
     'You need "did my write win?" right now: that is a server question, not a merge question.',
   ],
   realWorld:
@@ -164,14 +164,14 @@ export default topic({
         ),
         step(
           's07',
-          'Ask: does a new write replace the old value, or add to it? Replace means a register: row one ([II.2](/crdts/state-based/lww-register)).',
+          'Ask: does a new write replace the old value, or add to it? Replace means a register: row one ([LWW Register](/crdts/state-based/lww-register)).',
           clearMarks(),
           insert('board.t', ROWS.r1),
           highlight('board.t.pick'),
         ),
         step(
           's08',
-          'Add up means a counter: row two. Each row carries a watch-out; a counter has no floor ([II.5](/crdts/state-based/pn-counter)).',
+          'Add up means a counter: row two. Each row carries a watch-out; a counter has no floor ([PN-Counter](/crdts/state-based/pn-counter)).',
           insert('board.t', ROWS.r2),
           highlight('board.t.pick'),
         ),
@@ -243,7 +243,7 @@ export default topic({
         ),
         step(
           's07',
-          'Ask: do people change the whole thing at once, or one field at a time? Fields that change alone get a map: row three ([II.3](/crdts/state-based/lww-map)).',
+          'Ask: do people change the whole thing at once, or one field at a time? Fields that change alone get a map: row three ([LWW Map](/crdts/state-based/lww-map)).',
           clearMarks(),
           insert('board.t', ROWS.r3),
           highlight('board.t.pick'),
@@ -285,7 +285,7 @@ export default topic({
         ),
         step(
           's05',
-          'Merge: both items are there, in the same order on both copies. A fixed rule picked that order, not luck ([III.5](/crdts/operation-based/sequences-rga)).',
+          'Merge: both items are there, in the same order on both copies. A fixed rule picked that order, not luck ([Sequences](/crdts/operation-based/sequences-rga)).',
           crdt.sync('alice', 'bob', 'steps'),
           same('alice.steps', 'bob.steps'),
           expect('alice.steps', ['write test', 'fix', 'deploy', 'review']),
@@ -322,20 +322,20 @@ export default topic({
         ),
         step(
           's09',
-          'Ask: does order matter? No, and members come and go: an OR-Set, row four ([II.9](/crdts/state-based/or-set)).',
+          'Ask: does order matter? No, and members come and go: an OR-Set, row four ([OR-Set](/crdts/state-based/or-set)).',
           clearMarks(),
           insert('board.t', ROWS.r4),
           highlight('board.t.pick'),
         ),
         step(
           's10',
-          'Yes, order matters: a sequence, row five. Its price is tombstones and causal delivery ([III.5](/crdts/operation-based/sequences-rga)).',
+          'Yes, order matters: a sequence, row five. Its price is tombstones and causal delivery ([Sequences](/crdts/operation-based/sequences-rga)).',
           insert('board.t', ROWS.r5),
           highlight('board.t.pick'),
         ),
         step(
           's11',
-          'Last row, and a different answer: a rule that must hold across copies needs a transaction, not a CRDT ([I.4](/crdts/the-problem/not-everything-needs-a-transaction)).',
+          'Last row, and a different answer: a rule that must hold across copies needs a transaction, not a CRDT ([Not everything needs a transaction](/crdts/the-problem/not-everything-needs-a-transaction)).',
           insert('board.t', ROWS.r6),
           highlight('board.t[r6]', { tone: 'warn' }),
         ),

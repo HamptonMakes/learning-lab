@@ -314,7 +314,7 @@ export default topic({
         ),
         step.long(
           's11',
-          'Real tools do this: Figma stores a parent and a position on every object instead of moving it between lists ([V.4](/crdts/choosing/real-systems)).',
+          'Real tools do this: Figma stores a parent and a position on every object instead of moving it between lists ([Real systems](/crdts/choosing/real-systems)).',
           check('alice.cards'),
           check('bob.cards'),
         ),

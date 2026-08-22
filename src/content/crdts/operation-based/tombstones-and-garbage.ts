@@ -46,7 +46,7 @@ export default topic({
     'Do not collect on a timer alone: a copy offline longer than the timer brings data back.',
     'Do not collect without knowing how far every copy has read.',
     'Do not show tombstones in the UI or count them as items.',
-    'Not every type needs them: an OR-Set remove kills tags; RGA and 2P-Set need tombstones.',
+    'Every type pays somewhere: OR-Set dead tags, LWW-map removed keys, RGA and 2P-Set tombstones.',
   ],
   realWorld:
     'Cassandra tombstones and zombie rows (gc_grace_seconds); Yjs and Automerge compaction; the Recently Deleted folder in Apple Notes.',
@@ -228,7 +228,7 @@ export default topic({
         ),
         step.long(
           's10',
-          'Real systems collect when they can prove stability; Yjs and Automerge do. Cassandra waits a fixed time instead, and a node down longer brings deleted rows back.',
+          'Few systems prove stability: Yjs and Automerge keep every delete, only smaller (Unit V). Cassandra waits a fixed time, and a node down longer revives rows.',
         ),
       ],
     ),

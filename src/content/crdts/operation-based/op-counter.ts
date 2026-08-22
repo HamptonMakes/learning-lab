@@ -38,7 +38,7 @@ export default topic({
   whenToUse: [
     'Likes, votes, view counts, tallies: anything that is a stream of +n / −n events.',
     'Many writers, and nobody needs an instantly exact global number.',
-    'You already have op ids and a dedupe check (III.1).',
+    'You already have op ids and a dedupe check (see Ops instead of state).',
     'Ops are tiny and you do not want to ship a per-node table each time.',
   ],
   whenNotToUse: [
@@ -48,7 +48,7 @@ export default topic({
     'Reset to zero: reset does not commute with +1 and needs a special design.',
   ],
   realWorld:
-    'Emoji reaction counts on a chat message (Slack, Discord); Redis Enterprise active-active counters; YouTube view counts.',
+    'Redis Enterprise Active-Active and Riak counters; emoji reactions and view counts have the same shape, though most apps tally them on one server.',
   scenes: [
     scene(
       'increments-commute',
@@ -117,7 +117,7 @@ export default topic({
         ),
         step(
           's09',
-          'Each copy also keeps the ids it applied: three each. That list is the **sidecar** of this type, and the reason a repeat does no harm.',
+          'Each copy also keeps the ids it applied: three each. The counter itself is one number; that **sidecar** list is what makes a repeat harmless.',
           clearMarks(),
           highlight(['alice.likes@applied', 'bob.likes@applied', 'carol.likes@applied'], {
             sticky: true,
@@ -278,7 +278,7 @@ export default topic({
         ),
         step.long(
           's10',
-          'Comparing how far each side has read and sending only the gap is how Yjs and Automerge catch a peer up. Unit IV names that table: a **vector clock**.',
+          'Comparing how far each side has read and sending only the gap is how Yjs catches a peer up. Unit IV names that table: a **vector clock**.',
           highlight(['alice.poll@vc', 'bob.poll@vc', 'carol.poll@vc'], { sticky: true }),
         ),
       ],

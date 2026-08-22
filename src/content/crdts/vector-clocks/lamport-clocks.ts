@@ -37,7 +37,7 @@ export default topic({
   title: 'Lamport clocks',
   goal: 'Run the Lamport rules by hand, and say what a smaller number does and does not tell you about two events.',
   whenToUse: [
-    'You need an order that respects cause and effect: op logs, RGA stamps, causal LWW.',
+    'You need an order that respects cause and effect: op logs, RGA stamps, LWW with logical stamps.',
     'One integer per replica is all the space you can afford.',
     'Ties can be broken by node name.',
     'You only need to order events, not to detect concurrency.',
@@ -232,7 +232,7 @@ export default topic({
         ),
         step(
           's07',
-          'Every device that sorts by stamp shows this same order. The reply can never sort above its question: 3 is bigger than 1.',
+          'Any copy that sorts by stamp gets this same order. The reply can never sort above its question: 3 is bigger than 1.',
           check('server.chat'),
           highlight(['server.chat[c1]@ts', 'server.chat[c2]@ts']),
         ),

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowLeft, ArrowRight, CheckCircle2, TriangleAlert } from 'lucide-react'
@@ -163,9 +163,6 @@ function LessonPlayer({
   useKeyboardTransport(player, { enabled: true, dir })
   useLabHook(player, { enabled: search.lab === '1' })
 
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
-
   const frame = player.frame
   if (built.error || built.frames.length === 0 || !frame) {
     return (
@@ -187,7 +184,7 @@ function LessonPlayer({
     )
   }
 
-  const instant = player.instant || !mounted
+  const instant = player.instant
   const scene = topic.scenes.find((s) => s.id === frame.sceneId)
   const multiScene = topic.scenes.length > 1
   const ended = player.state.status === 'ended'
@@ -264,13 +261,13 @@ function LessonPlayer({
       </div>
 
       {ended && (
-        <div
+        <output
           className="flex items-center gap-2 rounded-xl border border-ok/40 bg-ok-soft px-4 py-2 text-sm text-ink"
           data-testid="topic-complete"
-          role="status"
+          aria-live="polite"
         >
           <CheckCircle2 className="size-4 text-ok" /> {t('topic.complete')}
-        </div>
+        </output>
       )}
 
       <TopicPanels

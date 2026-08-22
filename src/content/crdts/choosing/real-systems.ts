@@ -117,7 +117,7 @@ export default topic({
       ),
       step(
         's07',
-        'A plain Riak value with no type keeps both writes as **sibling**s with a version vector, and your app picks ([IV.4](/crdts/vector-clocks/detecting-conflicts)).',
+        'A plain Riak value with no type keeps both writes as **sibling**s with a version vector, and your app picks ([Detecting conflicts](/crdts/vector-clocks/detecting-conflicts)).',
         callout('board.sys[riak].uses', 'no type: siblings'),
       ),
       step(
@@ -148,7 +148,7 @@ export default topic({
       [
         step(
           's01',
-          'Apple Notes merges edits made on two devices over iCloud, and never asks you to pick a version when you come back online.',
+          'Apple Notes merges edits made on two devices over iCloud, and does not ask you to pick a version when you come back online.',
           insert('board.sys', ROWS.notes),
           highlight('board.sys[notes]'),
         ),
@@ -185,7 +185,7 @@ export default topic({
         ),
         step(
           's06',
-          'It sends the result back. Different properties, so both changes survive — the per-field map of [II.3](/crdts/state-based/lww-map).',
+          'It sends the result back. Different properties, so both changes survive — the per-field map of [LWW Map](/crdts/state-based/lww-map).',
           crdt.merge('alice', 'server', 'rect'),
           crdt.merge('bob', 'server', 'rect'),
           good('alice.rect'),
@@ -211,7 +211,7 @@ export default topic({
         ),
         step(
           's08',
-          'Moving a layer writes a parent and a position on the object, never a delete plus an insert — the fix from [V.2](/crdts/choosing/composing-a-document).',
+          'Moving a layer writes a parent and a position on the object, never a delete plus an insert — the fix from [Composing a document](/crdts/choosing/composing-a-document).',
           clearMarks(),
           send('alice', 'server', 'parent = group-2', { id: 'm5', label: 'move' }),
           deliver('m5'),

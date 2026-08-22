@@ -31,7 +31,7 @@ import {
   expect,
 } from '@/lesson/builders'
 
-const RULE = 'add → new tag · remove → the tags you have seen · in set = one live tag'
+const RULE = 'add → new tag · remove → the tags you have seen · in the set = at least one live tag'
 
 export default topic({
   id: 'op-or-set',
@@ -47,10 +47,10 @@ export default topic({
     'Remove must win (bans, revoked access): a concurrent add would undo it.',
     'You need order: use a sequence (RGA, next topic).',
     'Items have editable fields: compose an OR-Set of ids with a record per id (last scene).',
-    'You cannot guarantee causal delivery: a remove may arrive before its add (III.1).',
+    'You cannot guarantee causal delivery: a remove may arrive before its add (see Ops instead of state).',
   ],
   realWorld:
-    'Labels on an issue (Linear, GitHub); people in a shared photo album; Riak sets; Redis active-active sets.',
+    'Riak sets and Redis Enterprise Active-Active sets are OR-Sets; issue labels and shared-album members are the shape they fit.',
   scenes: [
     scene(
       'add-and-remove-by-tag',

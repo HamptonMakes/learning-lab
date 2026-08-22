@@ -45,7 +45,7 @@ export default topic({
   whenToUse: [
     'You must detect concurrent writes: siblings, conflict flags, "someone else edited this".',
     'Few nodes (tens), or you can prune old entries.',
-    'You need "has everyone seen X" (tombstone stability, III.7).',
+    'You need "has everyone seen X" (tombstone stability, Unit III).',
     'Sync: "send me everything after {alice 4, bob 2}" (Yjs calls this a state vector).',
   ],
   whenNotToUse: [
@@ -55,7 +55,7 @@ export default topic({
     'Anonymous clients that come and go; their entries never die.',
   ],
   realWorld:
-    'Amazon Dynamo and Riak version vectors; Yjs state vectors for sync; the idea behind git commit graphs.',
+    'Amazon Dynamo and Riak version vectors; Yjs state vectors for sync; Voldemort and Bayou before them.',
   scenes: [
     scene(
       'one-counter-per-node',
@@ -195,7 +195,7 @@ export default topic({
       [
         step(
           's01',
-          'Phone, laptop and server share a note, an **RGA**. Each copy keeps a version vector: how many ops it holds from each device, {alice 3}.',
+          'Phone, laptop and server share a note, an **RGA**. Each copy keeps a **version vector**: how many ops it holds from each device, {alice 3}.',
           crdt.init(['server', 'alice', 'bob'], 'note', 'rga', {
             display: 'text',
             expose: ['vc'],

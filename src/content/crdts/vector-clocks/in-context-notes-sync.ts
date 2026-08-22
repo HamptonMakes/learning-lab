@@ -43,11 +43,12 @@ export default topic({
     'A conflict must be visible to the user, never silently resolved.',
   ],
   whenNotToUse: [
-    'Shared long-form text with heavy simultaneous editing (use an RGA body, III.6).',
+    'Shared long-form text with heavy simultaneous editing (use an RGA body, Unit III).',
     'Data with invariants such as money or seats; use a transaction.',
     'Thousands of devices per note; vectors grow per device.',
   ],
-  realWorld: 'Apple Notes; Evernote "conflicting modification"; Dropbox "conflicted copy".',
+  realWorld:
+    'Evernote "conflicting modification" notes and Dropbox "conflicted copy" files are siblings shown to the user; Apple Notes merges instead (Unit V, Real systems).',
   scenes: [
     scene(
       'fast-forward',

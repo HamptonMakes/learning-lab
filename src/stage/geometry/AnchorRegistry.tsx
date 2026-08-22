@@ -13,6 +13,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
   type RefObject,
+  useState,
 } from 'react'
 import { useAnimationFrame } from 'motion/react'
 import type { Path } from '@/lesson/types'
@@ -33,7 +34,10 @@ export interface AnchorRegistry {
 
 const Ctx = createContext<AnchorRegistry | null>(null)
 
-export function createAnchorRegistry(getContainer: () => HTMLElement | null): AnchorRegistry {
+export function createAnchorRegistry(
+  container: RefObject<HTMLElement | null> | (() => HTMLElement | null),
+): AnchorRegistry {
+  const getContainer = typeof container === 'function' ? container : () => container.current
   const els = new Map<AnchorKey, Element>()
   const subs = new Set<() => void>()
   let snap: ReadonlyMap<AnchorKey, Rect> = new Map()
@@ -88,9 +92,7 @@ export function AnchorRegistryProvider({
   container: RefObject<HTMLElement | null>
   children: ReactNode
 }) {
-  const ref = useRef<AnchorRegistry | null>(null)
-  if (!ref.current) ref.current = createAnchorRegistry(() => container.current)
-  const reg = ref.current
+  const [reg] = useState(() => createAnchorRegistry(container))
   const settle = useRef(0)
 
   // 1) after every commit (frame changed or a child re-rendered) + two settle frames

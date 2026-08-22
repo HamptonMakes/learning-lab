@@ -54,7 +54,7 @@ export default topic({
   goal: 'Name what each choice costs — bytes on the wire, delivery guarantees, metadata that never leaves — and pick the cheaper option for a given workload.',
   whenToUse: [
     'State-based: small state, lossy or reordering networks, few replicas, simplest code.',
-    'Delta-state: state-based safety with op-sized messages; most real systems do this.',
+    'Delta-state: state-based safety with op-sized messages; many real systems do this.',
     'Op-based: big documents with small frequent edits, plus reliable causal delivery.',
     'Garbage collection: when every replica is known and can say what it has seen.',
   ],
@@ -158,7 +158,7 @@ export default topic({
         ),
         step(
           's10',
-          'The delta was 57 bytes against 200 for the full state, and the same merge accepts both. It is still safe to lose or apply twice.',
+          'The delta was 57 bytes against 200 for the full state, and the same merge accepts both. Twice is harmless; lost is not, unless you resend it.',
           highlight(['board.full', 'board.delta']),
           same('alice.state', 'bob.state'),
         ),
@@ -289,10 +289,9 @@ export default topic({
         ),
         step(
           's04',
-          'They want the space back, so both throw the tombstone away without asking anyone (simplified).',
+          'Alice wants the space back, so she throws the tombstone away without asking anyone (simplified).',
           clearMarks(),
           crdt.gc('alice', 'list', { unsafe: true }),
-          crdt.gc('bob', 'list', { unsafe: true }),
           expect('alice.list@stats', { stored: 2, visible: 2 }),
         ),
         step(
@@ -362,7 +361,7 @@ export default topic({
         ),
         step.long(
           's12',
-          'A server log can find that point for you ([III.7](/crdts/operation-based/tombstones-and-garbage)). Without one, cleaning up is rare and careful.',
+          'A server log can find that point for you ([Tombstones and garbage](/crdts/operation-based/tombstones-and-garbage)). Without one, cleaning up is rare and careful.',
           check('alice.list2'),
           check('carol.list2'),
         ),

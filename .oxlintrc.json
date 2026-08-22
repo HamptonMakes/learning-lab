@@ -53,10 +53,13 @@
   "overrides": [
     {
       "files": [
-        "src/ui/**"
+        "src/ui/**",
+        "src/hooks/use-mobile.ts"
       ],
       "rules": {
-        "react/only-export-components": "off"
+        "react/only-export-components": "off",
+        "jsx-a11y/prefer-tag-over-role": "off",
+        "react/set-state-in-effect": "off"
       }
     }
   ]

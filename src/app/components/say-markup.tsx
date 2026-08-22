@@ -46,24 +46,24 @@ export function SayMarkup({ say, locale }: { say: string; locale: string }): Rea
     switch (p.kind) {
       case 'term': {
         const entry = lookupTerm(p.text)
-        const strong = (
-          <strong
-            key={i}
-            data-term={p.text}
-            tabIndex={entry ? 0 : undefined}
-            className={
-              entry
-                ? 'cursor-help font-semibold text-ink underline decoration-ink-3 decoration-dotted underline-offset-4'
-                : 'font-semibold text-ink'
-            }
-          >
-            {p.text}
-          </strong>
-        )
-        if (!entry) return strong
+        if (!entry) {
+          return (
+            <strong key={i} data-term={p.text} className="font-semibold text-ink">
+              {p.text}
+            </strong>
+          )
+        }
         return (
           <Tooltip key={i}>
-            <TooltipTrigger asChild>{strong}</TooltipTrigger>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                data-term={p.text}
+                className="inline cursor-help appearance-none border-0 bg-transparent p-0 font-semibold text-ink underline decoration-ink-3 decoration-dotted underline-offset-4 hover:decoration-teal focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
+              >
+                {p.text}
+              </button>
+            </TooltipTrigger>
             <TooltipContent className="max-w-72 text-pretty">{entry.definition}</TooltipContent>
           </Tooltip>
         )

@@ -43,7 +43,7 @@ export function TransportBar(p: TransportProps) {
 
   return (
     <div
-      role="group"
+      role="toolbar"
       aria-label={t('player.controls')}
       data-testid="transport"
       data-status={p.status}
@@ -201,36 +201,35 @@ function ProgressDots({
     )
   }
   return (
-    <div
+    <ol
       className="mx-2 flex items-center gap-1"
       data-testid="transport-progress"
-      role="list"
       aria-label={t('a11y.currentStep')}
     >
       {Array.from({ length: total }, (_, i) => {
         const done = i < index
         const active = i === index
         return (
-          <button
-            key={i}
-            type="button"
-            role="listitem"
-            onClick={() => onSeek(i)}
-            aria-label={t('player.step_of', { n: i + 1, total })}
-            aria-current={active ? 'step' : undefined}
-            title={stepIds?.[i]}
-            data-testid={`step-dot-${i}`}
-            className={cn(
-              'h-2.5 rounded-full transition-[width,background-color] duration-200 ease-out',
-              active
-                ? 'w-5 bg-teal'
-                : done
-                  ? 'w-2.5 bg-teal/45 hover:bg-teal/70'
-                  : 'w-2.5 bg-line-2 hover:bg-ink-3/60',
-            )}
-          />
+          <li key={i} className="flex">
+            <button
+              type="button"
+              onClick={() => onSeek(i)}
+              aria-label={t('player.step_of', { n: i + 1, total })}
+              aria-current={active ? 'step' : undefined}
+              title={stepIds?.[i]}
+              data-testid={`step-dot-${i}`}
+              className={cn(
+                'h-2.5 rounded-full transition-[width,background-color] duration-200 ease-out',
+                active
+                  ? 'w-5 bg-teal'
+                  : done
+                    ? 'w-2.5 bg-teal/45 hover:bg-teal/70'
+                    : 'w-2.5 bg-line-2 hover:bg-ink-3/60',
+              )}
+            />
+          </li>
         )
       })}
-    </div>
+    </ol>
   )
 }

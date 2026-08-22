@@ -205,7 +205,7 @@ export default topic({
         ),
         step.long(
           's10',
-          'Every op-based CRDT needs this check. It belongs to the code that moves ops between copies, not to the data type.',
+          'This check lives in the code that moves ops, not in the data type. Some types shrug off a repeat (a tagged add); a counter cannot.',
         ),
       ],
     ),

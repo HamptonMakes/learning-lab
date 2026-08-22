@@ -39,7 +39,7 @@ export default topic({
     'Low-stakes fields where a wrong pick costs little, on devices that sync their clocks.',
     'In practice one writer per field, so two devices rarely race.',
     'You add a node-id tie-break and accept a few seconds of slop.',
-    'You stamp with an HLC (IV.5) so a causal chain cannot go backwards.',
+    'You stamp with an HLC (see Hybrid logical clocks) so a causal chain cannot go backwards.',
   ],
   whenNotToUse: [
     'Two devices may edit the same field inside the clock-error window.',
@@ -48,7 +48,7 @@ export default topic({
     'You need "happened before", not "was stamped later".',
   ],
   realWorld:
-    'Cassandra LWW cells under clock skew (silently lost writes); Google Spanner TrueTime uses atomic clocks to bound the error.',
+    'Cassandra LWW cells under clock skew (silently lost writes); Google Spanner TrueTime uses GPS and atomic clocks to bound the error.',
   scenes: [
     scene(
       'two-clocks',
@@ -230,7 +230,7 @@ export default topic({
         ),
         step.long(
           's07',
-          'This is the most common LWW bug in real apps. The cure is a clock built from cause and effect, not from the wall: Lamport clocks, next.',
+          'This is a common LWW bug in real apps. The cure is a clock built from cause and effect, not from the wall: Lamport clocks, next.',
           callout('alice@clock', 'logical clocks →', { tone: 'info', sticky: true }),
         ),
       ],

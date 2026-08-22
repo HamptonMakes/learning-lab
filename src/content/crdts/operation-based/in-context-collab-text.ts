@@ -41,7 +41,7 @@ export default topic({
     'Rich text: bold, comments and links need structure on top of the sequence.',
   ],
   realWorld:
-    'Google Docs; Notion block lists; Figma layer order; Automerge lists with a move operation.',
+    'Yjs and Automerge text editors; Figma layer order uses a position field instead (Unit V, Composing a document); Google Docs reaches the same goal with operational transformation (OT), not a CRDT.',
   scenes: [
     scene(
       'two-people-typing',
@@ -93,7 +93,7 @@ export default topic({
         ),
         step(
           's06',
-          'Same stamp, so the node id decides: bob sorts after alice, and the mark stays first. The rest of her word follows her space.',
+          'Same stamp, so the higher node id goes first: bob beats alice, and the mark stays in front. The rest of her word follows her space.',
           applyAll(['alice:4@bob', 'alice:5@bob', 'alice:6@bob']),
           expect('bob.line', 'Hi! Bob'),
         ),
@@ -132,7 +132,7 @@ export default topic({
         ),
         step.long(
           's11',
-          'This is how collaborative editors work underneath: named characters, insert-after, tombstones, and a tie rule nobody argues with.',
+          'This is how CRDT text editors work underneath: named characters, insert-after, tombstones, and a tie rule nobody argues with.',
         ),
       ],
       { inContext: true },
@@ -216,7 +216,7 @@ export default topic({
         ),
         step.long(
           's08',
-          'Fixes exist: a real move op (Automerge has one), or a position number per item that you sort by. Both are beyond this course; the trap is not.',
+          'Fixes exist: a move op the CRDT understands (Loro has one), or a position field you sort by. Both are beyond this course; the trap is not.',
           clearMarks(),
           note('rule', 'move needs its own op, or a position field'),
         ),

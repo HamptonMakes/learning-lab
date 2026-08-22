@@ -42,16 +42,16 @@ export default topic({
     'Ordered data edited at the same time: text, block lists, bullet lists, layer order.',
     'Inserts anywhere plus deletes, and everyone must agree on the order.',
     'Many tiny ops (typing): each op is one element.',
-    'You can live with tombstones, or you have a plan to collect them (III.7).',
+    'You can live with tombstones, or you have a plan to collect them (see Tombstones and garbage).',
   ],
   whenNotToUse: [
     'Order does not matter: an OR-Set carries less metadata.',
     'Big blobs: RGA is per element; do not put a 10 MB string in one.',
-    'Frequent moves that must not duplicate: plain RGA has no move (III.6).',
+    'Frequent moves that must not duplicate: plain RGA has no move (next topic).',
     'Rich text (bold spans, comments): RGA is the base; you need structure on top.',
   ],
   realWorld:
-    'Google-Docs-style editing; Yjs (YATA, an RGA relative); Automerge Text (RGA); collaboration in Apple Notes.',
+    'Yjs (YATA, an RGA relative); Automerge text (RGA); Apple Notes (per public reverse-engineering); Google Docs reaches the same goal with operational transformation (OT), not a CRDT.',
   scenes: [
     scene(
       'positions-break',
@@ -224,7 +224,7 @@ export default topic({
         ),
         step(
           's05',
-          'Both ops say after alice:1, so who goes first? Higher stamp first, then higher node id: bob sorts after alice, so Y goes first.',
+          'Both ops say after alice:1, so who goes first? Same stamp, so the higher node id goes first: bob beats alice, and Y lands before X.',
           compare(['alice.text[alice:3]', 'bob.text[bob:1]'], { expect: 'less' }),
         ),
         step(

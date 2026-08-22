@@ -45,12 +45,12 @@ export default topic({
   ],
   whenNotToUse: [
     'You must detect concurrency; an HLC is a total order and hides it (use vector clocks).',
-    'Skew is unbounded (hours); the counter absorbs small skew, not wild clocks.',
+    'Skew is unbounded (hours): one wild clock drags every HLC hours ahead of real time.',
     'A pure logical order is enough; a Lamport clock is simpler.',
     'Stamps must equal wall time exactly; an HLC can run ahead of the wall.',
   ],
   realWorld:
-    'CockroachDB transaction timestamps; many offline-first sync engines stamp LWW fields with HLCs.',
+    'CockroachDB transaction timestamps; offline-first apps such as Actual Budget stamp LWW fields with HLCs.',
   scenes: [
     scene(
       'wall-time-plus-a-counter',
@@ -89,7 +89,7 @@ export default topic({
         ),
         step(
           's05',
-          "Bob's HLC (10:06, 1) is now ahead of his own wall clock. That is allowed; the counter absorbs the skew.",
+          "Bob's HLC (10:06, 1) is now ahead of his own wall clock. That is allowed: the HLC runs ahead, and the counter keeps his edits in order meanwhile.",
           callout('bob@clock', 'wall 10:01 · HLC 10:06', { tone: 'warn' }),
         ),
         step(
