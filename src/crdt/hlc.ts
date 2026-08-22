@@ -14,8 +14,11 @@
  * Metadata ("sidecar") the type carries: `{ wall, counter, node }`. The stage shows it as
  * `wall.counter@node` (see `hlcToString`); `node` is only a tie-breaker so two nodes never mint
  * the same stamp.
+ *
+ * `hlcClock` is the CrdtType view (registered as 'hlc') so the reducer can hold an HLC like any
+ * other replica. See the comment above it for what `update` / `effect` / `merge` mean here.
  */
-import type { NodeId } from './types'
+import type { CrdtType, Ctx, NodeId } from './types'
 
 export interface Hlc {
   /** Largest physical time seen so far (ms). */
@@ -59,4 +62,68 @@ export function hlcCompare(a: Hlc, b: Hlc): number {
 /** `wall.counter@node`, e.g. `1700000000000.2@alice`. */
 export function hlcToString(h: Hlc): string {
   return `${h.wall}.${h.counter}@${h.node}`
+}
+
+// ---------------------------------------------------------------------------------------------
+// CrdtType view
+// ---------------------------------------------------------------------------------------------
+
+/** The only local update: a local event / send. The physical time is `ctx.ts` (set by the reducer). */
+export type HlcUpdate = { tick: true }
+
+/** What travels: the sender's clock right after its event. */
+export interface HlcOp {
+  stamp: Hlc
+}
+
+/** The clock reading the stage shows — `node` is the holder's identity, not part of the reading. */
+export interface HlcValue {
+  wall: number
+  counter: number
+}
+
+/** Same reading (wall and counter); the node field is who holds the clock, not what it reads. */
+export function hlcSameReading(a: Hlc, b: Hlc): boolean {
+  return a.wall === b.wall && a.counter === b.counter
+}
+
+/**
+ * The HLC as a `CrdtType<Hlc, HlcUpdate, HlcOp, HlcValue>`, name 'hlc'.
+ *
+ *  - `init(node)` = `{ wall: 0, counter: 0, node }` (a clock that has seen no time).
+ *  - `update(s, { tick }, ctx)` = `hlcNow(s, ctx.ts)`: `ctx.ts` is the physical (wall) time the
+ *    reducer supplies for this actor. `prepare` returns the new reading as the op.
+ *  - `effect(s, op)`: at the source (op.stamp.node === s.node) the clock simply adopts its own
+ *    stamp, so `update` equals `effect(prepare(...))` as the contract requires. At any other
+ *    replica it is a *receive*: `hlcReceive(s, op.stamp, wallNow)` with wallNow =
+ *    max(s.wall, op.stamp.wall) — `effect` has no ctx, so no fresh physical time is available and
+ *    the receive is driven purely by the two clocks (the counter climbs, the wall never resets).
+ *    The lesson reducer runs explicit receive rules (`deliver` recv/stamp) through its own path
+ *    with the real actor time; this effect is the stand-alone, ctx-free version of the same rule.
+ *    Like a Lamport receive it is NOT idempotent: every receive moves the clock, so the delivery
+ *    layer must deliver each op once. Op-based convergence therefore does not hold and is not
+ *    asserted — replicas legitimately end with different readings (each receive is an event).
+ *  - `merge(a, b)`: a join — the greater reading by `hlcCompare`, keeping `a`'s node: a replica's
+ *    clock never changes who it belongs to. Commutative, associative, idempotent on the reading,
+ *    which is what `equals` compares (see `hlcSameReading`).
+ *  - `value(s)` = `{ wall, counter }`.
+ */
+export const hlcClock: CrdtType<Hlc, HlcUpdate, HlcOp, HlcValue> = {
+  name: 'hlc',
+  init: (node: NodeId) => hlcInit(node),
+  update: (state: Hlc, _u: HlcUpdate, ctx: Ctx) => hlcNow(state, ctx.ts),
+  prepare: (state: Hlc, _u: HlcUpdate, ctx: Ctx) => ({ stamp: hlcNow(state, ctx.ts) }),
+  effect: (state: Hlc, op: HlcOp) => {
+    if (op.stamp.node === state.node) {
+      // Our own event (the source applying its op, or a replay): adopt the later reading.
+      return hlcCompare(op.stamp, state) > 0 ? op.stamp : state
+    }
+    return hlcReceive(state, op.stamp, Math.max(state.wall, op.stamp.wall))
+  },
+  merge: (a: Hlc, b: Hlc) => {
+    if (hlcCompare(b, a) <= 0 || hlcSameReading(a, b)) return a
+    return { wall: b.wall, counter: b.counter, node: a.node }
+  },
+  value: (state: Hlc) => ({ wall: state.wall, counter: state.counter }),
+  equals: hlcSameReading,
 }

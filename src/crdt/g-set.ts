@@ -41,7 +41,8 @@ export function keyOf(e: unknown): string {
   return typeof e === 'string' ? e : canonicalJson(e)
 }
 
-function canonicalJson(x: unknown): string {
+/** Canonical JSON (object keys sorted recursively). Structurally equal values serialize equally. */
+export function canonicalJson(x: unknown): string {
   return JSON.stringify(sortKeysDeep(x))
 }
 

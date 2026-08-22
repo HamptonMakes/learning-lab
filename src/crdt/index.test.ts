@@ -1,5 +1,14 @@
 import { describe, expect, it } from 'vitest'
-import { CRDT_NAMES, crdtRegistry, getCrdtType, isCrdtName, makeCtx, type CrdtName } from './index'
+import {
+  CRDT_NAMES,
+  DOC_NAME,
+  crdtRegistry,
+  docCrdt,
+  getCrdtType,
+  isCrdtName,
+  makeCtx,
+  type CrdtName,
+} from './index'
 
 describe('crdt registry', () => {
   it('every registry key equals the implementation name', () => {
@@ -14,12 +23,21 @@ describe('crdt registry', () => {
       expect(isCrdtName(name)).toBe(true)
       expect(getCrdtType(name)).toBe(crdtRegistry[name])
     }
-    expect(isCrdtName('hlc')).toBe(false)
+    expect(isCrdtName('hlc')).toBe(true)
     expect(isCrdtName('')).toBe(false)
+    expect(isCrdtName('doc')).toBe(false)
+  })
+
+  it('the composed document is addressed by DOC_NAME and is not a leaf', () => {
+    expect(DOC_NAME).toBe('doc')
+    expect(docCrdt.name).toBe(DOC_NAME)
+    expect(isCrdtName(DOC_NAME)).toBe(false)
+    expect(CRDT_NAMES).not.toContain(DOC_NAME)
   })
 
   it('every registered type can init, update and merge through the erased interface', () => {
     const sample: Record<CrdtName, { args: unknown; update: unknown }> = {
+      'max-register': { args: undefined, update: { set: 3 } },
       'lww-register': { args: undefined, update: { set: 'x' } },
       'lww-map': { args: undefined, update: { key: 'k', set: 'x' } },
       'mv-register': { args: undefined, update: { set: 'x' } },
@@ -33,6 +51,7 @@ describe('crdt registry', () => {
       rga: { args: undefined, update: { insertAt: 0, value: 'a' } },
       'lamport-clock': { args: undefined, update: { tick: true } },
       'vector-clock': { args: undefined, update: { tick: true } },
+      hlc: { args: undefined, update: { tick: true } },
     }
     for (const name of CRDT_NAMES) {
       const type = crdtRegistry[name]

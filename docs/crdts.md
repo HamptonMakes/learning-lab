@@ -23,18 +23,34 @@ Conventions shared by every type:
 
 ## Registry
 
-`src/crdt/index.ts` re-exports every module and exposes `crdtRegistry: Record<CrdtName, AnyCrdtType>`
-(name → implementation, types erased to `unknown` at that boundary) plus `CRDT_NAMES`, `CrdtName`,
-`isCrdtName()` and `getCrdtType()`. Registry keys equal each implementation's `name`:
+`src/crdt/registry.ts` (re-exported by `index.ts`, which re-exports every module) exposes
+`crdtRegistry: Record<CrdtName, AnyCrdtType>` (name → implementation, types erased to `unknown` at
+that boundary) plus `CRDT_NAMES`, `CrdtName`, `isCrdtName()` and `getCrdtType()`. Registry keys equal
+each implementation's `name`:
 
-`lww-register`, `lww-map`, `mv-register`, `g-counter`, `pn-counter`, `op-counter`, `g-set`,
-`two-phase-set`, `lww-element-set`, `or-set`, `rga`, `lamport-clock`, `vector-clock`.
+`max-register`, `lww-register`, `lww-map`, `mv-register`, `g-counter`, `pn-counter`, `op-counter`,
+`g-set`, `two-phase-set`, `lww-element-set`, `or-set`, `rga`, `lamport-clock`, `vector-clock`, `hlc`.
 
-`hlc.ts` and `clock-skew.ts` are plain function modules (no `CrdtType`), exported but not registered.
+These are the _leaf_ names. The composed document (`docCrdt` in `doc.ts`, see below) is not a leaf
+and is not in the table; it is addressed by `DOC_NAME = 'doc'` (`ReplicaTypeName = CrdtName | 'doc'`).
+The registry lives in its own module so `doc.ts` can look leaves up by name without an import cycle.
+`clock-skew.ts` is a plain function module, exported but not registered.
 
 ---
 
 ## Registers
+
+### Max Register — `max-register.ts`
+
+- The simplest register: a number that only goes up. A write lands only if it is bigger; merge keeps
+  the bigger number. No stamps, no node ids, no tie-breaks: `max` is already commutative,
+  associative and idempotent.
+- State `{ value: number | null }`; `null` = never set and loses to any number. Update / op
+  `{ set: n }`; `effect` is the same max, so replays and reordering are harmless. Values must be
+  finite (NaN / ±Infinity throw `RangeError` — they break `max` and are not JSON-safe).
+- Use for: high-water marks, "largest version seen", a monotonic score. Not for: anything that
+  must go down or whose author/time matters (use LWW).
+- Pitfall: a smaller write is silently ignored — the register cannot tell you it happened.
 
 ### LWW Register — `lww-register.ts`
 
@@ -215,8 +231,19 @@ key, anything else is canonical JSON with sorted keys. Do not mix strings and no
 - Hybrid Logical Clock (Kulkarni 2014): `{ wall, counter, node }`. `hlcNow(prev, wallNow)` and
   `hlcReceive(prev, remote, wallNow)` keep `wall` = max physical time seen, `counter` breaks ties and
   resets when `wall` advances. Strictly increasing per node even if the physical clock goes backwards.
-- `hlcCompare` (wall, counter, node), `hlcToString` → `wall.counter@node`. Plain functions, no
-  `CrdtType` (its state names its own node, so a symmetric merge does not fit).
+- `hlcCompare` (wall, counter, node), `hlcToString` → `wall.counter@node`.
+- `CrdtType` view `hlcClock` (registered as `hlc`): `init(node)` = `{ wall: 0, counter: 0, node }`;
+  update `{ tick: true }` = `hlcNow(s, ctx.ts)` where `ctx.ts` is the actor's physical time (the
+  reducer supplies it); op = `{ stamp }` (the new reading); `value` = `{ wall, counter }`.
+  `effect(s, op)`: at the source (same node) the clock adopts its own stamp, so
+  `update = effect(prepare(…))`; at any other replica it is a _receive_ with
+  `wallNow = max(s.wall, op.stamp.wall)` (`effect` has no ctx, so the receive is driven by the two
+  clocks alone; the reducer runs the explicit receive rules with real actor time through its own
+  path). A receive is an event, so `effect` is **not idempotent** (deliver each op once) and
+  **op convergence is not asserted** — replicas that received different numbers of ops legitimately
+  read differently. `merge` is a join on the reading (greater `(wall, counter)` by `hlcCompare`)
+  that keeps the holder's `node`; `equals = hlcSameReading` (the node is identity, not state), which
+  is what the merge laws and state convergence use.
 - Use for: LWW-style timestamps that stay close to real time but never violate causality.
 
 ### Clock skew demo — `clock-skew.ts`
@@ -225,6 +252,57 @@ key, anything else is canonical JSON with sorted keys. Do not mix strings and no
   at t=10000, Alice writes `'final'` 2 s later with her clock 5 s behind; the real `compareStamp`
   picks `'draft'` → `laterWriteLost: true`. With skew 0, `'final'` wins.
 - Sidecar per write: node, value, trueTime, skewMs, stampedTime; plus winner/loser.
+
+## Composed documents
+
+### Doc — `doc.ts`
+
+- A schema-driven tree of parts, merged part by part. `DocSchema` mirrors `CrdtSchema` in
+  `docs/animation-dsl.md` §5.1: a leaf name (`'lww-register'`), `{ type, args? }`,
+  `{ const: scalar }`, `{ map: { field: schema } }`, `{ list: schema }` (an RGA of sub-documents),
+  `{ set: schema }` (an OR-Set of sub-documents). `docCrdt: CrdtType<DocState, DocUpdate, DocOp,
+DocValue, DocArgs>`, `init(node, { schema })`, name `'doc'` (`DOC_NAME`).
+- State `{ schema, root }` where a part is `{ kind: 'leaf', type, state }` (the real leaf state),
+  `{ kind: 'const', value }`, `{ kind: 'map', fields }` (sorted), `{ kind: 'set', membership:
+OrSetState<Dot>, subs }` (element = the sub-document id) or `{ kind: 'list', seq: RgaState<Dot>,
+subs }`. `subs` keeps every sub-document ever created, tombstoned ones included (a concurrent edit
+  to a removed item still lands; the stage can dim it).
+- Update `{ path?, op, args? }` — what a `crdt.update` command carries. Paths: `''` = root, `.key`
+  steps into a map field, `[id]` into a sub-document (`'items[alice:1].qty'`; `parseDocPath` /
+  `formatDocPath`). Leaf parts take the per-type vocabulary (`leafUpdateFor(type, op, args)`: `set`,
+  `inc`, `dec`, `add`, `remove`, `insertAfter`, `insertAt`, `delete`, `deleteAt`, `tick`, `receive`
+  — exported for the reducer's plain slots too). Set parts: `add(init?)` · `remove(id)`. List
+  parts: `insertAfter(anchor, init?)` · `insertAt(i, init?)` · `delete(id)` · `deleteAt(i)`. Maps and
+  consts take no ops (clear errors). Unknown paths / ops / arities throw.
+- `add` / `insert` mint the sub-document id with **one** `ctx.nextSeq()` (`dot(node, seq)`); the
+  OR-Set tag / RGA element id reuse the same number, so the reducer's op id and the sub-document id
+  coincide. `init` (`Record<field, Scalar>`, dotted keys like `'meta.color'` allowed) writes the named
+  **register** leaves (`max-register`, `lww-register`, `mv-register`) with `set(v)` and the adder's
+  stamp; counters start at 0, nested sets/lists empty; naming a non-register throws before any seq
+  is minted. Sub-document leaves are initialized for the creator's node (deterministic everywhere).
+- Op: `{ kind: 'leaf', path, op }` | `{ kind: 'set', path, op: OrSetOp<Dot>, sub? }` |
+  `{ kind: 'list', path, op: RgaOp<Dot>, sub? }` with `sub = { id, init, ops }` — the real leaf
+  ops that `init` produced, so `effect` at any replica recreates the sub-document exactly. Leaf
+  ops for a sub-document that has not arrived throw (causal delivery, like the RGA). `effect` of a
+  replayed add keeps the existing sub-document (later edits are not undone).
+- Merge: map → field by field; leaf → the leaf's `merge`; const → same; set → OR-Set merge of
+  membership + key-wise merge of `subs` (one-sided sub-documents are copied); list → RGA merge +
+  `subs`. Throws for different schemas. `equals` (`docEquals`) compares part by part, using a leaf's
+  own `equals` when it has one (clocks).
+- Value: map → object; leaf → its value; const → the scalar; set → `[{ id, ...fields }]` for alive
+  members in canonical (id) order; list → the same in sequence order, visible elements only. A
+  non-map item shows as `{ id, value }`.
+- Sidecar: `docParts(state)` → `[{ path, kind, type?, state, part, alive }]` depth-first in
+  canonical order (map fields by key, set members by id, list elements in sequence order,
+  tombstoned members included with `alive: false`); `type`/`state` are the backing CRDT (`'or-set'`
+  - membership for a set, `'rga'` + seq for a list); `docPartAt(state, path)`; `docSchemaAt`;
+    `normalizeDocSchema`.
+- Use for: the in-context examples (shopping list, poll, todo list) — every part is the real type,
+  so every law a leaf obeys, the document obeys. Not for: `op-counter` leaves under state-based
+  sync (its merge is not a join), or clocks inside set/list items (their node would be the creator's).
+- Pitfall: removing a set member wins over concurrent edits to it (the id cannot be re-added; the
+  edits sit in the tombstone). Laws tests drive `docCrdt` through symbolic updates that resolve ids
+  against the local state (see `doc.test.ts`).
 
 ---
 
@@ -254,7 +332,10 @@ The contract is `CrdtType<S, U, O, V, A>` in `src/crdt/types.ts`:
   duplicates and reordering.
 - Property laws (`src/crdt/laws.ts`): `assertMergeLaws`, `assertConvergence`, `assertOpConvergence`.
   Every registered type runs all three in its `*.test.ts`, except the op-counter (op convergence
-  only, by design). New types must do the same.
+  only, by design) and the HLC (merge laws + state convergence only: its `effect` is a receive, an
+  event of its own). New types must do the same.
+- Op names from lesson data (`crdt.update.op` + `args`) map onto a type's Update object through
+  `leafUpdateFor(type, op, args)` in `doc.ts` — the same table for plain slots and document parts.
 - Adding a type: implement the contract in its own file with a header comment (algorithm in plain
   words, sidecar metadata), add tests with the three laws, register it in `index.ts`
   (`CRDT_NAMES` + `crdtRegistry`), and add a section here.

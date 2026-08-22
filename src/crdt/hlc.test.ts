@@ -1,6 +1,18 @@
 import { describe, expect, it } from 'vitest'
 import fc from 'fast-check'
-import { hlcCompare, hlcInit, hlcNow, hlcReceive, hlcToString, type Hlc } from './hlc'
+import {
+  hlcClock,
+  hlcCompare,
+  hlcInit,
+  hlcNow,
+  hlcReceive,
+  hlcSameReading,
+  hlcToString,
+  type Hlc,
+  type HlcUpdate,
+} from './hlc'
+import { makeCtx } from './types'
+import { assertConvergence, assertMergeLaws } from './laws'
 
 const at = (wall: number, counter: number, node = 'alice'): Hlc => ({ wall, counter, node })
 
@@ -155,5 +167,88 @@ describe('hlc: properties', () => {
         },
       ),
     )
+  })
+})
+
+describe('hlc: CrdtType view (hlcClock)', () => {
+  const tick: HlcUpdate = { tick: true }
+
+  it('init is a clock that has seen no time; value hides the node', () => {
+    expect(hlcClock.name).toBe('hlc')
+    expect(hlcClock.init('alice', undefined)).toEqual({ wall: 0, counter: 0, node: 'alice' })
+    expect(hlcClock.value(at(100, 2))).toEqual({ wall: 100, counter: 2 })
+  })
+
+  it('update is a local event at the physical time ctx.ts', () => {
+    const ctx = makeCtx('alice', 100)
+    let a = hlcClock.init('alice', undefined)
+    a = hlcClock.update(a, tick, ctx)
+    expect(a).toEqual(at(100, 0))
+    a = hlcClock.update(a, tick, ctx) // the clock did not move: counter climbs
+    expect(a).toEqual(at(100, 1))
+    a = hlcClock.update(a, tick, ctx.at(90)) // the clock went backwards: still monotonic
+    expect(a).toEqual(at(100, 2))
+    a = hlcClock.update(a, tick, ctx.at(150))
+    expect(a).toEqual(at(150, 0))
+  })
+
+  it('update equals effect(prepare(...)): the source adopts its own stamp', () => {
+    const ctx1 = makeCtx('alice', 100)
+    const ctx2 = makeCtx('alice', 100)
+    let viaUpdate = hlcClock.init('alice', undefined)
+    let viaOps = hlcClock.init('alice', undefined)
+    for (const ts of [100, 100, 90, 150, 150]) {
+      viaUpdate = hlcClock.update(viaUpdate, tick, ctx1.at(ts))
+      viaOps = hlcClock.effect(viaOps, hlcClock.prepare(viaOps, tick, ctx2.at(ts)))
+      expect(viaOps).toEqual(viaUpdate)
+    }
+  })
+
+  it('effect at another replica is a receive: strictly after both clocks', () => {
+    const alice = hlcClock.update(hlcClock.init('alice', undefined), tick, makeCtx('alice', 1_000))
+    const op = hlcClock.prepare(alice, tick, makeCtx('alice', 1_000)) // alice's 2nd event: 1000.1
+    expect(op.stamp).toEqual(at(1_000, 1))
+    const bob = hlcClock.update(hlcClock.init('bob', undefined), tick, makeCtx('bob', 990))
+    const bob2 = hlcClock.effect(bob, op)
+    expect(bob2).toEqual({ wall: 1_000, counter: 2, node: 'bob' })
+    expect(hlcCompare(bob2, op.stamp)).toBeGreaterThan(0)
+    expect(hlcCompare(bob2, bob)).toBeGreaterThan(0)
+    // a receive is an event: applying the same op twice moves the clock again (not idempotent)
+    expect(hlcClock.effect(bob2, op)).toEqual({ wall: 1_000, counter: 3, node: 'bob' })
+  })
+
+  it('receive when our wall is ahead: our counter ticks, the wall stays', () => {
+    const bob = at(2_000, 4, 'bob')
+    expect(hlcClock.effect(bob, { stamp: at(1_500, 9, 'alice') })).toEqual(at(2_000, 5, 'bob'))
+  })
+
+  it("merge is a join on the reading and keeps the holder's node", () => {
+    const a = at(100, 3, 'alice')
+    const b = at(200, 0, 'bob')
+    expect(hlcClock.merge(a, b)).toEqual({ wall: 200, counter: 0, node: 'alice' })
+    expect(hlcClock.merge(b, a)).toBe(b)
+    expect(hlcClock.merge(a, a)).toBe(a)
+    // equal readings: nothing to take, whatever the node ids say
+    expect(hlcClock.merge(at(5, 5, 'alice'), at(5, 5, 'bob'))).toEqual(at(5, 5, 'alice'))
+    expect(hlcSameReading(hlcClock.merge(a, b), hlcClock.merge(b, a))).toBe(true)
+  })
+
+  const updateArb = () => fc.constant<HlcUpdate>({ tick: true })
+
+  it('merge laws (on the reading)', () => {
+    assertMergeLaws({ type: hlcClock, args: undefined, updateArb })
+  })
+
+  it('state-based convergence', () => {
+    assertConvergence({ type: hlcClock, args: undefined, updateArb })
+  })
+
+  // Op convergence is deliberately not asserted: `effect` at a non-source replica is a receive,
+  // which is an event of its own (the counter climbs once per received op), so two replicas that
+  // received different numbers of ops legitimately read differently. See the hlcClock comment.
+
+  it('states are JSON-safe', () => {
+    const s = hlcClock.update(hlcClock.init('alice', undefined), tick, makeCtx('alice', 7))
+    expect(JSON.parse(JSON.stringify(s))).toEqual(s)
   })
 })
