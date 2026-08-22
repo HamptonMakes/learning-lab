@@ -1,0 +1,154 @@
+/*
+  Stage layout (stage-architecture §3.1). Imported once by Stage.tsx.
+
+  [data-stage]            the stage root (position: relative, never transformed)
+    .stage-layout         actor grid | board gutter; a size container so presets adapt to the
+                          stage's own width (the sidebar changes it, not the viewport)
+      .stage-actors       CSS grid per preset via [data-layout]; slots via [data-slot]
+      .stage-boards       the board gutter: inline-end column on a wide stage, below the grid
+                          on a narrow one
+
+  Only logical properties, so `dir="rtl"` on the root mirrors every preset for free. Tokens only;
+  no pixels, no transitions (Motion owns every animation inside the stage).
+*/
+
+[data-stage] {
+  --stage-gap: 1rem;
+  --stage-pad: 1rem;
+  --stage-token-h: 2rem; /* the inbox tray reserves one token row */
+}
+
+.stage-layout {
+  container-type: inline-size;
+  container-name: stage;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--stage-gap);
+  padding: var(--stage-pad);
+  min-block-size: inherit;
+}
+
+/* ---- actor grid ---- */
+
+.stage-actors {
+  position: relative;
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  align-self: stretch;
+  display: grid;
+  gap: var(--stage-gap);
+  align-items: start;
+  align-content: start;
+}
+
+.stage-actors > [data-actor] {
+  inline-size: 100%;
+  max-inline-size: 28rem;
+  justify-self: center;
+}
+
+.stage-actors[data-layout='row'] {
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+}
+
+.stage-actors[data-layout='pair'] {
+  grid-template-columns: minmax(0, 1fr) minmax(4rem, 12cqw) minmax(0, 1fr);
+  grid-template-areas: 's1 . s2';
+}
+
+.stage-actors[data-layout='triangle'] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-areas:
+    '. s1 .'
+    's2 . s3';
+}
+
+.stage-actors[data-layout='hub'] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-areas:
+    's1 . s2'
+    '. hub .'
+    's3 . s4';
+}
+
+.stage-actors[data-layout='ring'] {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-areas:
+    '. s1 .'
+    's4 hub s2'
+    '. s3 .';
+}
+
+.stage-actors[data-layout='grid'] {
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+}
+
+/* Named slots, only where the preset defines the area (an undefined area would place the card in
+   the implicit grid). Cards beyond a preset's areas auto-place. */
+.stage-actors[data-layout='pair'] > [data-slot='s1'],
+.stage-actors[data-layout='triangle'] > [data-slot='s1'],
+.stage-actors[data-layout='hub'] > [data-slot='s1'],
+.stage-actors[data-layout='ring'] > [data-slot='s1'] {
+  grid-area: s1;
+}
+.stage-actors[data-layout='pair'] > [data-slot='s2'],
+.stage-actors[data-layout='triangle'] > [data-slot='s2'],
+.stage-actors[data-layout='hub'] > [data-slot='s2'],
+.stage-actors[data-layout='ring'] > [data-slot='s2'] {
+  grid-area: s2;
+}
+.stage-actors[data-layout='triangle'] > [data-slot='s3'],
+.stage-actors[data-layout='hub'] > [data-slot='s3'],
+.stage-actors[data-layout='ring'] > [data-slot='s3'] {
+  grid-area: s3;
+}
+.stage-actors[data-layout='hub'] > [data-slot='s4'],
+.stage-actors[data-layout='ring'] > [data-slot='s4'] {
+  grid-area: s4;
+}
+.stage-actors[data-layout='hub'] > [data-slot='hub'],
+.stage-actors[data-layout='ring'] > [data-slot='hub'] {
+  grid-area: hub;
+}
+
+/* ---- board gutter ---- */
+
+.stage-boards {
+  flex: 0 0 auto;
+  inline-size: clamp(14rem, 24cqw, 18rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--stage-gap);
+}
+.stage-boards:empty {
+  display: none;
+}
+
+/* ---- narrow stage: gutter drops below the grid ---- */
+@container stage (max-width: 52rem) {
+  .stage-layout {
+    flex-direction: column;
+  }
+  .stage-boards {
+    inline-size: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: start;
+  }
+  .stage-boards > [data-board] {
+    flex: 1 1 14rem;
+  }
+}
+
+/* ---- narrower still: every preset degrades to a two-column grid ---- */
+@container stage (max-width: 40rem) {
+  .stage-actors[data-layout] {
+    grid-template-areas: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: row;
+  }
+  .stage-actors > [data-slot] {
+    grid-area: auto;
+  }
+}

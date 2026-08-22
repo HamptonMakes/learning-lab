@@ -1,0 +1,22 @@
+/**
+ * Public surface of the stage renderer: <Stage> plus the pieces pages, layers and tests compose.
+ */
+export { Stage, useStageEvents } from './Stage'
+export type { StageEvent, StageEventHandler, StageProps } from './Stage'
+export { StageGrid } from './layout/StageGrid'
+export { HUB_PRESETS, PRESET_SLOTS, hubOf, placeActors } from './layout/presets'
+export type { Placement, Slot } from './layout/presets'
+export { ActorCard } from './actor/ActorCard'
+export { actorHueStyle, toneSoftVar, toneVar } from './actor/tone'
+export type { ActorCardProps } from './actor/ActorCard'
+export { BoardCard } from './board/BoardCard'
+export { BoardGutter } from './board/BoardGutter'
+export { ClockHud } from './hud/ClockHud'
+export { formatClock, formatDelta, formatTime, parseHhMm } from './hud/formatClock'
+export type { ClockFormat, ClockTranslate } from './hud/formatClock'
+export * from './motion'
+export * from './geometry'
+export { StageFrameProvider, deriveStageFrame, useStageFrame } from './StageContext'
+export type { StageFrame, ViaInfo } from './StageContext'
+export { ValueView } from './value/ValueView'
+export type { ValueViewProps } from './value/ValueView'
