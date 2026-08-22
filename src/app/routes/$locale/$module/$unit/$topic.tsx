@@ -17,10 +17,16 @@ import { TransportBar } from '@/app/components/transport-bar'
 import { Narration } from '@/app/components/narration'
 import { TopicPanels } from '@/app/components/topic-panels'
 
+// TanStack Router JSON-parses search values, so `?lab=1` arrives as the number 1; normalise.
+const flag = (on: string) =>
+  z.preprocess(
+    (v) => (v === undefined || v === null ? undefined : String(v)),
+    z.literal(on).optional(),
+  )
 const SearchSchema = z.object({
   step: z.coerce.number().int().min(1).optional(),
-  lab: z.literal('1').optional(),
-  motion: z.literal('off').optional(),
+  lab: flag('1'),
+  motion: flag('off'),
 })
 
 export const Route = createFileRoute('/$locale/$module/$unit/$topic')({
