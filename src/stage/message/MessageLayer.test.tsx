@@ -191,12 +191,12 @@ describe('MessageLayer — parked tokens', () => {
 
 describe('MessageLayer — transient flights', () => {
   const changes: Change[] = [
-    { kind: 'message', op: 'sent', message: msg('t1', 'alice', 'bob'), transient: true },
-    { kind: 'message', op: 'delivered', message: msg('t1', 'alice', 'bob'), transient: true },
+    { kind: 'message', op: 'sent', message: msg('t=1', 'alice', 'bob'), transient: true },
+    { kind: 'message', op: 'delivered', message: msg('t=1', 'alice', 'bob'), transient: true },
   ]
   it('flies a transient token while animating', () => {
     const { container } = renderLayer(frame(world({}), changes), { instant: false })
-    const t1 = q(container, '[data-message="t1"]')
+    const t1 = q(container, '[data-message="t=1"]')
     expect(t1).not.toBeNull()
     expect(t1).toHaveAttribute('data-transient')
     expect(t1).toHaveAttribute('data-state', 'flying')

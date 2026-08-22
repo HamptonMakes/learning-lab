@@ -254,7 +254,7 @@ function Badge({
       exit={{ opacity: 0, scale: 0.9, transition: tr('exit') }}
       transition={{ ...tr('enter'), layout: tr('layout') }}
       className={cn(
-        'inline-flex max-w-full items-center gap-1 rounded-sm px-0.5 font-mono text-[11px] leading-4 whitespace-nowrap text-ink-3',
+        'inline-flex max-w-full items-center gap-1 rounded-sm px-0.5 font-mono text-[12.5px] leading-4 whitespace-nowrap text-ink-2',
         className,
       )}
     >

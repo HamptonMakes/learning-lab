@@ -35,7 +35,7 @@ export function NodeChip({ node, className }: { node: NodeId; className?: string
       data-node={node}
       style={hueVars(color)}
       className={cn(
-        'inline-flex items-center gap-1 font-sans text-[11px] leading-4 font-medium text-ink-2',
+        'inline-flex items-center gap-1 font-sans text-[12.5px] leading-4 font-medium text-ink-2',
         className,
       )}
     >
@@ -52,7 +52,7 @@ export function OverflowChip({ count, className }: { count: number; className?: 
     <span
       data-overflow={count}
       className={cn(
-        'inline-flex items-center font-mono text-[11px] leading-4 text-ink-3',
+        'inline-flex items-center font-mono text-[12.5px] leading-4 text-ink-2',
         className,
       )}
     >
@@ -71,7 +71,7 @@ export function TagPill({ tag, alive }: { tag: Dot; alive: boolean }) {
       data-alive={alive ? 'true' : 'false'}
       title={t(alive ? 'stage.tag.alive' : 'stage.tag.dead', { tag })}
       className={cn(
-        'inline-flex items-center font-mono text-[11px] leading-4',
+        'inline-flex items-center font-mono text-[12.5px] leading-4',
         alive ? 'text-ink-2' : 'text-ink-3 line-through decoration-ink-3',
       )}
     >

@@ -41,7 +41,7 @@ describe('Scalar', () => {
       s('Offline', { ts: 0, node: 'seed', tombstone: true }),
     )
     expect(node(container, 'alice.status').dataset.tombstone).toBe('true')
-    expect(node(container, 'alice.status@ts').dataset.value).toBe('t0')
+    expect(node(container, 'alice.status@ts').dataset.value).toBe('t=0')
     expect(node(container, 'alice.status@node').textContent).toBe('init')
     expect(node(container, 'alice.status@tomb').dataset.value).toBe('true')
     expect(node(container, 'alice.status').querySelector('bdi')?.className).toContain(

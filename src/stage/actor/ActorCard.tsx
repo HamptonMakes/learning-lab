@@ -76,7 +76,7 @@ export function ActorCard({ actor, slot }: ActorCardProps) {
         <div data-holds className={cn('mt-3 flex flex-col gap-3', dim && 'opacity-60')}>
           {holds.map(([slotId, value]) => (
             <div key={slotId} data-hold={slotId} className="flex min-w-0 flex-col gap-0.5">
-              <div className="font-sans text-[11px] leading-4 text-ink-3">{slotId}</div>
+              <div className="font-sans text-[12px] leading-4 text-ink-3">{slotId}</div>
               <ValueView path={`${actor.id}.${slotId}`} value={value} depth={0} />
             </div>
           ))}

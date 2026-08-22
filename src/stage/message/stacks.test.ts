@@ -80,10 +80,10 @@ describe('change log readers', () => {
     { kind: 'message', op: 'sent', message: m3 },
     { kind: 'message', op: 'delivered', message: m1 },
     { kind: 'message', op: 'dropped', message: m2 },
-    { kind: 'message', op: 'sent', message: msg('t1', 'alice', 'bob'), transient: true },
-    { kind: 'message', op: 'delivered', message: msg('t1', 'alice', 'bob'), transient: true },
-    { kind: 'message', op: 'sent', message: msg('t2', 'bob', 'carol'), transient: true },
-    { kind: 'message', op: 'dropped', message: msg('t2', 'bob', 'carol'), transient: true },
+    { kind: 'message', op: 'sent', message: msg('t=1', 'alice', 'bob'), transient: true },
+    { kind: 'message', op: 'delivered', message: msg('t=1', 'alice', 'bob'), transient: true },
+    { kind: 'message', op: 'sent', message: msg('t=2', 'bob', 'carol'), transient: true },
+    { kind: 'message', op: 'dropped', message: msg('t=2', 'bob', 'carol'), transient: true },
     {
       kind: 'message',
       op: 'parked',
@@ -99,8 +99,8 @@ describe('change log readers', () => {
   })
   it('transient flights pair a transient send with its delivery or drop', () => {
     expect(transientFlights(changes).map((f) => [f.message.id, f.outcome])).toEqual([
-      ['t1', 'delivered'],
-      ['t2', 'dropped'],
+      ['t=1', 'delivered'],
+      ['t=2', 'dropped'],
     ])
   })
 })
