@@ -1,0 +1,96 @@
+# Decisions log — Animation DSL v1 → v1.1
+
+One line per decision, with the reason. Ids: A· = `critique-author.md`, R· = `critique-renderer.md`.
+Spec: `docs/animation-dsl.md` v1.1 (§ references below). Scan order = spec order.
+
+## Frames and events (§6, §14)
+
+| #   | Decision                                                                                                        | Why                                                                                                             | Refs       |
+| --- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ---------- |
+| 1   | `changes` = reducer event log reconciled with the world diff, not a pure `diffWorld`.                           | A send + deliver inside one step is invisible to a state diff; 23 script steps and 3 macros do exactly that.    | A-H1, R-H1 |
+| 2   | Same-step send + deliver stays legal; events carry `transient: true`; token flies the full arc, via chip lands. | Scripts read as one beat; the result is state, the flight is the diff (invariant 2 holds). Forbidding rejected. | A-H1, R-H1 |
+| 3   | `Change.message` carries the `Message` snapshot.                                                                | A transient message is in neither `prev` nor `world`; the renderer needs from/to/payload to draw it.            | R-H1       |
+| 4   | New `Change { kind: 'sync' }` + reducer-generated transient `flow` mark for `crdt.merge`/`crdt.sync`.           | 130 uses in the scripts and the static frame showed nothing; the renderer could not know pair or direction.     | R-H2       |
+| 5   | `Frame.prev` is never null (`world0` at scene start).                                                           | Step 1 of every scene needs a diff for hold budget, sound and snapshot tests.                                   | R-L2       |
+| 6   | Mark diff computed after auto-highlight, against `prev` with transients cleared.                                | Otherwise every step reports prev's transients as removed and never reports auto marks as added.                | R-L1       |
+| 7   | Outbox/inbox changes reported as `value` changes on `<actor>@outbox` / `@inbox`.                                | Chips were diffed by presence only; one existing change kind covers it.                                         | R matrix   |
+
+## Marks (§4.4, §10)
+
+| #   | Decision                                                                                                             | Why                                                                                                          | Refs                            |
+| --- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------- |
+| 8   | Mark anchors resolved and `compare` verdicts computed on the end-of-step world; new unresolvable anchor throws.      | Marks are drawn on the end frame; computing them mid-step drew stale verdicts and dangling anchors.          | A-H2                            |
+| 9   | Sticky marks whose anchor vanished are removed (with a `mark removed` change), not an error.                         | `remove actor` would otherwise throw on every lingering sticky mark.                                         | A-H2                            |
+| 10  | `compare` rule order: clock → stamp (`compareStamp` on `meta.ts`+`meta.node`) → number → value; `Mark.compare.rule`. | The tie-break verdict (equal ts → higher node) was narration-only; `same` on registers now compares sidecar. | A-H3, A-L9, A-M3                |
+| 11  | `@vc` metas compare like clocks.                                                                                     | The rule only named `clock` values; `@vc` is the Dynamo context everyone compares.                           | A-M3                            |
+| 12  | Token payloads are not addressable; compare against the sender's copy.                                               | Fan-out ids contain `@`, so a selector on `msg:` is ambiguous; the sender's slot equals the snapshot.        | A-M3 (rejected `{ msg, meta }`) |
+| 13  | `Mark.highlight.paths: Path[]` (one mark, many anchors).                                                             | Command took an array, mark took one path; `id` + array was undefined.                                       | R-L3                            |
+| 14  | Verdict chips = glyph + word; directional glyphs are bidi-mirrored characters.                                       | Colour/arrow-only chips fail "never the only signal" and need RTL mirroring.                                 | R-L8                            |
+| 15  | Marks on `msg:<id>` attach after the token's flight.                                                                 | A callout tracking a moving anchor jitters; after flight (or instantly under reduced motion) it is stable.   | R-L8                            |
+
+## Messages (§4.3)
+
+| #   | Decision                                                                                           | Why                                                                                                               | Refs       |
+| --- | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ---------- |
+| 16  | Every card reserves an inbox tray; parked tokens are overlay-owned, anchored at `<actor>@inbox`.   | Parked messages had no DOM home, no anchor and no path; `@inbox` added to actor selectors.                        | R-M3       |
+| 17  | `send.into` is the only hint; `deliver.into` defaults to it; both given must agree. No look-ahead. | Look-ahead broke `state[n] = reduce(world0, steps[0..n])` and made sandbox arcs differ.                           | R-M4       |
+| 18  | Tokens on one arc stack in creation order; ≥ 4 collapse into a deck token with a count.            | Broadcast of N ops / `type` macro put N tokens on one midpoint. A ≤ 3 lint was rejected (the deck covers `type`). | A-M4, R-M5 |
+| 19  | State tokens render compact (type chip + ≤ 24-char summary + badges); `crdt.send` gains `label`.   | A full OR-Set/RGA/doc payload at the arc midpoint is a second card floating over the stage.                       | R-M5, A-L8 |
+| 20  | Op-token payload = `{ scalar: opLabel, meta: { tag, ts, node, tags? } }`; `opLabel` formats fixed. | Payload was unspecified; `remove {bob:1}` omitted the element.                                                    | A-M5       |
+| 21  | Control message without `into`: recipient card flashes with the via chip.                          | The token "just disappeared"; the static frame showed nothing.                                                    | R-L10      |
+| 22  | `remove actor` emits `dropped`; a message created parked emits `sent` + `parked` in one step.      | Tokens should poof, not vanish; the sound layer keys on the event sequence.                                       | R-L4       |
+| 23  | Generated message ids that collide with a live message throw; give `id` explicitly.                | Op ids are per (actor, slot); two slots can both mint `alice:1@bob`.                                              | A-L5       |
+| 24  | Via chip = sender initial in the sender's hue.                                                     | Hue alone is not a signal; screenshots must be self-explanatory.                                                  | R-L8       |
+
+## CRDTs (§5.1, §5.2)
+
+| #   | Decision                                                                                                                    | Why                                                                                                                        | Refs       |
+| --- | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| 25  | `crdt.doc(actors, slot, fields, args?)` with its own `t: 'crdt.doc'`; `fields` = implicit top-level map.                    | `crdt.init` had two shapes under one `t` (Zod throws on duplicate discriminators); the shorthand was not a `CrdtSchema`.   | A-B2, R-M2 |
+| 26  | `{ set }` parts: `add(init?)` → sub-doc id = op id, register leaves `set` with the adder's stamp, counters 0; `remove(id)`. | Scene II.10 was unwritable without inventing semantics.                                                                    | A-B1       |
+| 27  | `{ list }` parts: `insertAfter(anchor, init?)`, `insertAt(i, init?)`, `delete(id)`.                                         | Same gap for list-of-sub-document schemas (todo list with reorder).                                                        | A-B1       |
+| 28  | `rga` `args.stamp: 'lamport' \| 'clock'`, default lamport (max ts seen here + 1).                                           | Wall-clock stamps made the author `tick()` by hand and `autoTick` would make ties impossible; lamport ties are the lesson. | A-H4       |
+| 29  | `clock.autoTick` scoped to wall-clock-stamped updates (`lww-*`, `rga stamp:'clock'`) only.                                  | "Every update that stamps a timestamp" was ambiguous for RGA.                                                              | A-H4       |
+| 30  | `SeedOp.ts` defaults to 0 ("the beginning of time").                                                                        | Undocumented; 0 matches the `t=0 · init` frames and sits below every real write.                                           | A-L1       |
+| 31  | `lamport-clock`/`vector-clock` `tick()` takes no count; receive rules run through `deliver`.                                | Matches `src/crdt` (`{ tick: true }`).                                                                                     | R-L14      |
+| 32  | `nextSeq()` called more than once in one `prepare`: `seq` advances by the count, op id = first, `version` counts seqs.      | Future-proofs the "exactly one op id" rule without breaking version vectors.                                               | R-L14      |
+| 33  | `crdt.merge`/`crdt.sync` with an offline participant throw.                                                                 | An instant merge implies a connection; `crdt.send` is the form that parks.                                                 | A-M13      |
+| 34  | A slot is state-driven or op-driven, never both (lint warning).                                                             | `crdt.send` clears `pending`, so a later broadcast has nothing.                                                            | A-L13      |
+| 35  | MV-Register sibling ids `s1…` (canonical order); root `meta.vc` = join; `fromJson` for non-scalar payloads.                 | Value-derived ids put spaces/commas in paths; the Dynamo context was undefined once siblings existed.                      | A-M2       |
+| 36  | RGA `display:'text'` draws the id beneath each character; `data-value` = id.                                                | Narration names `alice:1`; the number lint needs it in `data-value`.                                                       | A-M9       |
+| 37  | `seed.at(path, op, …)` added; by + path stays a literal `SeedOp`.                                                           | Composed-doc seeding was five literals; a chained `.at()` would put a method on data.                                      | A-L1, A-V1 |
+
+## Values, paths, bytes (§2, §3, §4.2, §5.3, §5.4)
+
+| #   | Decision                                                                                                                                              | Why                                                                                 | Refs               |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------ |
+| 38  | `note` creates a `text` board; `text` ≤ 96 chars (≤ 2 lines).                                                                                         | The scalar rule would truncate every rule card in the examples.                     | R-M1               |
+| 39  | Scalar display ≤ 24 chars; `bytes` canonical exempt; badges ≤ 3 (+n); `vc` compact.                                                                   | ISO strings (24) and canonical UUIDs (36) in the spec's own examples broke 18.      | A-M12, R-L7, R-L9  |
+| 40  | `bytes.range` is `[from, to)`; `view` without `range` clears it; `bits` without range wraps 4 bytes per row.                                          | Comment said `(from, to]`, example used `[6, 9]`; 128 bits on one row is illegible. | A-M10, R-M6, R-L16 |
+| 41  | Bit annotations over collapsed bytes snap outward to the nibble; lanes sorted by `from`, then `id`.                                                   | A hex digit is a nibble; two renders (and LTR/RTL) must stack identically.          | R-M6, R-L16        |
+| 42  | `set` on a missing slot creates it, appended to `holds`.                                                                                              | The UUID example relied on it; `holds` order drives in-card layout and Motion keys. | R-L6, A-L6         |
+| 43  | `list()` accepts Values with ids `i0…` (or `{ ids }`); `sort 'value'` on bytes is bytewise.                                                           | Undefined for non-scalar items.                                                     | A-L7               |
+| 44  | `uuid.v4(rand32)` / `uuid.v7({ ms, rand20 })` documented; pre-annotation ids `time`/`ver`/`var`/`rand`.                                               | `rand` format and builder annotations were guesses.                                 | A-M11              |
+| 45  | `World.seq` → `World.ids`; `board`/`msg` reserved as actor ids; item ids never contain `]`.                                                           | Name clash with `Replica.seq`; `board.rule` also parsed as actor `board`.           | R-L15              |
+| 46  | `ActorSpec.color` optional (owner's colour → server → next free a/b/c/d); `device(id, label, opts)`.                                                  | Type said required while the comment said derived; labels > 12 chars in examples.   | R-L5               |
+| 47  | `@cursor` on `text`/`pattern`; `pattern[p0…]`; stack ids `c1…`; `expect` plain values for text/pattern/meter; `display:'text'` lists accept a string. | Regex frames had no path to pin cursors or tokens.                                  | A-M8, A-L11        |
+| 48  | Regex `until` gains `token` and `fail`; `tries` = character tests; re-`init` resets the five slots.                                                   | A greedy run was N unknowable `step`s; `tries` undefined.                           | A-M8, A-V2         |
+| 49  | LTR islands in RTL: `bytes`, `text`, `pattern`, `list display:'text'`, `Dot` ids, clock HUD.                                                          | Cursors and byte order must not mirror.                                             | A-L10, R-L13       |
+| 50  | `hub` fallback = first actor when no server/service.                                                                                                  | Undefined fallback.                                                                 | R-L11              |
+
+## Authoring, i18n, lints (§8, §12, §13)
+
+| #   | Decision                                                                                                      | Why                                                                               | Refs               |
+| --- | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------ |
+| 51  | No builder result carries a method: `step.long/short`, `scene(id, world \| null, steps, opts)`.               | Zod rejects unknown keys; a method on data is not data.                           | A-L2               |
+| 52  | `merge('m1')` (no actor); `compare(paths, opts)`; `same(...paths)` stays variadic; `tomb(path)` alias.        | Redundant actor; no slot for `expect`; recurring `highlight(x@tomb, warn)`.       | A-L3, A-M14, A-V4  |
+| 53  | `expect` keeps its name; test files alias it. `push`/`pull` aliases rejected.                                 | Content never imports Vitest; two names for one command hurt more than they help. | A-L4, A-V3         |
+| 54  | `scene.world` optional; exactly one of `world` / `startFrom`.                                                 | Required + ignored was a trap.                                                    | R-L15              |
+| 55  | Overlays never touch the world; render-time `values` map may relabel scalars; ids/paths keep authored values. | Value-derived ids would break under a locale that renamed `milk`.                 | A-M1               |
+| 56  | Overlay keys index commands per `t` (`callout[0]`), `textId` pins a key.                                      | Positional `do[i]` churned whenever an `expect` was inserted.                     | A-M6               |
+| 57  | Chrome strings (`opLabel` pieces, "no change", "init", status words, verdicts) go through `t()`.              | User-visible and outside the i18n list.                                           | R-L12              |
+| 58  | `regex.init.pattern/input`, `bytes`, ranged/expected data are never localizable.                              | Localizing input moves every cursor index.                                        | R-L13              |
+| 59  | "Whoops" lint keys on the narration prefix, not `hold:'long'`.                                                | Every summary step in the spec's own examples failed it.                          | A-H5, R-M7         |
+| 60  | Number lint covers id/clock/value-shaped tokens; code spans tokenised before sentence counting.               | "16 bytes" has no value node; `a.*b` and `0.5` split sentences.                   | A-M7               |
+| 61  | Warnings: compare-then-write in one step, `tick`/`skew` with a hidden clock, mixed state/op sync on one slot. | Cheap guards for the three new semantic traps.                                    | A-H2, R-L11, A-L13 |
+| 62  | `docs/stage-architecture.md` (v0) is rebased in the PR that lands `src/lesson/types.ts`; listed in §17.       | It contradicts v1.1 on ~15 points an implementer would copy.                      | R-M8               |

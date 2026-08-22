@@ -11,7 +11,7 @@ Companion docs: `CLAUDE.md` §4–§5 (rules), `docs/animation-dsl.md` (v0 DSL),
 ## 0. Conventions used in this document
 
 - **Command literals** are TypeScript object literals in the exact v0 shape from `docs/animation-dsl.md`.
-  Anything not in v0 is tagged `// NEW (Gn)` and explained in §3 under gap *Gn*. One command per line;
+  Anything not in v0 is tagged `// NEW (Gn)` and explained in §3 under gap _Gn_. One command per line;
   a few very short commands occasionally share a line (they are still separate entries in `do`).
 - **Narration** is the `say` string: 1–2 sentences, Simple Technical English. Quoted values (`'Fix login'`)
   are shown with straight quotes so the Zod schema/i18n overlay can carry them verbatim.
@@ -32,8 +32,8 @@ Companion docs: `CLAUDE.md` §4–§5 (rules), `docs/animation-dsl.md` (v0 DSL),
   `rga: insertAfter(anchor, v | 'chars…') | remove(id | id[]) | compact()` where `anchor` is an
   element id or `'HEAD'` (front) — matching `src/crdt/rga.ts`; `compact` is a teaching-only unsafe op
   (G14) · `mv-register: set(v)` · composed docs address a leaf by `path` (G1).
-- **"Expected world (computed)"** blocks show what `toValue()` is expected to produce, *including the
-  sidecar `meta`*, so renderer and author agree on what the stage draws. They are **not** authored
+- **"Expected world (computed)"** blocks show what `toValue()` is expected to produce, _including the
+  sidecar `meta`_, so renderer and author agree on what the stage draws. They are **not** authored
   data; the reducer computes them. `expect` lines (G8) are test-time assertions, invisible to learners.
 - **Actors** (palette slots): alice=`a`, bob=`b`, carol=`c`, server/iCloud/nodes=`server`,
   devices phone/laptop=`a`/`b`, neutral panels=`neutral`. Max 4 actors per scene in this slice.
@@ -45,19 +45,21 @@ Companion docs: `CLAUDE.md` §4–§5 (rules), `docs/animation-dsl.md` (v0 DSL),
 
 ### V.1 `which-crdt-for-which-data`
 
-**Learning goal.** Given one piece of data and *how it changes*, pick register / counter / set / map /
+**Learning goal.** Given one piece of data and _how it changes_, pick register / counter / set / map /
 list (and the right variant) and say why in one sentence.
 
 **When to use this table**
+
 - A field is edited on more than one device, and merges must happen without a server round-trip.
 - You can describe how the field changes: replaced, added-to, members come and go, or ordered.
 - You are designing a schema and want a default type per field before you write code.
 - "Briefly wrong, then converged" is acceptable for this field.
 
 **When not to use**
+
 - The field has a rule that spans copies (balance ≥ 0, unique username, stock ≥ 0) → coordination (V.5).
 - Only one writer ever exists → a plain value is fine; a CRDT adds metadata for nothing.
-- The value is an opaque blob (image, PDF) → store by content hash, LWW the *reference*.
+- The value is an opaque blob (image, PDF) → store by content hash, LWW the _reference_.
 - You need "did my write win?" right now → that is a server question, not a merge question.
 
 **Real-world anchor.** A task card in a kanban tool (Trello / Linear): title, owner, labels, votes,
@@ -65,13 +67,13 @@ checklist. Each field changes in a different way.
 
 **Decision table (the artifact this topic builds; lives on `board.table`)**
 
-| How does it change? | Example | Use |
-| --- | --- | --- |
-| A new write replaces the old value | title, owner, status | LWW register |
-| Writes add up | likes, quantity | PN-Counter (G-Counter if it only grows) |
-| Many fields, edited separately | a card, a profile | LWW map (one register per field) |
+| How does it change?                      | Example               | Use                                            |
+| ---------------------------------------- | --------------------- | ---------------------------------------------- |
+| A new write replaces the old value       | title, owner, status  | LWW register                                   |
+| Writes add up                            | likes, quantity       | PN-Counter (G-Counter if it only grows)        |
+| Many fields, edited separately           | a card, a profile     | LWW map (one register per field)               |
 | Members come and go, order is irrelevant | labels, tags, members | OR-Set (2P-Set only if re-add is never needed) |
-| Order matters, items inserted/removed | checklist, text | Sequence (RGA) |
+| Order matters, items inserted/removed    | checklist, text       | Sequence (RGA)                                 |
 
 #### Scene 1 — "Replace, or add up?" (register vs. counter)
 
@@ -321,12 +323,14 @@ World: `layout:'pair'`; `alice`, `bob`. No board (stage space goes to the card).
 stable id on every item — and predict what one merge of the whole document does.
 
 **When to use**
+
 - A JSON-like document (card, note, profile, board) is edited on several devices, offline included.
 - Different fields change in different ways (see V.1 table) and you control the schema.
 - Deletes, moves, and "edit vs. delete" need a rule decided up front, not in a support ticket.
 - You will use a document CRDT library (Automerge, Yjs) or a database map type (Riak) and want to model data for it.
 
 **When not to use**
+
 - The document is an opaque file (image, PDF) → version the reference, not the contents.
 - A single server already orders every write and clients are always online → per-field LWW on the server is simpler (see V.4 Figma).
 - Invariants across parts (a total must equal the sum of its rows) → a CRDT cannot keep that; coordinate or derive.
@@ -462,7 +466,9 @@ created mid-scene with a `deleted` flag instead of removal.
   ```
 - **s05** · "That is the rule for a sequence: a removed item stays removed. Often this is right — sometimes it is not."
   ```ts
-  { t:'clearMarks' }
+  {
+    t: 'clearMarks'
+  }
   ```
 - **s06** · "If an edit must never vanish, do not remove the item. Give it a 'deleted' flag — a register — and let the UI hide it."
   ```ts
@@ -519,7 +525,7 @@ of card titles; seed `todo: [{id:'k1', value:'Fix login'}]`.
   { t:'online', actor:'bob' }
   { t:'crdt.sync', a:'alice', b:'bob', slot:'board1' }
   ```
-- **s05** · "Whoops — the card is now in Doing *and* in Done. Two inserts, both kept; each sequence did its job."
+- **s05** · "Whoops — the card is now in Doing _and_ in Done. Two inserts, both kept; each sequence did its job."
   ```ts
   { t:'highlight', path:['alice.board1.doing[alice:1]','alice.board1.done[bob:1]'], tone:'bad' }
   { t:'conflict', a:'alice.board1.doing[alice:1]', b:'alice.board1.done[bob:1]' }
@@ -569,12 +575,14 @@ of card titles; seed `todo: [{id:'k1', value:'Fix login'}]`.
 grows, tombstones, garbage collection — and pick the cheaper option for a given workload.
 
 **When to use (each side)**
+
 - State-based: small state (counters, sets, small maps); lossy or reordering networks; few replicas; you want the simplest code.
 - Op-based: large documents with small, frequent edits (text); you already have reliable, causal delivery (or an op log you can replay).
 - Delta-state: you want state-based safety with op-sized messages.
 - GC/compaction: all replicas are known and can acknowledge; or a server can decide the "everyone has seen this" point.
 
 **When not to use**
+
 - Do not send the full state of a large document on every keystroke.
 - Do not go op-based without exactly-once, causal delivery — a lost op is a permanent divergence.
 - Do not drop tombstones while any replica may still hold the old item: it comes back.
@@ -837,13 +845,15 @@ World: `layout:'ring'`; servers `us` ("us-east"), `eu` ("eu-west"), `ap` ("ap-so
 actually use — and why each made that choice.
 
 **When to use which**
-- Automerge: JSON-like documents with full history, local-first apps, you want to *see* conflicts.
+
+- Automerge: JSON-like documents with full history, local-first apps, you want to _see_ conflicts.
 - Yjs: collaborative editors (rich text, code); many editor bindings; small wire format; deletes are collected.
-- Riak KV / Redis Enterprise Active-Active: CRDT types (counters, sets, maps) *inside* the database, across regions; no custom sync code in the app.
+- Riak KV / Redis Enterprise Active-Active: CRDT types (counters, sets, maps) _inside_ the database, across regions; no custom sync code in the app.
 - Apple-Notes style: an app-specific sequence CRDT behind a sync service (iCloud) for offline edits.
 - Figma style: a central server orders writes; per-property last-writer-wins; simpler rules because a server is always there.
 
 **When not to use**
+
 - Do not pick a document CRDT library when every client is always online to one server — server ordering is simpler and cheaper.
 - Do not use a document CRDT for a counter stored in a database — use the database's counter type.
 - Do not assume "uses CRDTs" means "works offline for weeks": check the library's GC and history story (V.3).
@@ -1091,12 +1101,14 @@ adds one row and highlights it; the narration gives the reason.
 and spot the cases where a CRDT is the wrong tool.
 
 **When to use a CRDT at all**
+
 - More than one writer, sometimes disconnected, and the data still has to come back together.
 - "Briefly different, then the same everywhere" is acceptable for this data.
 - The resolution rule can be fixed up front (last write, add-wins, sum).
 - You want no coordinator in the write path (latency, offline, scale).
 
 **When not to use**
+
 - A rule must hold across copies at all times: balance ≥ 0, unique usernames, stock ≥ 0, one booking per seat.
 - Someone needs "did my write win?" before moving on — that is a coordination question.
 - A single server already serializes every write and clients are always online.
@@ -1282,11 +1294,13 @@ family. Module ids: `uuids`, `regex`, `columnar-stores`.
 the 8-4-4-4-12 text form — and explain why two devices can make ids without talking.
 
 **When to use**
+
 - Ids minted on many devices or services with no coordinator (offline apps, microservices, CRDT op ids).
 - Public ids in URLs that must not leak order or count.
 - Any key where "random and unique" is all you need.
 
 **When not to use**
+
 - Primary keys in an insert-heavy B-tree table → v7 (next topic).
 - When humans must read or type the id → short codes.
 - When sorting by id should mean "sorted by time" → v7.
@@ -1391,11 +1405,13 @@ World: `layout:'triangle'`; `phone` (device, a), `tablet` (device, b), `server` 
 then random bits — and explain why it sorts by time and why databases like that.
 
 **When to use**
+
 - Primary keys in tables with many inserts (index locality, fewer page splits).
 - Event, log, and message ids where "roughly time-ordered" is useful.
 - Anywhere you wanted v4 but also want cheap "newest first".
 
 **When not to use**
+
 - Ids that must not reveal creation time (v7 leaks it to the millisecond).
 - Strict global ordering — two ids in the same millisecond are in random order, and device clocks differ.
 - Ids minted on devices whose clocks you do not trust (pair with a logical clock, or use v4).
@@ -1524,11 +1540,13 @@ drawn as a strip of "pages" (a B-tree leaf level, simplified as one sorted list)
 recognize what a match, a failed attempt and a restart look like.
 
 **When to use**
+
 - Validating or extracting text with a fixed shape: ids, dates, codes, log fields.
 - Search and replace in editors and scripts.
 - Tokenizing simple formats before a real parser.
 
 **When not to use**
+
 - Nested structures (HTML, JSON, code) → a parser.
 - "Anything a human might type" (names, full email rules) → be loose, or use a library.
 - Hot paths over untrusted input without reading the next topic (backtracking).
@@ -1654,11 +1672,13 @@ World: as Scene 1. Text: `2026-08-22 paid ORD-0042 ok`. Pattern: `ORD-\d{4}`, th
 recognize patterns that backtrack too much.
 
 **When to use `.*` and friends**
+
 - Short lines with a fixed tail (`key=.*`).
 - Lazy `.*?` when you want the shortest span between two markers.
 - Anchored patterns (`^…$`) on input you control.
 
 **When not to use**
+
 - Nested quantifiers (`(a+)+`, `(\w+\s?)+`) on untrusted input — exponential backtracking.
 - `.*` where a class says what you mean (`[^"]*`, `\d+`).
 - Any regex in a hot path without a timeout or a linear-time engine (RE2, Go, Rust `regex`).
@@ -1754,7 +1774,7 @@ World: as Scene 1; text `aaaaX`; pattern `(a+)+b`. `matcher.tries` = scalar coun
   { t:'set', path:'matcher.tries', value:8 }
   { t:'highlight', path:'matcher.tries', tone:'bad' }
   ```
-- **s05** · "Real outage: Cloudflare, 2019. One rule with .*.*=.* pinned CPUs across the network for about half an hour (simplified)."
+- **s05** · "Real outage: Cloudflare, 2019. One rule with ._._=.* pinned CPUs across the network for about half an hour (simplified)."
   ```ts
   { t:'callout', at:'matcher.pattern', text:'2^n tries', tone:'bad', sticky:true }
   ```
@@ -1783,11 +1803,13 @@ World: as Scene 1; text `aaaaX`; pattern `(a+)+b`. `matcher.tries` = scalar coun
 query reads far less with columns while another reads far more.
 
 **When to use columnar**
+
 - Analytics: scan a few columns over many rows (sums, averages, group by).
 - Append-heavy event and log data; compression matters.
 - Queries are known to touch few columns and many rows.
 
 **When not to use**
+
 - Fetch or update whole rows by key (OLTP) — many small random writes.
 - Wide single-row reads ("show me this record").
 - Small data where layout does not matter yet.
@@ -1875,11 +1897,13 @@ country`). Actors `rows` (server, "Row store") holds `blocks` (list of 6 row rec
 the partition — and why a query that names both is fast and one that names neither is slow.
 
 **When to use (Cassandra-style)**
+
 - Huge write volume; queries known up front and keyed by an entity plus time (messages by channel, events by device).
 - Multi-datacenter replication and no single master.
 - Append-mostly data read back in key order.
 
 **When not to use**
+
 - Ad-hoc queries, joins, aggregations across partitions → a column store or a warehouse.
 - Small data or few queries per second → a relational database is simpler.
 - "Find rows where text contains…" → a search index.
@@ -1998,30 +2022,30 @@ row counts per node, NEW G15).
 Severity: **blocker** = a topic in this slice cannot be authored without it; **important** = authorable
 with an ugly workaround that will rot; **nice** = polish. Ids `Gn` are referenced from the scripts.
 
-| Id | Gap | Severity | Hit in |
-| --- | --- | --- | --- |
-| G1 | Composed CRDT documents (schema + path-addressed ops + recursive merge + `meta.note` type chips) | blocker | V.1 s4, V.2 all, V.4 s2, V.5 s3 (and II.10, III.6, IV.6) |
-| G2 | `table` Value kind with row/column paths and column highlight | blocker (columnar), important (V.1/V.3/V.4 decision tables) | columnar both, V.1, V.3 s4, V.4 s4 |
-| G3 | `bytes`: bit-level annotations, display modes (hex/bits/canonical), `view` command, `text[n]` positions | blocker | uuid-v4, uuid-v7 |
-| G4 | Free-standing panels (`board.<id>`) not owned by an actor; declared in the scene world | important | V.1, V.2 s1, V.3 s4, V.4 s4, V.5 s1, columnar |
-| G5 | `crdt.init` seeded state with author ids; documented generated-id scheme `node:n` | important | every CRDT scene |
-| G6 | Message plumbing: `crdt.broadcast {id,to}`, `crdt.merge {message}`, `relay`, broadcast message naming `id→to` | important | V.3 s1/s4, V.4 s1/s3 (and all of Unit III) |
-| G7 | `compare` (reducer-computed equality / clock relation, draws "=" or "≠") | important | every convergence moment |
-| G8 | `expect` test-time assertion | important | every step whose narration states a computed value |
-| G9 | `annotate` / `unannotate` commands (incremental annotations) | important | uuid-v4, uuid-v7 |
-| G10 | `pattern` Value kind + `regex.*` engine-driven commands (`regex.init`, `regex.advance`) with captures and attempt marks | important | regex both |
-| G11 | `crdt.init args.expose: ['clock' \| 'stats']` → version vector / stored-vs-visible counts as Values | important | V.3 s2/s3, V.4 s1 |
-| G12 | LWW timestamp semantics (`ts` = `world.clock`; optional `ts` override; auto-tick option) | important | every LWW scene |
-| G13 | i18n addressing for text inside commands (callout text, table cells, tags, board scalars) | important | everywhere |
-| G14 | RGA sugar (`insertAfter` with a string, `remove` with id list), teaching-only `compact`, `mv-register` and `ew-flag` types | important / nice | V.3 s2/s3, V.4 s1/s2 |
-| G15 | `meter` Value kind (value/max/label) | nice | V.3 (stats), columnar |
-| G16 | `tag` command (small persistent chips on an actor) | nice | V.4, columnar |
-| G17 | Layout: ring with a center actor; slot column labels inside an actor card; `focus` | nice | columnar, V.1 s1–s3 |
-| G18 | Actor kinds `storage`, `region`, `library`, `board` (or free-form `icon`) | nice | V.4, columnar |
-| G19 | `list` display `inline` (text-like run of chars) vs `cells` | nice | V.3 s2, V.4 s1/s3, V.5 s3 |
-| G20 | "Try it" choices (`choice` command / sandbox ops) | nice | out of slice |
-| G21 | Clarify `set` creating record fields; `[+]` append in `deliver.into`; `delete` on record keys | nice | V.2 s1, uuid s2, columnar |
-| G22 | Message payload size hint (`size` or rendered byte count) | nice | V.3 s1 |
+| Id  | Gap                                                                                                                        | Severity                                                    | Hit in                                                   |
+| --- | -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | -------------------------------------------------------- |
+| G1  | Composed CRDT documents (schema + path-addressed ops + recursive merge + `meta.note` type chips)                           | blocker                                                     | V.1 s4, V.2 all, V.4 s2, V.5 s3 (and II.10, III.6, IV.6) |
+| G2  | `table` Value kind with row/column paths and column highlight                                                              | blocker (columnar), important (V.1/V.3/V.4 decision tables) | columnar both, V.1, V.3 s4, V.4 s4                       |
+| G3  | `bytes`: bit-level annotations, display modes (hex/bits/canonical), `view` command, `text[n]` positions                    | blocker                                                     | uuid-v4, uuid-v7                                         |
+| G4  | Free-standing panels (`board.<id>`) not owned by an actor; declared in the scene world                                     | important                                                   | V.1, V.2 s1, V.3 s4, V.4 s4, V.5 s1, columnar            |
+| G5  | `crdt.init` seeded state with author ids; documented generated-id scheme `node:n`                                          | important                                                   | every CRDT scene                                         |
+| G6  | Message plumbing: `crdt.broadcast {id,to}`, `crdt.merge {message}`, `relay`, broadcast message naming `id→to`              | important                                                   | V.3 s1/s4, V.4 s1/s3 (and all of Unit III)               |
+| G7  | `compare` (reducer-computed equality / clock relation, draws "=" or "≠")                                                   | important                                                   | every convergence moment                                 |
+| G8  | `expect` test-time assertion                                                                                               | important                                                   | every step whose narration states a computed value       |
+| G9  | `annotate` / `unannotate` commands (incremental annotations)                                                               | important                                                   | uuid-v4, uuid-v7                                         |
+| G10 | `pattern` Value kind + `regex.*` engine-driven commands (`regex.init`, `regex.advance`) with captures and attempt marks    | important                                                   | regex both                                               |
+| G11 | `crdt.init args.expose: ['clock' \| 'stats']` → version vector / stored-vs-visible counts as Values                        | important                                                   | V.3 s2/s3, V.4 s1                                        |
+| G12 | LWW timestamp semantics (`ts` = `world.clock`; optional `ts` override; auto-tick option)                                   | important                                                   | every LWW scene                                          |
+| G13 | i18n addressing for text inside commands (callout text, table cells, tags, board scalars)                                  | important                                                   | everywhere                                               |
+| G14 | RGA sugar (`insertAfter` with a string, `remove` with id list), teaching-only `compact`, `mv-register` and `ew-flag` types | important / nice                                            | V.3 s2/s3, V.4 s1/s2                                     |
+| G15 | `meter` Value kind (value/max/label)                                                                                       | nice                                                        | V.3 (stats), columnar                                    |
+| G16 | `tag` command (small persistent chips on an actor)                                                                         | nice                                                        | V.4, columnar                                            |
+| G17 | Layout: ring with a center actor; slot column labels inside an actor card; `focus`                                         | nice                                                        | columnar, V.1 s1–s3                                      |
+| G18 | Actor kinds `storage`, `region`, `library`, `board` (or free-form `icon`)                                                  | nice                                                        | V.4, columnar                                            |
+| G19 | `list` display `inline` (text-like run of chars) vs `cells`                                                                | nice                                                        | V.3 s2, V.4 s1/s3, V.5 s3                                |
+| G20 | "Try it" choices (`choice` command / sandbox ops)                                                                          | nice                                                        | out of slice                                             |
+| G21 | Clarify `set` creating record fields; `[+]` append in `deliver.into`; `delete` on record keys                              | nice                                                        | V.2 s1, uuid s2, columnar                                |
+| G22 | Message payload size hint (`size` or rendered byte count)                                                                  | nice                                                        | V.3 s1                                                   |
 
 ### G1 — Composed CRDT documents (blocker)
 
@@ -2030,15 +2054,17 @@ as one unit by real code. v0 `crdt.init` has one flat `type` per slot; there is 
 LWW, labels is OR-Set, checklist is an RGA of {text: LWW, done: LWW}".
 
 Proposal:
+
 ```ts
 type CrdtSchema =
-  | CrdtType                                   // leaf: 'lww-register' | 'pn-counter' | 'or-set' | 'rga' | …
-  | { map: Record<string, CrdtSchema> }         // fixed fields (a "struct"); shorthand: a plain object
-  | { list: CrdtSchema }                        // RGA whose item values follow the schema
-  | { dict: CrdtSchema }                        // LWW/OR-keyed map of dynamic keys → schema (Riak map, Y.Map)
-| { t:'crdt.init'; actors; slot; type:'doc'; args:{ schema: CrdtSchema; seed?: unknown } }
-| { t:'crdt.update'; actor; slot; path?: string; op: string; args: unknown[] }   // path addresses the leaf: 'checklist[c1].done'
+  | CrdtType // leaf: 'lww-register' | 'pn-counter' | 'or-set' | 'rga' | …
+  | { map: Record<string, CrdtSchema> } // fixed fields (a "struct"); shorthand: a plain object
+  | { list: CrdtSchema } // RGA whose item values follow the schema
+  | { dict: CrdtSchema } // LWW/OR-keyed map of dynamic keys → schema (Riak map, Y.Map)
+  | { t: 'crdt.init'; actors; slot; type: 'doc'; args: { schema: CrdtSchema; seed?: unknown } }
+  | { t: 'crdt.update'; actor; slot; path?: string; op: string; args: unknown[] } // path addresses the leaf: 'checklist[c1].done'
 ```
+
 `src/crdt/doc.ts` implements `ComposedDoc` with recursive `merge`, and `toValue()` returns nested
 `record`/`list` Values. Each leaf's Value carries its own `meta` (ts/node for LWW, tags for OR-Set,
 tombstones for RGA) and `meta.note` = the type name so the renderer can draw a tiny type chip.
@@ -2050,6 +2076,7 @@ the composed merge laws.
 ```ts
 | { kind:'table'; columns: Array<{ key: string; label: string }>; rows: Array<{ id: string; cells: Record<string, Scalar | Value> }>; meta?: Meta }
 ```
+
 Paths: `x.table[rowId]` (row), `x.table.cols[key]` (column), `x.table[rowId].cells[key]` (cell).
 `insert`/`delete`/`move` work on rows; `highlight` accepts row, column and cell paths (column
 highlight draws a vertical band). Renderer: header row, mono values, wraps inside its own
@@ -2065,6 +2092,7 @@ byte range), and as the canonical `8-4-4-4-12` string; highlight single characte
     display?: 'hex' | 'bits' | 'canonical' | 'dec'; bitsRange?: [number, number]; groups?: number[] }
 | { t:'view'; path: Path; mode: 'hex' | 'bits' | 'canonical' | 'dec'; range?: [number, number] }   // animates between views
 ```
+
 Paths `x.bytes[6]` (one byte, settable) and `x.text[14]` (one character of the canonical text) must
 resolve. The `bits` view expands the requested byte range inline (no separate zoom needed). Optional
 later: `uuid.make { into, version, seed, timeMs }` so `src/uuid/` computes the bytes (today the bytes
@@ -2095,7 +2123,7 @@ time, so a typo in `steps[alice:1]` fails `pnpm test`). Scene worlds may declare
 - `crdt.broadcast` needs `id` (the lesson must later `drop`/`apply` a specific message) and optional
   `to: ActorId[]` (hub topologies). Fan-out messages are named `${id}→${to}`.
 - `crdt.merge { into, message }` merges the **payload snapshot** carried by a delivered message, so
-  "what traveled" is exactly what is merged (today `merge {into, from}` reads the sender's *live*
+  "what traveled" is exactly what is merged (today `merge {into, from}` reads the sender's _live_
   state, which is wrong after the sender edits again — V.3 s1 depends on this).
 - `relay { message, to, id }`: a server forwards a received message (Apple Notes via iCloud).
 - `send` payload `{ ref }` should snapshot at send time (document it).
@@ -2128,6 +2156,7 @@ value to add one label re-highlights all 16 bytes. Proposal:
 | { t:'regex.init'; actor; pattern: string; input: string; flags?: string }
 | { t:'regex.advance'; actor; until: 'next' | 'attempt' | 'backtrack' | 'match' | 'end' }
 ```
+
 `src/regex/` is a small backtracking VM that exposes its trace (text cursor, pattern cursor,
 attempt ranges, choice-point stack, captures, try count). `toValue()` writes `text`, `pattern`,
 `stack`, `captures`, `tries` into the actor. The scripts above are authored with `set` so they work
@@ -2244,19 +2273,19 @@ scene({ id:'replace-or-add', layout:'pair', actors:[actors.alice(), actors.bob()
 
 ## 5. Topic → real-world anchor (for the "When to use / example" strip)
 
-| Topic | Anchor |
-| --- | --- |
-| V.1 which-crdt-for-which-data | A task card in a kanban tool (Trello / Linear): title, owner, labels, votes, checklist |
-| V.2 composing-a-document | A kanban board (columns → cards); Automerge/Yjs nested maps & lists; Riak maps; the "duplicate card on move" bug |
-| V.3 tradeoffs | Likes counter across 3 data centers (state sync) vs. a document typed for a year (tombstones, GC) |
-| V.4 real-systems | Yjs & Automerge (editors / JSON+history); Riak & Redis Enterprise (DB types across regions); Apple Notes (sequence CRDT via iCloud); Figma (server-ordered per-property LWW, "CRDT-inspired") |
-| V.5 course-complete | Bank balance & unique username (need coordination) vs. the Unit IV notes app (CRDT) |
-| uuid-v4 | Order ids minted offline; Postgres `gen_random_uuid()` |
-| uuid-v7 | Insert-heavy primary keys; Postgres `uuidv7()`; "newest first" event tables |
-| regex-matching | Pulling `ORD-0042` out of a log line; form validation |
-| regex-backtracking | Cloudflare 2019 outage (`.*.*=.*`); linear-time engines (RE2/Go/Rust) |
-| row-vs-column | `events` table in ClickHouse / BigQuery / Parquet vs. Postgres rows |
-| partition-and-clustering | Cassandra `messages ((channel_id), sent_at DESC)`; hot partitions and day bucketing |
+| Topic                         | Anchor                                                                                                                                                                                        |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| V.1 which-crdt-for-which-data | A task card in a kanban tool (Trello / Linear): title, owner, labels, votes, checklist                                                                                                        |
+| V.2 composing-a-document      | A kanban board (columns → cards); Automerge/Yjs nested maps & lists; Riak maps; the "duplicate card on move" bug                                                                              |
+| V.3 tradeoffs                 | Likes counter across 3 data centers (state sync) vs. a document typed for a year (tombstones, GC)                                                                                             |
+| V.4 real-systems              | Yjs & Automerge (editors / JSON+history); Riak & Redis Enterprise (DB types across regions); Apple Notes (sequence CRDT via iCloud); Figma (server-ordered per-property LWW, "CRDT-inspired") |
+| V.5 course-complete           | Bank balance & unique username (need coordination) vs. the Unit IV notes app (CRDT)                                                                                                           |
+| uuid-v4                       | Order ids minted offline; Postgres `gen_random_uuid()`                                                                                                                                        |
+| uuid-v7                       | Insert-heavy primary keys; Postgres `uuidv7()`; "newest first" event tables                                                                                                                   |
+| regex-matching                | Pulling `ORD-0042` out of a log line; form validation                                                                                                                                         |
+| regex-backtracking            | Cloudflare 2019 outage (`.*.*=.*`); linear-time engines (RE2/Go/Rust)                                                                                                                         |
+| row-vs-column                 | `events` table in ClickHouse / BigQuery / Parquet vs. Postgres rows                                                                                                                           |
+| partition-and-clustering      | Cassandra `messages ((channel_id), sent_at DESC)`; hot partitions and day bucketing                                                                                                           |
 
 ## 6. Outline changes proposed from this slice
 

@@ -30,13 +30,13 @@ line-for-line once the builders in §4 exist.
 
 ### 0.2 Actors and palette
 
-| id | kind | color | notes |
-| --- | --- | --- | --- |
-| `alice` | person | a | usually on a **phone** (icon, G13) |
-| `bob` | person | b | usually on a **laptop** |
-| `carol` | person | c | third editor when needed |
-| `server` | server | server | sometimes labeled "Relay" when it only forwards |
-| `edge-us` / `edge-eu` / `edge-ap` | service | a / b / c | used once (G-Counter in context) |
+| id                                | kind    | color     | notes                                           |
+| --------------------------------- | ------- | --------- | ----------------------------------------------- |
+| `alice`                           | person  | a         | usually on a **phone** (icon, G13)              |
+| `bob`                             | person  | b         | usually on a **laptop**                         |
+| `carol`                           | person  | c         | third editor when needed                        |
+| `server`                          | server  | server    | sometimes labeled "Relay" when it only forwards |
+| `edge-us` / `edge-eu` / `edge-ap` | service | a / b / c | used once (G-Counter in context)                |
 
 Never more than 5 actors on stage. Values stay short (≤ 12 chars) so the stage stays legible.
 
@@ -48,14 +48,14 @@ skew is Unit IV's problem; we say so once in LWW (II.2) and move on.
 
 ### 0.4 Sidecar rendering contract (what the renderer must draw from `Value.meta`)
 
-| CRDT | sidecar in `Value` | drawn as |
-| --- | --- | --- |
-| LWW register | `scalar.meta = {ts, node}` | value, then a small mono tag `t=3 · alice` |
-| LWW map | each field's value has its own `meta {ts, node}` | tag per field |
-| G / PN counter | `counter.perNode`, `counter.negative` | a small table, one row per node, total on the right |
-| G-Set / 2P-Set | `set.items[].tombstone` | tombstoned items stay, struck through, dimmed |
-| LWW-Element-Set | `set.items[].meta {addTs, removeTs}` (G9) | two tiny tags under each item, `+t4  −t3` |
-| OR-Set | `set.items[].tags` | item, then tag chips `a1 b2` |
+| CRDT            | sidecar in `Value`                               | drawn as                                            |
+| --------------- | ------------------------------------------------ | --------------------------------------------------- |
+| LWW register    | `scalar.meta = {ts, node}`                       | value, then a small mono tag `t=3 · alice`          |
+| LWW map         | each field's value has its own `meta {ts, node}` | tag per field                                       |
+| G / PN counter  | `counter.perNode`, `counter.negative`            | a small table, one row per node, total on the right |
+| G-Set / 2P-Set  | `set.items[].tombstone`                          | tombstoned items stay, struck through, dimmed       |
+| LWW-Element-Set | `set.items[].meta {addTs, removeTs}` (G9)        | two tiny tags under each item, `+t4  −t3`           |
+| OR-Set          | `set.items[].tags`                               | item, then tag chips `a1 b2`                        |
 
 ### 0.5 The "in-context" rule
 
@@ -64,28 +64,28 @@ uses the new concept together with concepts already taught. Scenes are tagged `[
 
 ### 0.6 Gap index (details in §3)
 
-| id | severity | one line |
-| --- | --- | --- |
-| G1 | blocker | `crdt.update` has no timestamp/node source; reducer must pass `{now, node}` ctx; `tick` drives it |
-| G2 | blocker | OR-Set tags / ids must be short and deterministic (`a1`, `b2`); inject an `IdGen` into CRDT impls |
-| G3 | blocker | Composite CRDT documents: `crdt.init type:'doc' schema:{…}` + path-addressed `crdt.update` |
-| G4 | important | State on the wire as a static frame: `crdt.send` (snapshot/delta + byte size) and `crdt.merge from:{message}` |
-| G5 | important | `same` mark — the positive twin of `conflict` ("these copies are equal") |
-| G6 | important | `note` — a free-standing stage card (rule cards like "merge = max"), with id + sticky |
-| G7 | important | actor `status` badge: `lock` / `waiting` / `busy` (Unit I locks) |
-| G8 | important | Path grammar incl. `[id]` and `@ts/@node/@tags/@tomb` so highlights can point at sidecar |
-| G9 | important | `Meta` needs `addTs`/`removeTs` (LWW-Element-Set) — or a generic `extra` bag |
-| G10 | important | No-op visibility: reducer auto-marks `unchanged` when a `crdt.*` command changes nothing |
-| G11 | important | `send`/`crdt.send` carry `size` (bytes) for the cost-of-state topic; envelope drawn proportionally |
-| G12 | important | multi-recipient `send` needs per-recipient message ids (`m1:bob`, `m1:carol`) |
-| G13 | nice | actor `icon` (phone/laptop/tablet/cloud) independent of `kind`; `owner` for "Alice's phone" |
-| G14 | nice | scene clock config `{now, visible, format:'int'|'ms'|'hh:mm'}` |
-| G15 | nice | `deliver … outcome:'reject'` (bounce) so a server can refuse a write |
-| G16 | nice | marks need ids; `unmark id` (remove one sticky callout without `clearMarks`) |
-| G17 | nice | `highlight` should accept an `ActorId` like `callout` does |
-| G18 | nice | stable item order in `toValue()` for sets/counters (no reshuffle on merge) — a reducer contract |
-| G19 | nice | `tryIt` declaration per scene (which ops the sandbox exposes) — open question 4 |
-| P1 | pedagogy | add a tiny `max-register` CRDT to `src/crdt/` for II.1 (three laws with one number) |
+| id  | severity  | one line                                                                                                      |
+| --- | --------- | ------------------------------------------------------------------------------------------------------------- |
+| G1  | blocker   | `crdt.update` has no timestamp/node source; reducer must pass `{now, node}` ctx; `tick` drives it             |
+| G2  | blocker   | OR-Set tags / ids must be short and deterministic (`a1`, `b2`); inject an `IdGen` into CRDT impls             |
+| G3  | blocker   | Composite CRDT documents: `crdt.init type:'doc' schema:{…}` + path-addressed `crdt.update`                    |
+| G4  | important | State on the wire as a static frame: `crdt.send` (snapshot/delta + byte size) and `crdt.merge from:{message}` |
+| G5  | important | `same` mark — the positive twin of `conflict` ("these copies are equal")                                      |
+| G6  | important | `note` — a free-standing stage card (rule cards like "merge = max"), with id + sticky                         |
+| G7  | important | actor `status` badge: `lock` / `waiting` / `busy` (Unit I locks)                                              |
+| G8  | important | Path grammar incl. `[id]` and `@ts/@node/@tags/@tomb` so highlights can point at sidecar                      |
+| G9  | important | `Meta` needs `addTs`/`removeTs` (LWW-Element-Set) — or a generic `extra` bag                                  |
+| G10 | important | No-op visibility: reducer auto-marks `unchanged` when a `crdt.*` command changes nothing                      |
+| G11 | important | `send`/`crdt.send` carry `size` (bytes) for the cost-of-state topic; envelope drawn proportionally            |
+| G12 | important | multi-recipient `send` needs per-recipient message ids (`m1:bob`, `m1:carol`)                                 |
+| G13 | nice      | actor `icon` (phone/laptop/tablet/cloud) independent of `kind`; `owner` for "Alice's phone"                   |
+| G14 | nice      | scene clock config `{now, visible, format:'int'                                                               | 'ms' | 'hh:mm'}` |
+| G15 | nice      | `deliver … outcome:'reject'` (bounce) so a server can refuse a write                                          |
+| G16 | nice      | marks need ids; `unmark id` (remove one sticky callout without `clearMarks`)                                  |
+| G17 | nice      | `highlight` should accept an `ActorId` like `callout` does                                                    |
+| G18 | nice      | stable item order in `toValue()` for sets/counters (no reshuffle on merge) — a reducer contract               |
+| G19 | nice      | `tryIt` declaration per scene (which ops the sandbox exposes) — open question 4                               |
+| P1  | pedagogy  | add a tiny `max-register` CRDT to `src/crdt/` for II.1 (three laws with one number)                           |
 
 ---
 
@@ -100,11 +100,13 @@ Unit I has no CRDTs (except two clearly labeled previews). Copies are plain `Val
 and one of the changes can silently disappear.
 
 **This problem applies when**
+
 - data is cached, replicated, or kept on a device and on a server;
 - more than one person or process can write;
 - writers are not forced to wait for each other.
 
 **This problem does not apply when**
+
 - there is exactly one copy and one writer;
 - every write goes through one place that serializes them (that is I.2).
 
@@ -114,6 +116,7 @@ from a laptop (Google Docs, Notion, Apple Notes).
 #### Scene `copies` — three copies, two edits, one loss
 
 World: layout `hub`; clock hidden.
+
 - `server` (server) holds `doc = rec({title:'Q3 plan'})`
 - `alice` (person, a, icon phone) holds nothing
 - `bob` (person, b, icon laptop) holds nothing
@@ -187,12 +190,14 @@ s07 "Every system with more than one copy needs an answer to this. Next: the cla
 writer's change before writing.
 
 **When to use a lock / transaction**
+
 - the data must never be wrong, even for a moment (money, stock levels, unique usernames);
 - all writers can reach one coordinator quickly;
 - writes are short and rare compared to reads;
 - you need "all or nothing" across several fields or rows.
 
 **When not to use**
+
 - writers are often offline or far away (I.3);
 - many people edit the same thing at once (a lock makes them queue);
 - a short wrong period is acceptable and cheap to fix (I.4).
@@ -203,6 +208,7 @@ writer's change before writing.
 #### Scene `take-turns` — one lock, two writers
 
 World: layout `hub`; clock hidden.
+
 - `server` (server) holds `doc = rec({title:'Q3 plan'})` and `lock = 'free'`
 - `alice` (person, a) holds `doc = rec({title:'Q3 plan'})`
 - `bob` (person, b) holds `doc = rec({title:'Q3 plan'})`
@@ -256,6 +262,7 @@ s11 "A lock turns 'at the same time' into 'one after the other'. That is what a 
 #### Scene `bank-transfer` — [in-context] why banks lock
 
 World: layout `hub`; clock hidden.
+
 - `server` (server, label "Bank") holds `account = rec({balance:100})` and `lock = 'free'`
 - `alice` (person, a) holds nothing
 - `bob` (person, b) holds nothing
@@ -302,12 +309,14 @@ for control messages.
 everyone waits on the slowest link.
 
 **This cost matters when**
+
 - devices go offline (tunnels, planes, flaky Wi-Fi);
 - writers are far from the coordinator (every lock is a round trip);
 - many people edit one thing at once (they form a queue);
 - the coordinator itself can go down (one place to get stuck).
 
 **This cost is fine when**
+
 - writers are servers in one data center with fast, reliable links;
 - writes are rare and short.
 
@@ -317,6 +326,7 @@ everyone waits on the slowest link.
 #### Scene `offline` — the lock you cannot reach
 
 World: layout `hub`; clock hidden.
+
 - `server` (server) holds `doc = rec({title:'Q3 plan'})` and `lock = 'free'`
 - `alice` (person, a, icon phone) holds `doc = rec({title:'Q3 plan'})`
 - `bob` (person, b, icon laptop) holds `doc = rec({title:'Q3 plan'})`
@@ -358,6 +368,7 @@ s09 "Real systems add timeouts and lease renewals for this. They work, but they 
 #### Scene `latency` — every lock is a round trip
 
 World: layout `pair`; clock visible, format `ms` (G14), starts at 0.
+
 - `alice` (person, a, label "Alice · Tokyo") holds `doc = rec({title:'Q3 plan'})`
 - `server` (server, label "DB · Virginia") holds `doc = rec({title:'Q3 plan'})` and `lock = 'free'`
 
@@ -399,6 +410,7 @@ s06 "Every editor in Tokyo pays this on every edit. The further from the coordin
 #### Scene `shared-doc` — [in-context] three editors, one lock
 
 World: layout `hub`; clock hidden.
+
 - `server` (server) holds `doc = rec({title:'Q3 plan', body:'…'})` and `lock = 'free'`
 - `alice`, `bob`, `carol` (persons a/b/c) each hold `doc = rec({title:'Q3 plan', body:'…'})`
 
@@ -438,11 +450,13 @@ right for the tunnel.
 merge.
 
 **Use a transaction when a wrong value, even briefly, is**
+
 - money lost or created;
 - something given away twice (one seat, one username, one coupon);
 - a broken invariant across several fields (debit without credit).
 
 **Merging is enough when**
+
 - the data is a set of things people add (list items, tags, comments);
 - the data is a preference or label where "newest wins" is fine (title, status, color);
 - a count may be slightly behind for a moment (likes, views);
@@ -454,6 +468,7 @@ delivery note do not.
 #### Scene `money-vs-list` — same race, different cost
 
 World: layout `row`; clock hidden.
+
 - `alice` (person, a) holds `account = rec({balance:100})` and `list = list(['bread'])`
 - `bob` (person, b) holds `account = rec({balance:100})` and `list = list(['bread'])`
 
@@ -486,6 +501,7 @@ s07 "The difference is cost. A wrong balance hurts. A list with one extra item d
 #### Scene `sort-the-order` — [in-context] one order, field by field
 
 World: layout `pair`; clock hidden.
+
 - `server` (server, label "Shop") holds
   `order = rec({payment:'pending', items:'2 items', note:'ring bell', stock:'4 left', coupon:'unused'})`
 - `alice` (person, a, icon phone) holds the same `order`
@@ -518,11 +534,13 @@ callout renderer must stack or place them around the record; note in §3 (G6/G16
 merge in any order, and end up the same.
 
 **When to use**
+
 - the data can be described by a merge rule everyone accepts (Unit II gives you a catalog);
 - writers may be offline or far apart;
 - you would rather keep everyone working than make them wait.
 
 **When not to use**
+
 - a wrong value, even for a moment, is expensive (I.4);
 - you need "exactly one winner" decided right now (a seat, a username);
 - the merge rule would surprise users (e.g. a paragraph where two edits must not both survive).
@@ -531,12 +549,13 @@ merge in any order, and end up the same.
 both tags. (Preview: this is a G-Set, Unit II.6.)
 
 Definition shown once in this topic: **CRDT** — a data type with a merge rule that always works,
-in any order. The name stands for Conflict-free Replicated Data Type. *Eventual consistency* —
+in any order. The name stands for Conflict-free Replicated Data Type. _Eventual consistency_ —
 once every copy has received every change, every copy is the same.
 
 #### Scene `rule-up-front` — decide the rule before the race
 
 World: layout `triangle`; clock hidden.
+
 - `alice`, `bob`, `carol` (persons a/b/c); no holds yet.
 
 ```
@@ -602,6 +621,7 @@ s08 "Eventual means: when every message has arrived. Not 'right now', but always
 #### Scene `title-again` — [in-context] topic 1, with a rule this time
 
 World: layout `hub`; clock visible (`t=0`).
+
 - `server` (server, label "Relay"), `alice` (a, phone), `bob` (b, laptop); no holds yet.
 
 ```
@@ -645,6 +665,7 @@ timestamp from the scene clock).
 copies, one merge rule, no coordinator.
 
 **Good fits**
+
 - collaborative documents and whiteboards (many cursors, no lock);
 - local-first and offline-first apps (notes, to-dos, field work);
 - multi-region databases and caches (every region writes locally);
@@ -652,6 +673,7 @@ copies, one merge rule, no coordinator.
 - game and simulation state that many clients update.
 
 **Poor fits**
+
 - money movement, inventory with hard limits, unique names;
 - anything where users expect "the server said no" immediately.
 
@@ -683,6 +705,7 @@ s07 "Next unit: the rules, one data type at a time."
 #### Scene `notes-sync` — [in-context] a notes app with a relay that only forwards
 
 World: layout `hub`; clock visible (`t=0`).
+
 - `server` (server, label "Relay") — holds a copy but never decides anything
 - `alice` (a, phone), `bob` (b, laptop)
 
@@ -731,13 +754,15 @@ bookkeeping a CRDT carries next to the value — timestamps, node ids, tags, tom
 that is commutative, associative, and idempotent — shown with one number.
 
 **When to use (state-based in general)**
+
 - the network may duplicate, reorder, or delay messages and you want to stop caring;
 - peers can exchange whole states cheaply (small data, or infrequent sync);
 - you want the simplest possible protocol: "send me what you have".
 
 **When not to use**
+
 - the state is large and changes often (Unit II.11, then Unit III);
-- you need the *history* of operations, not just the latest merged state.
+- you need the _history_ of operations, not just the latest merged state.
 
 **Real-world anchor.** A game's "best score" synced between a console, a phone and the cloud,
 with offline play.
@@ -750,6 +775,7 @@ in G-Counter (per node) and LWW (per timestamp).
 #### Scene `state-and-merge` — two copies, one rule
 
 World: layout `pair`; clock hidden.
+
 - `alice` (a, label "Alice · phone"), `bob` (b, label "Bob · console"); no holds yet.
 
 ```
@@ -778,6 +804,7 @@ s09 "The trick is to design a state so that a merge like this exists. The rest o
 #### Scene `three-laws` — why merge must be commutative, associative, idempotent
 
 World: layout `triangle`; clock hidden.
+
 - `alice` (a), `bob` (b), `carol` (c); `best` pre-initialised to 3 / 5 / 4 (via `crdt.init` + three updates in s01). Rule note stays.
 
 ```
@@ -866,11 +893,13 @@ P1 (`max-register`).
 timestamp wins; ties go to a fixed node order.
 
 **When to use**
+
 - single-value fields where "the newest edit wins" is what users expect (title, status, color, a setting);
 - the field is set as a whole (not edited inside, like text);
 - you can give every write a timestamp that is good enough (logical or hybrid; Unit IV).
 
 **When not to use**
+
 - two edits should both survive (use a set, a counter, or a sequence);
 - clocks on devices cannot be trusted and losing an edit is costly (Unit IV.1 shows the failure);
 - the value is long text edited by several people at once (Unit III.5).
@@ -884,6 +913,7 @@ write happened; here a logical counter `t=1, 2, 3…`, not a wall clock.
 #### Scene `update-and-merge` — value + timestamp
 
 World: layout `pair`; clock visible, starts `t=0`.
+
 - `alice` (a, phone), `bob` (b, laptop); no holds yet.
 
 ```
@@ -942,6 +972,7 @@ s05 "Any fixed rule works, as long as every copy uses the same one. Without it, 
 #### Scene `any-order` — three writers, messages out of order
 
 World: layout `triangle`; clock visible, `t=0`.
+
 - `alice`, `bob`, `carol`; fresh `status` = 'Offline' (init in s01).
 
 ```
@@ -972,6 +1003,7 @@ s06 "Arrival order did not matter. Only the timestamp did. That is the three law
 #### Scene `status-sync` — [in-context] phone, laptop, relay
 
 World: layout `hub`; clock visible, `t=0`.
+
 - `server` (label "Relay"), `alice` (a, phone), `bob` (b, label "Alice · laptop", color a — same person, two devices; G13 `owner`)
 
 Pedagogy: one person, two devices. Names in narration: "the phone" / "the laptop".
@@ -1016,12 +1048,14 @@ are essential here), G10, G13 (two devices, one owner color), G4, G5, G6.
 survive; edits to the same field race, and the newest wins.
 
 **When to use**
+
 - records with independent fields edited by different people (task cards, profiles, settings);
 - each field is small and set as a whole;
 - "newest wins per field" matches what users expect.
 
 **When not to use**
-- two people often edit the *same* field at once and both edits matter;
+
+- two people often edit the _same_ field at once and both edits matter;
 - fields depend on each other (e.g. `start` must stay before `end`) — LWW per field can break the pair;
 - a field is long text (use a sequence CRDT, Unit III).
 
@@ -1031,6 +1065,7 @@ Riak maps; Automerge/Yjs maps of registers.
 #### Scene `different-fields` — both edits survive
 
 World: layout `pair`; clock visible, `t=0`.
+
 - `alice` (a), `bob` (b); no holds yet.
 
 ```
@@ -1085,6 +1120,7 @@ s04 "Owner and status were untouched by this race. Only the field that raced pai
 #### Scene `team-board` — [in-context] three people, one card, one relay
 
 World: layout `hub`; clock visible, `t=0`.
+
 - `server` (label "Relay"), `alice` (a), `bob` (b), `carol` (c); no holds yet.
 
 ```
@@ -1144,11 +1180,13 @@ G4, G5, G6, G8, G12.
 node; the value is the sum.
 
 **When to use**
+
 - counts that only go up (views, downloads, "times opened");
 - many writers, each incrementing locally;
 - a slightly stale total is fine.
 
 **When not to use**
+
 - the count must go down (II.5 PN-Counter);
 - you need an exact, instantly consistent number (a transaction);
 - the set of writers is huge and unbounded (the per-node table grows with it — mention, details in Unit V).
@@ -1161,6 +1199,7 @@ Definition shown once: **node** — one copy that can write. Each node has an id
 #### Scene `count-separately` — one row per node
 
 World: layout `triangle`; clock hidden.
+
 - `alice` (a), `bob` (b), `carol` (c); no holds yet.
 
 ```
@@ -1199,6 +1238,7 @@ s09 "Max per row is safe because a node's own row only ever goes up. That is why
 #### Scene `why-not-one-number` — the two wrong designs
 
 World: layout `pair`; clock hidden.
+
 - `alice` (a) holds `n = 2`, `bob` (b) holds `n = 1` (plain scalars, **not** a CRDT)
 
 ```
@@ -1226,6 +1266,7 @@ s05 "Sum is not idempotent. Max is idempotent but loses data. A per-node table g
 #### Scene `edge-counters` — [in-context] page views across three regions
 
 World: layout `triangle`; clock hidden.
+
 - `edge-us` (service, a, label "US edge"), `edge-eu` (service, b, label "EU edge"), `edge-ap` (service, c, label "AP edge"); no holds yet.
 
 ```
@@ -1257,3 +1298,1167 @@ order across merges — insertion order of actors — or Motion will reshuffle t
 renderer (`toValue` can add `meta.note` = total, or the renderer sums; decide once).
 
 ---
+
+### II.5 `pn-counter`
+
+**Goal.** Learn the PN-Counter: two G-Counters, one for increments and one for decrements;
+value = P − N.
+
+**When to use**
+
+- counts that go up and down (likes/unlikes, items in a cart, "unread" badges);
+- many writers, each adjusting locally;
+- a temporary stale value is fine.
+
+**When not to use**
+
+- the count must never cross a limit (stock must not go below 0, seats must not oversell) — a
+  PN-Counter cannot enforce a floor or ceiling;
+- you need "who did what" history (Unit III ops);
+- the writer set is unbounded (two tables grow with it).
+
+**Real-world anchor.** Like counts with unlike; cart quantities edited from two devices; Redis
+Enterprise counters.
+
+#### Scene `likes-and-unlikes` — two tables
+
+World: layout `pair`; clock hidden.
+
+- `alice` (a), `bob` (b); no holds yet.
+
+```
+s01 "A PN-Counter is two G-Counters side by side: P for pluses, N for minuses."
+    {t:'crdt.init', actors:['alice','bob'], slot:'likes', type:'pn-counter'}
+    {t:'highlight', path:'alice.likes'}
+s02 "The value is (sum of P) − (sum of N). Merge is the same as before: max per row, in both tables."
+    {t:'note', id:'rule', text:'value = ΣP − ΣN · merge = max per row in P and in N', sticky:true}   NEW (G6)
+s03 "Alice likes the post. P[alice] = 1."
+    {t:'crdt.update', actor:'alice', slot:'likes', op:'inc', args:[1]}
+    {t:'highlight', path:'alice.likes[alice]'}   (G8)
+s04 "Bob likes it too. P[bob] = 1."
+    {t:'crdt.update', actor:'bob', slot:'likes', op:'inc', args:[1]}
+s05 "Alice changes her mind and unlikes. Not P[alice] − 1: instead N[alice] = 1. P never goes down."
+    {t:'crdt.update', actor:'alice', slot:'likes', op:'dec', args:[1]}
+    {t:'highlight', path:'alice.likes@neg[alice]', tone:'warn'}   (G8 — address the N table)
+s06 "Alice's value: P 1 − N 1 = 0. Bob's value: 1. They sync."
+    {t:'clearMarks'}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'likes'}
+s07 "Both now hold P = {alice 1, bob 1}, N = {alice 1}. Value: 2 − 1 = 1."
+    {t:'same', paths:['alice.likes','bob.likes']}   NEW (G5)
+    {t:'callout', at:'bob.likes', text:'2 − 1 = 1', tone:'info'}
+s08 "Why not subtract from P? Because then a row could go down, and 'max per row' would lose decrements. Two grow-only tables keep the math safe."
+    hold: long
+```
+
+#### Scene `no-floor` — the limit a counter cannot hold
+
+World: layout `pair`; clock hidden. Fresh slot `stock` (PN-Counter) starting at 1 (init + one `inc` by `server`? No server here: `alice` incs 1 in s01).
+
+```
+s01 "One item left in stock. Both shops sell it at the same time."
+    {t:'crdt.init', actors:['alice','bob'], slot:'stock', type:'pn-counter'}
+    {t:'crdt.update', actor:'alice', slot:'stock', op:'inc', args:[1]}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'stock'}
+    {t:'highlight', path:['alice.stock','bob.stock']}
+s02 "Each copy sees 1, says yes, and decrements."
+    {t:'crdt.update', actor:'alice', slot:'stock', op:'dec', args:[1]}
+    {t:'crdt.update', actor:'bob', slot:'stock', op:'dec', args:[1]}
+s03 "They sync. Value: 1 − 2 = −1. The counter did exactly what it was told."
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'stock'}
+    {t:'cross', path:'alice.stock'}
+    {t:'callout', at:'bob.stock', text:'−1: oversold', tone:'danger'}
+s04 "A counter cannot say no. If a floor matters, that decision needs a transaction (I.4)."
+    hold: long
+```
+
+#### Scene `cart-item` — [in-context] name (LWW) + quantity (PN) in one item
+
+World: layout `pair`; clock visible, `t=0`.
+
+- `alice` (a, phone), `bob` (b, label "Alice · laptop", color a); no holds yet.
+
+```
+s01 "A cart line has a name and a quantity. Name: LWW register. Quantity: PN-Counter. One document, two CRDTs."
+    {t:'crdt.init', actors:['alice','bob'], slot:'item', type:'doc', schema:{name:'lww-register', qty:'pn-counter'}, args:{name:'Oat milk'}}   NEW (G3)
+s02 "Time 1. On the phone she adds two more. qty +2."
+    {t:'tick'}
+    {t:'crdt.update', actor:'alice', slot:'item', path:'qty', op:'inc', args:[2]}   NEW (G3 path-addressed)
+s03 "Time 2. On the laptop she removes one, and fixes the name."
+    {t:'tick'}
+    {t:'crdt.update', actor:'bob', slot:'item', path:'qty', op:'dec', args:[1]}   NEW (G3)
+    {t:'crdt.update', actor:'bob', slot:'item', path:'name', op:'set', args:['Oat milk 1L']}   NEW (G3)
+s04 "They sync. Each part merges with its own rule: the name by timestamp, the quantity by max-per-row."
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'item'}
+s05 "Both show 'Oat milk 1L' × 1 (2 − 1). Neither device's change was lost."
+    {t:'same', paths:['alice.item','bob.item']}   NEW (G5)
+    {t:'callout', at:'alice.item.qty', text:'+2 −1 = 1', tone:'info'}
+s06 "Composing CRDTs is just nesting them. Each field brings its own merge rule. More of this in II.10."
+    hold: long
+```
+
+**Gaps hit.** G3 (composite `doc` type with a schema and path-addressed updates — first real
+use), G8 (need to address the N table: proposed `@neg[alice]`), G5, G6.
+
+---
+
+### II.6 `g-set`
+
+**Goal.** Learn the G-Set: a set you can only add to; merge = union; nothing ever leaves.
+
+**When to use**
+
+- things that are only ever added (ids of messages you have seen, peers you have met, events that happened);
+- "has X ever happened?" questions;
+- the simplest possible set when delete is truly never needed.
+
+**When not to use**
+
+- anything that needs remove (II.7–II.9);
+- the set grows without bound and memory matters (it never shrinks).
+
+**Real-world anchor.** "Seen message ids" for de-duplication; the set of peers a node knows;
+"who has acknowledged this announcement".
+
+#### Scene `union` — adds from three sides
+
+World: layout `triangle`; clock hidden.
+
+- `alice`, `bob`, `carol`; no holds yet.
+
+```
+s01 "A G-Set is a bag of things. The only operation is add. The rule: merge = union."
+    {t:'crdt.init', actors:['alice','bob','carol'], slot:'seen', type:'g-set'}
+    {t:'note', id:'rule', text:'merge = union', sticky:true}   NEW (G6)
+s02 "Each node has seen some message ids. Alice: m1, m2. Bob: m2, m3. Carol: m4."
+    {t:'crdt.update', actor:'alice', slot:'seen', op:'add', args:['m1']}
+    {t:'crdt.update', actor:'alice', slot:'seen', op:'add', args:['m2']}
+    {t:'crdt.update', actor:'bob', slot:'seen', op:'add', args:['m2']}
+    {t:'crdt.update', actor:'bob', slot:'seen', op:'add', args:['m3']}
+    {t:'crdt.update', actor:'carol', slot:'seen', op:'add', args:['m4']}
+s03 "Alice sends to Bob. Union: m1, m2, m3. m2 was on both sides; it appears once."
+    {t:'crdt.send', from:'alice', to:'bob', slot:'seen', id:'x1'}   NEW (G4)
+    {t:'crdt.merge', into:'bob', from:{message:'x1'}, slot:'seen'}   NEW (G4)
+    {t:'highlight', path:'bob.seen[m2]'}   (G8)
+s04 "Bob sends to Carol. Carol sends to Alice."
+    {t:'crdt.send', from:'bob', to:'carol', slot:'seen', id:'x2'}   NEW (G4)
+    {t:'crdt.merge', into:'carol', from:{message:'x2'}, slot:'seen'}   NEW (G4)
+    {t:'crdt.send', from:'carol', to:'alice', slot:'seen', id:'x3'}   NEW (G4)
+    {t:'crdt.merge', into:'alice', from:{message:'x3'}, slot:'seen'}   NEW (G4)
+s05 "Bob is one message behind. Alice and Carol already agree."
+    {t:'same', paths:['alice.seen','carol.seen']}   NEW (G5)
+s06 "Alice sends to Bob. Now all three: m1 m2 m3 m4."
+    {t:'clearMarks'}
+    {t:'crdt.send', from:'alice', to:'bob', slot:'seen', id:'x4'}   NEW (G4)
+    {t:'crdt.merge', into:'bob', from:{message:'x4'}, slot:'seen'}   NEW (G4)
+    {t:'same', paths:['alice.seen','bob.seen','carol.seen']}   NEW (G5)
+s07 "Union is commutative, associative and idempotent by nature. The G-Set gets the three laws for free."
+    hold: long
+```
+
+#### Scene `no-remove` — the operation that does not exist
+
+World: layout `pair`; clock hidden. `alice`, `bob` hold `tags` = {draft, urgent} (init + adds + sync in s01).
+
+```
+s01 "A task's tags as a G-Set: draft, urgent."
+    {t:'crdt.init', actors:['alice','bob'], slot:'tags', type:'g-set'}
+    {t:'crdt.update', actor:'alice', slot:'tags', op:'add', args:['draft']}
+    {t:'crdt.update', actor:'alice', slot:'tags', op:'add', args:['urgent']}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'tags'}
+s02 "The task ships. Alice wants to remove 'draft'. There is no such operation."
+    {t:'cross', path:'alice.tags[draft]'}   (G8)
+    {t:'callout', at:'alice.tags', text:'G-Set has no remove', tone:'warn'}
+s03 "Even if she deleted it locally, Bob's copy still has it. The next union brings it back."
+    {t:'clearMarks'}
+    {t:'callout', at:'bob.tags[draft]', text:'would come back on merge', tone:'warn'}
+s04 "If you need remove, you need more sidecar. That is the next three topics."
+    hold: long
+    {t:'clearMarks'}
+```
+
+#### Scene `acks` — [in-context] who has seen the announcement
+
+World: layout `hub`; clock visible, `t=0`.
+
+- `server` (label "Relay"), `alice` (a), `bob` (b), `carol` (c); no holds yet.
+
+```
+s01 "An announcement: a title (LWW) and the set of people who acknowledged it (G-Set)."
+    {t:'crdt.init', actors:['server','alice','bob','carol'], slot:'post', type:'doc', schema:{title:'lww-register', acked:'g-set'}, args:{title:'Office closed Fri'}}   NEW (G3)
+s02 "Alice acknowledges. Carol is offline and acknowledges too; it waits on her device."
+    {t:'crdt.update', actor:'alice', slot:'post', path:'acked', op:'add', args:['alice']}   NEW (G3)
+    {t:'offline', actor:'carol'}
+    {t:'crdt.update', actor:'carol', slot:'post', path:'acked', op:'add', args:['carol']}   NEW (G3)
+s03 "Time 1. Bob fixes a typo in the title and acknowledges."
+    {t:'tick'}
+    {t:'crdt.update', actor:'bob', slot:'post', path:'title', op:'set', args:['Office closed Friday']}   NEW (G3)
+    {t:'crdt.update', actor:'bob', slot:'post', path:'acked', op:'add', args:['bob']}   NEW (G3)
+s04 "Alice and Bob sync with the relay."
+    {t:'crdt.sync', a:'alice', b:'server', slot:'post'}
+    {t:'crdt.sync', a:'bob', b:'server', slot:'post'}
+    {t:'crdt.sync', a:'alice', b:'server', slot:'post'}
+s05 "Carol comes back. Her ack joins the union; she gets the fixed title."
+    {t:'online', actor:'carol'}
+    {t:'crdt.sync', a:'carol', b:'server', slot:'post'}
+s06 "Final sync round. Everyone sees three acks and the corrected title."
+    {t:'crdt.sync', a:'alice', b:'server', slot:'post'}
+    {t:'crdt.sync', a:'bob', b:'server', slot:'post'}
+    {t:'same', paths:['server.post','alice.post','bob.post','carol.post']}   NEW (G5)
+s07 "An ack can never be un-acked by accident. For this data, 'no remove' is a feature."
+    hold: long
+```
+
+**Gaps hit.** G3 again (doc schema), G8 (`[draft]` item addressing), G18 (set items must keep a
+stable order: first-seen order on that replica, so union does not reshuffle). `crdt.sync` chains
+(s04, s06) want the `syncAll` helper.
+
+---
+
+### II.7 `two-phase-set`
+
+**Goal.** Learn the 2P-Set: an add-set plus a remove-set (tombstones). Remove wins, forever; a
+removed element can never come back.
+
+**When to use**
+
+- things that, once removed, must stay removed (revoked keys, banned users, unsubscribed emails);
+- you want remove with the least sidecar possible;
+- elements are unique and will not be re-added by design.
+
+**When not to use**
+
+- users may add, remove, and add again (II.8, II.9);
+- the tombstone set would grow large (every remove is kept forever);
+- you need "the latest intent" rather than "remove sticks".
+
+**Real-world anchor.** API-key revocation lists; "do not email" lists; banned-user sets.
+
+Definition shown once: **tombstone** — a marker that says "this was here and was removed". The
+marker stays so that a later merge cannot bring the element back.
+
+#### Scene `add-and-remove` — the second set
+
+World: layout `pair`; clock hidden.
+
+- `alice` (a), `bob` (b); no holds yet.
+
+```
+s01 "A 2P-Set is two G-Sets: added, and removed. The second one holds tombstones."
+    {t:'crdt.init', actors:['alice','bob'], slot:'guests', type:'2p-set'}
+    {t:'note', id:'rule', text:'in set = added and not removed · merge = union of both', sticky:true}   NEW (G6)
+s02 "Alice invites Dan and Eve."
+    {t:'crdt.update', actor:'alice', slot:'guests', op:'add', args:['dan']}
+    {t:'crdt.update', actor:'alice', slot:'guests', op:'add', args:['eve']}
+s03 "They sync. Bob has both guests."
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'guests'}
+    {t:'same', paths:['alice.guests','bob.guests']}   NEW (G5)
+s04 "Bob un-invites Dan. Dan is not deleted. He gets a tombstone."
+    {t:'clearMarks'}
+    {t:'crdt.update', actor:'bob', slot:'guests', op:'remove', args:['dan']}
+    {t:'highlight', path:'bob.guests[dan]@tomb', tone:'warn'}   (G8)
+s05 "Bob's set reads as: eve. Dan is drawn struck through: present in the data, absent from the answer."
+    {t:'callout', at:'bob.guests[dan]', text:'tombstone', tone:'info'}
+s06 "Bob sends to Alice. Union of added, union of removed. Dan is tombstoned on both."
+    {t:'clearMarks'}
+    {t:'crdt.send', from:'bob', to:'alice', slot:'guests', id:'m1'}   NEW (G4)
+    {t:'crdt.merge', into:'alice', from:{message:'m1'}, slot:'guests'}   NEW (G4)
+    {t:'same', paths:['alice.guests','bob.guests']}   NEW (G5)
+s07 "The tombstone is the sidecar that makes remove safe. Without it, Alice's next merge would re-add Dan (II.6)."
+    hold: long
+```
+
+#### Scene `no-re-add` — the tombstone wins forever
+
+World: layout `pair`; clock hidden. `guests` as left by the last scene (re-created in s01).
+
+```
+s01 "Dan apologizes. Alice tries to invite him again."
+    {t:'crdt.init', actors:['alice','bob'], slot:'guests', type:'2p-set'}
+    {t:'crdt.update', actor:'alice', slot:'guests', op:'add', args:['dan']}
+    {t:'crdt.update', actor:'alice', slot:'guests', op:'add', args:['eve']}
+    {t:'crdt.update', actor:'alice', slot:'guests', op:'remove', args:['dan']}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'guests'}
+    {t:'crdt.update', actor:'alice', slot:'guests', op:'add', args:['dan']}   (G10: no-op — reducer marks 'unchanged')
+s02 "Nothing happens. 'dan' is already in added, and in removed. Removed wins."
+    {t:'cross', path:'alice.guests[dan]'}   (G8)
+    {t:'callout', at:'alice.guests[dan]', text:'add ignored — tombstone wins', tone:'warn'}
+s03 "Even a brand-new copy that never saw Dan cannot bring him back: the tombstone travels with every merge."
+    {t:'clearMarks'}
+    {t:'spawn', actor:{id:'carol', kind:'person', label:'Carol', color:'c', online:true, holds:{}}}
+    {t:'layout', preset:'triangle'}
+    {t:'crdt.init', actors:['carol'], slot:'guests', type:'2p-set'}   (init on one more actor, same slot)
+    {t:'crdt.update', actor:'carol', slot:'guests', op:'add', args:['dan']}
+s04 "Carol added Dan fresh. She merges Alice's state."
+    {t:'crdt.send', from:'alice', to:'carol', slot:'guests', id:'m1'}   NEW (G4)
+    {t:'crdt.merge', into:'carol', from:{message:'m1'}, slot:'guests'}   NEW (G4)
+    {t:'highlight', path:'carol.guests[dan]@tomb', tone:'warn'}   (G8)
+s05 "Dan is tombstoned on Carol's copy too. Remove always wins, in any order."
+    {t:'same', paths:['alice.guests','bob.guests','carol.guests']}   NEW (G5)
+s06 "Good for revocations. Bad for a shopping list. Pick a set by what 'remove' should mean."
+    hold: long
+```
+
+#### Scene `revoked-keys` — [in-context] API keys that must stay dead
+
+World: layout `hub`; clock visible, `t=0`.
+
+- `server` (label "Auth · US"), `alice` (service, a, label "Auth · EU"), `bob` (service, b, label "Auth · AP"); no holds yet.
+
+```
+s01 "Three auth servers share one record per customer: a plan (LWW) and a set of active API keys (2P-Set)."
+    {t:'crdt.init', actors:['server','alice','bob'], slot:'acct', type:'doc', schema:{plan:'lww-register', keys:'2p-set'}, args:{plan:'Free'}}   NEW (G3)
+s02 "EU issues key k1. AP issues key k2. Both sync to US."
+    {t:'crdt.update', actor:'alice', slot:'acct', path:'keys', op:'add', args:['k1']}   NEW (G3)
+    {t:'crdt.update', actor:'bob', slot:'acct', path:'keys', op:'add', args:['k2']}   NEW (G3)
+    {t:'crdt.sync', a:'alice', b:'server', slot:'acct'}
+    {t:'crdt.sync', a:'bob', b:'server', slot:'acct'}
+s03 "Time 1. The customer upgrades in EU. Time 2. A leaked key k1 is revoked in AP, which still lists k1."
+    {t:'tick'}
+    {t:'crdt.update', actor:'alice', slot:'acct', path:'plan', op:'set', args:['Pro']}   NEW (G3)
+    {t:'tick'}
+    {t:'crdt.update', actor:'bob', slot:'acct', path:'keys', op:'remove', args:['k1']}   NEW (G3)
+s04 "Meanwhile a stale EU replica re-adds k1 from an old cache. Tombstone wins: the add is ignored."
+    {t:'crdt.sync', a:'bob', b:'server', slot:'acct'}
+    {t:'crdt.sync', a:'alice', b:'server', slot:'acct'}
+    {t:'crdt.update', actor:'alice', slot:'acct', path:'keys', op:'add', args:['k1']}   NEW (G3) (G10 no-op)
+    {t:'cross', path:'alice.acct.keys[k1]'}   (G8)
+s05 "One more sync. Every region: plan Pro, keys {k2}, k1 dead for good."
+    {t:'clearMarks'}
+    {t:'crdt.sync', a:'alice', b:'server', slot:'acct'}
+    {t:'crdt.sync', a:'bob', b:'server', slot:'acct'}
+    {t:'same', paths:['server.acct','alice.acct','bob.acct']}   NEW (G5)
+s06 "A revoked key that came back would be a security hole. Here, 'cannot re-add' is exactly the guarantee you want."
+    hold: long
+```
+
+**Gaps hit.** `crdt.init` for an actor spawned mid-scene into an existing slot (s03 of
+`no-re-add`) — the command works if `init` on an existing slot adds replicas rather than resetting
+others; spell that out in the DSL doc. G8 (`@tomb`), G10 (ignored add needs an automatic mark),
+G3, G4, G5, G6.
+
+---
+
+### II.8 `lww-element-set`
+
+**Goal.** Learn the LWW-Element-Set: every element has an add time and a remove time; the newer
+one decides. Ties go to a chosen bias (add-wins or remove-wins).
+
+**When to use**
+
+- sets where add and remove both happen often and the latest intent should win (favorites, follows, toggles);
+- you already have good-enough timestamps (you are using LWW elsewhere);
+- re-adding after remove must work.
+
+**When not to use**
+
+- concurrent add and remove of the same element are common and you want "add wins" without
+  depending on clocks (II.9 OR-Set);
+- clocks cannot be trusted (Unit IV);
+- you need "remove only what I saw" semantics.
+
+**Real-world anchor.** Follow/unfollow lists; favorites synced across devices; Riak's
+LWW-flavored sets (simplified).
+
+#### Scene `two-times-per-element` — add-ts and remove-ts
+
+World: layout `pair`; clock visible, `t=0`.
+
+- `alice` (a), `bob` (b); no holds yet.
+
+```
+s01 "Each element carries two timestamps: when it was last added, and when it was last removed."
+    {t:'crdt.init', actors:['alice','bob'], slot:'fav', type:'lww-element-set', args:{bias:'add'}}
+    {t:'note', id:'rule', text:'in set if addTs > removeTs · tie → bias (add)', sticky:true}   NEW (G6)
+s02 "Time 1. Alice favorites jazz. Time 2. Bob favorites rock."
+    {t:'tick'}
+    {t:'crdt.update', actor:'alice', slot:'fav', op:'add', args:['jazz']}
+    {t:'tick'}
+    {t:'crdt.update', actor:'bob', slot:'fav', op:'add', args:['rock']}
+    {t:'highlight', path:['alice.fav[jazz]@addTs','bob.fav[rock]@addTs']}   (G8, G9)
+s03 "They sync. Both: jazz (+t1), rock (+t2)."
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'fav'}
+    {t:'same', paths:['alice.fav','bob.fav']}   NEW (G5)
+s04 "Time 3. Bob removes jazz. Jazz stays in the data with removeTs = 3."
+    {t:'clearMarks'}
+    {t:'tick'}
+    {t:'crdt.update', actor:'bob', slot:'fav', op:'remove', args:['jazz']}
+    {t:'highlight', path:'bob.fav[jazz]@removeTs', tone:'warn'}   (G8, G9)
+s05 "Time 4. Alice, who has not seen that, re-adds jazz on her side. addTs = 4."
+    {t:'tick'}
+    {t:'crdt.update', actor:'alice', slot:'fav', op:'add', args:['jazz']}
+    {t:'conflict', a:'alice.fav[jazz]', b:'bob.fav[jazz]'}
+s06 "They sync. Per element, keep the max of each timestamp: jazz has +t4 and −t3. 4 > 3, so jazz is in."
+    {t:'clearMarks'}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'fav'}
+    {t:'highlight', path:['alice.fav[jazz]@addTs','alice.fav[jazz]@removeTs']}   (G8, G9)
+    {t:'same', paths:['alice.fav','bob.fav']}   NEW (G5)
+s07 "Re-add works, unlike the 2P-Set. The price: two timestamps per element, kept forever."
+    hold: long
+```
+
+#### Scene `bias` — when the timestamps tie
+
+World: layout `pair`; clock visible, `t=4`. Each actor holds **two** slots: `favA` (bias add) and `favR` (bias remove), both containing pop? No — both empty; the scene adds/removes at the same tick.
+
+```
+s01 "Two copies of the same set, with different tie rules: add-wins on the left, remove-wins on the right."
+    {t:'crdt.init', actors:['alice','bob'], slot:'favA', type:'lww-element-set', args:{bias:'add'}}
+    {t:'crdt.init', actors:['alice','bob'], slot:'favR', type:'lww-element-set', args:{bias:'remove'}}
+    {t:'note', id:'rule', text:'favA: tie → add wins · favR: tie → remove wins', sticky:true}   NEW (G6)
+s02 "Time 5. Alice adds pop. At the same time 5, Bob removes pop. Same in both sets."
+    {t:'tick'}
+    {t:'crdt.update', actor:'alice', slot:'favA', op:'add', args:['pop']}
+    {t:'crdt.update', actor:'bob', slot:'favA', op:'remove', args:['pop']}
+    {t:'crdt.update', actor:'alice', slot:'favR', op:'add', args:['pop']}
+    {t:'crdt.update', actor:'bob', slot:'favR', op:'remove', args:['pop']}
+s03 "Sync both. addTs = removeTs = 5 on both sides. The timestamps cannot decide."
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'favA'}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'favR'}
+    {t:'highlight', path:['alice.favA[pop]@addTs','alice.favA[pop]@removeTs'], tone:'warn'}   (G8, G9)
+s04 "Add-wins set: pop is in. Remove-wins set: pop is out. Both copies of each set agree — the bias is part of the rule."
+    {t:'clearMarks'}
+    {t:'check', path:'alice.favA[pop]'}
+    {t:'cross', path:'alice.favR[pop]'}
+    {t:'same', paths:['alice.favA','bob.favA']}   NEW (G5)
+    {t:'same', paths:['alice.favR','bob.favR']}   NEW (G5)
+s05 "Pick the bias by cost: is a wrongly-present item or a wrongly-missing item worse? Decide once, up front."
+    hold: long
+```
+
+#### Scene `follows` — [in-context] follow, unfollow, follow again
+
+World: layout `hub`; clock visible, `t=0`.
+
+- `server` (label "Relay"), `alice` (a, phone), `bob` (b, label "Alice · laptop", color a); no holds yet.
+
+```
+s01 "A profile: display name (LWW) and the set of accounts she follows (LWW-Element-Set, add-wins)."
+    {t:'crdt.init', actors:['server','alice','bob'], slot:'profile', type:'doc', schema:{name:'lww-register', follows:'lww-element-set'}, args:{name:'alice', follows:{bias:'add'}}}   NEW (G3)
+s02 "Time 1, phone: follow @dan. Syncs to the relay."
+    {t:'tick'}
+    {t:'crdt.update', actor:'alice', slot:'profile', path:'follows', op:'add', args:['@dan']}   NEW (G3)
+    {t:'crdt.sync', a:'alice', b:'server', slot:'profile'}
+s03 "The phone goes offline. Time 2, laptop: unfollow @dan, and rename the profile."
+    {t:'offline', actor:'alice'}
+    {t:'tick'}
+    {t:'crdt.sync', a:'bob', b:'server', slot:'profile'}
+    {t:'crdt.update', actor:'bob', slot:'profile', path:'follows', op:'remove', args:['@dan']}   NEW (G3)
+    {t:'crdt.update', actor:'bob', slot:'profile', path:'name', op:'set', args:['Alice L.']}   NEW (G3)
+    {t:'crdt.sync', a:'bob', b:'server', slot:'profile'}
+s04 "Time 3, phone (still offline): she taps follow @dan again."
+    {t:'tick'}
+    {t:'crdt.update', actor:'alice', slot:'profile', path:'follows', op:'add', args:['@dan']}   NEW (G3)
+s05 "The phone reconnects and syncs. @dan: +t3 vs −t2. Newer wins: following."
+    {t:'online', actor:'alice'}
+    {t:'crdt.sync', a:'alice', b:'server', slot:'profile'}
+    {t:'crdt.sync', a:'bob', b:'server', slot:'profile'}
+    {t:'highlight', path:['server.profile.follows[@dan]@addTs','server.profile.follows[@dan]@removeTs']}   (G8, G9)
+s06 "Everyone agrees: name 'Alice L.', following @dan. Her last tap won, which is what she meant."
+    {t:'same', paths:['server.profile','alice.profile','bob.profile']}   NEW (G5)
+    hold: long
+```
+
+**Gaps hit.** G9 is the headline: `Meta` has one `ts`; this type needs `addTs` and `removeTs`
+per element (and `@addTs` / `@removeTs` path suffixes, G8). `crdt.init args` for a doc schema
+needs per-field args (`follows:{bias:'add'}`) — fold into G3. `@dan` inside `[...]` must be a
+legal item id (G8 grammar: anything but `]`).
+
+---
+
+### II.9 `or-set`
+
+**Goal.** Learn the OR-Set: every add gets a unique tag; remove deletes only the tags you have
+seen. Add after remove works, and a concurrent add and remove keeps the element — no clocks needed.
+
+**When to use**
+
+- sets with frequent add/remove where "add wins" on a race is the right call (cart items, tags, members);
+- you do not want to depend on timestamps;
+- re-adding must always work.
+
+**When not to use**
+
+- remove should beat a concurrent add (use remove-wins LWW-Element-Set, or a transaction);
+- metadata growth is a concern and you cannot compact (each add leaves a tag; removes leave tombstoned tags in some designs — Unit III.7);
+- elements are huge (tags per element add up).
+
+**Real-world anchor.** Riak sets; the set structures inside Automerge/Yjs maps; shared cart /
+playlist items.
+
+Definition shown once: **tag** — a small unique id attached to one add, like `a1` ("Alice's 1st
+add"). Tags are generated by the node; real systems use UUIDs (see the UUID module). Here they are
+short so you can read them (G2).
+
+#### Scene `tags` — remove what you saw, keep what you did not
+
+World: layout `pair`; clock hidden.
+
+- `alice` (a), `bob` (b); no holds yet.
+
+```
+s01 "An OR-Set remembers, for each element, the tags of the adds that put it there."
+    {t:'crdt.init', actors:['alice','bob'], slot:'cart', type:'or-set'}
+    {t:'note', id:'rule', text:'add → new tag · remove → drop the tags you have seen · in set = has a tag', sticky:true}   NEW (G6)
+s02 "Alice adds milk. The add gets tag a1."
+    {t:'crdt.update', actor:'alice', slot:'cart', op:'add', args:['milk']}   (G2: tag 'a1')
+    {t:'highlight', path:'alice.cart[milk]@tags'}   (G8)
+s03 "They sync. Bob has milk with tag a1."
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'cart'}
+    {t:'same', paths:['alice.cart','bob.cart']}   NEW (G5)
+s04 "Bob removes milk. He has seen tag a1, so he removes a1. Milk has no tags left: gone."
+    {t:'clearMarks'}
+    {t:'crdt.update', actor:'bob', slot:'cart', op:'remove', args:['milk']}
+    {t:'highlight', path:'bob.cart', tone:'warn'}
+s05 "At the same time, Alice adds milk again. New add, new tag: a2."
+    {t:'crdt.update', actor:'alice', slot:'cart', op:'add', args:['milk']}   (G2: tag 'a2')
+    {t:'highlight', path:'alice.cart[milk]@tags'}   (G8)
+s06 "They sync. Bob's remove only covered a1. Alice's a2 was never seen by Bob, so it survives. Milk is in, with {a2}."
+    {t:'clearMarks'}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'cart'}
+    {t:'same', paths:['alice.cart','bob.cart']}   NEW (G5)
+    {t:'highlight', path:'bob.cart[milk]@tags'}   (G8)
+s07 "This is 'observed remove': you can only remove what you observed. A concurrent add always wins, and no clock was needed."
+    hold: long
+```
+
+#### Scene `vs-timestamps` — the same race, no timestamps
+
+World: layout `pair`; clock hidden. `cart` = {eggs {b1}} on both (init + Bob adds + sync in s01).
+
+```
+s01 "Both have eggs, added by Bob (tag b1)."
+    {t:'crdt.init', actors:['alice','bob'], slot:'cart', type:'or-set'}
+    {t:'crdt.update', actor:'bob', slot:'cart', op:'add', args:['eggs']}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'cart'}
+s02 "Bob removes eggs (drops b1). Alice, concurrently, adds eggs again (tag a1)."
+    {t:'crdt.update', actor:'bob', slot:'cart', op:'remove', args:['eggs']}
+    {t:'crdt.update', actor:'alice', slot:'cart', op:'add', args:['eggs']}
+    {t:'conflict', a:'alice.cart[eggs]', b:'bob.cart'}   (G8: conflict between an item and an empty set — see note)
+s03 "With LWW we would compare timestamps and hope the clocks agree. Here we compare tags."
+    {t:'clearMarks'}
+    {t:'highlight', path:'alice.cart[eggs]@tags'}   (G8)
+s04 "Sync. Bob's remove knew b1, not a1. Eggs stay, with {a1}. Same answer on both sides, every time."
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'cart'}
+    {t:'same', paths:['alice.cart','bob.cart']}   NEW (G5)
+s05 "OR-Set means add-wins by construction. If remove must win on a race, the OR-Set is the wrong tool."
+    hold: long
+```
+
+#### Scene `group-cart` — [in-context] three people, one offline
+
+World: layout `triangle`; clock hidden.
+
+- `alice` (a), `bob` (b), `carol` (c); no holds yet.
+
+```
+s01 "A shared cart as an OR-Set. Carol is offline in a shop."
+    {t:'crdt.init', actors:['alice','bob','carol'], slot:'cart', type:'or-set'}
+    {t:'crdt.update', actor:'alice', slot:'cart', op:'add', args:['bread']}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'cart'}
+    {t:'crdt.sync', a:'alice', b:'carol', slot:'cart'}
+    {t:'offline', actor:'carol'}
+s02 "Carol buys the bread and removes it (she saw a1). Still offline."
+    {t:'crdt.update', actor:'carol', slot:'cart', op:'remove', args:['bread']}
+s03 "Bob, online, adds bread again because the first loaf is for the party. Tag b1."
+    {t:'crdt.update', actor:'bob', slot:'cart', op:'add', args:['bread']}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'cart'}
+    {t:'highlight', path:'alice.cart[bread]@tags'}   (G8)
+s04 "Carol reconnects and syncs with Alice. Her remove of a1 lands; Bob's b1 survives. Bread: {b1}."
+    {t:'clearMarks'}
+    {t:'online', actor:'carol'}
+    {t:'crdt.sync', a:'carol', b:'alice', slot:'cart'}
+    {t:'highlight', path:'carol.cart[bread]@tags'}   (G8)
+s05 "One more sync and all three agree: bread is on the list exactly once, for the right reason."
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'cart'}
+    {t:'same', paths:['alice.cart','bob.cart','carol.cart']}   NEW (G5)
+s06 "Tags make 'what you saw' explicit. The cost is one small tag per add — and that is the topic after next."
+    hold: long
+```
+
+**Gaps hit.** G2 is the headline: tags must be deterministic and short (`a1`, `b1`) — both for
+the screenshots and so narration can name them; inject an id generator into the CRDT. G8
+(`@tags`). `conflict` between an item and an empty set (s02 of `vs-timestamps`) has no clean
+target — allow `conflict` with a set path on one side and draw the ⚡ at the set.
+
+---
+
+### II.10 `in-context-shopping-list`
+
+**Goal.** Compose everything from this unit into one document two phones can edit offline: LWW
+fields, an OR-Set of items, a PN-Counter quantity per item. Watch each part merge by its own rule.
+
+**When this composition fits**
+
+- shared lists and boards edited offline (groceries, packing, chores);
+- each piece of data has an obvious "right" merge when you look at it alone;
+- a short disagreement window is acceptable.
+
+**When it does not**
+
+- the list has a strict order that both users reorder (needs a sequence CRDT, Unit III.5);
+- quantities are inventory with a hard floor;
+- you need an audit log of who did what (Unit III ops).
+
+**Real-world anchor.** Shared grocery apps (Apple Reminders lists, AnyList, Bring!), with offline
+editing on two phones.
+
+The document schema (this is what `crdt.init type:'doc'` receives — G3):
+
+```
+list: {
+  title:   lww-register,
+  items:   or-set<item-id> of {
+    name:  lww-register,
+    qty:   pn-counter
+  }
+}
+```
+
+#### Scene `build-it` — the pieces, in place
+
+World: layout `pair`; clock visible, `t=0`.
+
+- `alice` (a, phone), `bob` (b, label "Bob · phone"); no holds yet.
+
+```
+s01 "One shared list. Title: LWW. Items: OR-Set. Each item: name (LWW) and quantity (PN-Counter)."
+    {t:'crdt.init', actors:['alice','bob'], slot:'list', type:'doc', schema:{title:'lww-register', items:{'or-set':{name:'lww-register', qty:'pn-counter'}}}, args:{title:'Groceries'}}   NEW (G3)
+    {t:'highlight', path:'alice.list'}
+s02 "Alice adds milk. The item gets an id (tag) and starts with qty 0."
+    {t:'crdt.update', actor:'alice', slot:'list', path:'items', op:'add', args:['milk']}   NEW (G3) (G2: item id 'a1')
+s03 "She sets the quantity to 2. That is two increments on the item's counter."
+    {t:'crdt.update', actor:'alice', slot:'list', path:'items[milk].qty', op:'inc', args:[2]}   NEW (G3)
+s04 "Bob adds eggs with qty 12."
+    {t:'crdt.update', actor:'bob', slot:'list', path:'items', op:'add', args:['eggs']}   NEW (G3)
+    {t:'crdt.update', actor:'bob', slot:'list', path:'items[eggs].qty', op:'inc', args:[12]}   NEW (G3)
+s05 "They sync. The set unions. Each item's counter merges by max-per-row."
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'list'}
+    {t:'same', paths:['alice.list','bob.list']}   NEW (G5)
+s06 "Look at the sidecar: a tag on each item, a timestamp on the title, a per-node row on each quantity."
+    {t:'highlight', path:['alice.list.title@ts','alice.list.items[milk]@tags','alice.list.items[milk].qty']}   (G8)
+s07 "Every part brought its own merge rule. Now let's break the network."
+    hold: long
+    {t:'clearMarks'}
+```
+
+#### Scene `offline-weekend` — both phones edit, then reconcile
+
+World: layout `pair`; clock continues (`t=0` of this scene). State from `build-it` re-created in s01.
+
+```
+s01 "Saturday. Both phones have the same list. Then both go offline."
+    {t:'crdt.init', actors:['alice','bob'], slot:'list', type:'doc', schema:{title:'lww-register', items:{'or-set':{name:'lww-register', qty:'pn-counter'}}}, args:{title:'Groceries'}}   NEW (G3)
+    {t:'crdt.update', actor:'alice', slot:'list', path:'items', op:'add', args:['milk']}
+    {t:'crdt.update', actor:'alice', slot:'list', path:'items[milk].qty', op:'inc', args:[2]}
+    {t:'crdt.update', actor:'bob', slot:'list', path:'items', op:'add', args:['eggs']}
+    {t:'crdt.update', actor:'bob', slot:'list', path:'items[eggs].qty', op:'inc', args:[12]}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'list'}
+    {t:'offline', actor:'alice'}
+    {t:'offline', actor:'bob'}
+s02 "Time 1. Alice renames the list and adds one more milk."
+    {t:'tick'}
+    {t:'crdt.update', actor:'alice', slot:'list', path:'title', op:'set', args:['Party shop']}
+    {t:'crdt.update', actor:'alice', slot:'list', path:'items[milk].qty', op:'inc', args:[1]}
+s03 "Time 2. Bob removes eggs (he bought them), and drops milk by one."
+    {t:'tick'}
+    {t:'crdt.update', actor:'bob', slot:'list', path:'items', op:'remove', args:['eggs']}
+    {t:'crdt.update', actor:'bob', slot:'list', path:'items[milk].qty', op:'dec', args:[1]}
+s04 "Time 3. Bob also renames the list."
+    {t:'tick'}
+    {t:'crdt.update', actor:'bob', slot:'list', path:'title', op:'set', args:['Sat shopping']}
+    {t:'conflict', a:'alice.list.title', b:'bob.list.title'}
+s05 "Sunday. Both come online and sync. Watch each part."
+    {t:'clearMarks'}
+    {t:'online', actor:'alice'}
+    {t:'online', actor:'bob'}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'list'}
+s06 "Title: LWW, t=3 beats t=1. 'Sat shopping'."
+    {t:'highlight', path:'alice.list.title@ts'}   (G8)
+s07 "Eggs: OR-Set. Bob removed the tag he saw; nobody re-added. Eggs are gone."
+    {t:'highlight', path:'alice.list.items', tone:'info'}
+s08 "Milk qty: PN-Counter. 2 (Alice) + 1 (Alice) − 1 (Bob) = 2. Both edits counted."
+    {t:'highlight', path:'alice.list.items[milk].qty'}   (G8)
+    {t:'callout', at:'alice.list.items[milk].qty', text:'2 + 1 − 1 = 2', tone:'info'}
+s09 "Both phones: 'Sat shopping', milk × 2. No lock, no lost edit, no manual conflict screen."
+    {t:'clearMarks'}
+    {t:'same', paths:['alice.list','bob.list']}   NEW (G5)
+    hold: long
+```
+
+#### Scene `one-more-race` — remove vs edit-inside
+
+World: layout `pair`; clock continues. State from the end of `offline-weekend` re-created in s01 (title 'Sat shopping' t=3, milk × 2, no eggs).
+
+```
+s01 "One last race. Alice removes milk. At the same time, Bob bumps milk's quantity to 3."
+    {t:'crdt.init', actors:['alice','bob'], slot:'list', type:'doc', schema:{title:'lww-register', items:{'or-set':{name:'lww-register', qty:'pn-counter'}}}, args:{title:{value:'Sat shopping', ts:3, node:'bob'}}}   NEW (G3)
+    {t:'crdt.update', actor:'alice', slot:'list', path:'items', op:'add', args:['milk']}
+    {t:'crdt.update', actor:'alice', slot:'list', path:'items[milk].qty', op:'inc', args:[2]}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'list'}
+    {t:'crdt.update', actor:'alice', slot:'list', path:'items', op:'remove', args:['milk']}
+    {t:'crdt.update', actor:'bob', slot:'list', path:'items[milk].qty', op:'inc', args:[1]}
+    {t:'conflict', a:'alice.list.items', b:'bob.list.items[milk]'}
+s02 "Sync. The OR-Set decides membership: Alice removed the only tag; Bob added no new tag. Milk is gone — with its counter."
+    {t:'clearMarks'}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'list'}
+    {t:'same', paths:['alice.list','bob.list']}   NEW (G5)
+s03 "Bob's +1 vanished with the item. Editing inside an element does not protect it from a remove. Decide if that is what you want."
+    {t:'callout', at:'bob.list.items', text:'edit-inside lost to remove', tone:'warn'}
+s04 "If 'any edit should keep the item', the app can re-add on edit (a new tag). That is an app rule on top of the CRDT — and a fine one."
+    hold: long
+```
+
+**Gaps hit.** G3 end-to-end: nested schema (`or-set` of docs), path-addressed updates with item
+ids (`items[milk].qty`), per-field init args incl. `{value, ts, node}`. G2 (item tags). G8
+(`[milk]` and `@tags` inside a nested path). Re-creating state at the start of each scene is long
+(s01 blocks) — a `scene.startFrom: <previous scene id>` or `world.from` option would let scenes
+inherit a prior scene's final world (§3 G20).
+
+---
+
+### II.11 `the-cost-of-state`
+
+**Goal.** See the price of state-based sync: the whole state goes on the wire on every sync, and
+sidecar grows. Deltas shrink the wire cost; operations (Unit III) are the other answer.
+
+**State-based is fine when**
+
+- the state is small (a status, a counter, a short set);
+- syncs are rare (on reconnect, every few seconds);
+- simplicity matters more than bandwidth.
+
+**Look further when**
+
+- the state is large and edits are small and frequent (a document, a long list);
+- many peers sync often (n × state size, every round);
+- sidecar (tags, tombstones, per-node rows) keeps growing and you cannot compact it.
+
+**Real-world anchor.** Riak's full-state replication vs. delta-state CRDTs; Automerge's sync
+protocol (sends only what the other side lacks).
+
+#### Scene `full-state` — one word, the whole list
+
+World: layout `pair`; clock hidden. `list` = OR-Set with 12 items (init + 12 adds + sync in s01; items: apples, bananas, bread, butter, cheese, coffee, eggs, flour, milk, onions, rice, salt).
+
+```
+s01 "A shared list with twelve items, already in sync."
+    {t:'crdt.init', actors:['alice','bob'], slot:'list', type:'or-set'}
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['apples']}
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['bananas']}
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['bread']}
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['butter']}
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['cheese']}
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['coffee']}
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['eggs']}
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['flour']}
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['milk']}
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['onions']}
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['rice']}
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['salt']}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'list'}
+s02 "Alice adds one item: tea."
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['tea']}
+s03 "To sync, she sends her state. All thirteen items and their tags, for one new word."
+    {t:'crdt.send', from:'alice', to:'bob', slot:'list', id:'m1', mode:'full'}   NEW (G4, G11: reducer computes size label, e.g. '412 B')
+    {t:'callout', at:'alice', text:'whole state, every time', tone:'warn'}
+s04 "Bob merges. Twelve of the thirteen items were already there."
+    {t:'clearMarks'}
+    {t:'crdt.merge', into:'bob', from:{message:'m1'}, slot:'list'}   NEW (G4)
+s05 "Bob removes salt. Same story back: the whole state for one change."
+    {t:'crdt.update', actor:'bob', slot:'list', op:'remove', args:['salt']}
+    {t:'crdt.send', from:'bob', to:'alice', slot:'list', id:'m2', mode:'full'}   NEW (G4, G11)
+    {t:'crdt.merge', into:'alice', from:{message:'m2'}, slot:'list'}   NEW (G4)
+s06 "With a big document and many peers, this adds up fast: size × peers × syncs."
+    hold: long
+    {t:'note', id:'cost', text:'wire cost ≈ state size × peers × sync rounds', sticky:true}   NEW (G6)
+```
+
+#### Scene `delta` — send only what changed
+
+World: layout `pair`; clock hidden. Same 12-item list (re-created in s01, as above).
+
+```
+s01 "Same list. This time Alice sends a delta: a tiny state that holds only her change."
+    (re-create the 12-item list as in full-state s01)
+    {t:'crdt.update', actor:'alice', slot:'list', op:'add', args:['tea']}
+    {t:'crdt.send', from:'alice', to:'bob', slot:'list', id:'m1', mode:'delta'}   NEW (G4, G11: size label e.g. '24 B')
+s02 "Bob merges the delta with the same merge() as before. A delta is just a small state."
+    {t:'crdt.merge', into:'bob', from:{message:'m1'}, slot:'list'}   NEW (G4)
+    {t:'same', paths:['alice.list','bob.list']}   NEW (G5)
+s03 "Compare the two envelopes: about 400 bytes vs about 24. Same result."
+    {t:'callout', at:'bob.list', text:'full ≈ 400 B · delta ≈ 24 B (computed)', tone:'ok'}
+s04 "The catch: you must know what the other side has not seen yet. Lose track, and you fall back to full state (simplified)."
+    {t:'clearMarks'}
+    {t:'callout', at:'alice', text:'needs: what has Bob seen?', tone:'info'}
+s05 "Deltas keep the three laws: commutative, associative, idempotent. That is why the same merge() works."
+    hold: long
+    {t:'clearMarks'}
+```
+
+#### Scene `sidecar-grows` — the other cost
+
+World: layout `pair`; clock hidden. `cart` = OR-Set; `alice`, `bob`.
+
+```
+s01 "State also grows inside. Watch an OR-Set through a busy day."
+    {t:'crdt.init', actors:['alice','bob'], slot:'cart', type:'or-set'}
+    {t:'crdt.update', actor:'alice', slot:'cart', op:'add', args:['milk']}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'cart'}
+s02 "Add, remove, add, remove, add. Each add is a new tag. Each remove leaves a record of what it removed (in many designs)."
+    {t:'crdt.update', actor:'bob', slot:'cart', op:'remove', args:['milk']}
+    {t:'crdt.update', actor:'alice', slot:'cart', op:'add', args:['milk']}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'cart'}
+    {t:'crdt.update', actor:'bob', slot:'cart', op:'remove', args:['milk']}
+    {t:'crdt.update', actor:'alice', slot:'cart', op:'add', args:['milk']}
+    {t:'crdt.sync', a:'alice', b:'bob', slot:'cart'}
+    {t:'highlight', path:'alice.cart[milk]@tags'}   (G8)
+s03 "One item in the cart. Several tags in the sidecar. Tombstones in the 2P-Set never leave at all."
+    {t:'callout', at:'alice.cart', text:'1 visible item · growing sidecar', tone:'warn'}
+s04 "Real systems compact: they drop sidecar everyone has seen. That needs to know what everyone has seen — Unit IV."
+    hold: long
+    {t:'clearMarks'}
+```
+
+#### Scene `choose` — [in-context] small doc, big doc
+
+World: layout `row`; clock hidden.
+
+- `alice` (a) holds `status = 'Lunch'` (plain scalar, illustrative) and `doc = rec({pages:'40', words:'12 000'})`
+
+```
+s01 "Two pieces of data on one phone. A status line and a long document."
+    {t:'highlight', path:['alice.status','alice.doc']}
+s02 "Status: a few bytes. Send the whole state every time. Done."
+    {t:'callout', at:'alice.status', text:'state-based: fine', tone:'ok', sticky:true}
+s03 "Document: thousands of words, edited one letter at a time. Full state per keystroke is absurd."
+    {t:'callout', at:'alice.doc', text:'state-based: too heavy', tone:'danger', sticky:true}
+s04 "For the document, send what you did, not what you have. That is Unit III: operation-based CRDTs."
+    hold: long
+```
+
+**Gaps hit.** G11 (message `size` computed by the reducer from the real serialized state or delta
+— the lesson must not hand-write byte counts), G4 (`mode:'delta'` needs the CRDT impl to expose
+`delta(since)`; for v1 a delta can be "the state of the most recent op(s)" for set/counter types,
+and the narration says "(simplified)"), G6, G5. A 12-item init block is noisy: an `init` `args`
+that accepts initial elements (`args:{items:[…]}` for sets) halves it.
+
+---
+
+## 3. DSL gaps — consolidated proposals
+
+Ordered by severity. Each says what was needed, the proposal, and which topics need it.
+
+### G1 — Timestamp and node source for `crdt.update` · **blocker**
+
+**Needed by:** II.2, II.3, II.8, I.5/I.6 previews, II.10.
+**Problem:** LWW types need `(ts, node)` per write. v0 `crdt.update` has neither, and nothing ties
+`world.clock` to CRDT ops.
+**Proposal:** the reducer passes a context to every CRDT op: `{ now: world.clock, node: actor,
+ids: IdGen }`. `tick` is the only way time moves. Optional override `at?: number` on
+`crdt.update` for "this write happened at t=5" without ticking. `crdt.init args` accepts either a
+plain initial value (stamped `ts:0, node:'init'`) or `{value, ts, node}` per field.
+
+### G2 — Deterministic, short ids and tags · **blocker**
+
+**Needed by:** II.9, II.10, II.11 (and Unit III op ids).
+**Problem:** OR-Set tags, item ids, and later op ids must be stable across runs (tests,
+storyboards, i18n of narration that names them) and short enough to draw.
+**Proposal:** CRDT constructors take an `IdGen`; the reducer supplies one per scene that yields
+`${nodeLetter}${seq}` (`a1`, `b2`). Narration may quote these ids. Property tests use random ids;
+lesson runs use the deterministic gen.
+
+### G3 — Composite CRDT documents · **blocker**
+
+**Needed by:** II.5, II.6, II.7, II.8 in-context scenes; II.10 entirely; I.6 preview; Unit V.
+**Problem:** `crdt.init` creates one type per slot. Real documents nest: map of registers, set of
+docs with counters inside.
+**Proposal:**
+
+```ts
+{ t:'crdt.init', actors, slot, type:'doc',
+  schema: Schema, args?: Record<string, unknown> }
+type Schema = CrdtType | { [field: string]: Schema } | { 'or-set': Schema } | { 'lww-map': true }
+{ t:'crdt.update', actor, slot, path?: string, op, args }   // path addresses a sub-CRDT: 'items[milk].qty'
+```
+
+`toValue` of a doc is a `record` whose fields are the children's `toValue`, so the renderer needs
+nothing new. Per-field init args (`args:{follows:{bias:'add'}}`) ride along.
+
+### G4 — State on the wire as a static frame · **important**
+
+**Needed by:** every Unit II scene, I.5, I.6.
+**Problem:** `crdt.merge into/from` teleports state. Lessons need "send state (frame N) … merge on
+arrival (frame N+1)", out-of-order arrival, drops, duplicates — i.e. messages that carry CRDT
+state and exist between steps.
+**Proposal:**
+
+```ts
+{ t:'crdt.send', from, to: ActorId | ActorId[], slot, id?, mode?: 'full' | 'delta' }
+  // snapshots the sender's state *at this step*; message payload = toValue(snapshot); size computed
+{ t:'crdt.merge', into, from: ActorId | { message: string }, slot }
+```
+
+Keep `crdt.merge from: ActorId` as sugar for "send + merge in one step" and `crdt.sync` for both
+directions. `crdt.send` to several recipients creates one message per recipient (G12).
+
+### G5 — `same` mark · **important**
+
+**Needed by:** every topic (convergence is the whole point).
+**Proposal:** `{ t:'same', paths: Path[] }` — draws "=" links / a shared check across the named
+values. Transient like other marks unless `sticky`. The reducer should assert structural equality
+of the `toValue` trees in test mode (a `same` on unequal values is a content bug).
+
+### G6 — `note` (free-standing stage card) · **important**
+
+**Needed by:** rule cards in all of Unit II; lesson summaries in Unit I.
+**Proposal:** `{ t:'note', id, text, tone?, sticky?: boolean }` placed in a stage gutter (not
+attached to an actor or path). Same `id` replaces the previous note (used in II.1 to step through
+the three laws). Removed by `clearMarks` or `unmark` (G16). Text is localizable by step id.
+
+### G7 — Actor status badge · **important**
+
+**Needed by:** I.2, I.3.
+**Proposal:** `{ t:'status', actor, status: 'lock' | 'waiting' | 'busy' | 'error' | null }` →
+`Actor.status`. Drawn as a small labeled badge (icon + word, not color only). `offline` stays a
+separate boolean.
+
+### G8 — Path grammar · **important**
+
+**Needed by:** all of Unit II (highlighting sidecar), I.5.
+**Proposal:** `Path := actor ( '.' key | '[' id ']' )* ( '@' metaKey )?` where `[id]` indexes
+list/set items and counter rows; `metaKey ∈ {ts, node, tags, tomb, addTs, removeTs, neg[...]}`.
+Examples: `alice.views[alice]`, `alice.likes@neg[alice]`, `bob.fav[jazz]@removeTs`,
+`alice.list.items[milk].qty`. The renderer maps `@…` to the sidecar tag element of the value.
+Item ids may contain anything but `]`.
+
+### G9 — Richer `Meta` · **important**
+
+**Needed by:** II.8.
+**Proposal:** `Meta = { ts?, node?, tag?, tombstone?, note?, addTs?, removeTs?, extra?: Record<string, string | number | boolean> }`.
+`extra` is the escape hatch for later types (HLC, vector-clock entries on a register).
+
+### G10 — No-op visibility · **important**
+
+**Needed by:** II.1 (idempotence), II.2, II.4, II.7.
+**Proposal:** when a `crdt.update`/`crdt.merge` leaves the slot's `toValue` unchanged, the
+reducer adds a transient mark `{ kind:'unchanged', at: '<actor>.<slot>' }` drawn as a small
+"no change" pill. Narration can then say "nothing changed" and the frame proves it.
+
+### G11 — Message size · **important**
+
+**Needed by:** II.11.
+**Proposal:** `Message.size?: number` (bytes), set by `crdt.send` from the serialized snapshot or
+delta; `send` may set it explicitly. Renderer draws the size label and scales envelope thickness
+(bounded). Lessons never hand-write sizes.
+
+### G12 — Per-recipient message ids · **important**
+
+**Needed by:** I.5, II.1, II.2, II.3, II.4.
+**Proposal:** `send`/`crdt.send` with `to: ActorId[]` creates messages `${id}:${to}`; `deliver`,
+`drop`, `crdt.merge from:{message}` address them individually.
+
+### G13 — Actor icon and owner · **nice**
+
+**Proposal:** `Actor.icon?: 'person' | 'phone' | 'laptop' | 'tablet' | 'server' | 'cloud' | 'service'`
+and `Actor.owner?: ActorId` (same person, two devices → same hue, small "Alice's" caption).
+Also `Actor.subtitle?: string` for the I.6 gallery instead of the `holds:{shares:…}` hack.
+
+### G14 — Scene clock config · **nice**
+
+**Proposal:** `World.clock: { now: number; visible: boolean; format: 'int' | 'ms' | 'hh:mm' }`.
+Unit I.3 uses `ms`; Unit II uses `int`.
+
+### G15 — Reject/bounce on deliver · **nice**
+
+**Proposal:** `{ t:'deliver', message, into?, outcome?: 'ok' | 'reject' }` — reject animates a
+bounce and leaves a ✗ on the message. Used nowhere yet (I.2 composes `cross` + a reply message),
+but Unit III "rejected op" scenes will want it.
+
+### G16 — Mark ids and `unmark` · **nice**
+
+**Proposal:** `callout`/`note`/`highlight` accept `id?`; `{ t:'unmark', id }` removes one.
+Today every multi-callout scene ends in `clearMarks`, which also wipes rule notes.
+
+### G17 — `highlight` an actor · **nice**
+
+**Proposal:** `highlight.path` accepts `ActorId` (whole card), matching `callout.at`.
+
+### G18 — Stable item order in `toValue` · **nice (renderer contract)**
+
+Sets and counters must render in a deterministic order that does not change on merge (first-seen
+on that replica, then by id). Otherwise Motion `layout` reshuffles rows and the "what changed"
+signal is lost.
+
+### G19 — `tryIt` declaration · **nice (open question 4)**
+
+Per scene: `tryIt?: { slot, actors, ops: Array<{ op, label, args?: 'prompt' | unknown[] }> }`.
+Unit II topics would expose exactly the ops their scenes use (`set`, `inc/dec`, `add/remove`,
+`sync`).
+
+### G20 — Scene inherits a previous scene's final world · **nice**
+
+`scene.startFrom?: SceneId` — avoids the long s01 re-creation blocks in II.3, II.7, II.10. The
+reducer computes the parent's final state; seeking stays deterministic.
+
+### P1 — `max-register` CRDT · **pedagogy**
+
+~20 lines in `src/crdt/`. Used only by II.1. Makes the three laws demonstrable with one number.
+
+### Clarifications the DSL doc should state (no new commands)
+
+- `send payload:{ref: Path}` snapshots the value at send time (messages are immutable).
+- A message that is sent but not yet delivered sits at the midpoint of its route in every
+  static frame until `deliver`/`drop`.
+- `crdt.init` on a slot that already exists for other actors **adds replicas** (II.7 spawns
+  Carol mid-scene); it does not reset existing ones.
+- `crdt.sync a b` = merge both directions in one step (two messages, both delivered).
+- `set` of a non-CRDT scalar on a path inside a CRDT slot must be a schema error.
+
+---
+
+## 4. Authoring ergonomics — builder helpers these scripts want
+
+The raw object literals above are exact but long. With the helpers below, a typical step is one
+to three short lines. All helpers are pure constructors (no logic, no closures over state), so the
+output is still plain data that the Zod schema validates.
+
+### 4.1 Structure
+
+```ts
+topic({ id:'lww-register', title, goal, whenToUse:[…], whenNotToUse:[…], realWorld, scenes:[…] })
+scene('update-and-merge', world({ layout:'pair', clock:{ visible:true } , actors:[alice.phone(), bob.laptop()] }), [
+  step('s01', 'An LWW register holds a value and a timestamp…', [ … ]),
+  step('s02', '…').hold('long'),
+])
+```
+
+`scene(…).startFrom('build-it')` for G20. Step ids are explicit strings (never generated) so
+translations stay stable.
+
+### 4.2 Actors
+
+```ts
+alice()              // person, color a
+alice.phone()        // icon phone, label 'Alice · phone'
+alice.laptop()       // second device, owner alice (G13)
+bob(), carol()
+server('Relay')      // kind server; label optional
+service('edge-us', 'US edge', 'a')
+actor(...).holds({ doc: rec({ title:'Q3 plan' }), lock:'free' })   // Unit I plain values
+```
+
+### 4.3 Values
+
+```ts
+rec({ title: 'Q3 plan', owner: 'Bob' }) // record of scalars (nestable)
+list(['bread', 'milk']) // list, ids = values
+sset(['a', 'b']) // set
+cnt({ alice: 2, bob: 1 }) // counter
+```
+
+### 4.4 Primitive commands (thin wrappers, same names as `t`)
+
+```ts
+set('alice.doc.title', 'Q3 plan v2')
+send('alice', 'server', ref('alice.doc'), { id:'m3', label:'save' })
+send('server', 'bob', 'wait', { id:'m4' })            // scalar payload = control message
+deliver('m3', { into:'server.doc' })
+drop('m1')
+offline('alice'); online('alice')
+status('alice', 'lock'); status('bob', null)           // G7
+highlight('bob.status@ts'); highlight(['a','b'], { tone:'warn' })
+callout('server.doc.title', 'last write silently won', { tone:'warn', sticky:true, id:'c1' })
+note('rule', 'merge = max', { sticky:true })           // G6
+conflict('alice.doc.title', 'bob.doc.title')
+same('alice.doc.title', 'bob.doc.title', …)           // G5, variadic
+check(path); cross(path); tick(); tick(150); clearMarks(); unmark('c1'); layout('triangle')
+```
+
+### 4.5 CRDT commands
+
+```ts
+crdt.init(['alice', 'bob'], 'status', 'lww-register', { value: 'Offline' })
+crdt.doc(
+  ['alice', 'bob'],
+  'list',
+  { title: lwwReg(), items: orSet({ name: lwwReg(), qty: pnCounter() }) },
+  { title: 'Groceries' },
+) // G3
+crdt.update('alice', 'status', 'set', 'In a meeting') // args spread
+crdt.update('alice', 'list', 'items[milk].qty', 'inc', 2) // path form
+crdt.send('alice', 'bob', 'status', { id: 'm1', mode: 'delta' }) // G4
+crdt.merge('bob', { message: 'm1' }, 'status')
+crdt.merge('bob', 'alice', 'status') // one-step sugar
+crdt.sync('alice', 'bob', 'status')
+```
+
+Type-specific sugar reads best in content and keeps op names typed per type:
+
+```ts
+lww('status').set('alice', 'In a meeting')
+lwwMap('task').set('bob', 'status', 'Doing')
+gcounter('views').inc('alice', 2)
+pncounter('likes').dec('alice')
+gset('seen').add('alice', 'm1')
+twoPSet('guests').remove('bob', 'dan')
+lwwSet('fav').add('alice', 'jazz')
+orSet('cart').remove('bob', 'milk')
+doc('list').at('items[milk].qty').inc('bob', 1)
+```
+
+### 4.6 Multi-step macros (expand to plain commands at build time; still data)
+
+```ts
+syncAll('list', ['alice','server'], ['bob','server'], ['alice','server'])   // ordered pair syncs (II.3, II.6, II.7)
+broadcastState('carol', ['alice','bob'], 'views', 'm3')                     // crdt.send to many + merge each (I.5, II.2, II.4)
+allSame('views', ['alice','bob','carol'])                                    // same(...) over `<actor>.<slot>`
+initSet('list', ['alice','bob'], ['apples','bananas', …])                   // init + adds + sync (II.11)
+```
+
+Macros must expand to the same command list a human would write, so the reducer and tests never
+see them.
+
+### 4.7 Narration helpers
+
+- `step(id, say, do)` — `say` is a single string; two sentences max enforced by a lint rule
+  (count of `. ! ?` ≤ 2, length ≤ 160 chars).
+- `term('LWW', 'Last-Writer-Wins')` marks a first-use definition in `say` so the glossary and the
+  style-guide check can find it.
+
+### 4.8 Paths
+
+A typed `p` helper is worth it: `p.alice.status.ts` → `'alice.status@ts'`,
+`p.alice.list.items('milk').qty` → `'alice.list.items[milk].qty'`. At test time the Zod schema
+checks every path in a scene against the world the reducer actually builds at that step.
+
+---
+
+## 5. Topic changes vs. `outline.md`
+
+No topics were split or merged. Additions and renames, all within the outline's ids:
+
+| topic   | change                                                                                                                                                                               |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| I.1–I.4 | each gained an `[in-context]` scene (a real system diagram, a bank transfer, a three-editor doc, an order record) so Unit I follows the same "atomic → in-context" rhythm as Unit II |
+| I.5     | uses a **real** G-Set and a **real** LWW register as labeled previews (no hand-written merges)                                                                                       |
+| I.6     | second scene is a notes-app sync with a real LWW map (preview) rather than a static slide                                                                                            |
+| II.1    | uses a new tiny `max-register` (P1) to show the three laws with one number; adds a "bad network" in-context scene                                                                    |
+| II.2    | four scenes: update/merge, tie-break, any-order, phone+laptop+relay                                                                                                                  |
+| II.5    | adds `no-floor` (the oversell failure) so "when not to use" is shown, not just listed                                                                                                |
+| II.8    | `bias` scene shows add-wins and remove-wins side by side in two slots                                                                                                                |
+| II.10   | adds `one-more-race` (remove vs edit-inside) — the composition gotcha people actually hit                                                                                            |
+| II.11   | adds `sidecar-grows` so "cost" covers bytes on the wire **and** metadata growth                                                                                                      |
+
+Step counts: Unit I — 6 topics, 14 scenes, 109 steps. Unit II — 11 topics, 32 scenes, 235 steps.
+(Counts are approximate; see the scripts.)
+
+### Adversarial-review flags to carry into the content pass
+
+- II.2 s05/s06 and II.3 s06: the narration says "sends", the command is `crdt.sync` in some
+  scenes — the verify walker should assert that a frame with an in-flight message exists wherever
+  the narration says "sends".
+- II.9 `vs-timestamps` s02: `conflict` between an item and an empty set needs a renderer decision.
+- Every `(simplified)` is deliberate: I.3 latency numbers, II.11 delta explanation, I.2 "what a
+  transaction does".
+- Names of real products appear only in "real-world anchor" text and the I.6 gallery labels;
+  verify wording with the style guide before publishing.
