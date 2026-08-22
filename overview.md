@@ -22,6 +22,8 @@ There should be a sort of simple 'script' that goes along with it stepping throu
 
 The communication style in the lesson should use Simple Technical English where possible, avoiding flowerly language- except when wanting to be slightly 'colorful' - like, "Whoops- now we have a problem" or fun bits like that. However, the majority of the language should be as straightforward as possible, using the simplest words to explain these complicated concepts. This will require multiple adversarial reviews.
 
+Do not write large paragraphs or use excessive jargon. Each step in each animation should be a simple sentence or two (max!) that express exactly whats happening or the problem that we are demonstrating.
+
 Additionally, this content should be translated into the top 5 languages in the world after we feel good about the english version, but it should be built for that.
 
 ### Example Lesson info
@@ -91,3 +93,15 @@ The building agent should spend time with the user (me!) choosing the right libr
 
 
 The user will be reviewing the quality of the technical implementation and (even more importantly) the quality of the lessons and animations.
+
+### Required Outcome
+
+First, come up with a simple plan with the lead developer on tech choices and on product layout and design language- etc. Especially around animations.
+
+Then- once you are in implementation, I'm looking for a fully functional Learning website for programmers (and product folks) to have a well fleshed out entire series on CRDTs with expressive fluid animations and high quality simple content.
+
+A user should be able to load the site and navigate and successfully complete the CRDT course having a good understanding of the algorithms and how they can be used to build real applications. Especially how to choose which algorithm for specific data needs. "When to use" kinda thing. They should understand both command and stateful, all the major algorithms, vector clocks, tombstoning, and more.
+
+The site must be visually polished on any desktop web browser size, with a thoughtful layout, easy navigation, and most importantly- the animations MUST be extremely expressive of the ideas which will require many different types of animations and examples.
+
+At minimum, Prototypes of the other Units animations and explainations should exist in to demonstrate that the animation system can handle expressively showing the required types of concepts.
