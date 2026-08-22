@@ -16,6 +16,7 @@ import { useSetting } from '@/settings'
 import { TransportBar } from '@/app/components/transport-bar'
 import { Narration } from '@/app/components/narration'
 import { TopicPanels } from '@/app/components/topic-panels'
+import { TryIt } from '@/app/components/try-it/TryIt'
 
 // TanStack Router JSON-parses search values, so `?lab=1` arrives as the number 1; normalise.
 const flag = (on: string) =>
@@ -277,7 +278,14 @@ function LessonPlayer({
         whenNotToUse={topic.whenNotToUse}
         realWorld={topic.realWorld}
         tryIt={
-          scene?.tryIt ? <p className="text-sm text-ink-3">{t('topic.tryItSoon')}</p> : undefined
+          Object.values(frame.world.replicas).some((slots) => Object.keys(slots).length > 0) ? (
+            <TryIt
+              frame={frame}
+              topicRef={{ module: moduleId, unit: unitId, topic: topicId }}
+              sceneId={frame.sceneId}
+              tryIt={scene?.tryIt}
+            />
+          ) : undefined
         }
         className="mt-2"
       />
