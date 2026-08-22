@@ -18,9 +18,14 @@
   --stage-token-h: 2rem; /* the inbox tray reserves one token row */
 }
 
-.stage-layout {
+/* The stage root is the size container, so `.stage-layout` and its children can all respond to
+   `@container stage (...)` — an element never matches a container query against itself. */
+[data-stage] {
   container-type: inline-size;
   container-name: stage;
+}
+
+.stage-layout {
   display: flex;
   align-items: center; /* actors and boards sit vertically centred in the stage */
   gap: var(--stage-gap);
