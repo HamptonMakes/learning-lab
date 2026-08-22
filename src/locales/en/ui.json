@@ -4,12 +4,10 @@
   "app.eyebrow": "Computer science, animated",
   "app.tagline": "Animated lessons on the computer science ideas that working programmers usually skip.",
   "app.by": "by Hampton Lintorn-Catlin",
-
   "home.start": "Start with {module}",
   "home.browse": "Browse all topics",
   "home.topicCount.one": "{count} topic",
   "home.topicCount.other": "{count} topics",
-
   "nav.home": "Home",
   "nav.modules": "Modules",
   "nav.comingSoon": "Coming soon",
@@ -20,13 +18,11 @@
   "nav.settings": "Settings",
   "nav.menu": "Menu",
   "nav.skipToContent": "Skip to content",
-
   "breadcrumb.label": "You are here",
   "breadcrumb.home": "Home",
   "breadcrumb.module": "Module",
   "breadcrumb.unit": "Unit",
   "breadcrumb.topic": "Topic",
-
   "player.play": "Play",
   "player.pause": "Pause",
   "player.next": "Next step",
@@ -38,7 +34,6 @@
   "player.keyboardHint": "Use ← and → to step. Press Space to play or pause.",
   "player.controls": "Playback controls",
   "player.end": "End of topic",
-
   "settings.title": "Settings",
   "settings.theme": "Theme",
   "settings.theme.system": "System",
@@ -56,7 +51,6 @@
   "settings.resetProgress": "Reset progress",
   "settings.resetProgress.confirm": "This clears your progress in every topic. Continue?",
   "settings.resetProgress.done": "Progress reset.",
-
   "topic.whenToUse": "When to use",
   "topic.whenNotToUse": "When not to use",
   "topic.realWorld": "In the real world",
@@ -68,7 +62,6 @@
   "topic.glossary": "Glossary",
   "topic.steps.one": "{count} step",
   "topic.steps.other": "{count} steps",
-
   "progress.title": "Your progress",
   "progress.notStarted": "Not started",
   "progress.inProgress": "In progress",
@@ -78,27 +71,24 @@
   "progress.topics.one": "{count} topic",
   "progress.topics.other": "{count} topics",
   "progress.continue": "Continue where you left off",
-
   "footer.madeBy": "Made by",
   "footer.author": "Hampton Lintorn-Catlin",
   "footer.site": "hamptonmakes.com",
   "footer.source": "Source code",
   "footer.feedback": "Send feedback",
-
   "a11y.narration": "Narration",
   "a11y.stage": "Animation stage",
   "a11y.openMenu": "Open menu",
   "a11y.closeMenu": "Close menu",
   "a11y.currentStep": "Current step",
-
   "common.close": "Close",
   "common.cancel": "Cancel",
   "common.confirm": "Confirm",
   "common.loading": "Loading…",
   "common.back": "Back",
-
   "error.notFound": "We could not find that page.",
   "error.notFound.title": "Page not found",
   "error.goHome": "Go to the home page",
-  "error.generic": "Something went wrong."
+  "error.generic": "Something went wrong.",
+  "topic.tryItSoon": "A sandbox for this topic is coming."
 }
