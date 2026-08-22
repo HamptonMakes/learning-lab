@@ -20,9 +20,10 @@
     "test:watch": "vitest",
     "check": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test",
     "e2e": "pnpm build && playwright test",
-    "verify": "pnpm build && playwright test --project=verify",
+    "verify": "pnpm build && playwright test --project=verify && node scripts/verification-index.mjs",
     "docker:build": "docker build -t cs-concepts-lab .",
-    "e2e:quick": "playwright test --project=chromium"
+    "e2e:quick": "playwright test --project=chromium",
+    "verify:quick": "playwright test --project=verify && node scripts/verification-index.mjs"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.170.31",

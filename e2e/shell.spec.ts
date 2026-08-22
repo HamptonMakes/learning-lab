@@ -8,14 +8,19 @@ test.describe('app shell', () => {
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/Concept/)
   })
 
-  test('CTA opens the first topic; breadcrumb and sidebar reflect location; reload works', async ({ page }) => {
+  test('CTA opens the first topic; breadcrumb and sidebar reflect location; reload works', async ({
+    page,
+  }) => {
     await page.goto('/en')
     await page.getByTestId('cta-start').click()
     await expect(page).toHaveURL(/\/en\/crdts\/the-problem\/more-than-one-copy$/)
     await expect(page.getByTestId('topic-title')).toHaveText('More than one copy')
     await expect(page.getByTestId('breadcrumb')).toContainText('CRDTs')
     await expect(page.getByTestId('breadcrumb')).toContainText('More than one copy')
-    await expect(page.getByTestId('nav-topic-more-than-one-copy')).toHaveAttribute('data-active', 'true')
+    await expect(page.getByTestId('nav-topic-more-than-one-copy')).toHaveAttribute(
+      'data-active',
+      'true',
+    )
     await page.reload()
     await expect(page.getByTestId('topic-title')).toHaveText('More than one copy')
   })

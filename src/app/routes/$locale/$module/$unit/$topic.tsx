@@ -148,12 +148,13 @@ function LessonPlayer({
     initialIndex: (search.step ?? 1) - 1,
     topic: { module: moduleId, unit: unitId, topic: topicId },
     locale,
+    forceInstant: search.motion === 'off',
     onIndexChange: (index) => {
       void navigate({ search: (s) => ({ ...s, step: index + 1 }), replace: true })
     },
   })
   useKeyboardTransport(player, { enabled: true, dir })
-  useLabHook(player, { enabled: search.lab === '1' || import.meta.env.DEV })
+  useLabHook(player, { enabled: search.lab === '1' })
 
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
@@ -179,7 +180,7 @@ function LessonPlayer({
     )
   }
 
-  const instant = player.instant || search.motion === 'off' || !mounted
+  const instant = player.instant || !mounted
   const scene = topic.scenes.find((s) => s.id === frame.sceneId)
   const multiScene = topic.scenes.length > 1
   const ended = player.state.status === 'ended'
