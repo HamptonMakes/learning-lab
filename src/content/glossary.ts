@@ -185,7 +185,49 @@ export const GLOSSARY: GlossaryEntry[] = [
     term: 'sibling',
     definition: 'One of several concurrent versions a store keeps until someone resolves them.',
   },
+  {
+    term: 'MV register',
+    definition:
+      'Multi-Value register: keeps every concurrent write as a sibling, each with its version vector, until a later write covers them all.',
+    href: '/crdts/vector-clocks/detecting-conflicts',
+  },
+  {
+    term: 'version vector',
+    definition:
+      'A vector clock kept with a value: one counter per node, saying which writes the value has seen.',
+    href: '/crdts/vector-clocks/vector-clocks',
+  },
+  {
+    term: 'HLC',
+    definition:
+      'Hybrid logical clock: wall-clock time plus a counter, so stamps stay close to real time and never go backwards.',
+    href: '/crdts/vector-clocks/hybrid-logical-clocks',
+  },
   { term: 'delta', definition: 'Only the part of the state that changed since the last send.' },
+  {
+    term: 'schema',
+    definition: 'The parts a document has, and the CRDT type chosen for each part.',
+    href: '/crdts/choosing/composing-a-document',
+  },
+  {
+    term: 'composed document',
+    definition: 'A document built from CRDT parts, where every part merges with its own rule.',
+    href: '/crdts/choosing/composing-a-document',
+  },
+  {
+    term: 'garbage collection',
+    definition: 'Dropping metadata every copy has already seen, so the state stops growing.',
+    href: '/crdts/operation-based/tombstones-and-garbage',
+  },
+  {
+    term: 'invariant',
+    definition: 'A rule that must hold at every moment, such as a balance never below zero.',
+  },
+  {
+    term: 'dot',
+    definition:
+      'An op id made of a node id and a counter, like alice:3. Also used as a tag or element id.',
+  },
   {
     term: 'UUID',
     definition: 'A 128-bit id that is unique without a central server.',
