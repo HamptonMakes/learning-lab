@@ -103,25 +103,25 @@ export function DeckToken({ group, color, geometry, isNew }: DeckTokenProps) {
       onAnimationComplete={() => registry?.measure()}
     >
       <div
-        className="relative flex items-center gap-1.5 rounded-md border bg-card px-2 py-1 text-ink shadow-sm"
+        className="relative flex items-center gap-1.5 rounded-lg border bg-card px-2.5 py-1.5 text-ink shadow-(--shadow-pop)"
         style={{ borderColor: hue }}
       >
         {/* A ghost card behind reads as "a stack"; the count says it in words too. */}
         <span
           aria-hidden
-          className="absolute inset-0 -z-10 translate-x-1 translate-y-1 rounded-md border bg-card"
+          className="absolute inset-0 -z-10 translate-x-1 translate-y-1 rounded-lg border bg-card"
           style={{ borderColor: hue }}
         />
         {sameType && type ? (
           <span
-            className="rounded-sm px-1 py-px text-[10px] leading-none font-semibold tracking-wide uppercase"
-            style={{ backgroundColor: actorVar(color, true), color: hue }}
+            className="text-[10px] leading-none font-semibold tracking-wide uppercase"
+            style={{ color: hue }}
             data-type-chip
           >
             {CRDT_SHORT[type]}
           </span>
         ) : null}
-        <span className="font-mono text-xs leading-tight whitespace-nowrap" data-deck-label>
+        <span className="font-mono text-[13px] leading-tight whitespace-nowrap" data-deck-label>
           {allOps ? tn('stage.nOps', count) : tn('stage.nMessages', count)}
         </span>
       </div>

@@ -100,7 +100,7 @@ export function Text({
       tombstone={value.meta?.tombstone}
       attrs={{ 'data-cursor': cursor }}
       className={cn(
-        'flex max-w-full min-w-0 flex-col gap-1 rounded-sm font-mono text-[13px] text-ink',
+        'flex max-w-full min-w-0 flex-col gap-1 rounded-sm font-mono text-(length:--value-fs) text-ink',
         depth === 0 && 'px-0.5',
       )}
     >

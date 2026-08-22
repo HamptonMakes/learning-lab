@@ -1,10 +1,12 @@
 /**
  * Meta badges — the CRDT sidecar drawn next to a value node (DSL §2 `Meta`, stage-architecture §3):
- * type chip, stamp (`t=3`, or the HLC `(10:05, 2)` when present), writer node chip, op tag, OR-Set
- * tags (≤ 3 + `+n`, alive / dead), tombstone, add / remove stamps, compact version vector (full in
- * `title`), applied ids (≤ 3 + `+n`), RGA stats (`visible/stored`), and a note. Every badge is a
- * node: `data-path=<path>@<key>` (the tombstone badge answers to `@tomb` and `@tombstone`),
- * registered as an anchor, so highlights and callouts can point at it.
+ * type, stamp (`t3`, or the HLC `(10:05, 2)` when present), writer node (hue dot + id), op tag,
+ * OR-Set tags (≤ 3 + `+n`, alive / dead), tombstone, add / remove stamps, compact version vector
+ * (full in `title`), applied ids (≤ 3 + `+n`), RGA stats (`visible/stored`), and a note. The
+ * sidecar is quiet by design — one muted mono line, `t2 · bob · alice:1`, with separators drawn
+ * by CSS — so the value stays the hero. Every badge is a node: `data-path=<path>@<key>` (the
+ * tombstone badge answers to `@tomb` and `@tombstone`), registered as an anchor, so highlights and
+ * callouts can point at it.
  */
 import type { ReactNode } from 'react'
 import { AnimatePresence } from 'motion/react'
@@ -40,7 +42,7 @@ export function MetaBadges({ path, meta, className }: MetaBadgesProps) {
         metaKey="type"
         dataValue={meta.type}
         title={t('stage.meta.type')}
-        className="bg-teal-soft font-sans font-semibold tracking-wide text-teal uppercase"
+        className="font-sans text-[10px] font-semibold tracking-wide text-teal uppercase"
       >
         {t(`stage.type.${meta.type}`)}
       </Badge>,
@@ -69,9 +71,8 @@ export function MetaBadges({ path, meta, className }: MetaBadgesProps) {
         metaKey="node"
         dataValue={meta.node}
         title={t('stage.meta.node', { node: meta.node })}
-        className="bg-transparent p-0"
       >
-        <NodeChip node={meta.node} />
+        <NodeChip node={meta.node} className="text-ink-3" />
       </Badge>,
     )
   }
@@ -98,7 +99,7 @@ export function MetaBadges({ path, meta, className }: MetaBadgesProps) {
         metaKey="tags"
         dataValue={JSON.stringify(meta.tags)}
         title={t('stage.meta.tags')}
-        className="gap-0.5 bg-transparent p-0"
+        className="gap-1.5"
       >
         {shown.map((tg) => (
           <TagPill key={tg.tag} tag={tg.tag} alive={tg.alive} />
@@ -116,7 +117,7 @@ export function MetaBadges({ path, meta, className }: MetaBadgesProps) {
         aliases={[metaPath(path, 'tombstone')]}
         dataValue="true"
         title={t('stage.deleted')}
-        className="bg-danger-soft font-sans text-danger"
+        className="font-sans text-ink-3"
       >
         <X className="size-2.5 shrink-0" aria-hidden />
         {t('stage.deleted')}
@@ -203,7 +204,7 @@ export function MetaBadges({ path, meta, className }: MetaBadgesProps) {
         path={path}
         metaKey="note"
         dataValue={meta.note}
-        className="h-auto bg-transparent px-0 font-sans whitespace-normal text-ink-3 italic"
+        className="h-auto font-sans whitespace-normal italic"
       >
         {meta.note}
       </Badge>,
@@ -213,7 +214,7 @@ export function MetaBadges({ path, meta, className }: MetaBadgesProps) {
   return (
     <span
       data-meta-badges=""
-      className={cn('inline-flex max-w-full flex-wrap items-center gap-1', className)}
+      className={cn('inline-flex max-w-full flex-wrap items-baseline gap-x-1 gap-y-0.5', className)}
     >
       <AnimatePresence initial={false}>{badges}</AnimatePresence>
     </span>
@@ -253,7 +254,7 @@ function Badge({
       exit={{ opacity: 0, scale: 0.9, transition: tr('exit') }}
       transition={{ ...tr('enter'), layout: tr('layout') }}
       className={cn(
-        'inline-flex h-4 max-w-full items-center gap-1 rounded-sm bg-paper-2 px-1 font-mono text-[11px] leading-none whitespace-nowrap text-ink-2',
+        'inline-flex max-w-full items-center gap-1 rounded-sm px-0.5 font-mono text-[11px] leading-4 whitespace-nowrap text-ink-3',
         className,
       )}
     >

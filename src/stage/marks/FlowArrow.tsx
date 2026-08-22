@@ -37,7 +37,7 @@ export function FlowArrow({
       data-from={mark.from}
       data-to={mark.to}
       data-both={both ? 'true' : 'false'}
-      style={{ opacity: 0.85 }}
+      style={{ opacity: 0.7 }}
       exit={{ opacity: 0, transition: tr('exit') }}
     >
       <motion.path

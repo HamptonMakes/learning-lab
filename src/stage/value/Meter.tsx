@@ -31,12 +31,12 @@ export function Meter({
       style={toneVars(value.tone ?? 'change')}
       attrs={{ 'data-max': value.max }}
       className={cn(
-        'flex min-w-28 flex-col gap-0.5 rounded-sm font-mono text-[13px]',
+        'flex min-w-28 flex-col gap-0.5 rounded-sm font-mono text-(length:--value-fs)',
         depth === 0 && 'px-0.5',
       )}
     >
       <div className="flex items-baseline justify-between gap-2">
-        <span className="font-sans text-[11px] leading-4 text-ink-2">{value.label}</span>
+        <span className="font-sans text-[11px] leading-4 text-ink-3">{value.label}</span>
         <span className="tabular-nums">
           <span data-meter-value="">{value.value}</span>
           {value.max !== undefined && <span className="text-ink-3"> / {value.max}</span>}

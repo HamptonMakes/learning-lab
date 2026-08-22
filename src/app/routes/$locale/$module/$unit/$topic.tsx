@@ -75,7 +75,7 @@ function TopicPage() {
         ) : (
           <section
             aria-label={t('a11y.stage')}
-            className="relative min-h-(--stage-min-h) flex-1 rounded-xl border border-line stage-grid shadow-xs"
+            className="relative min-h-(--stage-min-h) flex-1 rounded-xl border border-line stage-surface shadow-xs"
             data-testid="stage"
           >
             <div className="absolute inset-0 grid place-items-center text-sm text-ink-3">
@@ -167,7 +167,7 @@ function LessonPlayer({
   if (built.error || built.frames.length === 0 || !frame) {
     return (
       <section
-        className="relative min-h-(--stage-min-h) flex-1 rounded-xl border border-danger/40 stage-grid shadow-xs"
+        className="relative min-h-(--stage-min-h) flex-1 rounded-xl border border-danger/40 stage-surface shadow-xs"
         data-testid="stage"
         data-error
       >

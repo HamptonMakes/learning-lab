@@ -90,7 +90,7 @@ export type Layout = { preset: LayoutPreset; hub?: ActorId }
 export type Clock = {
   now: number // logical "now"; advanced only by `tick` (and `autoTick`)
   show: boolean // draw the corner HUD
-  format: 'counter' | 'ms' | 'time' // 'counter' → t=3, 'ms' → 150 ms, 'time' → hh:mm (now = minutes since `start`)
+  format: 'counter' | 'ms' | 'time' // 'counter' → t3, 'ms' → 150 ms, 'time' → hh:mm (now = minutes since `start`)
   start?: string // 'hh:mm', required when format is 'time'
   autoTick?: boolean // advance by 1 before every crdt.update whose stamp comes from the wall clock (§5.1 Time)
 }

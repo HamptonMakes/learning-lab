@@ -119,7 +119,7 @@ function DesignPage() {
       </Section>
 
       <Section title="Stage card">
-        <div className="relative h-64 rounded-xl border border-line stage-grid p-6 shadow-xs">
+        <div className="relative h-64 rounded-xl border border-line stage-surface p-6 shadow-xs">
           <div className="flex gap-8">
             <DemoActor name="Alice" tone="a" value="Hello" ts={3} />
             <DemoActor name="Bob" tone="b" value="Howdy" ts={4} />

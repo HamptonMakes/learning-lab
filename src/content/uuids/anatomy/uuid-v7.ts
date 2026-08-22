@@ -1,6 +1,7 @@
 /**
- * UUIDs I.2 — UUID v7: time first, then random. Scene 1 is docs/animation-dsl.md §15.3 verbatim
- * (the same scene as src/lesson/fixtures/uuid-v7.ts); scene 2 sorts three v7 ids and three v4 ids
+ * UUIDs I.2 — UUID v7: time first, then random. Scene 1 is docs/animation-dsl.md §15.3 (the same
+ * scene as src/lesson/fixtures/uuid-v7.ts), except `now` holds only the ms number — the stage shows
+ * the value the id is built from, not its ISO spelling; scene 2 sorts three v7 ids and three v4 ids
  * made at the same three moments. Every finished id comes from `uuid.v7()` / `uuid.v4()`.
  */
 import {
@@ -61,7 +62,7 @@ export default topic({
         layout: 'row',
         actors: [
           device('laptop', 'Laptop', {
-            holds: { now: rec({ iso: '2026-08-22T10:00:00.000Z', ms: 1787392800000 }) },
+            holds: { now: rec({ ms: 1787392800000 }) },
           }),
         ],
       },

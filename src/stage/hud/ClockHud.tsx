@@ -20,9 +20,9 @@ export function ClockHud() {
       data-now={clock.now}
       aria-label={`${t('stage.clock.label')}: ${reading}`}
       title={t('stage.clock.label')}
-      className="pointer-events-none absolute end-2 top-2 z-10 inline-flex items-center gap-1.5 rounded-md border border-line bg-card/90 px-2 py-1 font-mono text-xs leading-none text-ink shadow-xs"
+      className="pointer-events-none absolute end-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-paper-2 px-2.5 py-1 font-mono text-[11px] leading-none text-ink-3"
     >
-      <Clock3 className="size-3.5 text-ink-3" aria-hidden />
+      <Clock3 className="size-3 text-ink-3" aria-hidden />
       <bdi dir="ltr" className="tabular-nums">
         {reading}
       </bdi>

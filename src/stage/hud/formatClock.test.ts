@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { formatClock, formatDelta, formatTime, parseHhMm, type ClockTranslate } from './formatClock'
 
 const t: ClockTranslate = (key, vars) =>
-  key === 'stage.clock.counter' ? `t=${vars.now}` : `${vars.now} ms`
+  key === 'stage.clock.counter' ? `t${vars.now}` : `${vars.now} ms`
 
 describe('parseHhMm', () => {
   it('reads hh:mm as minutes since midnight', () => {
@@ -37,7 +37,7 @@ describe('formatTime', () => {
 
 describe('formatClock', () => {
   it('counter → t=n', () => {
-    expect(formatClock({ format: 'counter' }, 3, t)).toBe('t=3')
+    expect(formatClock({ format: 'counter' }, 3, t)).toBe('t3')
   })
   it('ms → n ms', () => {
     expect(formatClock({ format: 'ms' }, 150, t)).toBe('150 ms')

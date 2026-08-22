@@ -77,7 +77,7 @@ describe('dataValueOf', () => {
 describe('clocks and stamps', () => {
   const t = (key: string, vars?: Record<string, string | number>) =>
     key === 'stage.clock.counter'
-      ? `t=${vars?.now}`
+      ? `t${vars?.now}`
       : key === 'stage.clock.ms'
         ? `${vars?.now} ms`
         : key
@@ -86,7 +86,7 @@ describe('clocks and stamps', () => {
     expect(fullClock({ alice: 2, bob: 1 })).toBe('alice: 2, bob: 1')
   })
   it('formats stamps by the scene clock format', () => {
-    expect(formatStamp(3, { format: 'counter' }, t)).toBe('t=3')
+    expect(formatStamp(3, { format: 'counter' }, t)).toBe('t3')
     expect(formatStamp(150, { format: 'ms' }, t)).toBe('150 ms')
     expect(formatStamp(65, { format: 'time', start: '10:00' }, t)).toBe('11:05')
     expect(clockTime('23:30', 45)).toBe('00:15')

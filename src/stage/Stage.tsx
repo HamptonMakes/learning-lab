@@ -80,7 +80,7 @@ export function Stage({
               data-layout={frame.world.layout.preset}
               data-instant={instant ? '' : undefined}
               className={cn(
-                'relative min-h-(--stage-min-h) overflow-visible rounded-xl border border-line stage-grid text-ink shadow-xs',
+                'relative min-h-(--stage-min-h) overflow-visible rounded-xl border border-line stage-surface text-ink shadow-xs',
                 className,
               )}
             >

@@ -33,13 +33,13 @@ export function Counter({
       dataValue={String(value.total)}
       tombstone={value.meta?.tombstone}
       className={cn(
-        'inline-flex min-w-0 flex-col gap-0.5 rounded-sm font-mono text-[13px]',
+        'inline-flex min-w-0 flex-col gap-0.5 rounded-sm font-mono text-(length:--value-fs)',
         depth === 0 && 'px-0.5',
       )}
     >
       <div
         data-counter-rows=""
-        className="grid items-center gap-x-2 gap-y-0.5"
+        className="grid items-center gap-x-3 gap-y-0.5"
         style={{ gridTemplateColumns: hasDec ? 'auto auto auto' : 'auto auto' }}
       >
         <AnimatePresence initial={false}>
@@ -58,7 +58,7 @@ export function Counter({
               transition={{ ...tr('enter'), layout: tr('layout') }}
               className="col-span-full grid grid-cols-subgrid items-center rounded-sm"
             >
-              <NodeChip node={row.node} />
+              <NodeChip node={row.node} className="text-xs" />
               <NodeBox
                 as="span"
                 path={metaPath(itemPath(path, row.node), 'inc')}
@@ -87,8 +87,8 @@ export function Counter({
             </NodeBox>
           ))}
         </AnimatePresence>
-        <div className="col-span-full flex items-baseline justify-end gap-2 border-t border-line pt-0.5">
-          <span className="font-sans text-[11px] text-ink-2">{t('stage.counter.total')}</span>
+        <div className="col-span-full flex items-baseline justify-end gap-2 border-t border-line pt-1">
+          <span className="font-sans text-[11px] text-ink-3">{t('stage.counter.total')}</span>
           <span data-total="" className="font-semibold tabular-nums">
             {value.total}
           </span>

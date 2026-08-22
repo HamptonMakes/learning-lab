@@ -1,7 +1,8 @@
 /**
- * ActorHeader — icon (by ActorIcon / kind), owner caption ("Alice's"), label, subtitle, and the
- * badge cluster: via tag (a control message landed on this card), clock badge (skew defined),
- * status badge, offline badge.
+ * ActorHeader — a hue dot + the label (the actor's identity), a small muted kind icon (by
+ * ActorIcon / kind), the owner caption ("Alice's") and subtitle as quiet captions, and the badge
+ * cluster: via tag (a control message landed on this card), clock badge (skew defined), status
+ * badge, offline badge.
  */
 import { createElement, type CSSProperties } from 'react'
 import type { Actor } from '@/lesson/types'
@@ -21,31 +22,33 @@ export function ActorHeader({ actor, dim }: { actor: Actor; dim: boolean }) {
   const landed = via.get(actor.id)
   return (
     <div className="flex items-start gap-2">
-      <span
-        aria-hidden
-        className={cn(
-          'grid size-7 shrink-0 place-items-center rounded-md bg-(--card-hue-soft) text-(--card-hue)',
-          dim && 'opacity-60',
-        )}
-      >
-        {createElement(actorIcon(actor), { className: 'size-4' })}
-      </span>
       <div className={cn('min-w-0 flex-1 leading-tight', dim && 'opacity-60')}>
         {ownerLabel !== undefined && (
-          <div data-owner={actor.owner} className="truncate text-xs text-ink-3">
+          <div data-owner={actor.owner} className="truncate text-[11px] leading-4 text-ink-3">
             {t('stage.ownerOf', { owner: ownerLabel })}
           </div>
         )}
-        <div data-label className="truncate text-sm font-medium text-ink">
-          {actor.label}
+        <div className="flex min-w-0 items-center gap-2">
+          <span
+            aria-hidden
+            data-hue-dot=""
+            className="size-2.5 shrink-0 rounded-full bg-(--card-hue)"
+          />
+          <div data-label className="truncate text-[15px] leading-6 font-medium text-ink">
+            {actor.label}
+          </div>
+          {createElement(actorIcon(actor), {
+            className: 'size-3.5 shrink-0 text-ink-3',
+            'aria-hidden': true,
+          })}
         </div>
         {actor.subtitle && (
-          <div data-subtitle className="truncate text-xs text-ink-2">
+          <div data-subtitle className="truncate ps-4.5 text-[11px] leading-4 text-ink-3">
             {actor.subtitle}
           </div>
         )}
       </div>
-      <div className="flex shrink-0 flex-wrap items-center justify-end gap-1">
+      <div className="flex shrink-0 flex-wrap items-center justify-end gap-1 pt-0.5">
         {landed && <ViaTag via={landed} />}
         {actor.skew !== undefined && <ClockBadge actor={actor} skew={actor.skew} />}
         {actor.status && <StatusBadge actor={actor} status={actor.status} />}

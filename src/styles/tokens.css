@@ -63,6 +63,11 @@
   --sidebar-w: 17rem;
   --transport-h: 4.5rem;
   --stage-min-h: 28rem;
+
+  /* ---- Stage surfaces (Keynote-calm): cards float on plain paper by shadow, not by border ---- */
+  --shadow-card: 0 1px 2px oklch(0.3 0.02 60 / 0.05), 0 10px 28px -14px oklch(0.3 0.02 60 / 0.22);
+  --shadow-pop: 0 1px 3px oklch(0.3 0.02 60 / 0.08), 0 10px 30px -12px oklch(0.3 0.02 60 / 0.28);
+  --stage-card-ring: transparent; /* dark mode draws a hairline where shadows vanish */
 }
 
 .dark {
@@ -101,4 +106,8 @@
   --actor-server-soft: oklch(0.32 0.025 230);
   --actor-neutral: oklch(0.7 0.01 60);
   --actor-neutral-soft: oklch(0.3 0.008 60);
+
+  --shadow-card: 0 1px 2px oklch(0 0 0 / 0.35), 0 10px 28px -14px oklch(0 0 0 / 0.6);
+  --shadow-pop: 0 2px 6px oklch(0 0 0 / 0.45), 0 12px 32px -12px oklch(0 0 0 / 0.7);
+  --stage-card-ring: var(--line);
 }

@@ -86,6 +86,6 @@ describe('List', () => {
     }
     const { container } = renderValue('alice.list', v)
     expect(node(container, 'alice.list[milk]@tag').dataset.value).toBe('alice:1')
-    expect(node(container, 'alice.list[milk]@ts').dataset.value).toBe('t=1')
+    expect(node(container, 'alice.list[milk]@ts').dataset.value).toBe('t1')
   })
 })

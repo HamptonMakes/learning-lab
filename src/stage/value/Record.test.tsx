@@ -55,7 +55,7 @@ describe('Record', () => {
     const { container } = renderValue('bob.task', v)
     expect(node(container, 'bob.task@type').textContent).toBe('LWW map')
     expect(node(container, 'bob.task@vc').dataset.value).toBe('alice2 bob0')
-    expect(node(container, 'bob.task.status@ts').dataset.value).toBe('t=3')
+    expect(node(container, 'bob.task.status@ts').dataset.value).toBe('t3')
     expect(node(container, 'bob.task.status@node').dataset.value).toBe('bob')
     expect(node(container, 'bob.task.due').dataset.tombstone).toBe('true')
     expect(node(container, 'bob.task.due@tomb')).toBeTruthy()

@@ -1,8 +1,9 @@
 /**
  * BoardCard — a free-standing card in the gutter: a rule/note (`text`), a decision table, a schema
  * tree… Its value is drawn by ValueView under the path `board.<id>`; the card itself is the anchor
- * for that path and carries `data-board` / `data-path`. Text boards read as calm rule cards (mono,
- * muted paper); a `tone` draws a start-edge accent.
+ * for that path and carries `data-board` / `data-path`. Text boards read as light, borderless sticky
+ * notes (paper-2, small mono); other boards are paper cards like the actors; a `tone` draws a
+ * start-edge accent.
  */
 import type { CSSProperties } from 'react'
 import { motion } from 'motion/react'
@@ -39,13 +40,15 @@ export function BoardCard({ board }: { board: Board }) {
       data-tone={board.tone}
       style={style}
       className={cn(
-        'relative flex min-w-0 flex-col gap-1.5 rounded-xl border border-line bg-card p-3 text-sm text-ink shadow-xs',
+        'relative flex min-w-0 flex-col gap-1.5 rounded-xl p-3.5 text-sm text-ink',
+        isText
+          ? 'bg-paper-2 font-mono leading-5 [--value-fs:12.5px]'
+          : 'bg-card shadow-(--shadow-card) ring-1 ring-(--stage-card-ring)',
         board.tone && 'border-s-2 border-s-(--tone)',
-        isText && 'bg-paper-2 font-mono',
       )}
     >
       {board.label && (
-        <div data-board-label className="text-xs font-medium text-ink-2">
+        <div data-board-label className="font-sans text-[11px] leading-4 font-medium text-ink-3">
           {board.label}
         </div>
       )}

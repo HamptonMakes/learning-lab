@@ -66,7 +66,7 @@ export function Bytes({
         'data-range': range ? `${range[0]}..${range[1]}` : undefined,
       }}
       className={cn(
-        'inline-flex max-w-full min-w-0 flex-col items-start gap-1 rounded-sm font-mono text-[13px]',
+        'inline-flex max-w-full min-w-0 flex-col items-start gap-1 rounded-sm font-mono text-(length:--value-fs)',
         depth === 0 && 'px-0.5',
       )}
     >

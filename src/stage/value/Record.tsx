@@ -39,7 +39,7 @@ export function Record({
       tombstone={value.meta?.tombstone}
       attrs={{ 'data-display': tree ? 'tree' : 'card' }}
       className={cn(
-        'flex min-w-0 flex-col gap-0.5 rounded-sm font-mono text-[13px]',
+        'flex min-w-0 flex-col gap-0.5 rounded-sm font-mono text-(length:--value-fs) [--value-fs:14px]',
         depth === 0 && 'px-0.5',
       )}
     >
@@ -68,7 +68,7 @@ export function Record({
                     'relative ms-1.5 border-s border-line ps-3 before:absolute before:start-0 before:top-2.5 before:h-px before:w-2.5 before:bg-line',
                 )}
               >
-                <span className="shrink-0 font-sans text-[11px] leading-5 text-ink-2">
+                <span className="shrink-0 font-sans text-[11px] leading-5 text-ink-3">
                   {field.key}
                 </span>
                 <ValueView

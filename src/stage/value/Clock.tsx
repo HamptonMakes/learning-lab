@@ -1,7 +1,7 @@
 /**
- * Clock — a vector clock as compact `node n` entries (one pill per node, the node chip in its hue,
- * the count tabular). Entries are `${path}.${node}` with `data-value` = the count; the clock's
- * `data-value` is `alice2 bob1` (full form in `title`). The line is an LTR island (DSL §9).
+ * Clock — a vector clock as compact `node n` entries (one quiet entry per node: the node's hue dot
+ * + id, then the count in the value size). Entries are `${path}.${node}` with `data-value` = the
+ * count; the clock's `data-value` is `alice2 bob1` (full form in `title`). An LTR island (DSL §9).
  */
 import { AnimatePresence } from 'motion/react'
 import type { Path, ValueOf } from '@/lesson/types'
@@ -32,12 +32,12 @@ export function Clock({
       title={fullClock(value.entries)}
       tombstone={value.meta?.tombstone}
       className={cn(
-        'inline-flex min-w-0 flex-wrap items-center gap-1 rounded-sm font-mono text-[13px]',
+        'inline-flex min-w-0 flex-wrap items-center gap-1 rounded-sm font-mono text-(length:--value-fs)',
         depth === 0 && 'px-0.5',
       )}
     >
       {entries.length === 0 && <span className="text-ink-3">{'{ }'}</span>}
-      <Ltr className="inline-flex flex-wrap items-center gap-1">
+      <Ltr className="inline-flex flex-wrap items-center gap-x-3 gap-y-1">
         <AnimatePresence initial={false}>
           {entries.map(([node, n]) => (
             <NodeBox
@@ -52,9 +52,9 @@ export function Clock({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9, transition: tr('exit') }}
               transition={{ ...tr('enter'), layout: tr('layout') }}
-              className="inline-flex items-center gap-1 rounded-sm border border-line bg-card px-1"
+              className="inline-flex items-baseline gap-1.5 rounded-sm px-0.5"
             >
-              <NodeChip node={node} />
+              <NodeChip node={node} className="text-xs" />
               <span className="tabular-nums">{n}</span>
             </NodeBox>
           ))}

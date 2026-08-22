@@ -57,8 +57,8 @@ describe('SetView', () => {
     expect(tags.querySelector<HTMLElement>('[data-overflow]')?.dataset.overflow).toBe('1')
     const jazz = node(container, 'bob.cart[jazz]')
     expect(jazz.dataset.tombstone).toBe('true')
-    expect(node(container, 'bob.cart[jazz]@addTs').dataset.value).toBe('t=1')
-    expect(node(container, 'bob.cart[jazz]@removeTs').dataset.value).toBe('t=2')
+    expect(node(container, 'bob.cart[jazz]@addTs').dataset.value).toBe('t1')
+    expect(node(container, 'bob.cart[jazz]@removeTs').dataset.value).toBe('t2')
     expect(node(container, 'bob.cart[jazz]@tomb').textContent).toContain('deleted')
     // the plain set excludes the tombstone
     expect(node(container, 'bob.cart').dataset.value).toBe('["milk"]')

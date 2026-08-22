@@ -1,6 +1,7 @@
 /**
- * Small shared chips: a node (actor) chip in its hue, the `+n` overflow chip, an OR-Set tag pill
- * (alive / dead), an LTR island for Dot ids, and the caret (`@cursor`) node.
+ * Small shared chips, all quiet text (no filled pills): a node (actor) chip — a dot in its hue + the
+ * id — the `+n` overflow chip, an OR-Set tag (alive: plain; dead: struck through and dim), an LTR
+ * island for Dot ids, and the caret (`@cursor`) node.
  */
 import type { ReactNode } from 'react'
 import type { Dot, NodeId, Path } from '@/lesson/types'
@@ -11,7 +12,7 @@ import { NodeBox } from './NodeBox'
 import { metaPath } from './paths'
 import { hueVars } from './tone'
 
-/** The node that wrote a value: actor chip in its hue; the pseudo-node `seed` is a dim "init" chip. */
+/** The node that wrote a value: a dot in its hue + the id; the pseudo-node `seed` is a dim "init". */
 export function NodeChip({ node, className }: { node: NodeId; className?: string }) {
   const t = useT()
   const { world } = useStageFrame()
@@ -20,7 +21,7 @@ export function NodeChip({ node, className }: { node: NodeId; className?: string
       <span
         data-node="seed"
         className={cn(
-          'inline-flex h-4 items-center rounded-sm bg-paper-2 px-1 font-sans text-[11px] leading-none text-ink-3 italic',
+          'inline-flex items-center font-sans text-[11px] leading-4 text-ink-3 italic',
           className,
         )}
       >
@@ -34,11 +35,11 @@ export function NodeChip({ node, className }: { node: NodeId; className?: string
       data-node={node}
       style={hueVars(color)}
       className={cn(
-        'inline-flex h-4 items-center gap-1 rounded-sm bg-(--hue-soft) px-1 font-sans text-[11px] leading-none font-medium text-(--hue)',
+        'inline-flex items-center gap-1 font-sans text-[11px] leading-4 font-medium text-ink-2',
         className,
       )}
     >
-      <i aria-hidden className="size-1.5 shrink-0 rounded-full bg-(--hue)" />
+      <i aria-hidden className="size-2 shrink-0 rounded-full bg-(--hue)" />
       <bdi>{node}</bdi>
     </span>
   )
@@ -51,7 +52,7 @@ export function OverflowChip({ count, className }: { count: number; className?: 
     <span
       data-overflow={count}
       className={cn(
-        'inline-flex h-4 items-center rounded-sm border border-dashed border-line-2 px-1 font-mono text-[11px] leading-none text-ink-2',
+        'inline-flex items-center font-mono text-[11px] leading-4 text-ink-3',
         className,
       )}
     >
@@ -60,7 +61,7 @@ export function OverflowChip({ count, className }: { count: number; className?: 
   )
 }
 
-/** One OR-Set tag: alive (plain) or dead (dashed + struck through). Dot ids are LTR islands. */
+/** One OR-Set tag: alive (plain) or dead (struck through, dim). Dot ids are LTR islands. */
 export function TagPill({ tag, alive }: { tag: Dot; alive: boolean }) {
   const t = useT()
   return (
@@ -70,10 +71,8 @@ export function TagPill({ tag, alive }: { tag: Dot; alive: boolean }) {
       data-alive={alive ? 'true' : 'false'}
       title={t(alive ? 'stage.tag.alive' : 'stage.tag.dead', { tag })}
       className={cn(
-        'inline-flex h-4 items-center rounded-sm border px-1 font-mono text-[10px] leading-none',
-        alive
-          ? 'border-line bg-card text-ink'
-          : 'border-dashed border-line text-ink-3 line-through',
+        'inline-flex items-center font-mono text-[11px] leading-4',
+        alive ? 'text-ink-2' : 'text-ink-3 line-through decoration-ink-3',
       )}
     >
       {tag}

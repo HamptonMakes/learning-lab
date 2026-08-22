@@ -97,7 +97,7 @@
   "stage.via": "from {actor}",
   "stage.init": "init",
   "stage.clock.label": "Clock",
-  "stage.clock.counter": "t={now}",
+  "stage.clock.counter": "t{now}",
   "stage.clock.ms": "{now} ms",
   "stage.clock.actor": "{actor}'s clock",
   "stage.clock.skew": "{delta} from the real time",

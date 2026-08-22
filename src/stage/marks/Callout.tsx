@@ -75,7 +75,7 @@ export function Callout({
       data-tone={mark.tone}
       data-at={mark.at}
       data-side={place.side}
-      className="absolute top-0 left-0 flex max-w-64 items-start gap-1.5 rounded-lg border bg-card px-2.5 py-1.5 text-xs leading-snug text-ink shadow-md"
+      className="absolute top-0 left-0 flex max-w-64 items-start gap-1.5 rounded-lg border bg-card px-3 py-2 text-xs leading-snug text-ink shadow-(--shadow-pop)"
       style={{ left: place.x, top: place.y, borderColor: color }}
       initial={off ? false : { opacity: 0, y: above ? 4 : -4 }}
       animate={{ opacity: 1, y: 0 }}

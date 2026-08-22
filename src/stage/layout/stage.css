@@ -13,9 +13,10 @@
 */
 
 [data-stage] {
-  --stage-gap: 1rem;
-  --stage-pad: 1rem;
-  --stage-token-h: 2rem; /* the inbox tray reserves one token row */
+  --stage-gap: 1.5rem;
+  --stage-pad: 1.5rem;
+  --stage-token-h: 2rem; /* the inbox tray reserves one token row while messages are parked */
+  --value-fs: 15px; /* the hero size for values; dense records / tables step down to 14px */
 }
 
 /* The stage root is the size container, so `.stage-layout` and its children can all respond to
@@ -123,6 +124,21 @@
   grid-area: hub;
 }
 
+/* ---- quiet metadata ----
+   The sidecar of a value reads as one muted line: `t2 · bob · alice:1`. The separator lives in CSS
+   so every badge stays its own anchored node (`data-path=<path>@<key>`). */
+[data-meta-badges] > [data-meta] + [data-meta]::before,
+[data-token-badges] > [data-badge] + [data-badge]::before {
+  content: '·';
+  margin-inline-end: 0.375rem;
+  color: var(--ink-3);
+}
+
+/* A text board is a sticky note: its body is quieter than a value on a card. */
+[data-board-kind='text'] > [data-kind='text'] {
+  color: var(--ink-2);
+}
+
 /* ---- board gutter ---- */
 
 .stage-boards {
@@ -134,6 +150,10 @@
 }
 .stage-boards:empty {
   display: none;
+}
+/* A decision table needs more room than a note: widen the gutter when one is on the board. */
+.stage-boards:has(> [data-board-kind='table']) {
+  inline-size: clamp(16rem, 30cqw, 22rem);
 }
 
 /* ---- narrow stage: gutter drops below the grid ---- */

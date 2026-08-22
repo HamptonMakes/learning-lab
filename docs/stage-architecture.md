@@ -222,9 +222,9 @@ anchor-registry key (§4).
 | SetView | Counter | Clock | Table | Bytes (hex | bits | canonical | dec) | Text | Pattern | Meter`.
 Every value node renders `data-path`, `data-kind`, and for leaves `data-value` (canonical string; the
 full value when the display is ellipsized), `data-tombstone` when `meta.tombstone`. Each node calls
-`useAnchor(path)`. `MetaBadges` renders `meta`: `ts` → `t=12` (or `hlc` → `(10:05, 2)` when present),
-`node` → actor dot (`seed` → dim "init" chip), `tag` → pill, `tags` → ≤ 3 tag pills with alive/dead
-state (`+n`), `tombstone` → strikethrough + "deleted" icon, `addTs`/`removeTs`, `vc` compact (`a2 b1`,
+`useAnchor(path)`. `MetaBadges` renders `meta` as one quiet muted line (`t2 · bob · alice:1`): `ts` → `t12`
+(or `hlc` → `(10:05, 2)` when present), `node` → hue dot + id (`seed` → dim "init"), `tag` → `#alice:3`,
+`tags` → ≤ 3 plain tags with alive/dead state (dead: struck through, `+n`), `tombstone` → strikethrough + "deleted", `addTs`/`removeTs`, `vc` compact (`a2 b1`,
 full in `title`), `applied` ≤ 3 ids (`+n`), `stats` (`5/7`), `type` chip ("LWW", "OR-Set"), `note`
 footnote. Sidecar selectors (`alice.status@ts`, `alice.status@node`, `bob.cart[milk]@tags`,
 `alice.cart[milk]@tomb`) are anchors too: each badge renders `data-path` for its key so highlights and
@@ -541,7 +541,7 @@ to the deck. The arc endpoint is `message.into` when given (a value node), else 
 | same-step send + deliver (`transient: true`)             | `TransientFlight` mounts for one frame                 | keyed by `${frame.index}:${message.id}`; `offsetDistance 0% → 100%` with `tr('travel')`, then unmount; not drawn under reduced motion / instant — the via chip is the record                 |
 | `offline` / `online`                                     | `data-online`                                          | card `animate={{ opacity: online ? 1 : .55 }}`; "no connection" badge presence                                                                                                               |
 | `status` / `skew`                                        | badge text / presence                                  | `AnimatePresence` on `StatusBadge`; `ClockBadge` digit flip                                                                                                                                  |
-| `tick`                                                   | clock HUD (+ every clock badge)                        | number flip via `AnimatePresence mode="popLayout"` on the digit; format by `clock.format` (`t=3` / `150 ms` / `hh:mm` from `start`)                                                          |
+| `tick`                                                   | clock HUD (+ every clock badge)                        | number flip via `AnimatePresence mode="popLayout"` on the digit; format by `clock.format` (`t3` / `150 ms` / `hh:mm` from `start`)                                                           |
 | `highlight`                                              | `data-highlight` on each of `paths`                    | ring pulse (as `set`), persistent when `sticky`                                                                                                                                              |
 | `callout`                                                | bubble mounts near anchor (card / value / board / msg) | `AnimatePresence` + `initial={{opacity:0, y:4}}`; on `msg:<id>` it mounts after the token's travel (`ms(TRAVEL_MS)`), instantly under reduced motion                                         |
 | `conflict`                                               | SVG bolt between two anchors                           | `<motion.path initial={{pathLength:0}} animate={{pathLength:1}}>` + ⚡ badge at midpoint                                                                                                     |
@@ -780,14 +780,15 @@ Notes:
 
 ### 5.6 Chrome on the card: HUD, badges, tray, chips
 
-- `ClockHud` (corner) when `clock.show`: `counter` → `t=3`; `ms` → `150 ms`; `time` → `hh:mm` =
+- `ClockHud` (corner) when `clock.show`: `counter` → `t3`; `ms` → `150 ms`; `time` → `hh:mm` =
   `start` + `now` minutes. `ClockBadge` on an actor whose `skew` is defined shows that actor's wall
   clock (`now + skew`) in the same format, with a `+5`/`−2` delta chip (`data-path` `alice@clock`).
 - `StatusBadge` = icon + word (`lock` / `waiting` / `busy` / `error`, via `t('stage.status.*')`);
   `OfflineBadge` = "no connection" + dimmed card.
 - `OutboxChips` (`data-outbox`, `data-path` `alice@outbox`): one chip per `Actor.outbox` entry, text
   = `opLabel` (`inc 1`, `add milk #alice:3`), hue = actor. `InboxTray` (`data-inbox`, `alice@inbox`):
-  an always-present one-row region; parked tokens are overlay-owned and positioned over it (§5.2).
+  an always-present region (zero-height while nothing is parked, one token row while messages are
+  parked); parked tokens are overlay-owned and positioned over it (§5.2).
 
 ## 6. Speed, reduced motion, instant seeks
 
@@ -1389,7 +1390,8 @@ export type Lab = {
   (middle ellipsis; full value in `title` and `data-value`; `bytes` canonical exempt), `text` ≤ 96
   chars wrapped to ≤ 2 lines, bytes 16 per row in `hex`/`dec` and 4 per row in `bits`, `Meta` badges
   ≤ 3 tags / ≤ 3 applied ids (`+n`), `vc` compact (`a2 b1`, full in `title`), label ≤ 12 chars, state
-  tokens ≤ 24-char summary. Value font: JetBrains Mono 13 px; badges 11 px; no body text inside the
+  tokens ≤ 24-char summary. Value font: JetBrains Mono 15 px (14 px inside records and tables); captions
+  and badges 11 px; no body text inside the
   stage (narration lives under it). Stage min height `--stage-min-h`; cards `min-width: 12rem`.
 
 ## 12. Implementation order

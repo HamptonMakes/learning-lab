@@ -37,7 +37,7 @@ export function List({
       tombstone={value.meta?.tombstone}
       attrs={{ 'data-display': display }}
       className={cn(
-        'flex min-w-0 flex-col gap-1 rounded-sm font-mono text-[13px]',
+        'flex min-w-0 flex-col gap-1.5 rounded-sm font-mono text-(length:--value-fs)',
         depth === 0 && 'px-0.5',
       )}
     >
@@ -100,7 +100,7 @@ function TextItems({ path, value }: { path: Path; value: ValueOf<'list'> }) {
                   title={`${text} · ${item.id}`}
                   attrs={{ 'data-char': text }}
                   className={cn(
-                    'grid min-w-[1ch] place-items-center rounded-sm px-0.5 text-[13px] leading-5',
+                    'grid min-w-[1ch] place-items-center rounded-sm px-0.5 leading-6',
                     tomb && 'text-ink-3 line-through',
                     (text === ' ' || text === '') && !tomb && 'text-ink-3',
                   )}
@@ -108,7 +108,7 @@ function TextItems({ path, value }: { path: Path; value: ValueOf<'list'> }) {
                   {glyph}
                 </NodeBox>
                 <span
-                  className={cn('text-[9px] leading-3 text-ink-3', color && 'text-(--hue)')}
+                  className={cn('text-[10px] leading-3 text-ink-3', color && 'text-(--hue)')}
                   aria-hidden
                 >
                   {item.id}

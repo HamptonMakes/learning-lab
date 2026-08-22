@@ -50,9 +50,11 @@ export function ItemsView({ path, items, depth, orientation, variant }: ItemsVie
               transition={{ ...tr('enter'), layout: tr('layout') }}
               style={{ borderRadius: variant === 'pill' ? 999 : 4 }}
               className={cn(
-                'flex min-w-0 items-center border bg-card',
-                variant === 'pill' ? 'px-1.5' : 'px-1',
-                tomb ? 'border-dashed border-line opacity-70' : 'border-line',
+                'flex min-w-0 items-center border py-0.5',
+                variant === 'pill' ? 'px-2' : 'px-1.5',
+                tomb
+                  ? 'border-dashed border-line bg-transparent opacity-70'
+                  : 'border-transparent bg-paper-2',
               )}
             >
               <ValueView path={itemPath(path, item.id)} value={item.value} depth={depth + 1} />

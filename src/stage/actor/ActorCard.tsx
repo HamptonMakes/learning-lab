@@ -3,7 +3,8 @@
  * glide between slots when the layout changes and stay crisp when they grow; spawn/remove animate
  * through the grid's AnimatePresence. The whole card is the anchor for the actor's root path and
  * carries the DSL §14 attributes. Header → outbox chips → inbox tray → holds (insertion order),
- * each slot drawn by ValueView under a slot label.
+ * each slot drawn by ValueView under a quiet caption. The card is a plain paper card that floats by
+ * shadow; the actor's hue is a dot beside the name (ActorHeader), never a border around the card.
  */
 import type { CSSProperties } from 'react'
 import { motion } from 'motion/react'
@@ -64,18 +65,18 @@ export function ActorCard({ actor, slot }: ActorCardProps) {
       data-status={actor.status}
       data-highlight={highlight?.tone}
       style={actorHueStyle(actor.color)}
-      className="relative flex min-w-48 flex-col rounded-xl border border-t-2 border-line border-t-(--card-hue) bg-card p-3 text-sm text-ink shadow-xs"
+      className="relative flex min-w-48 flex-col rounded-xl bg-card p-4 text-sm text-ink shadow-(--shadow-card) ring-1 ring-(--stage-card-ring)"
     >
       {highlight && <HighlightRing key={highlight.id} tone={highlight.tone} />}
       {landed && <ViaFlash key={landed.message} color={landed.color} />}
       <ActorHeader actor={actor} dim={dim} />
       <OutboxChips actor={actor} className={cn(dim && 'opacity-60')} />
-      <InboxTray actor={actor} className={cn('mt-2', dim && 'opacity-60')} />
+      <InboxTray actor={actor} className={cn(dim && 'opacity-60')} />
       {holds.length > 0 && (
-        <div data-holds className={cn('mt-2 flex flex-col gap-2', dim && 'opacity-60')}>
+        <div data-holds className={cn('mt-3 flex flex-col gap-3', dim && 'opacity-60')}>
           {holds.map(([slotId, value]) => (
-            <div key={slotId} data-hold={slotId} className="flex min-w-0 flex-col gap-1">
-              <div className="font-mono text-xs leading-none text-ink-3">{slotId}</div>
+            <div key={slotId} data-hold={slotId} className="flex min-w-0 flex-col gap-0.5">
+              <div className="font-sans text-[11px] leading-4 text-ink-3">{slotId}</div>
               <ValueView path={`${actor.id}.${slotId}`} value={value} depth={0} />
             </div>
           ))}

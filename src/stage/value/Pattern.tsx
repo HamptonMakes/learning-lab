@@ -44,7 +44,7 @@ export function Pattern({
       tombstone={value.meta?.tombstone}
       attrs={{ 'data-cursor': cursor }}
       className={cn(
-        'inline-flex max-w-full min-w-0 flex-col gap-1 rounded-sm font-mono text-[13px]',
+        'inline-flex max-w-full min-w-0 flex-col gap-1 rounded-sm font-mono text-(length:--value-fs)',
         depth === 0 && 'px-0.5',
       )}
     >
@@ -64,7 +64,7 @@ export function Pattern({
               }}
               layout="position"
               className={cn(
-                'inline-flex h-5 items-center rounded-sm border px-1 leading-none whitespace-pre',
+                'inline-flex h-6 items-center rounded-sm border px-1.5 leading-none whitespace-pre',
                 KIND_CLASS[tok.kind],
                 cursor === i && 'ring-2 ring-teal',
               )}

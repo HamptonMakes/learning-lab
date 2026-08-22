@@ -129,13 +129,9 @@
   }
 }
 
-@utility stage-grid {
+/* The stage surface: plain paper. Cards float on it by shadow (--shadow-card), not by texture. */
+@utility stage-surface {
   background-color: var(--paper);
-  background-image:
-    linear-gradient(to right, var(--grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
-  background-size: 24px 24px;
-  background-position: center center;
 }
 
 @utility text-balance {

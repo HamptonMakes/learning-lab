@@ -36,17 +36,17 @@ export function Scalar({
       title={truncated ? full : undefined}
       attrs={{ 'data-scalar-type': type }}
       className={cn(
-        'inline-flex max-w-full flex-wrap items-center gap-x-1.5 gap-y-0.5 rounded-sm font-mono text-[13px] leading-5 text-ink',
+        'inline-flex max-w-full flex-wrap items-baseline gap-x-2 gap-y-0.5 rounded-sm font-mono text-(length:--value-fs) leading-normal text-ink',
         depth === 0 && 'px-0.5',
       )}
     >
       <bdi
         className={cn(
-          'min-w-0 break-all',
+          'min-w-0 wrap-anywhere',
           type === 'number' && 'tabular-nums',
           (type === 'boolean' || type === 'null') && 'text-ink-2 italic',
           empty && 'text-ink-3',
-          tomb && 'text-ink-3 line-through',
+          tomb && 'text-ink-3 line-through decoration-ink-3',
         )}
       >
         {empty ? '""' : shown}

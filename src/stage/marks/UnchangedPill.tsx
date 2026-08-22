@@ -33,7 +33,7 @@ export function UnchangedPill({
       exit={{ opacity: 0, transition: tr('exit') }}
       transition={tr('enter')}
     >
-      <Pill tone="neutral" icon={Equal} className="border border-line-2 shadow-sm">
+      <Pill tone="neutral" icon={Equal} className="bg-card shadow-(--shadow-pop)">
         {t('stage.noChange')}
       </Pill>
     </motion.div>

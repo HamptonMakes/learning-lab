@@ -33,7 +33,7 @@ export function Table({
       dataValue={dataValueOf(value)}
       tombstone={value.meta?.tombstone}
       className={cn(
-        'flex min-w-0 flex-col gap-1 rounded-sm font-mono text-[13px]',
+        'flex min-w-0 flex-col gap-1 rounded-sm font-mono text-(length:--value-fs) [--value-fs:13px]',
         depth === 0 && 'px-0.5',
       )}
     >
@@ -48,7 +48,7 @@ export function Table({
                   kind="column"
                   dataValue={JSON.stringify(value.rows.map((r) => cellPlain(r, col.key)))}
                   attrs={{ 'data-column': col.key }}
-                  className="block rounded-sm border-b border-line-2 pb-0.5 font-sans text-[11px] leading-4 font-medium text-ink-2"
+                  className="block rounded-sm border-b border-line pb-1 font-sans text-[11px] leading-4 font-medium text-ink-3"
                 >
                   {col.label}
                 </NodeBox>

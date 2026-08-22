@@ -32,8 +32,8 @@ export function OutboxChips({ actor, className }: { actor: Actor; className?: st
       aria-label={empty ? t('stage.outbox') : tn('stage.pending', chips.length)}
       title={empty ? undefined : tn('stage.pending', chips.length)}
       className={cn(
-        'flex flex-wrap items-center gap-1',
-        empty ? 'h-0 overflow-hidden' : 'mt-2',
+        'flex flex-wrap items-center gap-1.5',
+        empty ? 'h-0 overflow-hidden' : 'mt-3',
         className,
       )}
     >
@@ -50,7 +50,7 @@ export function OutboxChips({ actor, className }: { actor: Actor; className?: st
             data-outbox-chip={chip.id}
             data-hold={chip.slot}
             title={`${chip.label} ${chip.id}`}
-            className="inline-flex max-w-full items-center gap-1 border border-(--card-hue) bg-(--card-hue-soft) px-1.5 py-0.5 font-mono text-xs leading-none text-ink"
+            className="inline-flex max-w-full items-center gap-1.5 bg-(--card-hue-soft) px-2 py-1 font-mono text-xs leading-none text-ink"
           >
             <span className="truncate">{chip.label}</span>
             <bdi dir="ltr" className="shrink-0 text-ink-3">
@@ -60,10 +60,7 @@ export function OutboxChips({ actor, className }: { actor: Actor; className?: st
         ))}
       </AnimatePresence>
       {overflow > 0 && (
-        <span
-          data-outbox-more={overflow}
-          className="rounded-full bg-paper-3 px-1.5 py-0.5 font-mono text-xs leading-none text-ink-2"
-        >
+        <span data-outbox-more={overflow} className="font-mono text-[11px] leading-none text-ink-3">
           {t('stage.more', { count: overflow })}
         </span>
       )}

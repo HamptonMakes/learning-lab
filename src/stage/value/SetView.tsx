@@ -26,7 +26,7 @@ export function SetView({
       dataValue={dataValueOf(value)}
       tombstone={value.meta?.tombstone}
       className={cn(
-        'flex min-w-0 flex-col gap-1 rounded-sm font-mono text-[13px]',
+        'flex min-w-0 flex-col gap-1.5 rounded-sm font-mono text-(length:--value-fs)',
         depth === 0 && 'px-0.5',
       )}
     >

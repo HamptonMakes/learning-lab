@@ -37,7 +37,7 @@ export function Pill({
       data-tone={tone}
       style={{ ...vars, ...style }}
       className={cn(
-        'inline-flex h-5 max-w-full items-center gap-1 rounded-full bg-(--pill-bg) px-1.5 text-xs leading-none whitespace-nowrap text-ink',
+        'inline-flex h-5 max-w-full items-center gap-1 rounded-full bg-(--pill-bg) px-2 text-[11px] leading-none whitespace-nowrap text-ink-2',
         className,
       )}
       {...rest}
