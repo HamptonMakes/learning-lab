@@ -10,7 +10,9 @@ import type { Annotation, Tone } from '@/lesson/types'
 
 // ─── Lanes ────────────────────────────────────────────────────────────────────────────────────
 
-export type LaneItem = { id: string; from: number; to: number }
+/** `reserve` = extra extent (same unit as from/to) the item's label needs beyond `to`, so labels of
+ *  narrow annotations do not overlap the next bar in the same lane. */
+export type LaneItem = { id: string; from: number; to: number; reserve?: number }
 
 function cmpId(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0
@@ -22,12 +24,13 @@ export function assignLanes(items: readonly LaneItem[]): Map<string, number> {
   const laneEnds: number[] = []
   const out = new Map<string, number>()
   for (const item of sorted) {
-    let lane = laneEnds.findIndex((end) => end <= item.from)
+    const end = Math.max(item.to, item.from + (item.reserve ?? 0))
+    let lane = laneEnds.findIndex((laneEnd) => laneEnd <= item.from)
     if (lane === -1) {
       lane = laneEnds.length
-      laneEnds.push(item.to)
+      laneEnds.push(end)
     } else {
-      laneEnds[lane] = item.to
+      laneEnds[lane] = end
     }
     out.set(item.id, lane)
   }
@@ -100,7 +103,15 @@ export function layoutByteAnnotations(
       snapped: bits[0] !== exact[0] || bits[1] !== exact[1],
     }
   })
-  const lanes = assignLanes(prepared.map((p) => ({ id: p.id, from: p.bits[0], to: p.bits[1] })))
+  // A 10px label char is roughly 2 bits wide in the hex grid; reserve that so labels never collide.
+  const lanes = assignLanes(
+    prepared.map((p) => ({
+      id: p.id,
+      from: p.bits[0],
+      to: p.bits[1],
+      reserve: (p.label?.length ?? 0) * 2,
+    })),
+  )
   return prepared.map((p) => ({ ...p, lane: lanes.get(p.id) ?? 0 }))
 }
 
@@ -123,7 +134,10 @@ export function layoutTextAnnotations(annotations: readonly Annotation[]): TextA
     from: a.from,
     to: a.to,
   }))
-  const lanes = assignLanes(prepared)
+  // A 10px label char is about 0.7 of a 13px mono text character.
+  const lanes = assignLanes(
+    prepared.map((p) => ({ ...p, reserve: p.label ? (p.label.length + 1) * 0.7 : 0 })),
+  )
   return prepared.map((p) => ({ ...p, lane: lanes.get(p.id) ?? 0 }))
 }
 

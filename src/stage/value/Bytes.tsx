@@ -234,7 +234,7 @@ function AnnotationBar({
       transition={{ ...tr('enter'), layout: tr('layout') }}
     >
       {showLabel && ann.label && (
-        <span className="absolute inset-x-0.5 top-0 truncate font-sans text-[10px] leading-3 text-(--tone)">
+        <span className="absolute start-0.5 top-0 font-sans text-[10px] leading-3 whitespace-nowrap text-(--tone)">
           {ann.label}
         </span>
       )}

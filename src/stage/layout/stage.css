@@ -47,6 +47,12 @@
   justify-self: center;
 }
 
+/* One or two cards have room to breathe: let wide values (16 bytes per row, long text) fit. */
+.stage-actors[data-layout='row'] > [data-actor],
+.stage-actors[data-layout='pair'] > [data-actor] {
+  max-inline-size: 36rem;
+}
+
 .stage-actors[data-layout='row'] {
   grid-auto-flow: column;
   grid-auto-columns: minmax(0, 1fr);

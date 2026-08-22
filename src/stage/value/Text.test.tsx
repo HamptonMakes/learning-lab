@@ -42,11 +42,11 @@ describe('Text', () => {
     expect(fail?.textContent).toContain('t')
     expect(fail?.textContent).toContain('no match at 0')
     const ok = container.querySelector<HTMLElement>('[data-annotation="ok"]')
-    expect(ok?.dataset.lane).toBe('0')
+    expect(ok?.dataset.lane).toBe('1') // its label would overlap "no match at 0" on lane 0
     expect(ok?.dataset.from).toBe('4')
     expect(ok?.dataset.to).toBe('7')
     const greedy = container.querySelector<HTMLElement>('[data-annotation="greedy"]')
-    expect(greedy?.dataset.lane).toBe('1')
+    expect(greedy?.dataset.lane).toBe('2')
     // greedy is nested inside ok (containment)
     expect(ok?.contains(greedy as Node)).toBe(true)
     expect(greedy?.style.getPropertyValue('--tone')).toBe('var(--accent)')
