@@ -1,27 +1,54 @@
 /**
- * ValueView — renders one Value node (and its children) for a given path.
- * CONTRACT (owned by the value-views task): every node renders data-path / data-kind / data-value,
- * plus data-tombstone / data-highlight when applicable, and registers its element with useAnchor(path).
- * This file is a placeholder until the value views land.
+ * ValueView — renders one Value node (and its children) for a given path. Dispatches on
+ * `value.kind`; every node (and every addressable sub-node) is wrapped by NodeBox, which renders
+ * the DOM contract (`data-path` / `data-kind` / `data-value` / `data-tombstone` / `data-highlight`),
+ * registers the anchor, and draws highlight rings, via chips and check / cross glyphs on the node.
+ * Forward steps animate the diff (enter / exit / layout / flash via `tr()`); under reduced motion or
+ * an instant commit everything renders at rest.
  */
 import type { Path, Value } from '@/lesson/types'
+import { Bytes } from './Bytes'
+import { Clock } from './Clock'
+import { Counter } from './Counter'
+import { List } from './List'
+import { Meter } from './Meter'
+import { Pattern } from './Pattern'
+import { Record } from './Record'
+import { Scalar } from './Scalar'
+import { SetView } from './SetView'
+import { Table } from './Table'
+import { Text } from './Text'
 
 export interface ValueViewProps {
   path: Path
   value: Value
-  /** Nesting depth (0 = a slot on a card). */
+  /** Nesting depth (0 = a slot on a card / a board's value). */
   depth?: number
 }
 
-export function ValueView({ path, value }: ValueViewProps) {
-  return (
-    <div
-      data-path={path}
-      data-kind={value.kind}
-      data-value={JSON.stringify(value)}
-      className="font-mono text-xs"
-    >
-      {JSON.stringify(value)}
-    </div>
-  )
+export function ValueView({ path, value, depth = 0 }: ValueViewProps) {
+  switch (value.kind) {
+    case 'scalar':
+      return <Scalar path={path} value={value} depth={depth} />
+    case 'record':
+      return <Record path={path} value={value} depth={depth} />
+    case 'list':
+      return <List path={path} value={value} depth={depth} />
+    case 'set':
+      return <SetView path={path} value={value} depth={depth} />
+    case 'counter':
+      return <Counter path={path} value={value} depth={depth} />
+    case 'clock':
+      return <Clock path={path} value={value} depth={depth} />
+    case 'table':
+      return <Table path={path} value={value} depth={depth} />
+    case 'bytes':
+      return <Bytes path={path} value={value} depth={depth} />
+    case 'text':
+      return <Text path={path} value={value} depth={depth} />
+    case 'pattern':
+      return <Pattern path={path} value={value} depth={depth} />
+    case 'meter':
+      return <Meter path={path} value={value} depth={depth} />
+  }
 }
