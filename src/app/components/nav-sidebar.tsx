@@ -24,12 +24,13 @@ import type { ModuleMeta, UnitMeta } from '@/lesson/catalog'
 import { useLocationParts } from './use-location-parts'
 
 export function NavSidebar() {
-  const { t, locale } = useI18n()
+  const { t, locale, isRtl } = useI18n()
   const { module: current, ref } = useLocationParts()
   const progress = useProgress()
 
   return (
     <Sidebar
+      side={isRtl ? 'right' : 'left'}
       collapsible="offcanvas"
       className="top-(--header-h) h-[calc(100svh-var(--header-h))] border-e border-line"
     >
