@@ -9,11 +9,14 @@
  * stamp, which later hides any add that is older than it. Ops carry their stamp, so they can arrive
  * in any order and any number of times.
  *
- * Tie rule (exact): stamps are compared with `compareStamp` — by `ts`, then by `node` (the larger
- * node id wins). So an add and a remove at the same `ts` from *different* nodes are decided by node
- * id, not by bias. Only when add and remove carry the very same stamp (same `ts` AND same `node` —
- * one node adding and removing in one tick) does `bias` decide: `'add'` keeps the element,
- * `'remove'` drops it. `bias` is fixed at `init` and both replicas in a merge must agree.
+ * Tie rule (exact, as in Shapiro et al. 2011): presence compares the newest add `ts` with the
+ * newest remove `ts`. A strictly greater `ts` wins. When the two `ts` are equal — whoever wrote
+ * them — `bias` decides: `'add'` keeps the element, `'remove'` drops it. That is the whole point of
+ * the bias knob: the set lets you choose which way a same-time add/remove race falls, instead of
+ * picking a winner by node id the way the LWW register does. (Node ids are still used, via
+ * `compareStamp`, to decide which of two *adds* or two *removes* at the same `ts` is kept as the
+ * stored stamp — that choice is deterministic and never changes presence.) `bias` is fixed at
+ * `init` and both replicas in a merge must agree.
  *
  * Sidecar the stage visualizes: `adds` — per key the element plus its newest add stamp
  * `{ e, ts, node }`; `removes` — per key the newest remove stamp `{ ts, node }` (a key may appear in
@@ -63,7 +66,7 @@ export interface LwwElementSetRow<E> {
   present: boolean
 }
 
-/** The value rule: add present, and add stamp beats remove stamp (or equal stamps with bias 'add'). */
+/** The value rule: an add exists and its `ts` beats the remove's `ts`; equal `ts` → bias decides. */
 function isPresent(
   add: LwwStamp | undefined,
   remove: LwwStamp | undefined,
@@ -71,8 +74,8 @@ function isPresent(
 ): boolean {
   if (!add) return false
   if (!remove) return true
-  const c = compareStamp(add, remove)
-  return c > 0 || (c === 0 && bias === 'add')
+  if (add.ts !== remove.ts) return add.ts > remove.ts
+  return bias === 'add'
 }
 
 /** True when `e` is currently in the set. */

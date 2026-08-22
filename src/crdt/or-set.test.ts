@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import fc from 'fast-check'
 import { assertConvergence, assertMergeLaws, assertOpConvergence, canon } from './laws'
+import { keyOf } from './g-set'
 import {
-  keyOf,
   orSet,
   orSetHas,
   orSetRows,

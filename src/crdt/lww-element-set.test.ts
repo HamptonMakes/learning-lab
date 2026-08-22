@@ -85,10 +85,12 @@ describe('LWW-Element-Set: lesson examples', () => {
     expect(lwwElementSet.value(lwwElementSet.merge(b, newer))).toEqual(['eggs'])
   })
 
-  it('tie at the same ts from different nodes: node id decides, bias is NOT consulted', () => {
+  it('tie at the same ts from different nodes: bias decides, not node id', () => {
+    const alice = makeCtx('alice')
+    const bob = makeCtx('bob')
     for (const bias of BIASES) {
-      const alice = makeCtx('alice')
-      const bob = makeCtx('bob')
+      const expected = bias === 'add' ? ['milk'] : []
+      // Alice adds, Bob removes, both at t=4
       const a = lwwElementSet.update(
         lwwElementSet.init('alice', { bias }),
         { add: 'milk' },
@@ -99,10 +101,9 @@ describe('LWW-Element-Set: lesson examples', () => {
         { remove: 'milk' },
         bob.at(4),
       )
-      // 'bob' > 'alice' so Bob's remove wins regardless of bias
-      expect(lwwElementSet.value(lwwElementSet.merge(a, b))).toEqual([])
-      expect(lwwElementSet.value(lwwElementSet.merge(b, a))).toEqual([])
-      // swap roles: Bob adds, Alice removes → Bob's add wins regardless of bias
+      expect(lwwElementSet.value(lwwElementSet.merge(a, b))).toEqual(expected)
+      expect(lwwElementSet.value(lwwElementSet.merge(b, a))).toEqual(expected)
+      // swap roles: Bob adds, Alice removes → same answer, because node ids do not matter here
       const a2 = lwwElementSet.update(
         lwwElementSet.init('alice', { bias }),
         { remove: 'milk' },
@@ -113,12 +114,12 @@ describe('LWW-Element-Set: lesson examples', () => {
         { add: 'milk' },
         bob.at(4),
       )
-      expect(lwwElementSet.value(lwwElementSet.merge(a2, b2))).toEqual(['milk'])
-      expect(lwwElementSet.value(lwwElementSet.merge(b2, a2))).toEqual(['milk'])
+      expect(lwwElementSet.value(lwwElementSet.merge(a2, b2))).toEqual(expected)
+      expect(lwwElementSet.value(lwwElementSet.merge(b2, a2))).toEqual(expected)
     }
   })
 
-  it('identical stamps (same node, same ts) — the only case where bias decides', () => {
+  it('identical stamps (same node, same ts): bias decides here too', () => {
     const alice = makeCtx('alice')
     let add = lwwElementSet.init('alice', { bias: 'add' })
     add = lwwElementSet.update(add, { add: 'milk' }, alice.at(4))
@@ -279,7 +280,7 @@ describe('LWW-Element-Set: edge cases', () => {
     expect(Object.keys(s.adds)).toEqual(['{"id":1,"name":"milk"}'])
   })
 
-  it('property: value matches a brute-force "latest stamp per side" model (both biases)', () => {
+  it('property: value matches a brute-force "latest ts per side, bias on ties" model (both biases)', () => {
     type Stamp = { ts: number; node: string }
     const cmp = (a: Stamp, b: Stamp) =>
       a.ts !== b.ts ? a.ts - b.ts : a.node < b.node ? -1 : a.node > b.node ? 1 : 0
@@ -306,8 +307,7 @@ describe('LWW-Element-Set: edge cases', () => {
             .filter(([k, a]) => {
               const r = removes.get(k)
               if (!r) return true
-              const c = cmp(a, r)
-              return c > 0 || (c === 0 && bias === 'add')
+              return a.ts !== r.ts ? a.ts > r.ts : bias === 'add'
             })
             .map(([k]) => k)
             .sort()

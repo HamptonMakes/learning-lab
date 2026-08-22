@@ -35,7 +35,10 @@ export function parseDot(d: Dot): { node: NodeId; seq: number } {
 }
 
 /** Total order on (ts, node) used to break ties deterministically. Returns >0 if a wins. */
-export function compareStamp(a: { ts: number; node: NodeId }, b: { ts: number; node: NodeId }): number {
+export function compareStamp(
+  a: { ts: number; node: NodeId },
+  b: { ts: number; node: NodeId },
+): number {
   if (a.ts !== b.ts) return a.ts - b.ts
   return a.node < b.node ? -1 : a.node > b.node ? 1 : 0
 }
@@ -60,7 +63,11 @@ export interface CrdtType<S, U, O, V, A = void> {
 }
 
 /** Helper for tests and tooling: a deterministic Ctx whose seq counter advances per call. */
-export function makeCtx(node: NodeId, ts = 0, startSeq = 0): Ctx & { seq: number; at(ts: number): Ctx } {
+export function makeCtx(
+  node: NodeId,
+  ts = 0,
+  startSeq = 0,
+): Ctx & { seq: number; at(ts: number): Ctx } {
   const ctx = {
     node,
     ts,

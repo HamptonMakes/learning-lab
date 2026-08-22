@@ -13,12 +13,14 @@
  * tombstones. Supports both state-based use (merge) and op-based use (prepare/effect): an add op
  * carries its new tag; a remove op carries the tags observed at the source.
  *
- * Elements are keyed by `keyOf(e)`: a string is its own key, anything else is keyed by canonical
- * JSON (object keys sorted), so `{ a: 1, b: 2 }` and `{ b: 2, a: 1 }` are the same element.
+ * Elements are keyed by `keyOf(e)` (shared with the other element sets, see g-set.ts): a string is
+ * its own key, anything else is keyed by canonical JSON (object keys sorted), so `{ a: 1, b: 2 }`
+ * and `{ b: 2, a: 1 }` are the same element.
  */
+import { keyOf } from './g-set'
 import { dot, parseDot, type CrdtType, type Ctx, type Dot, type NodeId } from './types'
 
-/** Element key: the string itself, or canonical JSON for non-string elements. See `keyOf`. */
+/** Element key: the string itself, or canonical JSON for non-string elements. See `keyOf` (g-set.ts). */
 export type OrSetKey = string
 
 export interface OrSetEntry<E> {
@@ -67,24 +69,6 @@ export interface OrSetRow<E> {
 
 // ---------------------------------------------------------------------------------------------
 // Keys and ordering
-
-/** Canonical key for an element: the string itself, otherwise canonical JSON (keys sorted). */
-export function keyOf(e: unknown): OrSetKey {
-  return typeof e === 'string' ? e : JSON.stringify(sortKeysDeep(e))
-}
-
-function sortKeysDeep(x: unknown): unknown {
-  if (Array.isArray(x)) return x.map(sortKeysDeep)
-  if (x && typeof x === 'object') {
-    const rec = x as Record<string, unknown>
-    return Object.fromEntries(
-      Object.keys(rec)
-        .sort()
-        .map((k) => [k, sortKeysDeep(rec[k])]),
-    )
-  }
-  return x
-}
 
 /** Order tags by node, then by seq as a number (so `a:2` sorts before `a:10`). */
 function compareDot(a: Dot, b: Dot): number {

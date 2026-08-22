@@ -48,7 +48,11 @@ function veqFor<S, U, O, V, A>(cfg: LawsConfig<S, U, O, V, A>) {
 }
 
 /** Arbitrary: a replica state for `node` after 0..maxUpdates random local updates with rising ts. */
-export function stateArb<S, U, O, V, A>(cfg: LawsConfig<S, U, O, V, A>, node: NodeId, tsBase = 0): fc.Arbitrary<S> {
+export function stateArb<S, U, O, V, A>(
+  cfg: LawsConfig<S, U, O, V, A>,
+  node: NodeId,
+  tsBase = 0,
+): fc.Arbitrary<S> {
   const max = cfg.maxUpdates ?? 6
   return fc.array(cfg.updateArb(node), { maxLength: max }).map((updates) => {
     const ctx = makeCtx(node, tsBase)
@@ -73,7 +77,9 @@ export function assertMergeLaws<S, U, O, V, A>(cfg: LawsConfig<S, U, O, V, A>): 
     { ...opts, verbose: true },
   )
   fc.assert(
-    fc.property(triple, ([a, b, c]) => eq(type.merge(type.merge(a, b), c), type.merge(a, type.merge(b, c)))),
+    fc.property(triple, ([a, b, c]) =>
+      eq(type.merge(type.merge(a, b), c), type.merge(a, type.merge(b, c))),
+    ),
     { ...opts, verbose: true },
   )
   fc.assert(
@@ -99,9 +105,11 @@ export function assertConvergence<S, U, O, V, A>(cfg: LawsConfig<S, U, O, V, A>)
   const n = nodes.length
   type Event = { kind: 'update'; node: number; u: U } | { kind: 'sync'; from: number; to: number }
   const eventArb: fc.Arbitrary<Event> = fc.oneof(
-    fc.integer({ min: 0, max: n - 1 }).chain((node) =>
-      cfg.updateArb(nodes[node] ?? 'a').map((u) => ({ kind: 'update', node, u }) as Event),
-    ),
+    fc
+      .integer({ min: 0, max: n - 1 })
+      .chain((node) =>
+        cfg.updateArb(nodes[node] ?? 'a').map((u) => ({ kind: 'update', node, u }) as Event),
+      ),
     fc
       .tuple(fc.integer({ min: 0, max: n - 1 }), fc.integer({ min: 0, max: n - 1 }))
       .map(([from, to]) => ({ kind: 'sync', from, to }) as Event),
@@ -149,58 +157,77 @@ export function assertOpConvergence<S, U, O, V, A>(cfg: LawsConfig<S, U, O, V, A
   const n = nodes.length
   type Event = { kind: 'op'; node: number; u: U } | { kind: 'recv'; node: number; from: number }
   const eventArb: fc.Arbitrary<Event> = fc.oneof(
-    { weight: 3, arbitrary: fc.integer({ min: 0, max: n - 1 }).chain((node) => cfg.updateArb(nodes[node] ?? 'a').map((u) => ({ kind: 'op', node, u }) as Event)) },
-    { weight: 2, arbitrary: fc.tuple(fc.integer({ min: 0, max: n - 1 }), fc.integer({ min: 0, max: n - 1 })).map(([node, from]) => ({ kind: 'recv', node, from }) as Event) },
+    {
+      weight: 3,
+      arbitrary: fc
+        .integer({ min: 0, max: n - 1 })
+        .chain((node) =>
+          cfg.updateArb(nodes[node] ?? 'a').map((u) => ({ kind: 'op', node, u }) as Event),
+        ),
+    },
+    {
+      weight: 2,
+      arbitrary: fc
+        .tuple(fc.integer({ min: 0, max: n - 1 }), fc.integer({ min: 0, max: n - 1 }))
+        .map(([node, from]) => ({ kind: 'recv', node, from }) as Event),
+    },
   )
   fc.assert(
-    fc.property(fc.array(eventArb, { maxLength: 40 }), fc.integer({ min: 0, max: 1 << 20 }), (events, seed) => {
-      const states: S[] = nodes.map((id) => type.init(id, cfg.args))
-      const ctxs = nodes.map((id) => makeCtx(id, 0))
-      // log[i] = ops node i has applied, in application order (its causal past)
-      const log: { id: number; op: O }[][] = nodes.map(() => [])
-      let opId = 0
-      let clock = 0
-      for (const e of events) {
-        clock += 1
-        if (e.kind === 'op') {
-          const ctx = ctxs[e.node] as Ctx
-          ctx.ts = clock
-          const op = type.prepare(states[e.node] as S, e.u, ctx)
-          states[e.node] = type.effect(states[e.node] as S, op)
-          ;(log[e.node] as { id: number; op: O }[]).push({ id: opId++, op })
-        } else if (e.node !== e.from) {
-          const seen = new Set((log[e.node] as { id: number }[]).map((x) => x.id))
-          for (const entry of log[e.from] as { id: number; op: O }[]) {
-            if (!seen.has(entry.id)) {
-              states[e.node] = type.effect(states[e.node] as S, entry.op)
-              ;(log[e.node] as { id: number; op: O }[]).push(entry)
-              seen.add(entry.id)
-            }
-          }
-        }
-      }
-      // final delivery: everyone receives everything, pulling from peers in a seeded random order
-      let rnd = seed
-      const next = () => ((rnd = (rnd * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff)
-      for (let round = 0; round < 3; round++) {
-        const order = nodes.map((_, i) => i).sort(() => next() - 0.5)
-        for (const i of order) {
-          const peers = nodes.map((_, j) => j).filter((j) => j !== i).sort(() => next() - 0.5)
-          for (const j of peers) {
-            const seen = new Set((log[i] as { id: number }[]).map((x) => x.id))
-            for (const entry of log[j] as { id: number; op: O }[]) {
+    fc.property(
+      fc.array(eventArb, { maxLength: 40 }),
+      fc.integer({ min: 0, max: 1 << 20 }),
+      (events, seed) => {
+        const states: S[] = nodes.map((id) => type.init(id, cfg.args))
+        const ctxs = nodes.map((id) => makeCtx(id, 0))
+        // log[i] = ops node i has applied, in application order (its causal past)
+        const log: { id: number; op: O }[][] = nodes.map(() => [])
+        let opId = 0
+        let clock = 0
+        for (const e of events) {
+          clock += 1
+          if (e.kind === 'op') {
+            const ctx = ctxs[e.node] as Ctx
+            ctx.ts = clock
+            const op = type.prepare(states[e.node] as S, e.u, ctx)
+            states[e.node] = type.effect(states[e.node] as S, op)
+            ;(log[e.node] as { id: number; op: O }[]).push({ id: opId++, op })
+          } else if (e.node !== e.from) {
+            const seen = new Set((log[e.node] as { id: number }[]).map((x) => x.id))
+            for (const entry of log[e.from] as { id: number; op: O }[]) {
               if (!seen.has(entry.id)) {
-                states[i] = type.effect(states[i] as S, entry.op)
-                ;(log[i] as { id: number; op: O }[]).push(entry)
+                states[e.node] = type.effect(states[e.node] as S, entry.op)
+                ;(log[e.node] as { id: number; op: O }[]).push(entry)
                 seen.add(entry.id)
               }
             }
           }
         }
-      }
-      const values = states.map((s) => type.value(s))
-      return values.every((v) => veq(v, values[0] as V))
-    }),
+        // final delivery: everyone receives everything, pulling from peers in a seeded random order
+        let rnd = seed
+        const next = () => (rnd = (rnd * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff
+        for (let round = 0; round < 3; round++) {
+          const order = nodes.map((_, i) => i).sort(() => next() - 0.5)
+          for (const i of order) {
+            const peers = nodes
+              .map((_, j) => j)
+              .filter((j) => j !== i)
+              .sort(() => next() - 0.5)
+            for (const j of peers) {
+              const seen = new Set((log[i] as { id: number }[]).map((x) => x.id))
+              for (const entry of log[j] as { id: number; op: O }[]) {
+                if (!seen.has(entry.id)) {
+                  states[i] = type.effect(states[i] as S, entry.op)
+                  ;(log[i] as { id: number; op: O }[]).push(entry)
+                  seen.add(entry.id)
+                }
+              }
+            }
+          }
+        }
+        const values = states.map((s) => type.value(s))
+        return values.every((v) => veq(v, values[0] as V))
+      },
+    ),
     { numRuns: cfg.numRuns ?? 150, verbose: true },
   )
 }
