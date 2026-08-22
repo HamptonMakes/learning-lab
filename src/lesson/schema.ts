@@ -413,6 +413,7 @@ export const CrdtArgsSchema = z.strictObject({
   stamp: z.enum(['lamport', 'clock']).optional(),
   display: z.enum(['row', 'column', 'text']).optional(),
   expose: z.array(z.enum(['vc', 'applied', 'stats'])).optional(),
+  wire: z.enum(['state', 'ops']).optional(),
 })
 /** Recursive: a composed-document schema node. */
 export const CrdtSchemaSchema: z.ZodType<CrdtSchema> = z.lazy(() =>

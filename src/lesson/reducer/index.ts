@@ -18,7 +18,7 @@ import {
   type World,
 } from '../types'
 import type { AssertMode, ReduceCtx, StepCtx } from './context'
-import { prepareOutgoing, reduceCrdt } from './crdt'
+import { prepareOutgoing, prepareSyncOps, reduceCrdt } from './crdt'
 import { diffWorld } from './diff'
 import { deepEqual } from './equal'
 import { createEventLog, type ReducerEvent } from './events'
@@ -166,9 +166,13 @@ function reduceUnwrapped(w: World, cmd: Command, ctx: ReduceCtxX): World {
     case 'crdt.init':
     case 'crdt.doc':
     case 'crdt.merge':
-    case 'crdt.sync':
     case 'crdt.gc':
       return reduceCrdt(w, cmd, ctx)
+    case 'crdt.sync': {
+      if (cmd.mode !== 'ops') return reduceCrdt(w, cmd, ctx)
+      const { world, messages } = prepareSyncOps(w, cmd, ctx)
+      return emitOutgoing(world, messages, ctx, cmd)
+    }
     case 'crdt.update': {
       if (cmd.quiet) markQuiet(ctx, `${cmd.actor}.${cmd.slot}`)
       return reduceCrdt(w, cmd, ctx)
@@ -176,20 +180,7 @@ function reduceUnwrapped(w: World, cmd: Command, ctx: ReduceCtxX): World {
     case 'crdt.send':
     case 'crdt.broadcast': {
       const { world, messages } = prepareOutgoing(w, cmd, ctx)
-      let next = world
-      for (const m of messages) {
-        const spec = {
-          from: m.from,
-          to: m.to,
-          payload: m.payload,
-          id: m.id,
-          data: m.data,
-        } as Parameters<typeof createMessages>[1]
-        if (m.label !== undefined) spec.label = m.label
-        if (m.size !== undefined) spec.size = m.size
-        next = createMessages(next, spec, ctx, cmd)
-      }
-      return next
+      return emitOutgoing(world, messages, ctx, cmd)
     }
     case 'regex.init':
     case 'regex.advance':
@@ -303,4 +294,27 @@ export function applyStep(prev: World, step: Step, ctx: StepCtx): StepResult {
   w = addAutoHighlights(w, prevCleared, step, rctx)
   const changes = reconcile(rctx.log.events, diffWorld(prevCleared, w))
   return { world: w, changes }
+}
+
+/** Turn the delivery layer's outgoing specs into Messages (fan-out, parking, `sent` events). */
+function emitOutgoing(
+  world: World,
+  messages: ReturnType<typeof prepareOutgoing>['messages'],
+  ctx: ReduceCtx,
+  cmd: Command,
+): World {
+  let next = world
+  for (const m of messages) {
+    const spec = {
+      from: m.from,
+      to: m.to,
+      payload: m.payload,
+      id: m.id,
+      data: m.data,
+    } as Parameters<typeof createMessages>[1]
+    if (m.label !== undefined) spec.label = m.label
+    if (m.size !== undefined) spec.size = m.size
+    next = createMessages(next, spec, ctx, cmd)
+  }
+  return next
 }

@@ -315,6 +315,7 @@ export type CrdtArgs = {
   stamp?: 'lamport' | 'clock' // rga: element ts = max ts seen here + 1 (default) or the wall clock (§5.1 Time)
   display?: 'row' | 'column' | 'text' // rga (default 'row'; 'text' draws one-character items as a line, id beneath each)
   expose?: Array<'vc' | 'applied' | 'stats'> // publish delivery-layer sidecar on the slot's root meta
+  wire?: 'state' | 'ops' // how this slot travels (default 'state'); 'ops' draws the outbox chips (pending ops) on the card
 }
 /** `by` defaults to the pseudo-node 'seed' (no actor seq consumed, not counted in version vectors); `ts` defaults to 0. */
 export type SeedOp = { by?: NodeId; op: string; args?: unknown[]; path?: string; ts?: number }

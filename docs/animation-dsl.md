@@ -479,6 +479,7 @@ export type CrdtArgs = {
   stamp?: 'lamport' | 'clock' // rga: element ts = max ts seen here + 1 (default) or the wall clock (§5.1 Time)
   display?: 'row' | 'column' | 'text' // rga (default 'row'; 'text' draws one-character items as a line, id beneath each)
   expose?: Array<'vc' | 'applied' | 'stats'> // publish delivery-layer sidecar on the slot's root meta
+  wire?: 'state' | 'ops' // how the slot travels (default 'state'); 'ops' draws the outbox chips (pending ops) on the card
 }
 /** `by` defaults to the pseudo-node 'seed' (no actor seq consumed, not counted in version vectors); `ts` defaults to 0. */
 export type SeedOp = { by?: NodeId; op: string; args?: unknown[]; path?: string; ts?: number }
@@ -594,7 +595,7 @@ Semantics (the delivery layer):
   identical ids.
 - **Update** = `op = prepare(state, u, ctx)`; `state' = effect(state, op)`; `log.push`, `pending.push`,
   `version[actor] = seq`, `applied.push(id)`; `holds` refreshed; the actor's `outbox` chips mirror
-  `pending`. If `toValue()` is unchanged, an `unchanged` mark is added (e.g. a 2P-Set re-add).
+  `pending` when the slot is declared `wire: 'ops'` (state-driven slots keep `pending` as bookkeeping only). If `toValue()` is unchanged, an `unchanged` mark is added (e.g. a 2P-Set re-add).
 - **`crdt.send`** snapshots the sender's state **at this step** into a `{ kind:'state' }` message:
   `mode:'full'` (default) carries the whole state; `mode:'delta'` carries `pending` ops applied to
   `init()` (a small state the same `merge()` accepts; narration says "(simplified)"). Either clears
