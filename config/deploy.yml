@@ -1,33 +1,41 @@
-# Kamal 2 deployment for Hampton's CS Concept Lab (static SPA served by Caddy).
-# Fill in the placeholders (servers, registry) and run: kamal setup / kamal deploy
+# Kamal 2 deployment for Hampton's CS Concept Lab — a static SPA served by Caddy.
+# Secrets are never stored in this repo: see .kamal/secrets (Proton Pass CLI).
 service: cs-lab
-image: hamptonmakes/cs-lab
+image: hamptonlc/cs-lab
+
+registry:
+  username: hamptonlc
+  password:
+    - KAMAL_REGISTRY_PASSWORD
 
 servers:
   web:
-    - 203.0.113.10 # <- replace with your host
+    hosts:
+      - 178.156.220.157
+
+ssh:
+  user: hampton
+
+builder:
+  arch: amd64
+  args:
+    # Vite bakes these into the bundle at build time. They are public values, not secrets.
+    VITE_UMAMI_SCRIPT_URL: https://analytics.lin.cat/script.js
+    VITE_UMAMI_WEBSITE_ID: <%= ENV.fetch("VITE_UMAMI_WEBSITE_ID", "") %>
+    BASE_PATH: "/"
 
 proxy:
   ssl: true
-  host: lab.hamptonmakes.com # <- replace if you mount it elsewhere
+  hosts:
+    - lab.hamptonmakes.com
   app_port: 80
   healthcheck:
     path: /up
     interval: 3
     timeout: 5
 
-registry:
-  server: ghcr.io
-  username: hamptonmakes
-  password:
-    - KAMAL_REGISTRY_PASSWORD
+aliases:
+  shell: app exec --interactive --reuse "sh"
+  logs: app logs -f
 
-builder:
-  arch: amd64
-  args:
-    # Vite env is baked at build time; these values are public.
-    VITE_UMAMI_SCRIPT_URL: <%= ENV.fetch("VITE_UMAMI_SCRIPT_URL", "") %>
-    VITE_UMAMI_WEBSITE_ID: <%= ENV.fetch("VITE_UMAMI_WEBSITE_ID", "") %>
-    BASE_PATH: "/"
-
-# The app is stateless; Postgres is available in prod but unused in v1.
+# The app is stateless; Postgres is available on the host but unused in v1.

@@ -32,6 +32,4 @@ blob-report
 .env.*
 !.env.example
 
-# Kamal
-.kamal/secrets*
-!.kamal/secrets.example
+# Kamal: .kamal/secrets is committed on purpose — it holds pass-cli commands, never values.

@@ -26,10 +26,14 @@ documented live at `/en/design` when the app is running. Architecture notes live
 ## Deploy
 
 Static build served by Caddy in a small container; `config/deploy.yml` is a Kamal 2 config.
+This repo is open source: secrets never live here. `.kamal/secrets` pulls the registry token from
+Proton Pass CLI (`pass-cli`, vault `kamal`) at deploy time.
 
 ```sh
-pnpm docker:build
-kamal setup && kamal deploy
+cp .env.example .env            # set VITE_UMAMI_WEBSITE_ID (public, from analytics.lin.cat)
+pnpm docker:build               # local image check
+VITE_UMAMI_WEBSITE_ID=… kamal setup   # first time
+VITE_UMAMI_WEBSITE_ID=… kamal deploy
 ```
 
 ## Author
