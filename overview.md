@@ -105,3 +105,5 @@ A user should be able to load the site and navigate and successfully complete th
 The site must be visually polished on any desktop web browser size, with a thoughtful layout, easy navigation, and most importantly- the animations MUST be extremely expressive of the ideas which will require many different types of animations and examples.
 
 At minimum, Prototypes of the other Units animations and explainations should exist in to demonstrate that the animation system can handle expressively showing the required types of concepts.
+
+Verification of the quality of the animations is required including durable proof.
