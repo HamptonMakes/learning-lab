@@ -22,7 +22,7 @@
   container-type: inline-size;
   container-name: stage;
   display: flex;
-  align-items: flex-start;
+  align-items: center; /* actors and boards sit vertically centred in the stage */
   gap: var(--stage-gap);
   padding: var(--stage-pad);
   min-block-size: inherit;
@@ -38,7 +38,7 @@
   display: grid;
   gap: var(--stage-gap);
   align-items: start;
-  align-content: start;
+  align-content: center;
 }
 
 .stage-actors > [data-actor] {
