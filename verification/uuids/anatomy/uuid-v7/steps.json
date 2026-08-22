@@ -6,7 +6,7 @@
   "unitTitle": "Anatomy of a UUID",
   "topicTitle": "UUID v7",
   "firstInUnit": false,
-  "total": 8,
+  "total": 14,
   "steps": [
     {
       "index": 0,
@@ -40,7 +40,7 @@
       "index": 4,
       "stepId": "s05",
       "sceneId": "time-first",
-      "say": "Everything else stays random: 74 bits.",
+      "say": "Everything else stays random: 74 bits (simplified).",
       "file": "05-time-first-s05.png"
     },
     {
@@ -63,7 +63,49 @@
       "sceneId": "time-first",
       "say": "Anyone who sees a v7 id learns when it was made, to the millisecond. Decide if that is OK before you choose it.",
       "file": "08-time-first-s08.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s01",
+      "sceneId": "sorts-by-time",
+      "say": "Three devices made v7 ids at 10:00:00.000, .001 and .002. They reach the server in a different order: .001, .002, .000.",
+      "file": "09-sorts-by-time-s01.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s02",
+      "sceneId": "sorts-by-time",
+      "say": "Sort the three by id, as plain text. The made times come out in order: .000, .001, .002.",
+      "file": "10-sorts-by-time-s02.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s03",
+      "sceneId": "sorts-by-time",
+      "say": "Why: the first 6 bytes are the time. Byte 5 reads 00, 01, 02 down the list, so the earlier id has the smaller bytes and sorts first.",
+      "file": "11-sorts-by-time-s03.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s04",
+      "sceneId": "sorts-by-time",
+      "say": "Now the same three moments with v4 ids, arriving in the same order: .001, .002, .000.",
+      "file": "12-sorts-by-time-s04.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s05",
+      "sceneId": "sorts-by-time",
+      "say": "Sort them by id: .002, .000, .001. Time is not inside a v4 id, so sorting by id says nothing about when.",
+      "file": "13-sorts-by-time-s05.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s06",
+      "sceneId": "sorts-by-time",
+      "say": "Pick v4 when the id should say nothing. Pick v7 when it is a key you insert a lot and want to read back in time order.",
+      "file": "14-sorts-by-time-s06.png"
     }
   ],
-  "generatedAt": "2026-08-22T20:23:09.525Z"
+  "generatedAt": "2026-08-22T21:51:40.795Z"
 }

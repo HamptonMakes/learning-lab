@@ -1,0 +1,188 @@
+{
+  "module": "crdts",
+  "unit": "choosing",
+  "topic": "real-systems",
+  "unitNumeral": "V",
+  "unitTitle": "Choosing & Using CRDTs",
+  "topicTitle": "Real systems",
+  "firstInUnit": false,
+  "total": 25,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "libraries-and-databases",
+      "say": "Six real systems, four different answers. We fill one row at a time, and say what each of them really does.",
+      "file": "01-libraries-and-databases-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "libraries-and-databases",
+      "say": "Yjs is a library for collaborative editors. Its text is a sequence CRDT: every character carries the id of the client that typed it.",
+      "file": "02-libraries-and-databases-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "libraries-and-databases",
+      "say": "Two Yjs peers first swap state vectors — how much each has seen from whom — then send only the missing updates.",
+      "file": "03-libraries-and-databases-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "libraries-and-databases",
+      "say": "Automerge is a JSON-like document that keeps its history. Every change has a hash, and peers compare heads to find what is missing.",
+      "file": "04-libraries-and-databases-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "libraries-and-databases",
+      "say": "Automerge also keeps the losing side of a concurrent field write, so your app can show a conflict instead of hiding it.",
+      "file": "05-libraries-and-databases-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "libraries-and-databases",
+      "say": "Riak KV can hold CRDTs inside the database: counters, sets, flags, registers and maps that merge across regions on their own.",
+      "file": "06-libraries-and-databases-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "libraries-and-databases",
+      "say": "A plain Riak value with no type keeps both writes as **sibling**s with a version vector, and your app picks ([Detecting conflicts](/crdts/vector-clocks/detecting-conflicts)).",
+      "file": "07-libraries-and-databases-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s08",
+      "sceneId": "libraries-and-databases",
+      "say": "Redis Enterprise Active-Active does the same per region: counters sum, sets are add-wins, and a plain string write is last-writer-wins (simplified).",
+      "file": "08-libraries-and-databases-s08.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s09",
+      "sceneId": "libraries-and-databases",
+      "say": "The split so far: a library when the client must merge on its own, a database type when the server holds the data and you want no sync code.",
+      "file": "09-libraries-and-databases-s09.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s01",
+      "sceneId": "two-apps",
+      "say": "Apple Notes merges edits made on two devices over iCloud, and does not ask you to pick a version when you come back online.",
+      "file": "10-two-apps-s01.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s02",
+      "sceneId": "two-apps",
+      "say": "What is public here comes from people reading the stored format, not from Apple: the note text carries per-character ids (simplified).",
+      "file": "11-two-apps-s02.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s03",
+      "sceneId": "two-apps",
+      "say": "Figma is the other world. A server is always in the path, and every object is a map of properties.",
+      "file": "12-two-apps-s03.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s04",
+      "sceneId": "two-apps",
+      "say": "Alice sets the fill and Bob moves the shape. Both changes go to the server.",
+      "file": "13-two-apps-s04.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s05",
+      "sceneId": "two-apps",
+      "say": "Time 1 and 2: the server applies them in the order they arrived, one property at a time.",
+      "file": "14-two-apps-s05.png"
+    },
+    {
+      "index": 14,
+      "stepId": "s06",
+      "sceneId": "two-apps",
+      "say": "It sends the result back. Different properties, so both changes survive — the per-field map of [LWW Map](/crdts/state-based/lww-map).",
+      "file": "15-two-apps-s06.png"
+    },
+    {
+      "index": 15,
+      "stepId": "s07",
+      "sceneId": "two-apps",
+      "say": "The same property at once? Time 3 and 4: the server order decides, and the loser sees the colour snap to the winner.",
+      "file": "16-two-apps-s07.png"
+    },
+    {
+      "index": 16,
+      "stepId": "s08",
+      "sceneId": "two-apps",
+      "say": "Moving a layer writes a parent and a position on the object, never a delete plus an insert — the fix from [Composing a document](/crdts/choosing/composing-a-document).",
+      "file": "17-two-apps-s08.png"
+    },
+    {
+      "index": 17,
+      "stepId": "s09",
+      "sceneId": "two-apps",
+      "say": "Figma calls this CRDT-inspired: with one server as the one order, you keep the easy rules and skip the hard parts.",
+      "file": "18-two-apps-s09.png"
+    },
+    {
+      "index": 18,
+      "stepId": "s10",
+      "sceneId": "two-apps",
+      "say": "Know which world you are in. No server in the write path means you carry the merge rules; a server always there means you can borrow its order.",
+      "file": "19-two-apps-s10.png"
+    },
+    {
+      "index": 19,
+      "stepId": "s01",
+      "sceneId": "which-would-you-pick",
+      "say": "Four situations. For each one, name the kind of system you would reach for first.",
+      "file": "20-which-would-you-pick-s01.png"
+    },
+    {
+      "index": 20,
+      "stepId": "s02",
+      "sceneId": "which-would-you-pick",
+      "say": "A notes app that works offline for days: a document library. Yjs for the editor, Automerge when you want the history.",
+      "file": "21-which-would-you-pick-s02.png"
+    },
+    {
+      "index": 21,
+      "stepId": "s03",
+      "sceneId": "which-would-you-pick",
+      "say": "A like counter across regions: a database counter type. No merge code in the app at all.",
+      "file": "22-which-would-you-pick-s03.png"
+    },
+    {
+      "index": 22,
+      "stepId": "s04",
+      "sceneId": "which-would-you-pick",
+      "say": "A design tool where a server is always present: per-property last-writer-wins in the server order.",
+      "file": "23-which-would-you-pick-s04.png"
+    },
+    {
+      "index": 23,
+      "stepId": "s05",
+      "sceneId": "which-would-you-pick",
+      "say": "A shared grid of cells: a map of registers, one per cell, in a document library.",
+      "file": "24-which-would-you-pick-s05.png"
+    },
+    {
+      "index": 24,
+      "stepId": "s06",
+      "sceneId": "which-would-you-pick",
+      "say": "The pattern: a library when the client must work alone, a database type when the server holds the data, server ordering when the server is always there.",
+      "file": "25-which-would-you-pick-s06.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:51:16.329Z"
+}

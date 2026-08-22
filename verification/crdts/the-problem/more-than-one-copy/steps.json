@@ -1,0 +1,139 @@
+{
+  "module": "crdts",
+  "unit": "the-problem",
+  "topic": "more-than-one-copy",
+  "unitNumeral": "I",
+  "unitTitle": "The Problem",
+  "topicTitle": "More than one copy",
+  "firstInUnit": true,
+  "total": 18,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "copies",
+      "say": "One document lives on the server. It has one field: a title.",
+      "file": "01-copies-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "copies",
+      "say": "Alice opens it on her phone. The phone now holds its own copy, a **replica**.",
+      "file": "02-copies-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "copies",
+      "say": "Bob opens it on his laptop. That is a third copy.",
+      "file": "03-copies-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "copies",
+      "say": "Three copies. Right now they all agree.",
+      "file": "04-copies-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "copies",
+      "say": "Alice changes the title on her phone.",
+      "file": "05-copies-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "copies",
+      "say": "At the same moment, Bob changes it too. He has not seen Alice's change.",
+      "file": "06-copies-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "copies",
+      "say": "Whoops — now we have a problem. Two copies disagree, and neither one is a mistake.",
+      "file": "07-copies-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s08",
+      "sceneId": "copies",
+      "say": "Alice saves first. The server takes her title.",
+      "file": "08-copies-s08.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s09",
+      "sceneId": "copies",
+      "say": "Bob saves a moment later. The server takes his title.",
+      "file": "09-copies-s09.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s10",
+      "sceneId": "copies",
+      "say": "On the server, Alice's change is gone. Nobody was told.",
+      "file": "10-copies-s10.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s11",
+      "sceneId": "copies",
+      "say": "More than one copy, two writes at the same time, and no rule for what should happen. That is the whole course in one picture.",
+      "file": "11-copies-s11.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s01",
+      "sceneId": "copies-everywhere",
+      "say": "You may think you have one copy. A normal web app has many.",
+      "file": "12-copies-everywhere-s01.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s02",
+      "sceneId": "copies-everywhere",
+      "say": "A database replica holds one.",
+      "file": "13-copies-everywhere-s02.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s03",
+      "sceneId": "copies-everywhere",
+      "say": "A **cache** in front of the API holds one, so reads are fast.",
+      "file": "14-copies-everywhere-s03.png"
+    },
+    {
+      "index": 14,
+      "stepId": "s04",
+      "sceneId": "copies-everywhere",
+      "say": "The browser tab holds one. The phone app holds one.",
+      "file": "15-copies-everywhere-s04.png"
+    },
+    {
+      "index": 15,
+      "stepId": "s05",
+      "sceneId": "copies-everywhere",
+      "say": "Five copies, and we only drew the obvious ones.",
+      "file": "16-copies-everywhere-s05.png"
+    },
+    {
+      "index": 16,
+      "stepId": "s06",
+      "sceneId": "copies-everywhere",
+      "say": "Any two of them can disagree: a cache goes stale, a replica lags, two people edit at once. The last scene can happen here too.",
+      "file": "17-copies-everywhere-s06.png"
+    },
+    {
+      "index": 17,
+      "stepId": "s07",
+      "sceneId": "copies-everywhere",
+      "say": "Every system with more than one copy needs an answer to this. Next: the classic answer, a lock.",
+      "file": "18-copies-everywhere-s07.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:46:15.385Z"
+}

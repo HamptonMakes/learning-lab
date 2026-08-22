@@ -1,0 +1,244 @@
+{
+  "module": "crdts",
+  "unit": "choosing",
+  "topic": "tradeoffs",
+  "unitNumeral": "V",
+  "unitTitle": "Choosing & Using CRDTs",
+  "topicTitle": "Trade-offs",
+  "firstInUnit": false,
+  "total": 33,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "state-or-ops",
+      "say": "The same four-field document, kept twice on each device: one copy syncs by whole state, the other by operations.",
+      "file": "01-state-or-ops-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "state-or-ops",
+      "say": "Time 1. Alice changes one field, the owner, in both copies.",
+      "file": "02-state-or-ops-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "state-or-ops",
+      "say": "State-based: Alice sends her whole document. All four fields travel for one change, and the token shows the byte count.",
+      "file": "03-state-or-ops-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "state-or-ops",
+      "say": "Op-based: she sends one operation instead — the one write she did.",
+      "file": "04-state-or-ops-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "state-or-ops",
+      "say": "Time 2. Alice closes the task in both copies, sends both ways, and this time the network loses both messages.",
+      "file": "05-state-or-ops-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "state-or-ops",
+      "say": "State-based: no harm done. The next sync carries the whole state again, and merging the same state twice changes nothing.",
+      "file": "06-state-or-ops-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "state-or-ops",
+      "say": "Op-based: that operation is gone. Bob still reads open, and nothing on his side knows it is stale.",
+      "file": "07-state-or-ops-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s08",
+      "sceneId": "state-or-ops",
+      "say": "The fix: keep a log of your operations, compare what each side has, and resend the missing ones.",
+      "file": "08-state-or-ops-s08.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s09",
+      "sceneId": "state-or-ops",
+      "say": "Time 3. The middle ground: Alice edits again and sends only the change, as a delta (simplified).",
+      "file": "09-state-or-ops-s09.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s10",
+      "sceneId": "state-or-ops",
+      "say": "The delta was 57 bytes against 200 for the full state, and the same merge accepts both. Twice is harmless; lost is not, unless you resend it.",
+      "file": "10-state-or-ops-s10.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s11",
+      "sceneId": "state-or-ops",
+      "say": "State means big messages on any network; ops mean small messages that must all arrive. A delta sits between, if you can resend a lost one.",
+      "file": "11-state-or-ops-s11.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s01",
+      "sceneId": "metadata-stays",
+      "say": "Alice types the word hello into a shared note: five items, each with its own id. Bob syncs and has the same five.",
+      "file": "12-metadata-stays-s01.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s02",
+      "sceneId": "metadata-stays",
+      "say": "Bob goes offline.",
+      "file": "13-metadata-stays-s02.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s03",
+      "sceneId": "metadata-stays",
+      "say": "Alice deletes all five letters. They do not leave: each one becomes a **tombstone**.",
+      "file": "14-metadata-stays-s03.png"
+    },
+    {
+      "index": 14,
+      "stepId": "s04",
+      "sceneId": "metadata-stays",
+      "say": "She types hi instead. The note shows 2 letters, and stores 7 items.",
+      "file": "15-metadata-stays-s04.png"
+    },
+    {
+      "index": 15,
+      "stepId": "s05",
+      "sceneId": "metadata-stays",
+      "say": "Why keep the dead ones? Because Bob is back, and his copy still spells hello.",
+      "file": "16-metadata-stays-s05.png"
+    },
+    {
+      "index": 16,
+      "stepId": "s06",
+      "sceneId": "metadata-stays",
+      "say": "Merge: the tombstones tell Bob's copy that those five are deleted, so both now read hi. Without the markers, they would come back.",
+      "file": "17-metadata-stays-s06.png"
+    },
+    {
+      "index": 17,
+      "stepId": "s07",
+      "sceneId": "metadata-stays",
+      "say": "After a year of writing and deleting, the markers are most of the document. That is the price of never forgetting.",
+      "file": "18-metadata-stays-s07.png"
+    },
+    {
+      "index": 18,
+      "stepId": "s08",
+      "sceneId": "metadata-stays",
+      "say": "Sets pay the same way. Every add mints a tag, and the tags stay on the element after the remove.",
+      "file": "19-metadata-stays-s08.png"
+    },
+    {
+      "index": 19,
+      "stepId": "s09",
+      "sceneId": "metadata-stays",
+      "say": "One item in the cart, two tags stored on it, and one of them dead for good. A 2P-Set is worse: its removed set only grows.",
+      "file": "20-metadata-stays-s09.png"
+    },
+    {
+      "index": 20,
+      "stepId": "s10",
+      "sceneId": "metadata-stays",
+      "say": "Real libraries make this smaller, not zero: Yjs stores deleted runs as id ranges, Automerge packs its history in columns. Both still remember every delete.",
+      "file": "21-metadata-stays-s10.png"
+    },
+    {
+      "index": 21,
+      "stepId": "s01",
+      "sceneId": "cleaning-up",
+      "say": "Three copies of one list. Everyone has seen a, b and c.",
+      "file": "22-cleaning-up-s01.png"
+    },
+    {
+      "index": 22,
+      "stepId": "s02",
+      "sceneId": "cleaning-up",
+      "say": "Carol goes offline for the day.",
+      "file": "23-cleaning-up-s02.png"
+    },
+    {
+      "index": 23,
+      "stepId": "s03",
+      "sceneId": "cleaning-up",
+      "say": "Alice deletes b and syncs with Bob. Both keep a tombstone where b was.",
+      "file": "24-cleaning-up-s03.png"
+    },
+    {
+      "index": 24,
+      "stepId": "s04",
+      "sceneId": "cleaning-up",
+      "say": "Alice wants the space back, so she throws the tombstone away without asking anyone (simplified).",
+      "file": "25-cleaning-up-s04.png"
+    },
+    {
+      "index": 25,
+      "stepId": "s05",
+      "sceneId": "cleaning-up",
+      "say": "Carol comes back. Her copy still has b, and she syncs with Alice.",
+      "file": "26-cleaning-up-s05.png"
+    },
+    {
+      "index": 26,
+      "stepId": "s06",
+      "sceneId": "cleaning-up",
+      "say": "Whoops — b is back, and not even in its old place. Alice forgot the delete, so b looks like news to her.",
+      "file": "27-cleaning-up-s06.png"
+    },
+    {
+      "index": 27,
+      "stepId": "s07",
+      "sceneId": "cleaning-up",
+      "say": "The rule: drop a tombstone only once every copy has seen the delete. Knowing that needs a record of who has seen what.",
+      "file": "28-cleaning-up-s07.png"
+    },
+    {
+      "index": 28,
+      "stepId": "s08",
+      "sceneId": "cleaning-up",
+      "say": "Replay it, safely. Here is the same list again, and this time we watch the version vectors.",
+      "file": "29-cleaning-up-s08.png"
+    },
+    {
+      "index": 29,
+      "stepId": "s09",
+      "sceneId": "cleaning-up",
+      "say": "Carol goes offline. Alice deletes b and syncs with Bob, and this time nobody cleans up.",
+      "file": "30-cleaning-up-s09.png"
+    },
+    {
+      "index": 30,
+      "stepId": "s10",
+      "sceneId": "cleaning-up",
+      "say": "Carol returns and syncs with both. All three version vectors now carry Alice's delete, so it is stable.",
+      "file": "31-cleaning-up-s10.png"
+    },
+    {
+      "index": 31,
+      "stepId": "s11",
+      "sceneId": "cleaning-up",
+      "say": "Now every copy may clean up, because every copy has seen the delete. The tombstone goes, and nothing brings b back.",
+      "file": "32-cleaning-up-s11.png"
+    },
+    {
+      "index": 32,
+      "stepId": "s12",
+      "sceneId": "cleaning-up",
+      "say": "A server log can find that point for you ([Tombstones and garbage](/crdts/operation-based/tombstones-and-garbage)). Without one, cleaning up is rare and careful.",
+      "file": "33-cleaning-up-s12.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:51:08.045Z"
+}

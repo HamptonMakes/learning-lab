@@ -1,0 +1,111 @@
+{
+  "module": "crdts",
+  "unit": "the-problem",
+  "topic": "not-everything-needs-a-transaction",
+  "unitNumeral": "I",
+  "unitTitle": "The Problem",
+  "topicTitle": "Not everything needs a transaction",
+  "firstInUnit": false,
+  "total": 14,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "money-vs-list",
+      "say": "Two kinds of data, two copies each. No lock this time.",
+      "file": "01-money-vs-list-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "money-vs-list",
+      "say": "Both take 80 from the account at the same time. Each copy checks 100, says yes, and writes 20.",
+      "file": "02-money-vs-list-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "money-vs-list",
+      "say": "Whoops — put the copies together and the truth is -60. Real money is gone.",
+      "file": "03-money-vs-list-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "money-vs-list",
+      "say": "Now the shopping list. Alice adds milk; Bob adds eggs, at the same time.",
+      "file": "04-money-vs-list-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "money-vs-list",
+      "say": "Put these together and the right answer is obvious: keep both. We merged by hand here (simplified); in Unit II a rule will compute it.",
+      "file": "05-money-vs-list-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "money-vs-list",
+      "say": "The difference is cost. A wrong balance hurts; a list that is wrong for a moment does not.",
+      "file": "06-money-vs-list-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "money-vs-list",
+      "say": "Sort your data by what a wrong answer costs. Only some of it needs a **transaction**; the rest can merge.",
+      "file": "07-money-vs-list-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s01",
+      "sceneId": "sort-the-order",
+      "say": "One online order with five fields. Sort each one: transaction, or merge?",
+      "file": "08-sort-the-order-s01.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s02",
+      "sceneId": "sort-the-order",
+      "say": "Payment: charged twice or never is a disaster. Transaction.",
+      "file": "09-sort-the-order-s02.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s03",
+      "sceneId": "sort-the-order",
+      "say": "Items in the cart: adds from phone and laptop should combine. Merge.",
+      "file": "10-sort-the-order-s03.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s04",
+      "sceneId": "sort-the-order",
+      "say": "Delivery note: newest text wins is fine. Merge.",
+      "file": "11-sort-the-order-s04.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s05",
+      "sceneId": "sort-the-order",
+      "say": "Coupon: it may be used once only. Transaction.",
+      "file": "12-sort-the-order-s05.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s06",
+      "sceneId": "sort-the-order",
+      "say": "Stock count: it depends. One extra T-shirt sold is fine; one extra concert seat is not.",
+      "file": "13-sort-the-order-s06.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s07",
+      "sceneId": "sort-the-order",
+      "say": "Most apps are mostly merge with a little transaction. The rest of this course is about the merge part.",
+      "file": "14-sort-the-order-s07.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:46:39.190Z"
+}

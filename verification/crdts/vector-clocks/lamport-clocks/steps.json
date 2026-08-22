@@ -1,0 +1,181 @@
+{
+  "module": "crdts",
+  "unit": "vector-clocks",
+  "topic": "lamport-clocks",
+  "unitNumeral": "IV",
+  "unitTitle": "Vector Clocks & Causality",
+  "topicTitle": "Lamport clocks",
+  "firstInUnit": false,
+  "total": 24,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "count-events",
+      "say": "Every device keeps one counter: its **Lamport clock**. All start at 0.",
+      "file": "01-count-events-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "count-events",
+      "say": "Three rules: tick on a local event, tick and stamp on a send, jump past the stamp on a receive.",
+      "file": "02-count-events-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "count-events",
+      "say": "Alice makes an edit. A local event: her clock ticks to 1.",
+      "file": "03-count-events-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "count-events",
+      "say": "She sends Bob a message. A send is an event too: her clock ticks to 2, and the message carries the stamp 2.",
+      "file": "04-count-events-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "count-events",
+      "say": "Bob receives it. His rule is the larger of his clock and the stamp, plus one: max(0, 2) + 1 = 3.",
+      "file": "05-count-events-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "count-events",
+      "say": "Carol has been busy on her own: three edits. Her clock is 3.",
+      "file": "06-count-events-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "count-events",
+      "say": "Bob and Carol both show 3. Two different events can share a number; a tie breaks by node name, as in RGA.",
+      "file": "07-count-events-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s08",
+      "sceneId": "count-events",
+      "say": "Bob sends Carol a message. Tick to 4; the stamp is 4.",
+      "file": "08-count-events-s08.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s09",
+      "sceneId": "count-events",
+      "say": "Carol receives: max(3, 4) + 1 = 5. Her clock jumps past the sender, even though she was already busy.",
+      "file": "09-count-events-s09.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s10",
+      "sceneId": "count-events",
+      "say": "If one event led to another, the second has the bigger number: send 2, receive 3, send 4, receive 5. Cause before effect, always.",
+      "file": "10-count-events-s10.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s01",
+      "sceneId": "what-lamport-cannot-say",
+      "say": "Alice makes two edits and Bob makes one, and they never talk. Her clock is 2; his is 1.",
+      "file": "11-what-lamport-cannot-say-s01.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s02",
+      "sceneId": "what-lamport-cannot-say",
+      "say": "Compare the numbers: Bob's 1 is less than Alice's 2. But Bob's edit did not happen before Alice's; they were independent.",
+      "file": "12-what-lamport-cannot-say-s02.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s03",
+      "sceneId": "what-lamport-cannot-say",
+      "say": "Now Alice sends Bob a message. Her send is 3; his receive is max(1, 3) + 1 = 4.",
+      "file": "13-what-lamport-cannot-say-s03.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s04",
+      "sceneId": "what-lamport-cannot-say",
+      "say": "Bob's 4 is greater than Alice's 3, and this time it really came after: the message carried the cause.",
+      "file": "14-what-lamport-cannot-say-s04.png"
+    },
+    {
+      "index": 14,
+      "stepId": "s05",
+      "sceneId": "what-lamport-cannot-say",
+      "say": "Two comparisons, the same kind of answer, two different stories. A Lamport number cannot tell caused from independent.",
+      "file": "15-what-lamport-cannot-say-s05.png"
+    },
+    {
+      "index": 15,
+      "stepId": "s06",
+      "sceneId": "what-lamport-cannot-say",
+      "say": "To ask whether two edits were independent, you need more than one number. Next: vector clocks.",
+      "file": "16-what-lamport-cannot-say-s06.png"
+    },
+    {
+      "index": 16,
+      "stepId": "s01",
+      "sceneId": "chat-in-order",
+      "say": "A chat through a server. Every node keeps a Lamport clock, every message carries its sender stamp, and the server sorts by stamp.",
+      "file": "17-chat-in-order-s01.png"
+    },
+    {
+      "index": 17,
+      "stepId": "s02",
+      "sceneId": "chat-in-order",
+      "say": "Alice sends `Lunch?` to the server. Her clock ticks to 1, the message is stamped 1, and the server receives: max(0, 1) + 1 = 2.",
+      "file": "18-chat-in-order-s02.png"
+    },
+    {
+      "index": 18,
+      "stepId": "s03",
+      "sceneId": "chat-in-order",
+      "say": "The server forwards it to Bob with the stamp 1 (simplified: the relay step itself is not counted). Bob receives: max(0, 1) + 1 = 2.",
+      "file": "19-chat-in-order-s03.png"
+    },
+    {
+      "index": 19,
+      "stepId": "s04",
+      "sceneId": "chat-in-order",
+      "say": "Bob replies `Yes!`. Tick to 3: the reply is stamped 3, bigger than the question he saw.",
+      "file": "20-chat-in-order-s04.png"
+    },
+    {
+      "index": 20,
+      "stepId": "s05",
+      "sceneId": "chat-in-order",
+      "say": "Meanwhile Alice, who has not seen the reply, sends `Or pizza?`. Her clock ticks to 2: stamp 2.",
+      "file": "21-chat-in-order-s05.png"
+    },
+    {
+      "index": 21,
+      "stepId": "s06",
+      "sceneId": "chat-in-order",
+      "say": "Both arrive. The server sorts by stamp: `Lunch?` (1), `Or pizza?` (2), `Yes!` (3).",
+      "file": "22-chat-in-order-s06.png"
+    },
+    {
+      "index": 22,
+      "stepId": "s07",
+      "sceneId": "chat-in-order",
+      "say": "Any copy that sorts by stamp gets this same order. The reply can never sort above its question: 3 is bigger than 1.",
+      "file": "23-chat-in-order-s07.png"
+    },
+    {
+      "index": 23,
+      "stepId": "s08",
+      "sceneId": "chat-in-order",
+      "say": "`Or pizza?` and `Yes!` were independent, but the stamps put pizza first anyway. Fine for a chat; not fine when you must know they were independent.",
+      "file": "24-chat-in-order-s08.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:50:00.080Z"
+}

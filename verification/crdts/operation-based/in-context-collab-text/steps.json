@@ -1,0 +1,146 @@
+{
+  "module": "crdts",
+  "unit": "operation-based",
+  "topic": "in-context-collab-text",
+  "unitNumeral": "III",
+  "unitTitle": "Operation-based CRDTs",
+  "topicTitle": "In context: typing together",
+  "firstInUnit": false,
+  "total": 19,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "two-people-typing",
+      "say": "A shared line: Hi. Two named characters, alice:1 and alice:2, and two people about to type at the same spot.",
+      "file": "01-two-people-typing-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "two-people-typing",
+      "say": "Alice types a space and the word Bob after the i. Four characters, four ops: alice:3 to alice:6, each anchored on the one before.",
+      "file": "02-two-people-typing-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "two-people-typing",
+      "say": "At the same time Bob adds an exclamation mark after the i: one op, bob:1, stamp 1.",
+      "file": "03-two-people-typing-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "two-people-typing",
+      "say": "Alice reads Hi Bob; Bob reads Hi with a mark. Both broadcast.",
+      "file": "04-two-people-typing-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "two-people-typing",
+      "say": "Bob applies Alice's first op, the space. It also says after alice:2 with stamp 1, just like his mark.",
+      "file": "05-two-people-typing-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "two-people-typing",
+      "say": "Same stamp, so the higher node id goes first: bob beats alice, and the mark stays in front. The rest of her word follows her space.",
+      "file": "06-two-people-typing-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "two-people-typing",
+      "say": "Alice applies Bob's mark. It lands after the i and in front of her space: the same text on both.",
+      "file": "07-two-people-typing-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s08",
+      "sceneId": "two-people-typing",
+      "say": "They agree on one line, with the mark in the middle. Not what anyone wanted, but they agree, and one more edit fixes it.",
+      "file": "08-two-people-typing-s08.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s09",
+      "sceneId": "two-people-typing",
+      "say": "Bob deletes his mark and types it at the end: delete bob:1, insert after alice:6. Two ops, bob:2 and bob:3.",
+      "file": "09-two-people-typing-s09.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s10",
+      "sceneId": "two-people-typing",
+      "say": "He broadcasts and Alice applies both. Both copies now end with the mark, and the tombstone of the old mark stays behind.",
+      "file": "10-two-people-typing-s10.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s11",
+      "sceneId": "two-people-typing",
+      "say": "This is how CRDT text editors work underneath: named characters, insert-after, tombstones, and a tie rule nobody argues with.",
+      "file": "11-two-people-typing-s11.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s01",
+      "sceneId": "todo-list-move",
+      "say": "A todo list is a sequence too. Each item has a name: alice:1, alice:2, alice:3.",
+      "file": "12-todo-list-move-s01.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s02",
+      "sceneId": "todo-list-move",
+      "say": "Alice moves Pay rent to the top. Plain RGA has no move, so it is a delete plus an insert: delete alice:3, insert a copy after HEAD.",
+      "file": "13-todo-list-move-s02.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s03",
+      "sceneId": "todo-list-move",
+      "say": "She broadcasts; Bob applies both. Pay rent, Buy milk, Call mom, plus one tombstone.",
+      "file": "14-todo-list-move-s03.png"
+    },
+    {
+      "index": 14,
+      "stepId": "s04",
+      "sceneId": "todo-list-move",
+      "say": "Now the trap. Both move Buy milk to the top at the same time: each deletes alice:1 and inserts a copy after HEAD.",
+      "file": "15-todo-list-move-s04.png"
+    },
+    {
+      "index": 15,
+      "stepId": "s05",
+      "sceneId": "todo-list-move",
+      "say": "Both broadcast. Each applies the other's delete, which hits an item that is already dead, and the other's insert.",
+      "file": "16-todo-list-move-s05.png"
+    },
+    {
+      "index": 16,
+      "stepId": "s06",
+      "sceneId": "todo-list-move",
+      "say": "Whoops — Buy milk is there twice, on both screens. Two moves made two copies.",
+      "file": "17-todo-list-move-s06.png"
+    },
+    {
+      "index": 17,
+      "stepId": "s07",
+      "sceneId": "todo-list-move",
+      "say": "The **RGA** converged: both copies agree. But the meaning is wrong, because a move is not a delete plus an insert.",
+      "file": "18-todo-list-move-s07.png"
+    },
+    {
+      "index": 18,
+      "stepId": "s08",
+      "sceneId": "todo-list-move",
+      "say": "Fixes exist: a move op the CRDT understands (Loro has one), or a position field you sort by. Both are beyond this course; the trap is not.",
+      "file": "19-todo-list-move-s08.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:49:29.131Z"
+}

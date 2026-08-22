@@ -1,0 +1,139 @@
+{
+  "module": "crdts",
+  "unit": "the-problem",
+  "topic": "locks-the-classic-answer",
+  "unitNumeral": "I",
+  "unitTitle": "The Problem",
+  "topicTitle": "Locks: the classic answer",
+  "firstInUnit": false,
+  "total": 18,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "take-turns",
+      "say": "Same setup as before, plus a **lock** on the server. Only the lock holder may write.",
+      "file": "01-take-turns-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "take-turns",
+      "say": "Alice wants to edit. First she asks for the lock.",
+      "file": "02-take-turns-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "take-turns",
+      "say": "The lock is free, so the server gives it to Alice.",
+      "file": "03-take-turns-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "take-turns",
+      "say": "Bob wants to edit too. He asks for the lock.",
+      "file": "04-take-turns-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "take-turns",
+      "say": "The lock is taken. Bob must wait.",
+      "file": "05-take-turns-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "take-turns",
+      "say": "Alice edits and saves. The server accepts the save, because she holds the lock.",
+      "file": "06-take-turns-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "take-turns",
+      "say": "Alice releases the lock.",
+      "file": "07-take-turns-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s08",
+      "sceneId": "take-turns",
+      "say": "Now Bob gets the lock. With it, he gets the latest document.",
+      "file": "08-take-turns-s08.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s09",
+      "sceneId": "take-turns",
+      "say": "Bob sees Alice's title before he types. He edits on top of it.",
+      "file": "09-take-turns-s09.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s10",
+      "sceneId": "take-turns",
+      "say": "Bob saves and releases. Nothing was lost by surprise: Bob built on top of Alice's change.",
+      "file": "10-take-turns-s10.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s11",
+      "sceneId": "take-turns",
+      "say": "A lock turns two writes at the same time into one after the other. A database **transaction** locks the same way for writes to one row (simplified).",
+      "file": "11-take-turns-s11.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s01",
+      "sceneId": "bank-transfer",
+      "say": "One account with 100 in it. Alice and Bob share it.",
+      "file": "12-bank-transfer-s01.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s02",
+      "sceneId": "bank-transfer",
+      "say": "Both try to take 80 at the same time.",
+      "file": "13-bank-transfer-s02.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s03",
+      "sceneId": "bank-transfer",
+      "say": "Alice's request arrives first. The bank locks the account for her.",
+      "file": "14-bank-transfer-s03.png"
+    },
+    {
+      "index": 14,
+      "stepId": "s04",
+      "sceneId": "bank-transfer",
+      "say": "Bob's request arrives next. It waits at the door until the lock is free.",
+      "file": "15-bank-transfer-s04.png"
+    },
+    {
+      "index": 15,
+      "stepId": "s05",
+      "sceneId": "bank-transfer",
+      "say": "The bank checks: 100 is enough for 80. The balance becomes 20, and the lock is released.",
+      "file": "16-bank-transfer-s05.png"
+    },
+    {
+      "index": 16,
+      "stepId": "s06",
+      "sceneId": "bank-transfer",
+      "say": "Now Bob's turn, and the bank checks again: 20 is not enough for 80. Refused.",
+      "file": "17-bank-transfer-s06.png"
+    },
+    {
+      "index": 17,
+      "stepId": "s07",
+      "sceneId": "bank-transfer",
+      "say": "Without the lock, both checks could read 100, both could pass, and the balance would end at -60. Money must take turns.",
+      "file": "18-bank-transfer-s07.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:46:27.251Z"
+}

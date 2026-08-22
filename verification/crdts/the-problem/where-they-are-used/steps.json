@@ -1,0 +1,111 @@
+{
+  "module": "crdts",
+  "unit": "the-problem",
+  "topic": "where-they-are-used",
+  "unitNumeral": "I",
+  "unitTitle": "The Problem",
+  "topicTitle": "Where they are used",
+  "firstInUnit": false,
+  "total": 14,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "gallery",
+      "say": "CRDTs are best known from collaborative editors. Many people type, nobody locks.",
+      "file": "01-gallery-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "gallery",
+      "say": "Design tools: every shape on the canvas is shared data. Two people move shapes at once.",
+      "file": "02-gallery-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "gallery",
+      "say": "Notes apps: you edit on the plane, your laptop edits at home, and both edits survive.",
+      "file": "03-gallery-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "gallery",
+      "say": "Databases: several regions accept writes and merge later.",
+      "file": "04-gallery-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "gallery",
+      "say": "Counters and presence: likes, views, who is online.",
+      "file": "05-gallery-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "gallery",
+      "say": "Different products, one shape: many copies, one merge rule, and nobody waits for a lock.",
+      "file": "06-gallery-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "gallery",
+      "say": "Next unit: the rules, one data type at a time.",
+      "file": "07-gallery-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s01",
+      "sceneId": "notes-sync",
+      "say": "A notes app with a relay that only forwards and holds no lock. Each field merges on its own: newest write wins (simplified).",
+      "file": "08-notes-sync-s01.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s02",
+      "sceneId": "notes-sync",
+      "say": "Alice's phone goes offline. She keeps editing the body.",
+      "file": "09-notes-sync-s02.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s03",
+      "sceneId": "notes-sync",
+      "say": "Bob renames the note from his laptop.",
+      "file": "10-notes-sync-s03.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s04",
+      "sceneId": "notes-sync",
+      "say": "Bob's new title reaches the relay. The relay keeps it.",
+      "file": "11-notes-sync-s04.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s05",
+      "sceneId": "notes-sync",
+      "say": "Alice is back online. She sends her new body to the relay, and the relay sends her Bob's new title.",
+      "file": "12-notes-sync-s05.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s06",
+      "sceneId": "notes-sync",
+      "say": "The relay forwards the new body to Bob. All three copies agree: new title, new body.",
+      "file": "13-notes-sync-s06.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s07",
+      "sceneId": "notes-sync",
+      "say": "No lock, no waiting, no lost edit. That is the goal; Unit II shows how each piece works.",
+      "file": "14-notes-sync-s07.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:46:51.867Z"
+}

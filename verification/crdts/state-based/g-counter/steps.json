@@ -1,0 +1,195 @@
+{
+  "module": "crdts",
+  "unit": "state-based",
+  "topic": "g-counter",
+  "unitNumeral": "II",
+  "unitTitle": "State-based CRDTs",
+  "topicTitle": "G-Counter",
+  "firstInUnit": false,
+  "total": 26,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "count-separately",
+      "say": "A **G-Counter** counts page views. It is a small table: one row per **node**, and the total is the sum of the rows.",
+      "file": "01-count-separately-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "count-separately",
+      "say": "Each node only ever writes its own row, and a row appears when a node first counts. The rule: merge = max, row by row.",
+      "file": "02-count-separately-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "count-separately",
+      "say": "Alice counts two views. Only her row moves: alice 2, total 2.",
+      "file": "03-count-separately-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "count-separately",
+      "say": "Bob counts one view on his copy.",
+      "file": "04-count-separately-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "count-separately",
+      "say": "Alice sends her table to Bob.",
+      "file": "05-count-separately-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "count-separately",
+      "say": "Bob merges row by row: alice = max(0, 2) = 2, bob = max(1, 0) = 1. His total is now 3.",
+      "file": "06-count-separately-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "count-separately",
+      "say": "Alice still shows 2; she has not heard from Bob yet.",
+      "file": "07-count-separately-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s08",
+      "sceneId": "count-separately",
+      "say": "Carol counts one view.",
+      "file": "08-count-separately-s08.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s09",
+      "sceneId": "count-separately",
+      "say": "Bob sends his table to Carol. She merges: 2 + 1 + 1 = 4.",
+      "file": "09-count-separately-s09.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s10",
+      "sceneId": "count-separately",
+      "say": "Carol sends to both. Everyone merges, and all three tables agree on 4.",
+      "file": "10-count-separately-s10.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s11",
+      "sceneId": "count-separately",
+      "say": "Max per row is safe because a node's own row only ever goes up. That is why the G stands for grow-only.",
+      "file": "11-count-separately-s11.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s01",
+      "sceneId": "why-a-table",
+      "say": "Why a table and not one number? Watch a retry: Alice has counted 2 views, Bob 1.",
+      "file": "12-why-a-table-s01.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s02",
+      "sceneId": "why-a-table",
+      "say": "Alice sends her table. The network retries, so two copies are in flight.",
+      "file": "13-why-a-table-s02.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s03",
+      "sceneId": "why-a-table",
+      "say": "Bob merges the first copy: alice 2, bob 1, total 3.",
+      "file": "14-why-a-table-s03.png"
+    },
+    {
+      "index": 14,
+      "stepId": "s04",
+      "sceneId": "why-a-table",
+      "say": "Bob merges the second copy: max per row, alice stays 2. No change, no double count.",
+      "file": "15-why-a-table-s04.png"
+    },
+    {
+      "index": 15,
+      "stepId": "s05",
+      "sceneId": "why-a-table",
+      "say": "Had Bob added the numbers instead, he would show 5: the same two views counted twice.",
+      "file": "16-why-a-table-s05.png"
+    },
+    {
+      "index": 16,
+      "stepId": "s06",
+      "sceneId": "why-a-table",
+      "say": "And max of one number? Bob would take max(1, 2) = 2 and lose his own view, while the table keeps both.",
+      "file": "17-why-a-table-s06.png"
+    },
+    {
+      "index": 17,
+      "stepId": "s07",
+      "sceneId": "why-a-table",
+      "say": "Sum is not idempotent, and max of one number loses data. Max per row, then sum, gives you both: safe and complete.",
+      "file": "18-why-a-table-s07.png"
+    },
+    {
+      "index": 18,
+      "stepId": "s01",
+      "sceneId": "post-page",
+      "say": "A blog post as one document: a title (LWW register) and a view counter (G-Counter). Two parts, two merge rules.",
+      "file": "19-post-page-s01.png"
+    },
+    {
+      "index": 19,
+      "stepId": "s02",
+      "sceneId": "post-page",
+      "say": "Readers hit the US edge 3 times and the EU edge 2 times. Each edge counts locally, with no cross-region call.",
+      "file": "20-post-page-s02.png"
+    },
+    {
+      "index": 20,
+      "stepId": "s03",
+      "sceneId": "post-page",
+      "say": "Time 1: Alice renames the post on her laptop. Only the title part changes, stamped t=1, alice.",
+      "file": "21-post-page-s03.png"
+    },
+    {
+      "index": 21,
+      "stepId": "s04",
+      "sceneId": "post-page",
+      "say": "The two edges sync with each other. Rows merge by max, and both totals read 5.",
+      "file": "22-post-page-s04.png"
+    },
+    {
+      "index": 22,
+      "stepId": "s05",
+      "sceneId": "post-page",
+      "say": "A retry sends the same US state to EU again. Max per row: nothing changes, and nothing is counted twice.",
+      "file": "23-post-page-s05.png"
+    },
+    {
+      "index": 23,
+      "stepId": "s06",
+      "sceneId": "post-page",
+      "say": "Alice syncs with the US edge. The title merges by timestamp, the views by max per row: each part keeps its own rule.",
+      "file": "24-post-page-s06.png"
+    },
+    {
+      "index": 24,
+      "stepId": "s07",
+      "sceneId": "post-page",
+      "say": "One more round, EU with US, and every copy shows the new title and 5 views.",
+      "file": "25-post-page-s07.png"
+    },
+    {
+      "index": 25,
+      "stepId": "s08",
+      "sceneId": "post-page",
+      "say": "Fast local counts, one eventual total, and the title rides along under its own rule. This is how counters survive multi-region.",
+      "file": "26-post-page-s08.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:47:35.085Z"
+}

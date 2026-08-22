@@ -1,0 +1,118 @@
+{
+  "module": "columnar-stores",
+  "unit": "layout",
+  "topic": "partition-and-clustering",
+  "unitNumeral": "I",
+  "unitTitle": "Rows vs columns",
+  "topicTitle": "Partition and clustering keys",
+  "firstInUnit": false,
+  "total": 15,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "partition-key",
+      "say": "Three nodes; each owns a range of hash values, called tokens: 0 to 99 in all (simplified). The table messages has a **partition key**, channel.",
+      "file": "01-partition-key-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "partition-key",
+      "say": "A message arrives: channel 42, sent 10:00, body hi. hash(42) = 51 (made up for this lesson), and token 51 is in the range of Node B.",
+      "file": "02-partition-key-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "partition-key",
+      "say": "So Node B stores it. The client sends the row there and nowhere else (simplified: one copy, no replicas).",
+      "file": "03-partition-key-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "partition-key",
+      "say": "Another message, channel 7: hash(7) = 80, the range of Node C. It goes to Node C.",
+      "file": "04-partition-key-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "partition-key",
+      "say": "Channel 42 again, sent 10:05. hash(42) is always 51, so always Node B: all of channel 42 lives together, in one **partition**.",
+      "file": "05-partition-key-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "partition-key",
+      "say": "A late message for channel 42, sent 10:02, arrives now. Inside the partition, rows stay sorted by the **clustering key**, sent: it slots in between.",
+      "file": "06-partition-key-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "partition-key",
+      "say": "Query: the messages of channel 42 sent after 10:01. One hash, one node, one sorted run: fast.",
+      "file": "07-partition-key-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s08",
+      "sceneId": "partition-key",
+      "say": "Whoops — a query with no partition key: every message that says hi. Every node, every partition, and Cassandra refuses it unless you add ALLOW FILTERING.",
+      "file": "08-partition-key-s08.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s09",
+      "sceneId": "partition-key",
+      "say": "The fix: design the table from the query. Partition key = what you look up by; clustering key = the order you want it back in.",
+      "file": "09-partition-key-s09.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s01",
+      "sceneId": "hot-partition",
+      "say": "Channel 42 is busy: a million messages a day, and every one of them lands on Node B. A **hot partition**: B at 97% load, A and C at 3% and 5%.",
+      "file": "10-hot-partition-s01.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s02",
+      "sceneId": "hot-partition",
+      "say": "The fix: add the day to the partition key, (channel, day). Each day of channel 42 then hashes to a different token.",
+      "file": "11-hot-partition-s02.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s03",
+      "sceneId": "hot-partition",
+      "say": "Three days, three nodes: hash(42, Aug 20) = 12 goes to Node A, hash(42, Aug 21) = 71 to Node C, hash(42, Aug 22) = 51 to Node B. The load spreads.",
+      "file": "12-hot-partition-s03.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s04",
+      "sceneId": "hot-partition",
+      "say": "The cost: the last 20 messages may now sit in two partitions, today and yesterday. Two reads instead of one, still fast.",
+      "file": "13-hot-partition-s04.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s05",
+      "sceneId": "hot-partition",
+      "say": "A question like messages per country does not fit this table. That is a job for a column store: see [Rows vs columns](/columnar-stores/layout/rows-vs-columns).",
+      "file": "14-hot-partition-s05.png"
+    },
+    {
+      "index": 14,
+      "stepId": "s06",
+      "sceneId": "hot-partition",
+      "say": "Use both: partitions for the questions your app asks, columns for the questions your analysts ask.",
+      "file": "15-hot-partition-s06.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:52:16.162Z"
+}

@@ -1,0 +1,167 @@
+{
+  "module": "crdts",
+  "unit": "vector-clocks",
+  "topic": "wall-clocks-lie",
+  "unitNumeral": "IV",
+  "unitTitle": "Vector Clocks & Causality",
+  "topicTitle": "Wall clocks lie",
+  "firstInUnit": true,
+  "total": 22,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "two-clocks",
+      "say": "Phone and laptop share a note title in an **LWW register**. Each device stamps its writes with its own clock.",
+      "file": "01-two-clocks-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "two-clocks",
+      "say": "Bob's laptop clock is five minutes slow. Nobody notices; clocks drift all the time.",
+      "file": "02-two-clocks-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "two-clocks",
+      "say": "The merge rule from Unit II: the higher stamp wins.",
+      "file": "03-two-clocks-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "two-clocks",
+      "say": "At 10:06 Alice renames the note to 'Draft'. Her clock is right, so the stamp is 10:06.",
+      "file": "04-two-clocks-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "two-clocks",
+      "say": "Two minutes later, at 10:08, Bob renames it to 'Final'. His slow clock stamps it 10:03.",
+      "file": "05-two-clocks-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "two-clocks",
+      "say": "Compare the stamps: Bob's 10:03 is less than Alice's 10:06. The write that happened last looks older.",
+      "file": "06-two-clocks-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "two-clocks",
+      "say": "They sync. LWW does what it is told: 10:06 beats 10:03, so Draft wins on both devices.",
+      "file": "07-two-clocks-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s08",
+      "sceneId": "two-clocks",
+      "say": "Whoops — Bob's rename was the newest in real time, and it is gone. The numbers were compared correctly; the numbers lied.",
+      "file": "08-two-clocks-s08.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s09",
+      "sceneId": "two-clocks",
+      "say": "Clock skew is normal: seconds between phones, minutes for a device with no network, hours after a dead battery. A higher stamp does not mean it happened later.",
+      "file": "09-two-clocks-s09.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s01",
+      "sceneId": "clock-jumps-back",
+      "say": "Clocks also jump. Alice's phone runs five minutes fast, Bob's laptop is right, and both hold the title v1.",
+      "file": "10-clock-jumps-back-s01.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s02",
+      "sceneId": "clock-jumps-back",
+      "say": "At 10:01 Alice types v2, and her fast clock stamps it 10:06. She syncs with Bob, and both hold v2.",
+      "file": "11-clock-jumps-back-s02.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s03",
+      "sceneId": "clock-jumps-back",
+      "say": "Her phone now syncs its clock with the network. It jumps back five minutes, to the true time.",
+      "file": "12-clock-jumps-back-s03.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s04",
+      "sceneId": "clock-jumps-back",
+      "say": "At 10:02 she types v3, her newest edit. Its stamp, 10:02, is lower than the 10:06 already on v2.",
+      "file": "13-clock-jumps-back-s04.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s05",
+      "sceneId": "clock-jumps-back",
+      "say": "Whoops — her own phone kept v2. A lower stamp cannot replace a higher one, so her newest edit never landed anywhere.",
+      "file": "14-clock-jumps-back-s05.png"
+    },
+    {
+      "index": 14,
+      "stepId": "s06",
+      "sceneId": "clock-jumps-back",
+      "say": "A clock that moves backwards makes a newer write look older. A node-id tie-break cannot help here: the stamp itself is wrong.",
+      "file": "15-clock-jumps-back-s06.png"
+    },
+    {
+      "index": 15,
+      "stepId": "s01",
+      "sceneId": "settings-keep-reverting",
+      "say": "Settings sync between phone and laptop as an **LWW map**: theme and size, each field stamped by the wall clock. The phone is five minutes fast.",
+      "file": "16-settings-keep-reverting-s01.png"
+    },
+    {
+      "index": 16,
+      "stepId": "s02",
+      "sceneId": "settings-keep-reverting",
+      "say": "At 10:00 Alice sets the theme to dark on the phone. Her fast clock stamps it 10:05.",
+      "file": "17-settings-keep-reverting-s02.png"
+    },
+    {
+      "index": 17,
+      "stepId": "s03",
+      "sceneId": "settings-keep-reverting",
+      "say": "At 10:02 Bob sets it back to light on the laptop, stamp 10:02. They sync.",
+      "file": "18-settings-keep-reverting-s03.png"
+    },
+    {
+      "index": 18,
+      "stepId": "s04",
+      "sceneId": "settings-keep-reverting",
+      "say": "Whoops — dark wins: 10:05 beats 10:02. Bob's laptop flips back to dark, and he never asked for it.",
+      "file": "19-settings-keep-reverting-s04.png"
+    },
+    {
+      "index": 19,
+      "stepId": "s05",
+      "sceneId": "settings-keep-reverting",
+      "say": "He sets light again at 10:03, and his laptop keeps dark: 10:03 cannot beat 10:05. Bob cannot win until his clock passes 10:05.",
+      "file": "20-settings-keep-reverting-s05.png"
+    },
+    {
+      "index": 20,
+      "stepId": "s06",
+      "sceneId": "settings-keep-reverting",
+      "say": "Size is fine, because only Alice touches it: she sets 16, they sync, Bob takes it. The bug only bites when two devices race on one field.",
+      "file": "21-settings-keep-reverting-s06.png"
+    },
+    {
+      "index": 21,
+      "stepId": "s07",
+      "sceneId": "settings-keep-reverting",
+      "say": "This is a common LWW bug in real apps. The cure is a clock built from cause and effect, not from the wall: Lamport clocks, next.",
+      "file": "22-settings-keep-reverting-s07.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:49:44.996Z"
+}

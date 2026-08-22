@@ -1,0 +1,160 @@
+{
+  "module": "crdts",
+  "unit": "state-based",
+  "topic": "or-set",
+  "unitNumeral": "II",
+  "unitTitle": "State-based CRDTs",
+  "topicTitle": "OR-Set",
+  "firstInUnit": false,
+  "total": 21,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "tags",
+      "say": "An **OR-Set** remembers, for each element, the tags of the adds that put it there.",
+      "file": "01-tags-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "tags",
+      "say": "Alice adds milk. The add gets the tag alice:1.",
+      "file": "02-tags-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "tags",
+      "say": "They sync. Bob has milk with tag alice:1.",
+      "file": "03-tags-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "tags",
+      "say": "Bob removes milk. He has seen alice:1, so he drops alice:1, and milk has no live tag left.",
+      "file": "04-tags-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "tags",
+      "say": "At the same time, Alice adds milk again. New add, new tag: alice:2.",
+      "file": "05-tags-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "tags",
+      "say": "They sync. Bob's remove only covered alice:1, so alice:2 survives and milk is in.",
+      "file": "06-tags-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "tags",
+      "say": "This is observed remove: you can only remove what you observed. A concurrent add always wins, and no clock was needed.",
+      "file": "07-tags-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s01",
+      "sceneId": "race",
+      "say": "Both carts hold eggs, added by Bob with the tag bob:1.",
+      "file": "08-race-s01.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s02",
+      "sceneId": "race",
+      "say": "Bob removes eggs: he drops bob:1. At the same time Alice adds eggs again, with the new tag alice:1.",
+      "file": "09-race-s02.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s03",
+      "sceneId": "race",
+      "say": "With timestamps we would compare clocks and hope they agree. Here we compare tags: Bob dropped bob:1, and alice:1 is new to him.",
+      "file": "10-race-s03.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s04",
+      "sceneId": "race",
+      "say": "Bob sends his whole state to Alice: the dead tag travels with it.",
+      "file": "11-race-s04.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s05",
+      "sceneId": "race",
+      "say": "Alice merges. Bob's remove killed bob:1 only; he never saw alice:1, so it survives and eggs stay in.",
+      "file": "12-race-s05.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s06",
+      "sceneId": "race",
+      "say": "Alice sends back and Bob merges. Both carts hold eggs with the one live tag alice:1: the same answer, every time.",
+      "file": "13-race-s06.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s07",
+      "sceneId": "race",
+      "say": "An OR-Set is add-wins by construction, and it needs no clock. If remove must win a race, the OR-Set is the wrong tool.",
+      "file": "14-race-s07.png"
+    },
+    {
+      "index": 14,
+      "stepId": "s01",
+      "sceneId": "group-cart",
+      "say": "In context: a shared cart for three people. Alice adds bread (tag alice:1) and everyone syncs.",
+      "file": "15-group-cart-s01.png"
+    },
+    {
+      "index": 15,
+      "stepId": "s02",
+      "sceneId": "group-cart",
+      "say": "Carol walks into the shop and loses signal. She buys the bread and removes it: she drops alice:1.",
+      "file": "16-group-cart-s02.png"
+    },
+    {
+      "index": 16,
+      "stepId": "s03",
+      "sceneId": "group-cart",
+      "say": "Bob, online, adds bread again for the party: tag bob:1. Alice syncs with Bob.",
+      "file": "17-group-cart-s03.png"
+    },
+    {
+      "index": 17,
+      "stepId": "s04",
+      "sceneId": "group-cart",
+      "say": "Alice sends her state to Carol. Carol is offline, so the message waits at her door.",
+      "file": "18-group-cart-s04.png"
+    },
+    {
+      "index": 18,
+      "stepId": "s05",
+      "sceneId": "group-cart",
+      "say": "Carol comes back online and merges. Her remove of alice:1 holds; she never saw bob:1, so bread stays: one loaf, for the party.",
+      "file": "19-group-cart-s05.png"
+    },
+    {
+      "index": 19,
+      "stepId": "s06",
+      "sceneId": "group-cart",
+      "say": "Carol sends her state back to Alice, and Alice syncs with Bob. All three agree: bread, with the one live tag bob:1.",
+      "file": "20-group-cart-s06.png"
+    },
+    {
+      "index": 20,
+      "stepId": "s07",
+      "sceneId": "group-cart",
+      "say": "Tags make what you saw explicit, even offline. The cost is one small tag per add; that is the topic after next.",
+      "file": "21-group-cart-s07.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:48:11.798Z"
+}

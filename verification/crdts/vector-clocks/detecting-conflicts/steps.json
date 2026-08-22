@@ -1,0 +1,160 @@
+{
+  "module": "crdts",
+  "unit": "vector-clocks",
+  "topic": "detecting-conflicts",
+  "unitNumeral": "IV",
+  "unitTitle": "Vector Clocks & Causality",
+  "topicTitle": "Detecting conflicts",
+  "firstInUnit": false,
+  "total": 21,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "siblings",
+      "say": "A shopping cart, Dynamo style. Store, phone and laptop hold it as an **MV register**: a value plus the version vector of the write that made it.",
+      "file": "01-siblings-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "siblings",
+      "say": "Two rules: a write builds on everything it has seen; a merge keeps every version nothing else dominates.",
+      "file": "02-siblings-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "siblings",
+      "say": "Alice adds eggs on the phone. Her write builds on {alice 1}, so the new version is {alice 2}.",
+      "file": "03-siblings-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "siblings",
+      "say": "Bob is offline. He adds bread on the laptop, also building on {alice 1}: version {alice 1, bob 1}.",
+      "file": "04-siblings-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "siblings",
+      "say": "Alice pushes. The store compares its {alice 1} with her {alice 2}: before, because hers has seen everything the store has.",
+      "file": "05-siblings-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "siblings",
+      "say": "A fast-forward: the store just takes her version.",
+      "file": "06-siblings-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "siblings",
+      "say": "Bob comes online and pushes {alice 1, bob 1}. Compared with {alice 2} it is concurrent: neither write saw the other.",
+      "file": "07-siblings-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s08",
+      "sceneId": "siblings",
+      "say": "Whoops — a conflict. The store does not guess: it keeps both versions as **siblings**, each with its own vector.",
+      "file": "08-siblings-s08.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s09",
+      "sceneId": "siblings",
+      "say": "Alice opens the cart and pulls. She gets both siblings, and now the app must resolve them.",
+      "file": "09-siblings-s09.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s10",
+      "sceneId": "siblings",
+      "say": "The app merges them with a union: milk, eggs, bread. Its write has seen both siblings, so its vector covers both: {alice 3, bob 1}.",
+      "file": "10-siblings-s10.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s11",
+      "sceneId": "siblings",
+      "say": "Push. {alice 3, bob 1} is after both siblings, so the store collapses them into one value.",
+      "file": "11-siblings-s11.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s12",
+      "sceneId": "siblings",
+      "say": "Bob pulls: one cart, three items. Both devices and the store agree.",
+      "file": "12-siblings-s12.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s13",
+      "sceneId": "siblings",
+      "say": "The vector clock found the conflict, and the app decided what to do about it. Two different jobs: detect, then resolve.",
+      "file": "13-siblings-s13.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s01",
+      "sceneId": "the-item-that-came-back",
+      "say": "Same cart, a day later. Everyone holds milk, eggs with version {alice 2}, and the app still resolves siblings by union.",
+      "file": "14-the-item-that-came-back-s01.png"
+    },
+    {
+      "index": 14,
+      "stepId": "s02",
+      "sceneId": "the-item-that-came-back",
+      "say": "Alice removes eggs on the phone: milk, version {alice 3}.",
+      "file": "15-the-item-that-came-back-s02.png"
+    },
+    {
+      "index": 15,
+      "stepId": "s03",
+      "sceneId": "the-item-that-came-back",
+      "say": "Bob, offline, adds bread on the laptop: milk, eggs, bread, version {alice 2, bob 1}.",
+      "file": "16-the-item-that-came-back-s03.png"
+    },
+    {
+      "index": 16,
+      "stepId": "s04",
+      "sceneId": "the-item-that-came-back",
+      "say": "Both push. {alice 3} and {alice 2, bob 1} are concurrent, so the store keeps two siblings again.",
+      "file": "17-the-item-that-came-back-s04.png"
+    },
+    {
+      "index": 17,
+      "stepId": "s05",
+      "sceneId": "the-item-that-came-back",
+      "say": "Alice pulls, and the app applies its rule: the union is milk, eggs, bread. Its vector covers both siblings: {alice 4, bob 1}.",
+      "file": "18-the-item-that-came-back-s05.png"
+    },
+    {
+      "index": 18,
+      "stepId": "s06",
+      "sceneId": "the-item-that-came-back",
+      "say": "Whoops — eggs is back. Alice had removed it, and a union cannot tell removed from never added.",
+      "file": "19-the-item-that-came-back-s06.png"
+    },
+    {
+      "index": 19,
+      "stepId": "s07",
+      "sceneId": "the-item-that-came-back",
+      "say": "The Dynamo paper describes this exact effect: deleted items can resurface. The fix is a data type that records removes, the **OR-Set**.",
+      "file": "20-the-item-that-came-back-s07.png"
+    },
+    {
+      "index": 20,
+      "stepId": "s08",
+      "sceneId": "the-item-that-came-back",
+      "say": "Vector clocks say there is a conflict. Only a data type with the right merge rule says how to resolve it.",
+      "file": "21-the-item-that-came-back-s08.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:50:16.346Z"
+}

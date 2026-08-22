@@ -1,0 +1,202 @@
+{
+  "module": "crdts",
+  "unit": "operation-based",
+  "topic": "every-device-needs-a-name",
+  "unitNumeral": "III",
+  "unitTitle": "Operation-based CRDTs",
+  "topicTitle": "Every device needs a name",
+  "firstInUnit": false,
+  "total": 27,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "same-name",
+      "say": "Two phones count likes on one post through a server. Both phones call themselves phone.",
+      "file": "01-same-name-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "same-name",
+      "say": "Alice taps like. Her op id is her name plus a counter: phone:1.",
+      "file": "02-same-name-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "same-name",
+      "say": "Bob taps like too. His op id is also phone:1.",
+      "file": "03-same-name-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "same-name",
+      "say": "The server applies Alice's op: 1 like. It writes phone:1 in its applied list.",
+      "file": "04-same-name-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "same-name",
+      "say": "Bob's op arrives with the same id. The server finds phone:1 in its list and ignores the op as a repeat.",
+      "file": "05-same-name-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "same-name",
+      "say": "Whoops — two taps became one like. A real tap was thrown away.",
+      "file": "06-same-name-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "same-name",
+      "say": "The fix: every device gets its own name. This phone is alice, that one is bob.",
+      "file": "07-same-name-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s08",
+      "sceneId": "same-name",
+      "say": "Rewind the server, and both tap again. The op ids now differ: alice:1 and bob:1.",
+      "file": "08-same-name-s08.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s09",
+      "sceneId": "same-name",
+      "say": "Alice's op has a new id, so it is applied; Bob's op has another new id, so it is applied too. Two taps, two likes.",
+      "file": "09-same-name-s09.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s10",
+      "sceneId": "same-name",
+      "say": "A **node id** must be unique and must never change. Every op id in this unit starts with one.",
+      "file": "10-same-name-s10.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s01",
+      "sceneId": "node-and-counter",
+      "say": "A shared OR-Set, driven by ops. Each device keeps its own counter, and every new op takes the next number.",
+      "file": "11-node-and-counter-s01.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s02",
+      "sceneId": "node-and-counter",
+      "say": "Alice makes three ops: add milk, add eggs, remove milk. Their ids are alice:1, alice:2, alice:3.",
+      "file": "12-node-and-counter-s02.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s03",
+      "sceneId": "node-and-counter",
+      "say": "Bob makes one: add tea, id bob:1. His name is different, so his ids can never collide with hers.",
+      "file": "13-node-and-counter-s03.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s04",
+      "sceneId": "node-and-counter",
+      "say": "Both broadcast. Four ops are in the air.",
+      "file": "14-node-and-counter-s04.png"
+    },
+    {
+      "index": 14,
+      "stepId": "s05",
+      "sceneId": "node-and-counter",
+      "say": "Alice applies bob:1: tea joins eggs.",
+      "file": "15-node-and-counter-s05.png"
+    },
+    {
+      "index": 15,
+      "stepId": "s06",
+      "sceneId": "node-and-counter",
+      "say": "Bob applies alice:1: milk. Then alice:3 arrives, but alice:2 has not.",
+      "file": "16-node-and-counter-s06.png"
+    },
+    {
+      "index": 16,
+      "stepId": "s07",
+      "sceneId": "node-and-counter",
+      "say": "The counter does a second job: after alice:1, Bob expects alice:2. He sees the gap, parks alice:3 and waits.",
+      "file": "17-node-and-counter-s07.png"
+    },
+    {
+      "index": 17,
+      "stepId": "s08",
+      "sceneId": "node-and-counter",
+      "say": "alice:2 arrives: eggs. Now the run is complete, 1 2 3, and the parked op can go.",
+      "file": "18-node-and-counter-s08.png"
+    },
+    {
+      "index": 18,
+      "stepId": "s09",
+      "sceneId": "node-and-counter",
+      "say": "Bob applies alice:3: milk is removed. Both copies agree: eggs and tea.",
+      "file": "19-node-and-counter-s09.png"
+    },
+    {
+      "index": 19,
+      "stepId": "s10",
+      "sceneId": "node-and-counter",
+      "say": "Node id plus counter is the op id of every type in this unit. Some papers call it a **dot**.",
+      "file": "20-node-and-counter-s10.png"
+    },
+    {
+      "index": 20,
+      "stepId": "s01",
+      "sceneId": "where-names-come-from",
+      "say": "Option 1: a server hands out names. The laptop connects and asks for one.",
+      "file": "21-where-names-come-from-s01.png"
+    },
+    {
+      "index": 21,
+      "stepId": "s02",
+      "sceneId": "where-names-come-from",
+      "say": "The server replies: you are node 7. Short and unique, but the laptop needed a connection first.",
+      "file": "22-where-names-come-from-s02.png"
+    },
+    {
+      "index": 22,
+      "stepId": "s03",
+      "sceneId": "where-names-come-from",
+      "say": "Option 2: the device picks a random name by itself. The phone is offline, and that is fine.",
+      "file": "23-where-names-come-from-s03.png"
+    },
+    {
+      "index": 23,
+      "stepId": "s04",
+      "sceneId": "where-names-come-from",
+      "say": "It rolls 122 random bits: a **UUID** version 4. Two devices rolling the same one is so unlikely that we call it impossible.",
+      "file": "24-where-names-come-from-s04.png"
+    },
+    {
+      "index": 24,
+      "stepId": "s05",
+      "sceneId": "where-names-come-from",
+      "say": "Automerge uses 128 random bits; Yjs uses a random 53-bit number. Both are option 2.",
+      "file": "25-where-names-come-from-s05.png"
+    },
+    {
+      "index": 25,
+      "stepId": "s06",
+      "sceneId": "where-names-come-from",
+      "say": "Pick a name once, store it, never change it. The [UUIDs](/uuids/anatomy/uuid-v4) module explains the bits.",
+      "file": "26-where-names-come-from-s06.png"
+    },
+    {
+      "index": 26,
+      "stepId": "s07",
+      "sceneId": "where-names-come-from",
+      "say": "A fresh install gets a fresh name. The old name with a counter restarted at 1 would mint ids that already exist.",
+      "file": "27-where-names-come-from-s07.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:48:54.814Z"
+}

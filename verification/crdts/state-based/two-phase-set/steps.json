@@ -1,0 +1,181 @@
+{
+  "module": "crdts",
+  "unit": "state-based",
+  "topic": "two-phase-set",
+  "unitNumeral": "II",
+  "unitTitle": "State-based CRDTs",
+  "topicTitle": "2P-Set",
+  "firstInUnit": false,
+  "total": 24,
+  "steps": [
+    {
+      "index": 0,
+      "stepId": "s01",
+      "sceneId": "add-and-remove",
+      "say": "A **2P-Set** is two G-Sets: added, and removed. An element is in the set when it is added and not removed.",
+      "file": "01-add-and-remove-s01.png"
+    },
+    {
+      "index": 1,
+      "stepId": "s02",
+      "sceneId": "add-and-remove",
+      "say": "Alice invites Dan and Eve.",
+      "file": "02-add-and-remove-s02.png"
+    },
+    {
+      "index": 2,
+      "stepId": "s03",
+      "sceneId": "add-and-remove",
+      "say": "They sync. Bob has both guests.",
+      "file": "03-add-and-remove-s03.png"
+    },
+    {
+      "index": 3,
+      "stepId": "s04",
+      "sceneId": "add-and-remove",
+      "say": "Bob un-invites Dan. Dan is not deleted: his entry gets a **tombstone**, a marker that says removed.",
+      "file": "04-add-and-remove-s04.png"
+    },
+    {
+      "index": 4,
+      "stepId": "s05",
+      "sceneId": "add-and-remove",
+      "say": "Bob's set reads as eve. Dan stays in the data, struck through: present in the record, absent from the answer.",
+      "file": "05-add-and-remove-s05.png"
+    },
+    {
+      "index": 5,
+      "stepId": "s06",
+      "sceneId": "add-and-remove",
+      "say": "Bob sends his whole state to Alice: both G-Sets travel together.",
+      "file": "06-add-and-remove-s06.png"
+    },
+    {
+      "index": 6,
+      "stepId": "s07",
+      "sceneId": "add-and-remove",
+      "say": "Alice merges: union of added, union of removed. Dan is tombstoned on both sides.",
+      "file": "07-add-and-remove-s07.png"
+    },
+    {
+      "index": 7,
+      "stepId": "s08",
+      "sceneId": "add-and-remove",
+      "say": "The tombstone is the sidecar that makes remove safe. Without it, the next union would bring Dan back.",
+      "file": "08-add-and-remove-s08.png"
+    },
+    {
+      "index": 8,
+      "stepId": "s01",
+      "sceneId": "no-re-add",
+      "say": "Dan apologizes. Alice invites him again: add dan.",
+      "file": "09-no-re-add-s01.png"
+    },
+    {
+      "index": 9,
+      "stepId": "s02",
+      "sceneId": "no-re-add",
+      "say": "Whoops — nothing happens: dan is already in added, and his tombstone is in removed, so removed wins.",
+      "file": "10-no-re-add-s02.png"
+    },
+    {
+      "index": 10,
+      "stepId": "s03",
+      "sceneId": "no-re-add",
+      "say": "Now a race. Carol joins with an empty copy and invites Eve; that is her whole state.",
+      "file": "11-no-re-add-s03.png"
+    },
+    {
+      "index": 11,
+      "stepId": "s04",
+      "sceneId": "no-re-add",
+      "say": "At the same time Bob un-invites Eve. Two concurrent changes to eve: an add at Carol, a remove at Bob.",
+      "file": "12-no-re-add-s04.png"
+    },
+    {
+      "index": 12,
+      "stepId": "s05",
+      "sceneId": "no-re-add",
+      "say": "Bob sends his state to Carol.",
+      "file": "13-no-re-add-s05.png"
+    },
+    {
+      "index": 13,
+      "stepId": "s06",
+      "sceneId": "no-re-add",
+      "say": "Carol merges: union of added, union of removed. Eve is tombstoned, so the remove won the race.",
+      "file": "14-no-re-add-s06.png"
+    },
+    {
+      "index": 14,
+      "stepId": "s07",
+      "sceneId": "no-re-add",
+      "say": "Sync everyone: three copies, no guests, two tombstones. Remove wins in any order — gone is gone.",
+      "file": "15-no-re-add-s07.png"
+    },
+    {
+      "index": 15,
+      "stepId": "s08",
+      "sceneId": "no-re-add",
+      "say": "Good for revoked keys and banned users, bad for a shopping list. Pick a set by what remove should mean.",
+      "file": "16-no-re-add-s08.png"
+    },
+    {
+      "index": 16,
+      "stepId": "s01",
+      "sceneId": "revoked-keys",
+      "say": "In context: three auth servers share one customer record. The plan is an LWW register; the active API keys are a 2P-Set.",
+      "file": "17-revoked-keys-s01.png"
+    },
+    {
+      "index": 17,
+      "stepId": "s02",
+      "sceneId": "revoked-keys",
+      "say": "EU issues key k1 and AP issues key k2. Both sync with US.",
+      "file": "18-revoked-keys-s02.png"
+    },
+    {
+      "index": 18,
+      "stepId": "s03",
+      "sceneId": "revoked-keys",
+      "say": "At t=1 the customer upgrades to Pro in EU, and EU syncs with US.",
+      "file": "19-revoked-keys-s03.png"
+    },
+    {
+      "index": 19,
+      "stepId": "s04",
+      "sceneId": "revoked-keys",
+      "say": "At t=2 key k1 leaks. AP revokes it: k1 gets a tombstone.",
+      "file": "20-revoked-keys-s04.png"
+    },
+    {
+      "index": 20,
+      "stepId": "s05",
+      "sceneId": "revoked-keys",
+      "say": "Meanwhile EU, which has not seen the revoke, re-adds k1 from an old cache. Nothing changes there: k1 was still in its added set.",
+      "file": "21-revoked-keys-s05.png"
+    },
+    {
+      "index": 21,
+      "stepId": "s06",
+      "sceneId": "revoked-keys",
+      "say": "AP and EU sync with US. The tombstone reaches EU: k1 is struck through, and no add can revive it.",
+      "file": "22-revoked-keys-s06.png"
+    },
+    {
+      "index": 22,
+      "stepId": "s07",
+      "sceneId": "revoked-keys",
+      "say": "Every region agrees: plan Pro, keys k2, and k1 dead for good.",
+      "file": "23-revoked-keys-s07.png"
+    },
+    {
+      "index": 23,
+      "stepId": "s08",
+      "sceneId": "revoked-keys",
+      "say": "A revoked key that came back would be a security hole. Here, no re-add is exactly the guarantee you want.",
+      "file": "24-revoked-keys-s08.png"
+    }
+  ],
+  "generatedAt": "2026-08-22T21:47:57.966Z"
+}
