@@ -14,7 +14,7 @@ plain data (a sentence or two + typed commands) that the stage renders and anima
 pnpm install
 pnpm dev          # http://localhost:5173
 pnpm check        # typecheck + lint + format + unit tests
-pnpm e2e          # real-browser tests (Chromium, Firefox, WebKit)
+pnpm e2e          # real-browser tests (Chromium, Firefox, WebKit; PW_BROWSERS=chromium,webkit to narrow)
 pnpm verify       # walk every lesson in a browser, write storyboards to verification/
 ```
 
