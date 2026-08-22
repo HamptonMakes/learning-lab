@@ -32,10 +32,10 @@ for (const t of catalogTopics()) {
     for (let i = 0; i < total; i++) {
       if (i > 0) await labNext(page)
       const cur = await labCurrent(page)
-      const file = `${String(i + 1).padStart(2, '0')}-${cur.sceneId}-${cur.stepId}.png`
+      const file = `${String(i + 1).padStart(2, '0')}-${cur.sceneId}-${cur.stepId}.jpg`
       await page
         .locator('[data-testid=lesson-frame]')
-        .screenshot({ path: join(dir, file), animations: 'disabled' })
+        .screenshot({ path: join(dir, file), animations: 'disabled', type: 'jpeg', quality: 85 })
       steps.push({ index: i, stepId: cur.stepId, sceneId: cur.sceneId, say: cur.say, file })
     }
     writeFileSync(
@@ -55,10 +55,15 @@ for (const t of catalogTopics()) {
       for (let i = 0; i < total; i++) {
         if (i > 0) await labNext(page)
         const cur = await labCurrent(page)
-        const file = `${String(i + 1).padStart(2, '0')}-${cur.sceneId}-${cur.stepId}.png`
+        const file = `${String(i + 1).padStart(2, '0')}-${cur.sceneId}-${cur.stepId}.jpg`
         await page
           .locator('[data-testid=lesson-frame]')
-          .screenshot({ path: join(darkDir, file), animations: 'disabled' })
+          .screenshot({
+            path: join(darkDir, file),
+            animations: 'disabled',
+            type: 'jpeg',
+            quality: 85,
+          })
         darkSteps.push({
           index: i,
           stepId: cur.stepId,
