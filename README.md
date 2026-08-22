@@ -18,6 +18,12 @@ pnpm e2e          # real-browser tests (Chromium, Firefox, WebKit; PW_BROWSERS=c
 pnpm verify       # walk every lesson in a browser, write storyboards to verification/
 ```
 
+## Proof
+
+`verification/index.html` (committed) links a storyboard for every topic: every step rendered by the
+real app in Chromium, with its narration, plus contact sheets (light, and dark for the first topic of
+each unit). `docs/verification.md` explains the pipeline (`pnpm verify`).
+
 ## Layout of the repo
 
 See `CLAUDE.md` §3 for the folder map and §4 for the animation model. The design system is
