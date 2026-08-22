@@ -4,6 +4,9 @@ Interactive, animation-driven lessons that make hard CS ideas practical. The fir
 **CRDTs (distributed data types)**; UUIDs, Regex, and Columnar stores exist as prototypes that prove
 the animation system generalizes.
 
+Every topic has a **Try it** sandbox: the buttons are derived from the real CRDT slots on stage, and
+every click runs the real implementation through the same reducer the lesson uses.
+
 Every lesson is a **simulation, not a cartoon**: the CRDT animations are driven by real CRDT
 implementations in `src/crdt/` (property-tested with fast-check), and every step is described as
 plain data (a sentence or two + typed commands) that the stage renders and animates.
