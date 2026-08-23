@@ -19,7 +19,7 @@ export function Narration({
   return (
     <div
       className={cn(
-        'min-h-14 rounded-xl border border-line bg-card px-5 py-3 text-[1.05rem] leading-relaxed text-ink shadow-xs',
+        'min-h-14 rounded-lg border border-line-2 bg-card px-5 py-3 text-[1.05rem] leading-relaxed text-ink',
         className,
       )}
       data-testid="narration"

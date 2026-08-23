@@ -115,32 +115,39 @@ function Rules({ slide }: { slide: Extract<Slide, { kind: 'rules' }> }) {
             <p className="mb-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">
               {t('slide.shape')}
             </p>
-            <div className="rounded-xl bg-card p-4 shadow-(--shadow-card) ring-1 ring-(--stage-card-ring)">
-              <p className="mb-3 font-mono text-sm text-ink-2">{slide.shape.name}</p>
-              <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-2">
-                {slide.shape.fields.map((f) => {
-                  const isValue = f.role === 'value' || (f.role === undefined && f.key === 'value')
-                  return (
-                    <div key={f.key} className="contents" data-shape-field={f.key}>
-                      <dt className="pt-0.5 text-end font-sans text-sm text-ink-3">{f.key}</dt>
-                      <dd className="min-w-0">
-                        <span
-                          className={cn(
-                            'font-mono',
-                            isValue ? 'text-lg text-ink' : 'text-[15px] text-ink-2',
+            <div className="window">
+              <div className="title-bar" data-shape-title="">
+                <span className="ms-2 bg-window px-1.5 font-mono text-[13px] leading-5 text-ink">
+                  {slide.shape.name}
+                </span>
+              </div>
+              <div className="p-4">
+                <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-2">
+                  {slide.shape.fields.map((f) => {
+                    const isValue =
+                      f.role === 'value' || (f.role === undefined && f.key === 'value')
+                    return (
+                      <div key={f.key} className="contents" data-shape-field={f.key}>
+                        <dt className="pt-0.5 text-end font-sans text-sm text-ink-3">{f.key}</dt>
+                        <dd className="min-w-0">
+                          <span
+                            className={cn(
+                              'font-mono',
+                              isValue ? 'text-lg text-ink' : 'text-[15px] text-ink-2',
+                            )}
+                          >
+                            {f.example}
+                          </span>
+                          {f.note && (
+                            <span className="ms-2 font-sans text-sm text-ink-3">— {f.note}</span>
                           )}
-                        >
-                          {f.example}
-                        </span>
-                        {f.note && (
-                          <span className="ms-2 font-sans text-sm text-ink-3">— {f.note}</span>
-                        )}
-                      </dd>
-                    </div>
-                  )
-                })}
-              </dl>
-              {slide.shape.note && <p className="mt-3 text-sm text-ink-3">{slide.shape.note}</p>}
+                        </dd>
+                      </div>
+                    )
+                  })}
+                </dl>
+                {slide.shape.note && <p className="mt-3 text-sm text-ink-3">{slide.shape.note}</p>}
+              </div>
             </div>
           </div>
         )}

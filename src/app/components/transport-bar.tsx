@@ -51,7 +51,7 @@ export function TransportBar(p: TransportProps) {
       data-testid="transport"
       data-status={p.status}
       className={cn(
-        'flex flex-wrap items-center gap-2 rounded-xl border border-line bg-card px-3 py-2 shadow-xs',
+        'flex flex-wrap items-center gap-2 rounded-lg border border-line-2 bg-paper-2 px-3 py-2 shadow-[inset_0_1px_0_var(--key)]',
         p.className,
       )}
     >
@@ -74,7 +74,7 @@ export function TransportBar(p: TransportProps) {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="outline"
+              variant="key"
               size="icon"
               onClick={p.onPrev}
               aria-label={t('player.prev')}
@@ -91,6 +91,7 @@ export function TransportBar(p: TransportProps) {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
+              variant="power"
               size="icon-lg"
               onClick={p.onToggle}
               aria-label={playing ? t('player.pause') : t('player.play')}
@@ -98,7 +99,11 @@ export function TransportBar(p: TransportProps) {
               data-testid="transport-play"
               className="mx-0.5"
             >
-              {playing ? <Pause /> : <Play className="translate-x-px" />}
+              {playing ? (
+                <Pause className="fill-current" />
+              ) : (
+                <Play className="translate-x-px fill-current" />
+              )}
             </Button>
           </TooltipTrigger>
           <TooltipContent className="flex items-center gap-2">
@@ -108,7 +113,7 @@ export function TransportBar(p: TransportProps) {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="outline"
+              variant="key"
               size="icon"
               onClick={p.onNext}
               aria-label={t('player.next')}
@@ -139,7 +144,7 @@ export function TransportBar(p: TransportProps) {
           <TooltipTrigger asChild>
             <DropdownMenuTrigger asChild>
               <Button
-                variant="ghost"
+                variant="key"
                 size="sm"
                 aria-label={t('player.speed')}
                 data-testid="transport-speed"
@@ -225,9 +230,9 @@ function ProgressDots({
               className={cn(
                 'h-2.5 rounded-full transition-[width,background-color] duration-200 ease-out',
                 active
-                  ? 'w-5 bg-teal'
+                  ? 'w-5 bg-led-amber shadow-[0_0_6px_var(--led-amber)]'
                   : done
-                    ? 'w-2.5 bg-teal/45 hover:bg-teal/70'
+                    ? 'w-2.5 bg-ink-3/70 hover:bg-ink-2'
                     : 'w-2.5 bg-line-2 hover:bg-ink-3/60',
               )}
             />

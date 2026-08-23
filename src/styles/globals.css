@@ -1,17 +1,19 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
-@import '@fontsource-variable/geist';
+@import '@fontsource-variable/archivo';
 @import '@fontsource-variable/jetbrains-mono';
+@import '@fontsource-variable/doto';
 @import './tokens.css';
 
 @custom-variant dark (&:is(.dark *));
 
 /* Map design tokens → Tailwind theme (utilities) and → shadcn semantic variables. */
 @theme inline {
-  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-sans);
   --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-led: 'Doto Variable', 'JetBrains Mono Variable', ui-monospace, monospace;
 
   /* shadcn semantic colors */
   --color-background: var(--paper);
@@ -56,6 +58,19 @@
   --color-line: var(--line);
   --color-line-2: var(--line-2);
   --color-grid: var(--grid);
+  --color-screen: var(--screen);
+  --color-screen-2: var(--screen-2);
+  --color-window: var(--window);
+  --color-window-ink: var(--window-ink);
+  --color-note: var(--note);
+  --color-bezel: var(--bezel);
+  --color-key: var(--key);
+  --color-key-line: var(--key-line);
+  --color-power: var(--power);
+  --color-power-ink: var(--power-ink);
+  --color-led: var(--led);
+  --color-led-panel: var(--led-panel);
+  --color-led-amber: var(--led-amber);
   --color-teal: var(--accent);
   --color-teal-ink: var(--accent-ink);
   --color-teal-soft: var(--accent-soft);
@@ -99,7 +114,6 @@
   }
   html {
     @apply font-sans antialiased;
-    font-feature-settings: 'cv11', 'ss01';
     text-rendering: optimizeLegibility;
   }
   body {
@@ -129,9 +143,101 @@
   }
 }
 
-/* The stage surface: plain paper. Cards float on it by shadow (--shadow-card), not by texture. */
+/* ---- Workbench chrome utilities (tokens only; see tokens.css for the two worlds) ---- */
+
+/* The screen: monitor grey-white with a faint 4px dither. Windows sit on it by a hard shadow. */
 @utility stage-surface {
-  background-color: var(--paper);
+  background-color: var(--screen);
+  background-image: repeating-conic-gradient(var(--screen-2) 0 25%, transparent 0 50%);
+  background-size: 4px 4px;
+}
+
+/* The bezel around the screen: thick putty frame, hairline inside, a little plastic under it. */
+@utility bezel {
+  border: 10px solid var(--bezel);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 0 0 1px var(--bezel-line),
+    0 3px 0 var(--bezel-shade);
+}
+
+/* A window on the screen: white, 1px ink border, hard 2px shadow, square corners. */
+@utility window {
+  background-color: var(--window);
+  border: 1px solid var(--window-ink);
+  box-shadow: var(--shadow-card);
+  border-radius: 0;
+}
+
+/* A window's title bar: horizontal stripes with a gap for the title tab (children paint their own
+   background). Height and padding keep the stripes clear of the border. */
+@utility title-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-block-size: 1.375rem;
+  padding-block: 0.3125rem;
+  padding-inline: 0.5rem;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 2px,
+    var(--window-ink) 2px 3px
+  );
+  background-clip: content-box;
+  border-block-end: 1px solid var(--window-ink);
+}
+
+/* A sticky note: yellow paper, ink border, hard shadow. */
+@utility note {
+  background-color: var(--note);
+  border: 1px solid var(--window-ink);
+  box-shadow: var(--shadow-card);
+  border-radius: 0;
+}
+
+/* Keycaps: a light top, a 3px plastic bevel, and they press down. The orange power key (play) is
+   the same keycap with its colours swapped via the Button's data-variant, so order never matters. */
+@utility key-cap {
+  --kc-top: var(--key);
+  --kc-bottom: var(--key-2);
+  --kc-line: var(--key-line);
+  --kc-shade: var(--key-shade);
+  --kc-ink: var(--ink);
+  --kc-gloss: oklch(1 0 0 / 0.7);
+  &[data-variant='power'] {
+    --kc-top: var(--power);
+    --kc-bottom: var(--power-2);
+    --kc-line: var(--power-shade);
+    --kc-shade: var(--power-shade);
+    --kc-ink: var(--power-ink);
+    --kc-gloss: oklch(1 0 0 / 0.35);
+  }
+  background-image: linear-gradient(var(--kc-top), var(--kc-bottom));
+  border: 1px solid var(--kc-line);
+  color: var(--kc-ink);
+  box-shadow:
+    0 3px 0 var(--kc-shade),
+    inset 0 1px 0 var(--kc-gloss);
+  &:hover {
+    background-image: linear-gradient(var(--kc-top), var(--kc-top));
+  }
+  &:active,
+  &[aria-pressed='true'] {
+    transform: translateY(2px);
+    box-shadow:
+      0 1px 0 var(--kc-shade),
+      inset 0 1px 0 var(--kc-gloss);
+  }
+}
+
+/* An LED readout: dot-matrix digits on a dark panel, with a little glow. */
+@utility led-panel {
+  background-color: var(--led-panel);
+  color: var(--led);
+  font-family: var(--font-led);
+  font-weight: 800;
+  text-shadow: 0 0 8px color-mix(in oklch, var(--led) 55%, transparent);
+  border-radius: 3px;
 }
 
 @utility text-balance {

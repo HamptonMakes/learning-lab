@@ -1,28 +1,59 @@
 /*
-  Design tokens — "Lab Notebook".
+  Design tokens — "Workbench" (a beige computer on a desk, 1991).
   Single source of truth for color, radius, type, motion. Tailwind utilities are generated from these
   in globals.css (@theme inline). Never hard-code colors elsewhere.
-  Warm off-white paper, near-black ink, one teal accent, and a small semantic palette for actors.
+
+  Two worlds, on purpose:
+    hardware — the page, sidebar, transport and panels: putty-beige plastic, ivory panels,
+               keycap buttons, a bezel around the stage, LED readouts.
+    screen   — the stage: a cool grey-white monitor (faintly dithered) on which every actor is a
+               white window with a striped title bar and a hard shadow.
+  One accent (CRT cyan) for interactive chrome and the `change` tone; a small semantic palette;
+  each actor owns a hue.
 */
 
 :root {
-  /* ---- Surfaces & ink (light) ---- */
-  --paper: oklch(0.985 0.006 85); /* page background */
-  --paper-2: oklch(0.965 0.009 85); /* sidebar, muted panels */
-  --paper-3: oklch(0.94 0.012 85); /* hover, pressed */
-  --card: oklch(0.998 0.003 85); /* cards float slightly above paper */
-  --ink: oklch(0.23 0.015 60); /* primary text */
-  --ink-2: oklch(0.42 0.015 60); /* secondary text */
-  --ink-3: oklch(0.58 0.012 60); /* tertiary / placeholders */
-  --line: oklch(0.9 0.01 80); /* borders */
-  --line-2: oklch(0.84 0.012 80); /* stronger borders */
-  --grid: oklch(0.93 0.01 80); /* stage grid lines */
+  /* ---- Hardware: surfaces & ink (light) ---- */
+  --paper: oklch(0.925 0.014 85); /* page background — light putty */
+  --paper-2: oklch(0.895 0.017 85); /* sidebar, muted panels */
+  --paper-3: oklch(0.86 0.02 85); /* hover, pressed */
+  --card: oklch(0.975 0.007 85); /* ivory panels (narration, chrome cards) */
+  --ink: oklch(0.24 0.012 60); /* primary text */
+  --ink-2: oklch(0.44 0.014 60); /* secondary text */
+  --ink-3: oklch(0.58 0.014 65); /* tertiary / placeholders */
+  --line: oklch(0.8 0.02 85); /* borders */
+  --line-2: oklch(0.72 0.022 85); /* stronger borders */
+  --grid: oklch(0.86 0.015 85); /* (legacy) faint rules */
 
-  /* ---- Accent ---- */
-  --accent: oklch(0.5 0.1 195); /* deep teal */
-  --accent-ink: oklch(0.99 0.005 195); /* text on accent */
-  --accent-soft: oklch(0.93 0.035 195); /* tinted background */
-  --accent-line: oklch(0.72 0.08 195);
+  /* ---- Hardware: plastic parts ---- */
+  --bezel: oklch(0.86 0.02 85); /* the frame around the screen */
+  --bezel-line: oklch(0.74 0.022 85);
+  --bezel-shade: oklch(0.7 0.022 85);
+  --key: oklch(0.965 0.01 85); /* keycap top */
+  --key-2: oklch(0.915 0.014 85); /* keycap bottom of the gradient */
+  --key-line: oklch(0.72 0.022 85);
+  --key-shade: oklch(0.64 0.024 80); /* the 3px bevel under a keycap */
+  --power: oklch(0.64 0.19 40); /* the orange key: play / power */
+  --power-2: oklch(0.58 0.19 38);
+  --power-ink: oklch(0.99 0.01 40);
+  --power-shade: oklch(0.44 0.16 36);
+  --led: oklch(0.7 0.22 35); /* LED digits (the stage clock) */
+  --led-panel: oklch(0.18 0.01 60); /* the dark window the digits sit in */
+  --led-amber: oklch(0.8 0.16 80); /* the lit step dot */
+
+  /* ---- Screen (the stage) ---- */
+  --screen: oklch(0.905 0.006 235); /* monitor grey-white */
+  --screen-2: oklch(0.897 0.006 235); /* the other dither tone (barely there) */
+  --window: oklch(0.995 0 0); /* actor/board windows */
+  --window-ink: oklch(0.2 0.01 250); /* window borders, title stripes, shadows */
+  --window-shadow: var(--window-ink);
+  --note: oklch(0.96 0.08 98); /* sticky-note boards */
+
+  /* ---- Accent (CRT cyan) ---- */
+  --accent: oklch(0.5 0.11 200);
+  --accent-ink: oklch(0.99 0.005 200); /* text on accent */
+  --accent-soft: oklch(0.92 0.04 200); /* tinted background */
+  --accent-line: oklch(0.7 0.09 200);
 
   /* ---- Semantic tones ---- */
   --ok: oklch(0.6 0.15 150);
@@ -48,8 +79,8 @@
   --actor-neutral: oklch(0.55 0.01 60);
   --actor-neutral-soft: oklch(0.95 0.005 60);
 
-  /* ---- Shape ---- */
-  --radius: 0.5rem;
+  /* ---- Shape: square-ish hardware, square windows ---- */
+  --radius: 0.25rem;
 
   /* ---- Motion (base durations; the player scales these by 1/speed) ---- */
   --dur-fast: 160ms;
@@ -64,28 +95,51 @@
   --transport-h: 4.5rem;
   --stage-min-h: 24rem;
 
-  /* ---- Stage surfaces (Keynote-calm): cards float on plain paper by shadow, not by border ---- */
-  --shadow-card: 0 1px 2px oklch(0.3 0.02 60 / 0.05), 0 10px 28px -14px oklch(0.3 0.02 60 / 0.22);
-  --shadow-pop: 0 1px 3px oklch(0.3 0.02 60 / 0.08), 0 10px 30px -12px oklch(0.3 0.02 60 / 0.28);
-  --stage-card-ring: transparent; /* dark mode draws a hairline where shadows vanish */
+  /* ---- Stage surfaces: windows sit on the screen by a hard 2px shadow and a 1px border ---- */
+  --shadow-card: 2px 2px 0 var(--window-shadow);
+  --shadow-pop: 0 1px 3px oklch(0.3 0.02 60 / 0.12), 0 10px 30px -12px oklch(0.3 0.02 60 / 0.3);
+  --stage-card-ring: var(--window-ink);
 }
 
 .dark {
-  --paper: oklch(0.2 0.012 60);
-  --paper-2: oklch(0.235 0.012 60);
-  --paper-3: oklch(0.28 0.012 60);
-  --card: oklch(0.255 0.012 60);
-  --ink: oklch(0.95 0.01 85);
-  --ink-2: oklch(0.78 0.01 80);
-  --ink-3: oklch(0.62 0.01 80);
-  --line: oklch(0.32 0.012 60);
-  --line-2: oklch(0.4 0.012 60);
-  --grid: oklch(0.27 0.012 60);
+  /* graphite box */
+  --paper: oklch(0.23 0.008 60);
+  --paper-2: oklch(0.26 0.008 60);
+  --paper-3: oklch(0.3 0.008 60);
+  --card: oklch(0.28 0.008 60);
+  --ink: oklch(0.93 0.01 85);
+  --ink-2: oklch(0.76 0.01 80);
+  --ink-3: oklch(0.6 0.01 80);
+  --line: oklch(0.36 0.01 60);
+  --line-2: oklch(0.44 0.01 60);
+  --grid: oklch(0.3 0.01 60);
 
-  --accent: oklch(0.74 0.1 195);
-  --accent-ink: oklch(0.2 0.03 195);
-  --accent-soft: oklch(0.32 0.04 195);
-  --accent-line: oklch(0.55 0.08 195);
+  --bezel: oklch(0.3 0.008 60);
+  --bezel-line: oklch(0.38 0.01 60);
+  --bezel-shade: oklch(0.14 0.008 60);
+  --key: oklch(0.37 0.01 60);
+  --key-2: oklch(0.31 0.01 60);
+  --key-line: oklch(0.46 0.01 60);
+  --key-shade: oklch(0.16 0.01 60);
+  --power: oklch(0.66 0.19 40);
+  --power-2: oklch(0.6 0.19 38);
+  --power-ink: oklch(0.99 0.01 40);
+  --power-shade: oklch(0.38 0.15 36);
+  --led: oklch(0.74 0.22 35);
+  --led-panel: oklch(0.12 0.01 60);
+  --led-amber: oklch(0.82 0.16 80);
+
+  --screen: oklch(0.2 0.01 240);
+  --screen-2: oklch(0.208 0.01 240);
+  --window: oklch(0.265 0.01 240);
+  --window-ink: oklch(0.86 0.01 240);
+  --window-shadow: oklch(0.08 0.01 240);
+  --note: oklch(0.4 0.07 95);
+
+  --accent: oklch(0.78 0.1 200);
+  --accent-ink: oklch(0.2 0.03 200);
+  --accent-soft: oklch(0.33 0.04 200);
+  --accent-line: oklch(0.58 0.08 200);
 
   --ok: oklch(0.72 0.14 150);
   --ok-soft: oklch(0.32 0.05 150);
@@ -107,7 +161,7 @@
   --actor-neutral: oklch(0.7 0.01 60);
   --actor-neutral-soft: oklch(0.3 0.008 60);
 
-  --shadow-card: 0 1px 2px oklch(0 0 0 / 0.35), 0 10px 28px -14px oklch(0 0 0 / 0.6);
+  --shadow-card: 2px 2px 0 var(--window-shadow);
   --shadow-pop: 0 2px 6px oklch(0 0 0 / 0.45), 0 12px 32px -12px oklch(0 0 0 / 0.7);
-  --stage-card-ring: var(--line);
+  --stage-card-ring: var(--window-ink);
 }

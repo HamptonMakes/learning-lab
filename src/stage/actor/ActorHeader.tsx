@@ -1,8 +1,9 @@
 /**
- * ActorHeader — a hue dot + the label (the actor's identity), a small muted kind icon (by
- * ActorIcon / kind), the owner caption ("Alice's") and subtitle as quiet captions, and the badge
- * cluster: via tag (a control message landed on this card), clock badge (skew defined), status
- * badge, offline badge.
+ * ActorHeader — the window's title bar (Workbench): horizontal stripes with the title tab at the
+ * start — a hue dot + the label (the actor's identity) + a small muted kind icon (by ActorIcon /
+ * kind) — and the badge cluster on its own tab at the end: via tag (a control message landed on
+ * this card), clock badge (skew defined), status badge, offline badge. The owner caption
+ * ("Alice's") and subtitle follow as quiet captions under the bar.
  */
 import { createElement, type CSSProperties } from 'react'
 import type { Actor } from '@/lesson/types'
@@ -20,21 +21,22 @@ export function ActorHeader({ actor, dim }: { actor: Actor; dim: boolean }) {
   const ownerLabel =
     actor.owner === undefined ? undefined : (world.actors[actor.owner]?.label ?? actor.owner)
   const landed = via.get(actor.id)
+  const badges = landed !== undefined || actor.skew !== undefined || actor.status || !actor.online
   return (
-    <div className="flex items-start gap-2">
-      <div className={cn('min-w-0 flex-1 leading-tight', dim && 'opacity-60')}>
-        {ownerLabel !== undefined && (
-          <div data-owner={actor.owner} className="truncate text-[11px] leading-4 text-ink-3">
-            {t('stage.ownerOf', { owner: ownerLabel })}
-          </div>
-        )}
-        <div className="flex min-w-0 items-center gap-2">
+    <>
+      <div className="title-bar gap-2" data-title-bar="">
+        <div
+          className={cn(
+            'ms-2 flex min-w-0 items-center gap-1.5 bg-window px-1.5',
+            dim && 'opacity-60',
+          )}
+        >
           <span
             aria-hidden
             data-hue-dot=""
             className="size-2.5 shrink-0 rounded-full bg-(--card-hue)"
           />
-          <div data-label className="truncate text-[15px] leading-6 font-medium text-ink">
+          <div data-label className="truncate text-[13px] leading-5 font-semibold text-ink">
             {actor.label}
           </div>
           {createElement(actorIcon(actor), {
@@ -42,19 +44,30 @@ export function ActorHeader({ actor, dim }: { actor: Actor; dim: boolean }) {
             'aria-hidden': true,
           })}
         </div>
-        {actor.subtitle && (
-          <div data-subtitle className="truncate ps-4.5 text-[11px] leading-4 text-ink-3">
-            {actor.subtitle}
+        {badges && (
+          <div className="ms-auto me-2 flex shrink-0 flex-wrap items-center justify-end gap-1 bg-window px-1">
+            {landed && <ViaTag via={landed} />}
+            {actor.skew !== undefined && <ClockBadge actor={actor} skew={actor.skew} />}
+            {actor.status && <StatusBadge actor={actor} status={actor.status} />}
+            {!actor.online && <OfflineBadge />}
           </div>
         )}
       </div>
-      <div className="flex shrink-0 flex-wrap items-center justify-end gap-1 pt-0.5">
-        {landed && <ViaTag via={landed} />}
-        {actor.skew !== undefined && <ClockBadge actor={actor} skew={actor.skew} />}
-        {actor.status && <StatusBadge actor={actor} status={actor.status} />}
-        {!actor.online && <OfflineBadge />}
-      </div>
-    </div>
+      {(ownerLabel !== undefined || actor.subtitle) && (
+        <div className={cn('px-3 pt-2 leading-tight', dim && 'opacity-60')}>
+          {ownerLabel !== undefined && (
+            <div data-owner={actor.owner} className="truncate text-[11px] leading-4 text-ink-3">
+              {t('stage.ownerOf', { owner: ownerLabel })}
+            </div>
+          )}
+          {actor.subtitle && (
+            <div data-subtitle className="truncate text-[11px] leading-4 text-ink-3">
+              {actor.subtitle}
+            </div>
+          )}
+        </div>
+      )}
+    </>
   )
 }
 

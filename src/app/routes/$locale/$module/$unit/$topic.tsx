@@ -76,7 +76,7 @@ function TopicPage() {
         ) : (
           <section
             aria-label={t('a11y.stage')}
-            className="relative min-h-(--stage-min-h) rounded-xl border border-line stage-surface shadow-xs"
+            className="relative min-h-(--stage-min-h) bezel stage-surface"
             data-testid="stage"
           >
             <div className="absolute inset-0 grid place-items-center text-sm text-ink-3">
@@ -87,7 +87,7 @@ function TopicPage() {
 
         <footer className="mt-6 flex items-center justify-between gap-3 border-t border-line pt-4">
           {nav.prev ? (
-            <Button asChild variant="ghost">
+            <Button asChild variant="key">
               <Link
                 to="/$locale/$module/$unit/$topic"
                 params={{
@@ -105,7 +105,7 @@ function TopicPage() {
             <span />
           )}
           {nav.next && (
-            <Button asChild variant="outline">
+            <Button asChild variant="key">
               <Link
                 to="/$locale/$module/$unit/$topic"
                 params={{
@@ -190,7 +190,7 @@ function LessonPlayer({
   if (built.error || built.frames.length === 0 || !frame) {
     return (
       <section
-        className="relative min-h-(--stage-min-h) rounded-xl border border-danger/40 stage-surface shadow-xs"
+        className="relative min-h-(--stage-min-h) bezel stage-surface"
         data-testid="stage"
         data-error
       >
@@ -242,8 +242,8 @@ function LessonPlayer({
                 data-testid={`scene-tab-${s.id}`}
                 className={
                   active
-                    ? 'rounded-full bg-teal px-3 py-1 text-xs font-medium text-teal-ink'
-                    : 'rounded-full border border-line px-3 py-1 text-xs text-ink-2 hover:bg-paper-3'
+                    ? 'rounded-sm border border-teal bg-teal px-3 py-1 text-xs font-medium text-teal-ink'
+                    : 'rounded-sm border border-line-2 bg-card px-3 py-1 text-xs text-ink-2 hover:bg-paper-3'
                 }
               >
                 {label}

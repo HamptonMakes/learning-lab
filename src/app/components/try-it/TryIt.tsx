@@ -83,7 +83,7 @@ export type TryItTriggerProps = Omit<ComponentProps<typeof Button>, 'onClick' | 
 export function TryItTrigger({
   onClick,
   className,
-  variant = 'outline',
+  variant = 'key',
   size = 'sm',
   ...props
 }: TryItTriggerProps) {

@@ -71,34 +71,38 @@ export function Stage({
       <StageFrameProvider frame={frame}>
         <StageEventContext.Provider value={emit}>
           <AnchorRegistryProvider container={container}>
-            <div
-              ref={container}
-              dir={dir}
-              data-stage=""
-              data-step={frame.step.id}
-              data-step-index={frame.index}
-              data-scene={frame.sceneId}
-              data-layout={frame.world.layout.preset}
-              data-instant={instant ? '' : undefined}
-              className={cn(
-                'relative min-h-(--stage-min-h) overflow-visible rounded-xl border border-line stage-surface text-ink shadow-xs',
-                className,
-              )}
-            >
-              {frame.slide ? (
-                <SlideView slide={frame.slide} />
-              ) : (
-                <LayoutGroup id={frame.sceneId}>
-                  <div className="stage-layout">
-                    <StageGrid />
-                    <BoardGutter />
-                  </div>
-                  <ClockHud />
-                  <MessageLayer />
-                  <MarkLayer />
-                  <CalloutLayer />
-                </LayoutGroup>
-              )}
+            {/* The bezel wraps the root (never the reverse): overlays measure against the root's
+                border-box, so the root itself carries no border. */}
+            <div className="bezel" data-stage-bezel="">
+              <div
+                ref={container}
+                dir={dir}
+                data-stage=""
+                data-step={frame.step.id}
+                data-step-index={frame.index}
+                data-scene={frame.sceneId}
+                data-layout={frame.world.layout.preset}
+                data-instant={instant ? '' : undefined}
+                className={cn(
+                  'relative min-h-(--stage-min-h) overflow-visible rounded-[2px] stage-surface text-ink',
+                  className,
+                )}
+              >
+                {frame.slide ? (
+                  <SlideView slide={frame.slide} />
+                ) : (
+                  <LayoutGroup id={frame.sceneId}>
+                    <div className="stage-layout">
+                      <StageGrid />
+                      <BoardGutter />
+                    </div>
+                    <ClockHud />
+                    <MessageLayer />
+                    <MarkLayer />
+                    <CalloutLayer />
+                  </LayoutGroup>
+                )}
+              </div>
             </div>
           </AnchorRegistryProvider>
         </StageEventContext.Provider>

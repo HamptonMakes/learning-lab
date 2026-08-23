@@ -16,7 +16,7 @@
   --stage-gap: 1.5rem;
   --stage-pad: 1.5rem;
   --stage-token-h: 2rem; /* the inbox tray reserves one token row while messages are parked */
-  --stage-clock-h: 2.25rem; /* headroom for the clock HUD when the scene shows one */
+  --stage-clock-h: 2.75rem; /* headroom for the clock HUD (caption + LED panel) when the scene shows one */
   --value-fs: 16px; /* the hero size for values; dense records / tables step down to 14px */
 }
 

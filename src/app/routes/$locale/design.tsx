@@ -10,7 +10,9 @@ export const Route = createFileRoute('/$locale/design')({
   component: DesignPage,
 })
 
-const SURFACES = ['paper', 'paper-2', 'paper-3', 'card', 'line', 'line-2', 'grid'] as const
+const SURFACES = ['paper', 'paper-2', 'paper-3', 'card', 'line', 'line-2'] as const
+const HARDWARE = ['bezel', 'key', 'key-line', 'power', 'led', 'led-panel', 'led-amber'] as const
+const SCREEN = ['screen', 'window', 'window-ink', 'note'] as const
 const INKS = ['ink', 'ink-2', 'ink-3'] as const
 const TONES = ['accent', 'ok', 'warn', 'danger'] as const
 const ACTORS = ['a', 'b', 'c', 'd', 'server', 'neutral'] as const
@@ -23,10 +25,11 @@ function DesignPage() {
     <div className="mx-auto w-full max-w-5xl space-y-12 px-6 py-10" data-testid="design-page">
       <header>
         <p className="font-mono text-xs tracking-wider text-teal uppercase">Design system</p>
-        <h1 className="mt-1 text-3xl font-semibold tracking-tight">Lab Notebook</h1>
+        <h1 className="mt-1 text-3xl font-semibold tracking-tight">Workbench</h1>
         <p className="mt-2 max-w-2xl text-ink-2">
-          Warm paper, near-black ink, one teal accent, and a small semantic palette for actors.
-          Tokens live in
+          A beige computer on a desk, 1991: putty hardware with keycaps and LED readouts around a
+          grey screen where every actor is a window. One CRT-cyan accent and a small semantic
+          palette for actors. Tokens live in
           <code className="mx-1 rounded bg-paper-3 px-1 font-mono text-sm">
             src/styles/tokens.css
           </code>
@@ -39,6 +42,36 @@ function DesignPage() {
           {SURFACES.map((s) => (
             <Swatch key={s} name={s} style={{ background: v(s) }} />
           ))}
+        </div>
+        <p className="mt-6 mb-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">
+          Hardware
+        </p>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-7">
+          {HARDWARE.map((s) => (
+            <Swatch key={s} name={s} style={{ background: v(s) }} />
+          ))}
+        </div>
+        <p className="mt-6 mb-2 text-xs font-semibold tracking-wide text-ink-3 uppercase">Screen</p>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-7">
+          {SCREEN.map((s) => (
+            <Swatch key={s} name={s} style={{ background: v(s) }} />
+          ))}
+        </div>
+        <div className="mt-6 flex flex-wrap items-center gap-4">
+          <Button variant="key">Keycap</Button>
+          <Button variant="power" size="icon-lg" aria-label="Power">
+            ▶
+          </Button>
+          <span className="led-panel px-2 py-0.5 text-[22px] leading-7 tracking-wide">t=2</span>
+          <div className="w-56 window">
+            <div className="title-bar">
+              <span className="ms-2 bg-window px-1.5 text-[13px] leading-5 font-semibold">
+                Alice
+              </span>
+            </div>
+            <div className="p-3 font-mono text-sm">value · t=1</div>
+          </div>
+          <div className="note p-3 font-mono text-xs">a sticky note</div>
         </div>
         <div className="mt-4 flex flex-wrap gap-6">
           {INKS.map((i) => (

@@ -3,8 +3,9 @@
  * glide between slots when the layout changes and stay crisp when they grow; spawn/remove animate
  * through the grid's AnimatePresence. The whole card is the anchor for the actor's root path and
  * carries the DSL §14 attributes. Header → outbox chips → inbox tray → holds (insertion order),
- * each slot drawn by ValueView under a quiet caption. The card is a plain paper card that floats by
- * shadow; the actor's hue is a dot beside the name (ActorHeader), never a border around the card.
+ * each slot drawn by ValueView under a quiet caption. The card is a window on the screen (Workbench:
+ * white, 1px ink border, hard shadow) with a striped title bar (ActorHeader); the actor's hue is a
+ * dot beside the name in the title tab, never a border around the card.
  */
 import type { CSSProperties } from 'react'
 import { motion } from 'motion/react'
@@ -68,36 +69,38 @@ export function ActorCard({ actor, slot }: ActorCardProps) {
       data-status={actor.status}
       data-highlight={highlight?.tone}
       style={actorHueStyle(actor.color)}
-      className="relative flex min-w-48 flex-col rounded-xl bg-card p-4 text-sm text-ink shadow-(--shadow-card) ring-1 ring-(--stage-card-ring)"
+      className="relative flex min-w-48 flex-col window text-sm text-ink"
     >
       {highlight && <HighlightRing key={highlight.id} tone={highlight.tone} />}
       {landed && <ViaFlash key={landed.message} color={landed.color} />}
       <ActorHeader actor={actor} dim={dim} />
-      <OutboxChips actor={actor} className={cn(dim && 'opacity-60')} />
-      <InboxTray actor={actor} className={cn(dim && 'opacity-60')} />
-      {holds.length > 0 && (
-        <div data-holds className={cn('mt-3 flex flex-col gap-3', dim && 'opacity-60')}>
-          {holds.map(([slotId, value]) => {
-            // A composed document names its type once, in the caption; its parts carry no chips.
-            const doc = isDocValue(value)
-            const rootType = doc ? docRootType(value) : undefined
-            return (
-              <div key={slotId} data-hold={slotId} className="flex min-w-0 flex-col gap-0.5">
-                <div className="font-sans text-[12px] leading-4 text-ink-3">
-                  {slotId}
-                  {doc && (
-                    <span data-doc-type={rootType ?? 'doc'}>
-                      {' · '}
-                      {rootType ? t(`stage.type.${rootType}`) : t('stage.doc')}
-                    </span>
-                  )}
+      <div data-card-body className="flex flex-col px-3 pt-2 pb-3">
+        <OutboxChips actor={actor} className={cn(dim && 'opacity-60')} />
+        <InboxTray actor={actor} className={cn(dim && 'opacity-60')} />
+        {holds.length > 0 && (
+          <div data-holds className={cn('mt-2 flex flex-col gap-3', dim && 'opacity-60')}>
+            {holds.map(([slotId, value]) => {
+              // A composed document names its type once, in the caption; its parts carry no chips.
+              const doc = isDocValue(value)
+              const rootType = doc ? docRootType(value) : undefined
+              return (
+                <div key={slotId} data-hold={slotId} className="flex min-w-0 flex-col gap-0.5">
+                  <div className="font-sans text-[12px] leading-4 text-ink-3">
+                    {slotId}
+                    {doc && (
+                      <span data-doc-type={rootType ?? 'doc'}>
+                        {' · '}
+                        {rootType ? t(`stage.type.${rootType}`) : t('stage.doc')}
+                      </span>
+                    )}
+                  </div>
+                  <ValueView path={`${actor.id}.${slotId}`} value={value} depth={0} />
                 </div>
-                <ValueView path={`${actor.id}.${slotId}`} value={value} depth={0} />
-              </div>
-            )
-          })}
-        </div>
-      )}
+              )
+            })}
+          </div>
+        )}
+      </div>
     </motion.article>
   )
 }
@@ -110,7 +113,7 @@ function HighlightRing({ tone }: { tone: Tone }) {
       aria-hidden
       data-highlight-ring={tone}
       style={{ '--tone': toneVar(tone) } as CSSProperties}
-      className="pointer-events-none absolute -inset-px rounded-xl ring-2 ring-(--tone)"
+      className="pointer-events-none absolute -inset-px ring-2 ring-(--tone)"
       initial={instant ? false : { opacity: 0 }}
       animate={{ opacity: [0, 1, 0.75] }}
       transition={tr('flash')}
@@ -126,7 +129,7 @@ function ViaFlash({ color }: { color: ActorColor }) {
       aria-hidden
       data-via-flash={color}
       style={{ '--via-hue': `var(--actor-${color})` } as CSSProperties}
-      className="pointer-events-none absolute -inset-px rounded-xl ring-2 ring-(--via-hue)"
+      className="pointer-events-none absolute -inset-px ring-2 ring-(--via-hue)"
       initial={instant ? false : { opacity: 0 }}
       animate={{ opacity: [0, 1, 0] }}
       transition={tr('flash')}

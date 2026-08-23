@@ -21,7 +21,7 @@ export function SiteHeader() {
 
   return (
     <header
-      className="sticky top-0 z-30 flex h-(--header-h) items-center gap-2 border-b border-line bg-paper/90 px-3 backdrop-blur supports-[backdrop-filter]:bg-paper/75"
+      className="sticky top-0 z-30 flex h-(--header-h) items-center gap-2 border-b border-line-2 bg-paper-2 px-3"
       data-testid="site-header"
     >
       <Tooltip>
@@ -82,7 +82,7 @@ export function SiteHeader() {
           <TooltipTrigger asChild>
             <Button variant="ghost" size="icon" asChild>
               <a
-                href="https://github.com/hcatlin"
+                href="https://github.com/HamptonMakes/learning-lab"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="GitHub"
