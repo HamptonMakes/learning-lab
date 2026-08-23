@@ -244,5 +244,10 @@
   "tryIt.say.dropAll": "Every message in flight is lost ({count}).",
   "tryIt.say.offline": "{actor} goes offline.",
   "tryIt.say.online": "{actor} is back online.",
-  "tryIt.say.clockTick": "The clock ticks."
+  "tryIt.say.clockTick": "The clock ticks.",
+  "slide.start": "Start",
+  "slide.summary": "Summary",
+  "slide.whenToUse": "When to use it.",
+  "slide.whenNotToUse": "When not to use it.",
+  "slide.realWorld": "In the real world."
 }

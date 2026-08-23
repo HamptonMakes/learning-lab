@@ -3,6 +3,7 @@
  * Pure presentation — the player hook owns the state; this component only calls back.
  */
 import { ChevronLeft, ChevronRight, Gauge, Pause, Play, RotateCcw } from 'lucide-react'
+import type { ReactNode } from 'react'
 import { Button } from '@/ui/button'
 import { Kbd } from '@/ui/kbd'
 import {
@@ -31,6 +32,8 @@ export interface TransportProps {
   /** Optional step ids for dot tooltips / test ids. */
   stepIds?: string[]
   className?: string
+  /** Extra controls rendered at the end (e.g. the Try-it trigger). */
+  extra?: ReactNode
 }
 
 export function TransportBar(p: TransportProps) {
@@ -168,6 +171,7 @@ export function TransportBar(p: TransportProps) {
           </DropdownMenuRadioGroup>
         </DropdownMenuContent>
       </DropdownMenu>
+      {p.extra}
     </div>
   )
 }

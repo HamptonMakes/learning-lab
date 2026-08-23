@@ -479,7 +479,20 @@ export type Frame = {
   world: World
   prev: World // world0 at the first step of a scene (the scene world, or the startFrom parent's end)
   changes: Change[] // ordered event log (§6 step 5)
+  /** Presentation-only frames (title screen, closing summary) carry a slide instead of actors. */
+  slide?: Slide
 }
+
+/** A keynote-style slide the stage draws instead of the world (see src/lesson/presentation.ts). */
+export type Slide =
+  | { kind: 'intro'; title: string; subtitle: string; goal?: string }
+  | {
+      kind: 'summary'
+      heading: string
+      bullets?: string[]
+      text?: string
+      tone?: 'ok' | 'danger' | 'info'
+    }
 
 // ─── Const lists (the schema enumerates from these; schema.test.ts proves they cover the unions)
 export const LAYOUT_PRESETS = [

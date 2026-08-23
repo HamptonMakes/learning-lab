@@ -1009,14 +1009,30 @@ export const ChangeSchema = z.discriminatedUnion('kind', [
   z.strictObject({ kind: z.literal('layout'), from: LayoutSchema, to: LayoutSchema }),
   z.strictObject({ kind: z.literal('clock'), from: z.number(), to: z.number() }),
 ])
+export const SlideSchema = z.discriminatedUnion('kind', [
+  z.strictObject({
+    kind: z.literal('intro'),
+    title: z.string(),
+    subtitle: z.string(),
+    goal: z.string().optional(),
+  }),
+  z.strictObject({
+    kind: z.literal('summary'),
+    heading: z.string(),
+    bullets: z.array(z.string()).optional(),
+    text: z.string().optional(),
+    tone: z.enum(['ok', 'danger', 'info']).optional(),
+  }),
+])
 export const FrameSchema = z.strictObject({
   index: z.int().nonnegative(),
   sceneId: IdSchema,
-  sceneIndex: z.int().nonnegative(),
+  sceneIndex: z.int(),
   step: StepSchema,
   world: WorldSchema,
   prev: WorldSchema,
   changes: z.array(ChangeSchema),
+  slide: SlideSchema.optional(),
 })
 
 // ─── i18n (§12) ───────────────────────────────────────────────────────────────────────────────

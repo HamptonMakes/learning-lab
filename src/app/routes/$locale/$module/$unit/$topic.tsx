@@ -7,7 +7,7 @@ import { findModule } from '@/content/catalog'
 import { loadTopic } from '@/content/registry'
 import { findTopic, neighbors } from '@/lesson/catalog'
 import type { Frame, Topic } from '@/lesson/types'
-import { buildTimeline } from '@/lesson/reducer/timeline'
+import { buildPresentation, presentationScenes } from '@/lesson/presentation'
 import { usePlayer, useKeyboardTransport, useLabHook } from '@/lesson/player'
 import { Stage } from '@/stage'
 import { Button } from '@/ui/button'
@@ -15,7 +15,6 @@ import { useI18n } from '@/i18n'
 import { useSetting } from '@/settings'
 import { TransportBar } from '@/app/components/transport-bar'
 import { Narration } from '@/app/components/narration'
-import { TopicPanels } from '@/app/components/topic-panels'
 import { TryIt } from '@/app/components/try-it/TryIt'
 
 // TanStack Router JSON-parses search values, so `?lab=1` arrives as the number 1; normalise.
@@ -60,7 +59,7 @@ function TopicPage() {
           >
             {ref.topic.title}
           </h1>
-          <p className="mt-1 text-ink-2">{topic?.goal ?? ref.topic.summary}</p>
+          <p className="mt-1 text-ink-2">{ref.topic.summary}</p>
         </header>
 
         {topic ? (
@@ -70,6 +69,8 @@ function TopicPage() {
             moduleId={module.id}
             unitId={ref.unit.id}
             topicId={ref.topic.id}
+            title={ref.topic.title}
+            subtitle={ref.topic.summary}
             locale={locale}
           />
         ) : (
@@ -130,12 +131,16 @@ function LessonPlayer({
   moduleId,
   unitId,
   topicId,
+  title,
+  subtitle,
   locale,
 }: {
   topic: Topic
   moduleId: string
   unitId: string
   topicId: string
+  title: string
+  subtitle: string
   locale: string
 }) {
   const { t, dir } = useI18n()
@@ -143,13 +148,23 @@ function LessonPlayer({
   const navigate = Route.useNavigate()
   const [reducedPref] = useSetting('reducedMotion')
 
+  const labelUse = t('slide.whenToUse')
+  const labelAvoid = t('slide.whenNotToUse')
+  const labelWorld = t('slide.realWorld')
   const built = useMemo<{ frames: Frame[]; error?: string }>(() => {
     try {
-      return { frames: buildTimeline(topic, { assertMode: 'warn' }) }
+      return {
+        frames: buildPresentation(topic, {
+          title,
+          subtitle,
+          labels: { use: labelUse, avoid: labelAvoid, world: labelWorld },
+          assertMode: 'warn',
+        }),
+      }
     } catch (e) {
       return { frames: [], error: e instanceof Error ? e.message : String(e) }
     }
-  }, [topic])
+  }, [topic, title, subtitle, labelUse, labelAvoid, labelWorld])
 
   const player = usePlayer(built.frames, {
     initialIndex: (search.step ?? 1) - 1,
@@ -186,7 +201,11 @@ function LessonPlayer({
 
   const instant = player.instant
   const scene = topic.scenes.find((s) => s.id === frame.sceneId)
-  const multiScene = topic.scenes.length > 1
+  const scenes = presentationScenes(topic)
+  // The sandbox starts from the data on stage; on the title/summary slides use the lesson's last frame.
+  const sandboxFrame = frame.slide
+    ? ([...built.frames].reverse().find((f) => !f.slide) ?? frame)
+    : frame
   const ended = player.state.status === 'ended'
 
   return (
@@ -196,31 +215,35 @@ function LessonPlayer({
       data-scene={frame.sceneId}
       data-step={frame.step.id}
     >
-      {multiScene && (
-        <ol className="flex flex-wrap gap-1.5" aria-label={t('topic.scenes')}>
-          {topic.scenes.map((s, i) => {
-            const first = built.frames.findIndex((f) => f.sceneId === s.id)
-            const active = s.id === frame.sceneId
-            return (
-              <li key={s.id}>
-                <button
-                  type="button"
-                  onClick={() => player.seek(first)}
-                  aria-current={active ? 'true' : undefined}
-                  data-testid={`scene-tab-${s.id}`}
-                  className={
-                    active
-                      ? 'rounded-full bg-teal px-3 py-1 text-xs font-medium text-teal-ink'
-                      : 'rounded-full border border-line px-3 py-1 text-xs text-ink-2 hover:bg-paper-3'
-                  }
-                >
-                  {i + 1}. {s.title ?? s.id}
-                </button>
-              </li>
-            )
-          })}
-        </ol>
-      )}
+      <ol className="flex flex-wrap gap-1.5" aria-label={t('topic.scenes')}>
+        {scenes.map((s, i) => {
+          const first = built.frames.findIndex((f) => f.sceneId === s.id)
+          const active = s.id === frame.sceneId
+          const label =
+            s.synthetic === 'intro'
+              ? t('slide.start')
+              : s.synthetic === 'summary'
+                ? t('slide.summary')
+                : `${i}. ${s.title ?? s.id}`
+          return (
+            <li key={s.id}>
+              <button
+                type="button"
+                onClick={() => player.seek(first)}
+                aria-current={active ? 'true' : undefined}
+                data-testid={`scene-tab-${s.id}`}
+                className={
+                  active
+                    ? 'rounded-full bg-teal px-3 py-1 text-xs font-medium text-teal-ink'
+                    : 'rounded-full border border-line px-3 py-1 text-xs text-ink-2 hover:bg-paper-3'
+                }
+              >
+                {label}
+              </button>
+            </li>
+          )
+        })}
+      </ol>
 
       <div className="flex flex-1 flex-col gap-3" data-testid="lesson-frame">
         <AnimatePresence mode="wait" initial={false}>
@@ -257,6 +280,18 @@ function LessonPlayer({
           onSeek={player.seek}
           onSpeed={player.setSpeed}
           stepIds={built.frames.map((f) => `${f.sceneId}/${f.step.id}`)}
+          extra={
+            Object.values(sandboxFrame.world.replicas).some(
+              (slots) => Object.keys(slots).length > 0,
+            ) ? (
+              <TryIt
+                frame={sandboxFrame}
+                topicRef={{ module: moduleId, unit: unitId, topic: topicId }}
+                sceneId={sandboxFrame.sceneId}
+                tryIt={scene?.tryIt}
+              />
+            ) : undefined
+          }
         />
       </div>
 
@@ -269,23 +304,6 @@ function LessonPlayer({
           <CheckCircle2 className="size-4 text-ok" /> {t('topic.complete')}
         </output>
       )}
-
-      <TopicPanels
-        whenToUse={topic.whenToUse}
-        whenNotToUse={topic.whenNotToUse}
-        realWorld={topic.realWorld}
-        tryIt={
-          Object.values(frame.world.replicas).some((slots) => Object.keys(slots).length > 0) ? (
-            <TryIt
-              frame={frame}
-              topicRef={{ module: moduleId, unit: unitId, topic: topicId }}
-              sceneId={frame.sceneId}
-              tryIt={scene?.tryIt}
-            />
-          ) : undefined
-        }
-        className="mt-2"
-      />
     </div>
   )
 }

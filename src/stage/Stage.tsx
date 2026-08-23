@@ -14,6 +14,7 @@
  */
 import { createContext, useCallback, useContext, useRef } from 'react'
 import { LayoutGroup } from 'motion/react'
+import { SlideView } from './Slide'
 import type { ActorId, Frame, Message } from '@/lesson/types'
 import { cn } from '@/lib/utils'
 import { AnchorRegistryProvider } from './geometry/AnchorRegistry'
@@ -84,16 +85,20 @@ export function Stage({
                 className,
               )}
             >
-              <LayoutGroup id={frame.sceneId}>
-                <div className="stage-layout">
-                  <StageGrid />
-                  <BoardGutter />
-                </div>
-                <ClockHud />
-                <MessageLayer />
-                <MarkLayer />
-                <CalloutLayer />
-              </LayoutGroup>
+              {frame.slide ? (
+                <SlideView slide={frame.slide} />
+              ) : (
+                <LayoutGroup id={frame.sceneId}>
+                  <div className="stage-layout">
+                    <StageGrid />
+                    <BoardGutter />
+                  </div>
+                  <ClockHud />
+                  <MessageLayer />
+                  <MarkLayer />
+                  <CalloutLayer />
+                </LayoutGroup>
+              )}
             </div>
           </AnchorRegistryProvider>
         </StageEventContext.Provider>
