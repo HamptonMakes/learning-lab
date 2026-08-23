@@ -38,6 +38,26 @@ export default topic({
   id: 'in-context-shopping-list',
   title: 'In context: a shopping list',
   goal: 'Learn how LWW fields, an OR-Set and PN-Counters compose into one document, and how each part merges on its own.',
+  rules: [
+    'A document is a tree of parts. Each part is a CRDT with its own merge rule.',
+    'Update any part on any copy; the part records what its rule needs: a time, a tag, a row.',
+    'Merge part by part: the title by time, the items by tags, each qty by max per row.',
+    'Because every part merges on its own, the whole document does too.',
+  ],
+  shape: {
+    name: 'Shopping list',
+    fields: [
+      { key: 'title', example: 'Groceries', role: 'value', note: 'LWW register: time + by' },
+      {
+        key: 'items',
+        example: 'milk, eggs',
+        role: 'value',
+        note: 'OR-Set: one tag per add (alice:1, bob:1)',
+      },
+      { key: 'item.name', example: 'milk', role: 'value', note: 'LWW register, inside each item' },
+      { key: 'item.qty', example: '2', role: 'value', note: 'PN-Counter: one row per node' },
+    ],
+  },
   whenToUse: [
     'Shared lists and boards edited offline: groceries, packing, chores.',
     'Each piece of data has an obvious right merge when you look at it alone.',

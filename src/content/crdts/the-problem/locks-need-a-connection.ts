@@ -36,6 +36,25 @@ export default topic({
   id: 'locks-need-a-connection',
   title: 'The cost of a lock',
   goal: 'Learn what a lock costs (a live connection, a round trip per request, a queue) and when that price is worth paying.',
+  rules: [
+    'A lock needs one coordinator and a live connection to it.',
+    'No connection, no lock: wait, or edit without it and risk a lost write.',
+    'Every lock request is a round trip, so far-away writers pay on every edit.',
+    'Many people editing one thing form a queue.',
+  ],
+  shape: {
+    name: 'Lock',
+    fields: [
+      {
+        key: 'held by',
+        example: 'bob',
+        role: 'value',
+        note: 'his laptop is asleep; the lock stays held',
+      },
+      { key: 'waiting', example: 'alice' },
+    ],
+    note: 'To ask for, take or release the lock, you must reach the server that holds it.',
+  },
   whenToUse: [
     'Writers are servers in one data center with fast, reliable links.',
     'Writes are rare and short, so nobody queues for long.',

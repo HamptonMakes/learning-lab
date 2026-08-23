@@ -39,6 +39,30 @@ export default topic({
   id: 'uuid-v4',
   title: 'UUID v4',
   goal: 'Learn how to read a v4 id byte by byte, and why two devices can make ids without talking to each other.',
+  rules: [
+    'Start with 16 random bytes.',
+    'Fix 6 bits: the version, 4, in the top of byte 6; the variant, 10, in the top of byte 8.',
+    'The other 122 bits stay random: about 5.3 × 10^36 possible ids.',
+    'No counter, no server, no clock: every device can mint its own id, and the id says nothing about when or where.',
+  ],
+  shape: {
+    name: 'UUID v4 · 16 bytes',
+    fields: [
+      {
+        key: 'id',
+        example: '3fa85c12-9be4-4771-ad66-c0158af341b9',
+        role: 'value',
+        note: 'hex, 8-4-4-4-12',
+      },
+      { key: 'random', example: '122 bits', note: 'rolled once; no counter, no clock' },
+      { key: 'version', example: '4', note: 'top 4 bits of byte 6: the third group starts with 4' },
+      {
+        key: 'variant',
+        example: '10',
+        note: 'top 2 bits of byte 8: the fourth group starts with 8, 9, a or b',
+      },
+    ],
+  },
   whenToUse: [
     'Ids minted on many devices or services with no coordinator (offline apps, CRDT op ids).',
     'Public ids in URLs that must not reveal order, count or time.',

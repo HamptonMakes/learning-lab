@@ -33,6 +33,17 @@ export default topic({
   id: 'the-shape-of-a-state-crdt',
   title: 'The shape of a state CRDT',
   goal: 'Learn what the three parts of a state-based CRDT are, the three laws its merge must obey, and why a bad network cannot break them.',
+  rules: [
+    'A state CRDT has three parts: a state, local updates, and a merge rule.',
+    'To sync, send your whole state. The other side merges it with its own.',
+    'Here the state is one number, the best score, and merge(a, b) = max(a, b).',
+    'Merge obeys three laws: any order, any grouping, any number of times, same result.',
+  ],
+  shape: {
+    name: 'Max register',
+    fields: [{ key: 'value', example: '5', note: 'the best score so far' }],
+    note: 'No sidecar: max alone is commutative, associative and idempotent.',
+  },
   whenToUse: [
     'The network may lose, delay, reorder or duplicate messages and you want to stop caring.',
     'Copies can exchange their whole state cheaply (small data, or rare syncs).',

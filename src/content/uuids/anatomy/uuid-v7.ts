@@ -43,6 +43,31 @@ export default topic({
   id: 'uuid-v7',
   title: 'UUID v7',
   goal: 'Learn how to read a v7 id byte by byte, and why ids made later sort after ids made earlier.',
+  rules: [
+    'Take the current time in milliseconds since 1970. Write it as the first 6 bytes, 48 bits.',
+    'Fix the version, 7, in the top of byte 6, and the variant, 10, in the top of byte 8.',
+    'Fill the rest with random bits: 74 of them (simplified).',
+    'A later time means bigger first bytes, so v7 ids sort by creation time as plain text.',
+  ],
+  shape: {
+    name: 'UUID v7 · 16 bytes',
+    fields: [
+      {
+        key: 'id',
+        example: '01a028e9-b500-7471-ad66-c0158af34102',
+        role: 'value',
+        note: 'hex, 8-4-4-4-12',
+      },
+      {
+        key: 'time',
+        example: '01a028e9b500',
+        note: 'bytes 0–5: 1787392800000 ms = 2026-08-22 10:00 UTC',
+      },
+      { key: 'version', example: '7', note: 'top 4 bits of byte 6' },
+      { key: 'variant', example: '10', note: 'top 2 bits of byte 8' },
+      { key: 'random', example: '74 bits', note: 'the rest of bytes 6–15' },
+    ],
+  },
   whenToUse: [
     'Database keys that should sort by creation time (new rows land together in the index).',
     'Ids minted on many machines with no coordination.',

@@ -52,6 +52,30 @@ export default topic({
   id: 'rows-vs-columns',
   title: 'Rows vs columns',
   goal: 'Learn how the same table is laid out on disk row by row and column by column, and which queries each layout makes cheap.',
+  rules: [
+    'A row store keeps the values of one row together on disk.',
+    'A column store keeps the values of one column together.',
+    'A query reads whole blocks. You pay for every value in the blocks you touch, not only the ones you need.',
+    'Few columns over many rows: columns win. One whole row by key: rows win.',
+  ],
+  shape: {
+    name: 'events on disk',
+    fields: [
+      {
+        key: 'row block',
+        example: '1 ann 12 US',
+        role: 'value',
+        note: 'one row, all four columns (row store)',
+      },
+      {
+        key: 'column block',
+        example: '12 40 7 25 18 30',
+        role: 'value',
+        note: 'one column, price, all six rows (column store)',
+      },
+    ],
+    note: 'The same 24 values, 4 bytes each (simplified). The layout decides which blocks a query must read.',
+  },
   whenToUse: [
     'Analytics: scan a few columns over many rows (sums, averages, group by).',
     'Append-heavy event and log data, where compression matters.',

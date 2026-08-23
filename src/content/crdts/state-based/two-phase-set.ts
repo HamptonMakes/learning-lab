@@ -38,6 +38,20 @@ export default topic({
   id: 'two-phase-set',
   title: '2P-Set',
   goal: 'Learn when a 2P-Set is right (a removed element must stay removed) and what its tombstone costs you.',
+  rules: [
+    'Two G-Sets: added, and removed.',
+    'An element is in the set when it is in added and not in removed.',
+    'Remove puts a tombstone in removed. It stays forever, so no add can bring the element back.',
+    'On merge, take the union of added and the union of removed.',
+  ],
+  shape: {
+    name: '2P-Set',
+    fields: [
+      { key: 'added', example: 'dan, eve', note: 'every element ever added' },
+      { key: 'removed', example: 'dan', note: 'tombstones: removed for good' },
+      { key: 'in set', example: 'eve', role: 'value', note: 'added and not removed' },
+    ],
+  },
   whenToUse: [
     'Things that must stay gone once removed: revoked keys, banned users, unsubscribed emails.',
     'You want remove with the least sidecar: one tombstone per removed element.',

@@ -33,6 +33,20 @@ export default topic({
   id: 'the-cost-of-state',
   title: 'The cost of state',
   goal: 'Learn what state-based sync costs on the wire and in memory, and when deltas are worth it.',
+  rules: [
+    'State-based sync sends the whole state, every round, even for one small change.',
+    'Wire cost ≈ state size × peers × rounds.',
+    'A delta is a small state that holds only the change. The same merge() accepts it.',
+    'The sidecar never shrinks by itself: tags and tombstones stay until someone compacts them.',
+  ],
+  shape: {
+    name: 'What travels on the wire',
+    fields: [
+      { key: 'full state', example: '8 items + tags · 388 B', note: 'for one new word, tea' },
+      { key: 'delta', example: 'eggs + alice:2 · 73 B', note: 'only the change (simplified)' },
+    ],
+    note: 'Both are OR-Set state, and the receiver runs the same merge(). The sizes are the real token sizes from this lesson.',
+  },
   whenToUse: [
     'The state is small: a status, a counter, a short set.',
     'Syncs are rare: on reconnect, every few seconds, not per keystroke.',

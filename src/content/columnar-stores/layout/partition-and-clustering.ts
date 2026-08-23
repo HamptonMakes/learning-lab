@@ -42,6 +42,31 @@ export default topic({
   id: 'partition-and-clustering',
   title: 'Partition and clustering keys',
   goal: 'Learn how a partition key picks the node, a clustering key sets the order inside it, and why a query that names both is fast.',
+  rules: [
+    'Hash the partition key; the hash picks the node. Same key, same node, every time.',
+    'Inside a partition, rows stay sorted by the clustering key.',
+    'A query that names the partition key goes to one node and reads one sorted run: fast.',
+    'A query without the partition key has to ask every node.',
+  ],
+  shape: {
+    name: 'messages (one row)',
+    fields: [
+      {
+        key: 'channel',
+        example: '42',
+        role: 'value',
+        note: 'partition key: hash(42) = 51 → Node B (made up)',
+      },
+      {
+        key: 'sent',
+        example: '10:00',
+        role: 'value',
+        note: 'clustering key: the order inside the partition',
+      },
+      { key: 'body', example: 'hi', note: 'the rest of the row' },
+    ],
+    note: 'PRIMARY KEY ((channel), sent): partition key, then clustering key.',
+  },
   whenToUse: [
     'Huge write volume with queries known up front, keyed by an entity plus time.',
     'Many data centres and no single primary.',

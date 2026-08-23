@@ -33,6 +33,16 @@ export default topic({
   id: 'more-than-one-copy',
   title: 'Copies that disagree',
   goal: 'Learn how two edits at the same time can silently lose one, and where your data already has more than one copy.',
+  rules: [
+    'Every open copy of the data is a replica: the server has one, each device has one.',
+    'Two copies can change at the same time, and neither change is a mistake.',
+    'With no rule, the last save silently wins. The other write is gone, and nobody is told.',
+  ],
+  shape: {
+    name: 'Plain document',
+    fields: [{ key: 'title', example: 'Q3 plan', role: 'value' }],
+    note: 'Only the value. No time, no author: a copy cannot tell which write is newer.',
+  },
   whenToUse: [
     'Reads must be fast and close to the user (a cache, a phone).',
     'Devices must keep working without a connection.',

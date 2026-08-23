@@ -30,6 +30,21 @@ export default topic({
   id: 'or-set',
   title: 'OR-Set',
   goal: 'Learn when an OR-Set is right (a re-add must win a race) and why a tag, not a clock, decides.',
+  rules: [
+    'Every add gets a new unique tag: node:seq.',
+    'Remove drops only the tags you have seen.',
+    'An element is in the set while it has at least one live tag.',
+    'On merge, take the union of tags and the union of dead tags. A tag dead anywhere is dead everywhere; a concurrent add always wins.',
+  ],
+  shape: {
+    name: 'OR-Set',
+    fields: [
+      { key: 'element', example: 'milk', role: 'value' },
+      { key: 'tags', example: 'alice:1, alice:2', note: 'one new tag for every add' },
+      { key: 'dead tags', example: 'alice:1', note: 'tags a remove has dropped' },
+    ],
+    note: 'milk is in: Bob dropped alice:1, the tag he had seen, but alice:2 is still alive.',
+  },
   whenToUse: [
     'Sets with frequent add and remove where add-wins on a race is right: cart items, tags.',
     'You do not want to depend on timestamps.',

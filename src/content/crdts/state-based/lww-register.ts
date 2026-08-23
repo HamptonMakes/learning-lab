@@ -35,6 +35,21 @@ const RULE = 'merge: newer ts wins · tie → higher node id'
 export default topic({
   ...lwwRegisterTopic,
   goal: 'Learn when an LWW register fits a single field, which write wins a race, why, and what you lose.',
+  rules: [
+    'On every update, write down a new time.',
+    'On merge, keep the value with the larger time.',
+    'Tie: the higher node id wins.',
+    'One side of a race always loses. That is the deal you accept.',
+  ],
+  shape: {
+    name: 'LWW register',
+    fields: [
+      { key: 'value', example: 'Lunch', role: 'value' },
+      { key: 'time', example: '2', note: 'the clock when it was written' },
+      { key: 'by', example: 'bob', note: 'which node wrote it' },
+    ],
+    note: 'time + by is the stamp of the write that won.',
+  },
   whenToUse: [
     'Single-value fields where "newest edit wins" is what users expect (title, status, colour).',
     'The field is set as a whole, not edited inside.',

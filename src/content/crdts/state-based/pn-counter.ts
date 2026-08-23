@@ -40,6 +40,21 @@ export default topic({
   id: 'pn-counter',
   title: 'PN-Counter',
   goal: 'Learn when a PN-Counter fits a count that goes up and down, and why it cannot hold a floor.',
+  rules: [
+    'Two G-Counters: P counts increments, N counts decrements.',
+    'Each node only ever raises its own row, in P or in N. Nothing goes down.',
+    'The value is the sum of P minus the sum of N.',
+    'On merge, take the max of each row, in P and in N.',
+  ],
+  shape: {
+    name: 'PN-Counter',
+    fields: [
+      { key: 'alice', example: 'P 1 · N 1', note: 'liked, then unliked' },
+      { key: 'bob', example: 'P 1' },
+      { key: 'carol', example: 'P 1' },
+      { key: 'value', example: '2', note: '3 − 1' },
+    ],
+  },
   whenToUse: [
     'Counts that go up and down (likes and unlikes, cart quantities, unread badges).',
     'Many writers, each adjusting locally, often offline or far apart.',

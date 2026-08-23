@@ -39,6 +39,21 @@ export default topic({
   id: 'lww-map',
   title: 'LWW Map',
   goal: 'Learn when an LWW map fits a record of independent fields, which edits survive a merge, and which one loses.',
+  rules: [
+    'Each field is its own LWW register: a value, a time, and who wrote it.',
+    'On every update, write down a new time for that field only.',
+    'On merge, go field by field: the larger time wins each field. Tie: the higher node id.',
+    'Edits to different fields never conflict. Only a field both sides changed can lose a write.',
+  ],
+  shape: {
+    name: 'LWW map',
+    fields: [
+      { key: 'owner', example: 'Bob', role: 'value', note: 'time 1, by alice' },
+      { key: 'status', example: 'Doing', role: 'value', note: 'time 2, by bob' },
+      { key: 'due', example: 'Fri', role: 'value', note: 'not changed yet' },
+    ],
+    note: 'One LWW register per field: each keeps its own time and node, so each merges on its own.',
+  },
   whenToUse: [
     'Records of independent fields edited by different people (task cards, profiles, settings).',
     'Each field is small and set as a whole.',

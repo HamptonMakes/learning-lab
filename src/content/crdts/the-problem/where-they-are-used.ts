@@ -32,6 +32,12 @@ export default topic({
   id: 'where-they-are-used',
   title: 'CRDTs in real products',
   goal: 'Learn what shape every CRDT product shares (many copies, one merge rule, nobody waits for a lock) and which products use it.',
+  rules: [
+    'Many copies: every device and every region holds its own.',
+    'One merge rule, agreed up front, that every copy applies the same way.',
+    'Nobody waits for a lock. Offline edits merge when the connection is back.',
+    'Docs, design tools, notes apps, multi-region databases and counters all share this shape.',
+  ],
   whenToUse: [
     'Collaborative documents and whiteboards: many cursors, no lock.',
     'Apps that must work offline: notes, to-dos, field work.',

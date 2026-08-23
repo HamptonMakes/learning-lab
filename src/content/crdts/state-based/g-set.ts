@@ -34,6 +34,23 @@ export default topic({
   id: 'g-set',
   title: 'G-Set',
   goal: 'Learn when a G-Set fits data that is only ever added, and why union needs no extra bookkeeping.',
+  rules: [
+    'The only operation is add.',
+    'On merge, take the union: keep everything either side has.',
+    'Nothing ever leaves. There is no remove.',
+  ],
+  shape: {
+    name: 'G-Set',
+    fields: [
+      {
+        key: 'items',
+        example: 'm1, m2, m3, m4',
+        role: 'value',
+        note: 'the message ids seen so far',
+      },
+    ],
+    note: 'No sidecar: no stamps, no tombstones. Union needs nothing else to agree.',
+  },
   whenToUse: [
     'Things that are only ever added: message ids you have seen, peers you have met, events.',
     'Questions of the form "has this ever happened?".',

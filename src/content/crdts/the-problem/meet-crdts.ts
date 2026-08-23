@@ -36,6 +36,19 @@ export default topic({
   id: 'meet-crdts',
   title: 'The CRDT idea',
   goal: 'Learn what a CRDT is: agree on the merge rule first, update every copy on its own, merge in any order, end up the same.',
+  rules: [
+    'Agree on the merge rule before anyone types.',
+    'Every copy updates on its own. Nobody waits for anybody.',
+    'Copies swap states and merge them, in any order.',
+    'In the end, every copy is the same. That is a CRDT.',
+  ],
+  shape: {
+    name: 'G-Set of tags (preview)',
+    fields: [
+      { key: 'items', example: 'bug, ui, urgent', role: 'value', note: 'every tag anyone added' },
+    ],
+    note: 'Rule: merge = union. No sidecar is needed; union agrees on its own.',
+  },
   whenToUse: [
     'The data fits a merge rule everyone accepts (Unit II gives you a catalog).',
     'Writers may be offline or far apart.',

@@ -26,6 +26,26 @@ export default topic({
   id: 'backtracking',
   title: 'Backtracking',
   goal: 'Learn how a greedy test takes too much and gives characters back one at a time, and which patterns backtrack too much.',
+  rules: [
+    'A greedy test, like .* or a+, takes as much as it can, then the next test runs.',
+    'Each quantifier and each | saves a choice point: a place the engine can come back to.',
+    'When a later test fails, backtrack: return to the last choice point, give one character back, and try again.',
+    'Every give-back is one more try. Nested quantifiers on one run of text make the tries grow like 2^n.',
+  ],
+  shape: {
+    name: 'Matcher',
+    fields: [
+      { key: 'pattern', example: 'a.*b', role: 'value', note: 'a, then .* (greedy), then b' },
+      { key: 'text', example: 'aXbYb', role: 'value' },
+      { key: 'text cursor', example: '5', note: 'after .* took X, b, Y, b' },
+      {
+        key: 'stack',
+        example: 'p1 @ 1 ×4',
+        note: 'choice point c1: the .* started at 1 and holds 4',
+      },
+      { key: 'tries', example: '5' },
+    ],
+  },
   whenToUse: [
     'Short lines with a fixed tail: key=.* on a config line.',
     'Lazy .*? for the shortest span between two markers.',

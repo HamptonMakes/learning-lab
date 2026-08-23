@@ -12,6 +12,23 @@ export default topic({
   id: 'step-by-step-matching',
   title: 'Step-by-step matching',
   goal: 'Learn how a regex runs as a list of small tests, left to right with a cursor, and what a match, a failed start and a restart look like.',
+  rules: [
+    'A pattern is a list of small tests, left to right: cat is c, then a, then t.',
+    'A cursor in the text and a cursor in the pattern move together, one test per step.',
+    'A failed test means: move the start one to the right and try again from the first test.',
+    'When every test has passed, that is a match.',
+  ],
+  shape: {
+    name: 'Matcher',
+    fields: [
+      { key: 'pattern', example: 'cat', role: 'value', note: 'three tests' },
+      { key: 'text', example: 'the cat sat', role: 'value' },
+      { key: 'text cursor', example: '0', note: 'which character the next test looks at' },
+      { key: 'pattern cursor', example: '0', note: 'which test runs next' },
+      { key: 'stack', example: 'empty', note: 'saved choice points the engine may come back to' },
+      { key: 'tries', example: '0', note: 'counts every character test' },
+    ],
+  },
   whenToUse: [
     'Validating or pulling out text with a fixed shape: ids, dates, codes, log fields.',
     'Search and replace in editors and scripts.',

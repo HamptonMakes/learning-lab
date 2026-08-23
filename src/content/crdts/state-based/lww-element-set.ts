@@ -35,6 +35,22 @@ export default topic({
   id: 'lww-element-set',
   title: 'LWW-Element-Set',
   goal: 'Learn when an LWW-Element-Set is right (the newest add or remove should win) and how to choose its bias on purpose.',
+  rules: [
+    'Each element keeps two times: its newest add and its newest remove.',
+    'On add or remove, write down the current time. On merge, keep the newer time of each kind.',
+    'An element is in the set when its add time is larger than its remove time.',
+    'Tie: the bias decides. This set is add-wins.',
+  ],
+  shape: {
+    name: 'LWW-Element-Set',
+    fields: [
+      { key: 'element', example: 'jazz', role: 'value' },
+      { key: 'add time', example: '4', note: 'Alice added it again at t=4' },
+      { key: 'remove time', example: '3', note: 'Bob removed it at t=3' },
+      { key: 'bias', example: 'add', note: 'who wins a tie; fixed for the whole set' },
+    ],
+    note: 'One row per element. jazz is in: add 4 > remove 3.',
+  },
   whenToUse: [
     'Add and remove both happen often and the latest intent should win (favorites, follows).',
     'You already have good-enough timestamps, for example because you use LWW elsewhere.',

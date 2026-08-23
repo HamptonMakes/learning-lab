@@ -33,6 +33,29 @@ export default topic({
   id: 'not-everything-needs-a-transaction',
   title: 'Transactions vs merges',
   goal: 'Learn how to sort fields by what a wrong answer costs, so you know which need a transaction and which can merge.',
+  rules: [
+    'Sort each field by what a wrong answer costs.',
+    'Money, seats, coupons: a wrong answer hurts. Use a transaction; writers take turns.',
+    'Lists, labels, counts: wrong for a moment is fine. Merge; nobody waits.',
+    'Most apps are mostly merge, with a little transaction.',
+  ],
+  shape: {
+    name: 'Two kinds of data',
+    fields: [
+      {
+        key: 'balance',
+        example: '100',
+        role: 'value',
+        note: 'two copies both take 80: a wrong answer costs money',
+      },
+      {
+        key: 'list',
+        example: 'bread',
+        role: 'value',
+        note: 'two copies add milk and eggs: keep both',
+      },
+    ],
+  },
   whenToUse: [
     'Money could be lost or created.',
     'Something could be given away twice (one seat, one username, one coupon).',

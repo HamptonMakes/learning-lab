@@ -38,6 +38,22 @@ export default topic({
   id: 'g-counter',
   title: 'G-Counter',
   goal: 'Learn when a G-Counter fits a count that only goes up, and why max per node can never lose or double count an increment.',
+  rules: [
+    'Each node has its own row and only ever raises it.',
+    'The value is the sum of all rows.',
+    'On merge, take the max of each row.',
+    'A row never goes down, so max can never lose or double count an increment.',
+  ],
+  shape: {
+    name: 'G-Counter',
+    fields: [
+      { key: 'alice', example: '2', note: 'her own row; only Alice raises it' },
+      { key: 'bob', example: '1' },
+      { key: 'carol', example: '1' },
+      { key: 'value', example: '4', note: 'sum of the rows' },
+    ],
+    note: 'A row appears when a node first counts.',
+  },
   whenToUse: [
     'Counts that only go up (views, downloads, times opened).',
     'Many writers, each incrementing locally, often offline or far apart.',

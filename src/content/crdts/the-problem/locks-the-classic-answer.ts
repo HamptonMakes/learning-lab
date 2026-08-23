@@ -31,6 +31,20 @@ export default topic({
   id: 'locks-the-classic-answer',
   title: 'Locks: the classic answer',
   goal: 'Learn how a lock makes writers take turns, so the second writer always sees the first change before writing.',
+  rules: [
+    'One writer holds the lock at a time.',
+    'Everyone else waits.',
+    'The lock holder writes, then releases the lock.',
+    'The next writer gets the latest document with the lock, so it sees the first change before it writes.',
+  ],
+  shape: {
+    name: 'Lock',
+    fields: [
+      { key: 'held by', example: 'alice', role: 'value', note: 'free when nobody holds it' },
+      { key: 'waiting', example: 'bob' },
+    ],
+    note: 'The lock lives on the server, next to the document.',
+  },
   whenToUse: [
     'The data must never be wrong, even for a moment (money, stock levels, unique usernames).',
     'All writers can reach the one server that holds the lock, and quickly.',
