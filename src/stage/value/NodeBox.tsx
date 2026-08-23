@@ -2,7 +2,8 @@
  * NodeBox — the frame around every addressable node a value view draws (the value itself, a record
  * field, a list item, a counter row / cell, a clock entry, a table row / column, a byte, a range, a
  * pattern token, a caret, a meta badge). It owns the DOM contract (DSL §14): `data-path`,
- * `data-kind`, `data-value`, `data-tombstone`, `data-highlight`, plus `data-changed` for tooling;
+ * `data-kind`, `data-value`, `data-tombstone`, `data-highlight`, plus `data-changed` for tooling
+ * and `data-hidden` on a node that is in the DOM but not on the stage (gated sidecar);
  * registers the element in the anchor registry under its path (and any alias, e.g. `@tomb` and
  * `@tombstone`); and draws what sits ON the node: the highlight ring pulse, the change flash, the
  * via flash + chip, and the check / cross glyph. Layers draw everything else (callouts, pills,
@@ -49,6 +50,12 @@ export interface NodeBoxProps extends NodePresence {
   aliases?: readonly Path[]
   /** Extra `data-*` attributes. */
   attrs?: { [key: `data-${string}`]: string | number | undefined }
+  /**
+   * Present in the DOM but not on the stage: visually hidden (`sr-only`), `aria-hidden`, no
+   * overlays, `data-hidden=""`. Gated sidecar (seed stamps, doc metadata nobody points at) keeps
+   * its anchor and its `data-path` / `data-value` contract this way.
+   */
+  hidden?: boolean
   children?: ReactNode
 }
 
@@ -64,6 +71,7 @@ export function NodeBox({
   label,
   aliases,
   attrs,
+  hidden = false,
   children,
   initial,
   animate,
@@ -95,7 +103,7 @@ export function NodeBox({
   const via = frame.via.get(path)
   const changed = frame.changedPaths.has(path)
   // A table row cannot host absolutely positioned overlays; it gets an outline instead.
-  const overlays = as !== 'tr'
+  const overlays = as !== 'tr' && !hidden
   const Comp = TAGS[as] as unknown as typeof motion.div
   const frameIndex = frame.frame.index
 
@@ -108,12 +116,14 @@ export function NodeBox({
       data-tombstone={tombstone ? 'true' : undefined}
       data-highlight={highlight?.tone}
       data-changed={changed ? 'true' : undefined}
+      data-hidden={hidden ? '' : undefined}
       title={title}
       aria-label={label}
+      aria-hidden={hidden || undefined}
       {...attrs}
       className={cn(
-        'relative isolate',
-        highlight && !overlays && 'outline-2 outline-offset-1 outline-(--tone)',
+        hidden ? 'sr-only' : 'relative isolate',
+        highlight && !overlays && !hidden && 'outline-2 outline-offset-1 outline-(--tone)',
         className,
       )}
       style={{

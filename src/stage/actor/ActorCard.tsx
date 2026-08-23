@@ -9,11 +9,13 @@
 import type { CSSProperties } from 'react'
 import { motion } from 'motion/react'
 import type { Actor, ActorColor, Tone } from '@/lesson/types'
+import { useT } from '@/i18n'
 import { cn } from '@/lib/utils'
 import { useAnchor, useLayoutInFlight } from '../geometry/AnchorRegistry'
 import { useStageMotion } from '../motion/StageMotionProvider'
 import { useStageFrame } from '../StageContext'
 import { useStageEvents } from '../Stage'
+import { docRootType, isDocValue } from '../value/doc'
 import { ValueView } from '../value/ValueView'
 import type { Slot } from '../layout/presets'
 import { ActorHeader } from './ActorHeader'
@@ -29,6 +31,7 @@ export interface ActorCardProps {
 export function ActorCard({ actor, slot }: ActorCardProps) {
   const { frame, highlightOf, via } = useStageFrame()
   const { tr, instant } = useStageMotion()
+  const t = useT()
   const anchorRef = useAnchor(actor.id)
   const inFlight = useLayoutInFlight()
   const emit = useStageEvents()
@@ -74,12 +77,25 @@ export function ActorCard({ actor, slot }: ActorCardProps) {
       <InboxTray actor={actor} className={cn(dim && 'opacity-60')} />
       {holds.length > 0 && (
         <div data-holds className={cn('mt-3 flex flex-col gap-3', dim && 'opacity-60')}>
-          {holds.map(([slotId, value]) => (
-            <div key={slotId} data-hold={slotId} className="flex min-w-0 flex-col gap-0.5">
-              <div className="font-sans text-[12px] leading-4 text-ink-3">{slotId}</div>
-              <ValueView path={`${actor.id}.${slotId}`} value={value} depth={0} />
-            </div>
-          ))}
+          {holds.map(([slotId, value]) => {
+            // A composed document names its type once, in the caption; its parts carry no chips.
+            const doc = isDocValue(value)
+            const rootType = doc ? docRootType(value) : undefined
+            return (
+              <div key={slotId} data-hold={slotId} className="flex min-w-0 flex-col gap-0.5">
+                <div className="font-sans text-[12px] leading-4 text-ink-3">
+                  {slotId}
+                  {doc && (
+                    <span data-doc-type={rootType ?? 'doc'}>
+                      {' · '}
+                      {rootType ? t(`stage.type.${rootType}`) : t('stage.doc')}
+                    </span>
+                  )}
+                </div>
+                <ValueView path={`${actor.id}.${slotId}`} value={value} depth={0} />
+              </div>
+            )
+          })}
         </div>
       )}
     </motion.article>

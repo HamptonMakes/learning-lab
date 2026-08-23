@@ -231,6 +231,19 @@ footnote. Sidecar selectors (`alice.status@ts`, `alice.status@node`, `bob.cart[m
 callouts can point at it. `ViaChip` (sender initial
 in the sender's hue) sits on a value node whose path has a `via` change this frame.
 
+The sidecar is gated for legibility; a gated badge stays in the DOM, visually hidden (`sr-only`,
+`aria-hidden`, `data-hidden=""`), so its anchor and its `data-path` / `data-value` still resolve.
+Seed stamps (`node: 'seed'`) hide their `ts` / `hlc` / `node` badges everywhere (`t=0 · init` is
+noise). A slot whose nested nodes carry `meta.type` is a composed document (`value/doc.tsx`,
+`DocContext`): the card caption names it once (`card · doc`, or the root part's type for a set- /
+list-rooted doc), per-part type chips stay hidden, and a node's sidecar shows only where the step
+points — the node changed this step (`changedPaths`), landed via a message, carries a mark, or its
+parent changed (a freshly added item shows its parts' stamps). A mark or change on a badge's own
+path (`alice.card.title@type`, `bob.cart[milk]@tags`) always shows that badge. Atomic slots keep
+their sidecar (there, the stamp is the lesson). Counter rows inside a doc draw a step quieter.
+`Record` in `display: 'card'` is a `key | value | sidecar` grid (stage.css): rows are subgrids, a
+scalar value spans the value + sidecar columns, so keys, values and stamps line up across rows.
+
 `Highlight` reads `marks` via context and decorates the matching nodes (`data-highlight=tone`), so
 highlights survive re-layout without measuring. `Board` cards use the same `ValueView` (a `note` is a
 `text` board; decision tables are `table`; schema trees are `record display:'tree'`).
@@ -309,7 +322,7 @@ they follow. A `layout` command changes `data-layout` (and may change the hub); 
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | stage root                | `data-stage`, `data-step={step.id}`, `data-scene`, `data-layout` (+ `data-step-index`, `data-instant` for tooling)                                  |
 | actor card                | `data-actor`, `data-kind`, `data-online`, `data-slot`, `data-color`, `data-status`; regions `data-inbox`, `data-outbox`; also `data-path={actorId}` |
-| value node                | `data-path`, `data-kind`, `data-value` (leaves; canonical string), `data-highlight=tone`, `data-tombstone`                                          |
+| value node                | `data-path`, `data-kind`, `data-value` (leaves; canonical string), `data-highlight=tone`, `data-tombstone` (+ `data-hidden` on gated sidecar, §3)   |
 | token                     | `data-message={id}`, `data-from`, `data-to`, `data-state=flying\|parked` (+ `data-path=msg:{id}`, `data-transient`, `data-count` on a deck token)   |
 | mark                      | `data-mark={id}`, `data-mark-kind`, `data-verdict` (compare)                                                                                        |
 | board                     | `data-board={id}`, `data-path=board.{id}`                                                                                                           |
@@ -780,9 +793,12 @@ Notes:
 
 ### 5.6 Chrome on the card: HUD, badges, tray, chips
 
-- `ClockHud` (corner) when `clock.show`: `counter` → `t3`; `ms` → `150 ms`; `time` → `hh:mm` =
-  `start` + `now` minutes. `ClockBadge` on an actor whose `skew` is defined shows that actor's wall
-  clock (`now + skew`) in the same format, with a `+5`/`−2` delta chip (`data-path` `alice@clock`).
+- `ClockHud` (top-end corner, `data-clock` / `data-now`) when `clock.show`: a small clock icon, the
+  caption "now" and a clear mono readout — `counter` → `t=3`; `ms` → `150 ms`; `time` → `hh:mm` =
+  `start` + `now` minutes; the stage reserves its headroom (`--stage-clock-h`, stage.css) and a
+  `clock` change flashes behind the readout (`tr('flash')`). `ClockBadge` on an actor whose `skew`
+  is defined shows that actor's wall clock (`now + skew`) in the same format, with a `+5`/`−2`
+  delta chip (`data-path` `alice@clock`).
 - `StatusBadge` = icon + word (`lock` / `waiting` / `busy` / `error`, via `t('stage.status.*')`);
   `OfflineBadge` = "no connection" + dimmed card.
 - `OutboxChips` (`data-outbox`, `data-path` `alice@outbox`): one chip per `Actor.outbox` entry, text

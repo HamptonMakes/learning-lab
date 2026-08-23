@@ -16,6 +16,7 @@
   --stage-gap: 1.5rem;
   --stage-pad: 1.5rem;
   --stage-token-h: 2rem; /* the inbox tray reserves one token row while messages are parked */
+  --stage-clock-h: 2.25rem; /* headroom for the clock HUD when the scene shows one */
   --value-fs: 15px; /* the hero size for values; dense records / tables step down to 14px */
 }
 
@@ -32,6 +33,11 @@
   gap: var(--stage-gap);
   padding: var(--stage-pad);
   min-block-size: inherit;
+}
+
+/* The clock HUD sits at the top-end corner; the layout reserves its row so cards never run under it. */
+[data-stage]:has(> [data-clock]) > .stage-layout {
+  padding-block-start: calc(var(--stage-pad) + var(--stage-clock-h));
 }
 
 /* ---- actor grid ---- */
@@ -126,12 +132,37 @@
 
 /* ---- quiet metadata ----
    The sidecar of a value reads as one muted line: `t2 · bob · alice:1`. The separator lives in CSS
-   so every badge stays its own anchored node (`data-path=<path>@<key>`). */
-[data-meta-badges] > [data-meta] + [data-meta]::before,
+   so every badge stays its own anchored node (`data-path=<path>@<key>`). Gated badges stay in the
+   DOM with `data-hidden` (anchors still resolve); only visible neighbours get a separator. */
+[data-meta-badges] > [data-meta]:not([data-hidden]) ~ [data-meta]:not([data-hidden])::before,
 [data-token-badges] > [data-badge] + [data-badge]::before {
   content: '·';
   margin-inline-end: 0.375rem;
   color: var(--ink-3);
+}
+
+/* ---- record cards align in columns ----
+   `key | value | sidecar`, so `due / Fri / t=0` read as cells across rows. Each row is a subgrid of
+   the record's columns; a scalar value spans the value + sidecar columns as a subgrid of its own
+   (Scalar.tsx), so its stamps share the third column. Other kinds take both columns and draw their
+   own sidecar beneath. Columns pack to their content (the sidecar sits by the widest value, not at
+   the card's far edge); a nested record keeps the same grid inside its cell. */
+[data-kind='record'][data-display='card'] {
+  display: grid;
+  grid-template-columns: auto minmax(0, auto) auto;
+  justify-content: start;
+  column-gap: 0.625rem;
+  row-gap: 0.125rem;
+  align-items: baseline;
+}
+[data-kind='record'][data-display='card'] > [data-field] {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+}
+[data-kind='record'][data-display='card'] > [data-field] > [data-field-value] {
+  grid-column: 2 / -1;
 }
 
 /* A text board is a sticky note: its body is quieter than a value on a card. */

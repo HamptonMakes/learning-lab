@@ -653,8 +653,11 @@ export type ViewCtx = {
 
 Ordering is part of the contract so Motion never reshuffles rows on a merge: counter rows and clock
 entries in `actors` order (then unknown nodes by id); set items by canonical key; list items in
-sequence order; map fields by key. Pseudo-node `seed` renders as a dim "init" chip wherever a node
-is drawn. `fromJson(v)` is defined here (§5.1).
+sequence order; map fields by key. Pseudo-node `seed` renders as a dim "init" chip where a node is a
+row (counter rows, clock entries); as a value's writer it is hidden with its stamp (`t=0 · init` is
+noise — the badge stays in the DOM as an anchor). Inside a composed document the renderer shows a
+part's sidecar only where the step points (changed / via / marked, or a mark on the badge path);
+the slot caption names the doc's type once. `fromJson(v)` is defined here (§5.1).
 
 `opLabel` formats (every piece is a `t()` key, values interpolated): `inc 1` · `dec 2` · `set Lunch`
 · `set title = Q3` · `remove title` · `add milk #alice:1` · `remove milk {alice:1}` ·
@@ -992,6 +995,38 @@ is preceded by a `tick` unless the scene `autoTick`s (otherwise a sandbox write 
 would lose the tie-break and visibly change nothing). The panel (`src/app/components/try-it/`)
 starts from the lesson's **current** frame and runs each press as one synthetic step (`x1`, `x2` …)
 through `applyStep`; reducer errors are shown inline, never thrown.
+
+**Layout and guidance (v2).** The sheet has three parts: LEFT the live stage (the data) with the
+narration of the last action directly under it, RIGHT a narrow actions column, and a **Code** panel
+under the narration on demand (a toggle next to it; off by default). Actions read as actions: real
+outlined buttons with an icon and a verb-first label (`tryIt.act.*`: "Set status…", "Add to cart…",
+"Add 1 to views", "Go offline", "Sync Alice ↔ Bob", "Broadcast cart", "Deliver all"), grouped under
+"Alice can…" / "Network"; slot names and types are small captions above each group, never labels.
+Stage ≥ ~60% of the width on desktop; below `lg` the parts stack (stage, then actions).
+
+- **Try this** (`src/lesson/sandbox/suggest.ts`, `suggestExperiments(world, tryIt?)`): two or three
+  experiments derived from the start world — one per slot by type (registers / lww-map / doc: a
+  race; counters: +1 on both, sync, sync again; or-set / lww-element-set: add vs. remove of the same
+  item; 2P-set: remove then re-add; g-set: add on both; rga: type on both; clocks: two ticks then
+  sync; an ops-wired slot: broadcast then deliver all) plus one partition experiment (go offline,
+  change both sides, come back, sync — or, for ops wire, broadcast while offline). Each suggestion
+  is a checklist item whose `done(history)` scans the sandbox history (the commands of each step and
+  the delivered messages of its change log) for the shape of the experiment, e.g. "writes by two
+  actors on the slot, then an exchange of that slot". Copy lives at `tryIt.suggest.*`.
+- **Code** (`src/lesson/sandbox/code.ts` + `src/app/components/try-it/crdt-source.ts`): the real
+  `src/crdt/*.ts` files are imported as text with Vite `?raw`; `whatRan(frame)` maps the step's
+  commands to the functions the reducer called (`crdt.update` → `prepare` + `effect`; `crdt.sync` /
+  `crdt.merge` / a delivered state → `merge`; a delivered op → `effect`); `extractFunction(source,
+name)` is a tolerant line scanner (free `function name(`, object method `name(...) {`, arrow
+  `name: (...) =>`, or a `name: otherFn,` reference followed once; the doc comment above is kept;
+  braces are balanced to the end) that falls back to the whole file. The panel prints "This ran:
+  `orSet.prepare` → `orSet.effect` · Alice built op alice:3" and the function with its file lines,
+  the function body highlighted. Delivery-layer actions (offline, tick, broadcast …) run nothing in
+  the CRDT: the panel says so and keeps the last function that did; before anything ran it shows the
+  wire's function (`merge` for state, `effect` for ops) as a reference.
+- **Entry points**: `<TryIt … renderTrigger={(open) => …}>` lets the page place its own trigger(s);
+  `<TryItTrigger onClick={open} />` is the compact flask button (also the default). The sheet is
+  always rendered by `<TryIt>`.
 
 ---
 

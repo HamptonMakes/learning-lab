@@ -7,6 +7,17 @@
  * by CSS — so the value stays the hero. Every badge is a node: `data-path=<path>@<key>` (the
  * tombstone badge answers to `@tomb` and `@tombstone`), registered as an anchor, so highlights and
  * callouts can point at it.
+ *
+ * Gating (legibility, DSL §2): a badge nobody can use is still rendered, but hidden (`NodeBox
+ * hidden` → `sr-only` + `data-hidden`), so anchors, marks and the DOM contract keep resolving.
+ *  - Seed stamps (`node: 'seed'`, the initial state nobody wrote) hide their `ts` / `hlc` / `node`
+ *    badges everywhere: `t=0 · init` is noise.
+ *  - Inside a composed document (DocContext) the document is the hero: a node's sidecar shows only
+ *    where the step points — the node changed this step, landed via a message, carries a mark, or
+ *    its parent changed (a freshly added item shows its parts' stamps). Per-part type chips stay
+ *    hidden (the slot caption names the doc once).
+ *  - A mark or change on the badge's own path (`alice.card.title@type`, `bob.cart[milk]@tags`)
+ *    always shows that badge. Atomic slots keep their sidecar: there, the stamp is the lesson.
  */
 import type { ReactNode } from 'react'
 import { AnimatePresence } from 'motion/react'
@@ -17,9 +28,10 @@ import { cn } from '@/lib/utils'
 import { useStageFrame } from '../StageContext'
 import { useStageMotion } from '../motion/StageMotionProvider'
 import { Ltr, NodeChip, OverflowChip, TagPill } from './chips'
+import { useDocRoot } from './doc'
 import { compactClock, formatStamp, fullClock, orderEntries } from './format'
 import { NodeBox } from './NodeBox'
-import { metaPath } from './paths'
+import { metaPath, parentPath } from './paths'
 
 export interface MetaBadgesProps {
   path: Path
@@ -29,87 +41,131 @@ export interface MetaBadgesProps {
 
 export function MetaBadges({ path, meta, className }: MetaBadgesProps) {
   const t = useT()
-  const { world } = useStageFrame()
+  const frame = useStageFrame()
+  const { world } = frame
+  const inDoc = useDocRoot() !== null
   if (!meta) return null
   const stamp = (ts: number) => formatStamp(ts, world.clock, t)
+
+  /** The step points at `p`: a mark anchors on it, or it changed this step. */
+  const pointed = (p: Path) => frame.marksByPath.has(p) || frame.changedPaths.has(p)
+  const parent = parentPath(path)
+  const nodeShown =
+    !inDoc ||
+    pointed(path) ||
+    frame.via.has(path) ||
+    (parent !== undefined && frame.changedPaths.has(parent))
+  const seed = meta.node === 'seed'
+  /** Quiet badges hide unless pointed at; the rest follow their node. */
+  const shown = (key: string, quiet: boolean, aliases: readonly string[] = []): boolean =>
+    [key, ...aliases].some((k) => pointed(metaPath(path, k))) || (nodeShown && !quiet)
+
   const badges: ReactNode[] = []
+  let visible = 0
+  const push = (key: string, quiet: boolean, render: (hidden: boolean) => ReactNode) => {
+    const hidden = !shown(key, quiet, key === 'tomb' ? ['tombstone'] : [])
+    if (!hidden) visible += 1
+    badges.push(render(hidden))
+  }
 
   if (meta.type) {
-    badges.push(
+    push('type', inDoc, (hidden) => (
       <Badge
         key="type"
         path={path}
         metaKey="type"
-        dataValue={meta.type}
+        dataValue={meta.type ?? ''}
         title={t('stage.meta.type')}
+        hidden={hidden}
         className="font-sans text-[10px] font-semibold tracking-wide text-teal uppercase"
       >
         {t(`stage.type.${meta.type}`)}
-      </Badge>,
-    )
+      </Badge>
+    ))
   }
   if (meta.hlc) {
-    const text = `(${world.clock.format === 'time' ? stamp(meta.hlc.wall) : meta.hlc.wall}, ${meta.hlc.counter})`
-    badges.push(
-      <Badge key="hlc" path={path} metaKey="hlc" dataValue={text} title={t('stage.meta.hlc')}>
+    const hlc = meta.hlc
+    const text = `(${world.clock.format === 'time' ? stamp(hlc.wall) : hlc.wall}, ${hlc.counter})`
+    push('hlc', seed, (hidden) => (
+      <Badge
+        key="hlc"
+        path={path}
+        metaKey="hlc"
+        dataValue={text}
+        title={t('stage.meta.hlc')}
+        hidden={hidden}
+      >
         <Ltr>{text}</Ltr>
-      </Badge>,
-    )
+      </Badge>
+    ))
   } else if (meta.ts !== undefined) {
     const text = stamp(meta.ts)
-    badges.push(
-      <Badge key="ts" path={path} metaKey="ts" dataValue={text} title={t('stage.meta.ts')}>
+    push('ts', seed, (hidden) => (
+      <Badge
+        key="ts"
+        path={path}
+        metaKey="ts"
+        dataValue={text}
+        title={t('stage.meta.ts')}
+        hidden={hidden}
+      >
         <Ltr>{text}</Ltr>
-      </Badge>,
-    )
+      </Badge>
+    ))
   }
   if (meta.node !== undefined) {
-    badges.push(
+    const node = meta.node
+    push('node', seed, (hidden) => (
       <Badge
         key="node"
         path={path}
         metaKey="node"
-        dataValue={meta.node}
-        title={t('stage.meta.node', { node: meta.node })}
+        dataValue={node}
+        title={t('stage.meta.node', { node })}
+        hidden={hidden}
       >
-        <NodeChip node={meta.node} className="text-ink-3" />
-      </Badge>,
-    )
+        <NodeChip node={node} className="text-ink-3" />
+      </Badge>
+    ))
   }
   if (meta.tag) {
-    badges.push(
+    const tag = meta.tag
+    push('tag', false, (hidden) => (
       <Badge
         key="tag"
         path={path}
         metaKey="tag"
-        dataValue={meta.tag}
-        title={t('stage.meta.tag', { tag: meta.tag })}
+        dataValue={tag}
+        title={t('stage.meta.tag', { tag })}
+        hidden={hidden}
       >
-        <Ltr>#{meta.tag}</Ltr>
-      </Badge>,
-    )
+        <Ltr>#{tag}</Ltr>
+      </Badge>
+    ))
   }
   if (meta.tags) {
-    const shown = meta.tags.slice(0, LIMITS.maxBadges)
-    const more = meta.tags.length - shown.length
-    badges.push(
+    const tags = meta.tags
+    const shownTags = tags.slice(0, LIMITS.maxBadges)
+    const more = tags.length - shownTags.length
+    push('tags', false, (hidden) => (
       <Badge
         key="tags"
         path={path}
         metaKey="tags"
-        dataValue={JSON.stringify(meta.tags)}
+        dataValue={JSON.stringify(tags)}
         title={t('stage.meta.tags')}
+        hidden={hidden}
         className="gap-1.5"
       >
-        {shown.map((tg) => (
+        {shownTags.map((tg) => (
           <TagPill key={tg.tag} tag={tg.tag} alive={tg.alive} />
         ))}
         {more > 0 && <OverflowChip count={more} />}
-      </Badge>,
-    )
+      </Badge>
+    ))
   }
   if (meta.tombstone) {
-    badges.push(
+    push('tomb', false, (hidden) => (
       <Badge
         key="tomb"
         path={path}
@@ -117,104 +173,120 @@ export function MetaBadges({ path, meta, className }: MetaBadgesProps) {
         aliases={[metaPath(path, 'tombstone')]}
         dataValue="true"
         title={t('stage.deleted')}
+        hidden={hidden}
         className="font-sans text-ink-3"
       >
         <X className="size-2.5 shrink-0" aria-hidden />
         {t('stage.deleted')}
-      </Badge>,
-    )
+      </Badge>
+    ))
   }
   if (meta.addTs !== undefined) {
-    const text = t('stage.meta.addTs', { ts: stamp(meta.addTs) })
-    badges.push(
-      <Badge key="addTs" path={path} metaKey="addTs" dataValue={stamp(meta.addTs)} title={text}>
+    const ts = stamp(meta.addTs)
+    const text = t('stage.meta.addTs', { ts })
+    push('addTs', false, (hidden) => (
+      <Badge key="addTs" path={path} metaKey="addTs" dataValue={ts} title={text} hidden={hidden}>
         <Ltr>{text}</Ltr>
-      </Badge>,
-    )
+      </Badge>
+    ))
   }
   if (meta.removeTs !== undefined) {
-    const text = t('stage.meta.removeTs', { ts: stamp(meta.removeTs) })
-    badges.push(
+    const ts = stamp(meta.removeTs)
+    const text = t('stage.meta.removeTs', { ts })
+    push('removeTs', false, (hidden) => (
       <Badge
         key="removeTs"
         path={path}
         metaKey="removeTs"
-        dataValue={stamp(meta.removeTs)}
+        dataValue={ts}
         title={text}
+        hidden={hidden}
       >
         <Ltr>{text}</Ltr>
-      </Badge>,
-    )
+      </Badge>
+    ))
   }
   if (meta.vc) {
     const ordered = orderEntries(meta.vc, Object.keys(world.actors))
-    badges.push(
+    push('vc', false, (hidden) => (
       <Badge
         key="vc"
         path={path}
         metaKey="vc"
         dataValue={compactClock(ordered)}
         title={t('stage.meta.vc', { vc: fullClock(ordered) })}
+        hidden={hidden}
       >
         <Ltr>{compactClock(ordered)}</Ltr>
-      </Badge>,
-    )
+      </Badge>
+    ))
   }
   if (meta.applied) {
-    const shown = meta.applied.slice(0, LIMITS.maxBadges)
-    const more = meta.applied.length - shown.length
-    badges.push(
+    const applied = meta.applied
+    const shownIds = applied.slice(0, LIMITS.maxBadges)
+    const more = applied.length - shownIds.length
+    push('applied', false, (hidden) => (
       <Badge
         key="applied"
         path={path}
         metaKey="applied"
-        dataValue={meta.applied.join(' ')}
+        dataValue={applied.join(' ')}
         title={t('stage.meta.applied')}
+        hidden={hidden}
         className="gap-1"
       >
         <Ltr className="inline-flex gap-1">
-          {shown.map((id) => (
+          {shownIds.map((id) => (
             <span key={id} data-applied={id}>
               {id}
             </span>
           ))}
         </Ltr>
         {more > 0 && <OverflowChip count={more} />}
-      </Badge>,
-    )
+      </Badge>
+    ))
   }
   if (meta.stats) {
-    const text = `${meta.stats.visible}/${meta.stats.stored}`
-    badges.push(
+    const stats = meta.stats
+    const text = `${stats.visible}/${stats.stored}`
+    push('stats', false, (hidden) => (
       <Badge
         key="stats"
         path={path}
         metaKey="stats"
         dataValue={text}
-        title={t('stage.meta.stats', meta.stats)}
+        title={t('stage.meta.stats', stats)}
+        hidden={hidden}
       >
         <Ltr>{text}</Ltr>
-      </Badge>,
-    )
+      </Badge>
+    ))
   }
   if (meta.note) {
-    badges.push(
+    const note = meta.note
+    push('note', false, (hidden) => (
       <Badge
         key="note"
         path={path}
         metaKey="note"
-        dataValue={meta.note}
+        dataValue={note}
+        hidden={hidden}
         className="h-auto font-sans whitespace-normal italic"
       >
-        {meta.note}
-      </Badge>,
-    )
+        {note}
+      </Badge>
+    ))
   }
   if (badges.length === 0) return null
+  const allHidden = visible === 0
   return (
     <span
       data-meta-badges=""
-      className={cn('inline-flex max-w-full flex-wrap items-baseline gap-x-1 gap-y-0.5', className)}
+      data-hidden={allHidden ? '' : undefined}
+      className={cn(
+        allHidden ? 'sr-only' : 'inline-flex max-w-full flex-wrap items-baseline gap-x-1 gap-y-0.5',
+        className,
+      )}
     >
       <AnimatePresence initial={false}>{badges}</AnimatePresence>
     </span>
@@ -227,6 +299,7 @@ function Badge({
   dataValue,
   title,
   aliases,
+  hidden,
   className,
   children,
 }: {
@@ -235,6 +308,7 @@ function Badge({
   dataValue: string
   title?: string
   aliases?: readonly Path[]
+  hidden: boolean
   className?: string
   children: ReactNode
 }) {
@@ -247,8 +321,9 @@ function Badge({
       dataValue={dataValue}
       title={title}
       aliases={aliases}
+      hidden={hidden}
       attrs={{ 'data-meta': metaKey }}
-      layout="position"
+      layout={hidden ? undefined : 'position'}
       initial={off ? false : { opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9, transition: tr('exit') }}

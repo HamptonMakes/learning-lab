@@ -4,12 +4,14 @@
  * the DOM contract (`data-path` / `data-kind` / `data-value` / `data-tombstone` / `data-highlight`),
  * registers the anchor, and draws highlight rings, via chips and check / cross glyphs on the node.
  * Forward steps animate the diff (enter / exit / layout / flash via `tr()`); under reduced motion or
- * an instant commit everything renders at rest.
+ * an instant commit everything renders at rest. A slot root that is a composed document opens a
+ * DocContext, so the sidecar below it is gated (see MetaBadges).
  */
 import type { Path, Value } from '@/lesson/types'
 import { Bytes } from './Bytes'
 import { Clock } from './Clock'
 import { Counter } from './Counter'
+import { DocContext, isDocValue } from './doc'
 import { List } from './List'
 import { Meter } from './Meter'
 import { Pattern } from './Pattern'
@@ -27,6 +29,17 @@ export interface ValueViewProps {
 }
 
 export function ValueView({ path, value, depth = 0 }: ValueViewProps) {
+  if (depth === 0 && isDocValue(value)) {
+    return (
+      <DocContext.Provider value={path}>
+        <ValueNode path={path} value={value} depth={0} />
+      </DocContext.Provider>
+    )
+  }
+  return <ValueNode path={path} value={value} depth={depth} />
+}
+
+function ValueNode({ path, value, depth }: { path: Path; value: Value; depth: number }) {
   switch (value.kind) {
     case 'scalar':
       return <Scalar path={path} value={value} depth={depth} />

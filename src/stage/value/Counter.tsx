@@ -10,6 +10,7 @@ import { useT } from '@/i18n'
 import { cn } from '@/lib/utils'
 import { useStageMotion } from '../motion/StageMotionProvider'
 import { NodeChip } from './chips'
+import { useDocRoot } from './doc'
 import { MetaBadges } from './MetaBadges'
 import { NodeBox } from './NodeBox'
 import { itemPath, metaPath } from './paths'
@@ -25,6 +26,8 @@ export function Counter({
 }) {
   const t = useT()
   const { off, tr } = useStageMotion()
+  // Inside a composed document the rows are supporting detail: quieter ink, a step smaller.
+  const inDoc = useDocRoot() !== null
   const hasDec = value.rows.some((r) => r.dec !== undefined)
   return (
     <NodeBox
@@ -39,7 +42,10 @@ export function Counter({
     >
       <div
         data-counter-rows=""
-        className="grid items-center gap-x-3 gap-y-0.5"
+        className={cn(
+          'grid items-center gap-y-0.5',
+          inDoc ? 'gap-x-2 text-[12.5px] text-ink-2' : 'gap-x-3',
+        )}
         style={{ gridTemplateColumns: hasDec ? 'auto auto auto' : 'auto auto' }}
       >
         <AnimatePresence initial={false}>
@@ -58,7 +64,7 @@ export function Counter({
               transition={{ ...tr('enter'), layout: tr('layout') }}
               className="col-span-full grid grid-cols-subgrid items-center rounded-sm"
             >
-              <NodeChip node={row.node} className="text-xs" />
+              <NodeChip node={row.node} className={cn('text-xs', inDoc && 'text-ink-3')} />
               <NodeBox
                 as="span"
                 path={metaPath(itemPath(path, row.node), 'inc')}
@@ -89,7 +95,7 @@ export function Counter({
         </AnimatePresence>
         <div className="col-span-full flex items-baseline justify-end gap-2 border-t border-line pt-1">
           <span className="font-sans text-[11px] text-ink-3">{t('stage.counter.total')}</span>
-          <span data-total="" className="font-semibold tabular-nums">
+          <span data-total="" className="font-semibold text-ink tabular-nums">
             {value.total}
           </span>
         </div>

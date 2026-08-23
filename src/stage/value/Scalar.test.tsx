@@ -36,14 +36,28 @@ describe('Scalar', () => {
   })
 
   it('renders meta: stamp, writer chip, tombstone (struck through) as addressable badges', () => {
+    const { container } = renderValue('alice.status', s('Lunch', { ts: 2, node: 'bob' }))
+    expect(node(container, 'alice.status@ts').dataset.value).toBe('t=2')
+    expect(node(container, 'alice.status@ts').dataset.hidden).toBeUndefined()
+    expect(node(container, 'alice.status@node').textContent).toBe('bob')
+    expect(node(container, 'alice.status@node').dataset.hidden).toBeUndefined()
+  })
+
+  it('hides seed stamps (`t=0 · init` is noise) but keeps them in the DOM as anchors', () => {
     const { container } = renderValue(
       'alice.status',
       s('Offline', { ts: 0, node: 'seed', tombstone: true }),
     )
     expect(node(container, 'alice.status').dataset.tombstone).toBe('true')
-    expect(node(container, 'alice.status@ts').dataset.value).toBe('t=0')
+    const ts = node(container, 'alice.status@ts')
+    expect(ts.dataset.value).toBe('t=0')
+    expect(ts.dataset.hidden).toBe('')
+    expect(ts.getAttribute('aria-hidden')).toBe('true')
+    expect(node(container, 'alice.status@node').dataset.hidden).toBe('')
     expect(node(container, 'alice.status@node').textContent).toBe('init')
+    // the tombstone badge is state, not a seed stamp: it stays visible
     expect(node(container, 'alice.status@tomb').dataset.value).toBe('true')
+    expect(node(container, 'alice.status@tomb').dataset.hidden).toBeUndefined()
     expect(node(container, 'alice.status').querySelector('bdi')?.className).toContain(
       'line-through',
     )

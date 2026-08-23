@@ -172,6 +172,31 @@ describe('actor cards', () => {
     expect(qa(container, '[data-outbox]')).toHaveLength(2)
   })
 
+  it('caption a composed document once ("card · doc"); an atomic slot gets no type caption', () => {
+    const doc: Value = {
+      kind: 'record',
+      fields: [
+        { key: 'title', value: { kind: 'scalar', value: 'Q3', meta: { type: 'lww-register' } } },
+      ],
+    }
+    const labels: Value = {
+      kind: 'set',
+      meta: { type: 'or-set' },
+      items: [
+        { id: 'bug', value: { kind: 'scalar', value: 'bug', meta: { type: 'lww-register' } } },
+      ],
+    }
+    const a = actor('alice', { holds: { card: doc, labels, n: scalar(3) } })
+    const { container } = renderStage(frame(world({ actors: { alice: a } })))
+    expect(q(container, '[data-hold="card"] [data-doc-type="doc"]')).toHaveTextContent('doc')
+    expect(q(container, '[data-hold="labels"] [data-doc-type="or-set"]')).toHaveTextContent(
+      'OR-Set',
+    )
+    expect(container.querySelector('[data-hold="n"] [data-doc-type]')).toBeNull()
+    // inside the doc the part's type chip is hidden; the caption carries the type
+    expect(q(container, '[data-path="alice.card.title@type"]')).toHaveAttribute('data-hidden', '')
+  })
+
   it('render holds in insertion order under slot labels via ValueView', () => {
     const { container } = renderStage(frame(world({ actors: { alice } })))
     const card = q(container, '[data-actor="alice"]')
@@ -460,12 +485,13 @@ describe('clock HUD', () => {
     return container
   }
 
-  it('counter → t3', () => {
+  it('counter → t3, under a "now" caption', () => {
     const c = hud({ now: 3, show: true, format: 'counter' })
     const el = q(c, '[data-clock]')
     expect(el).toHaveTextContent('t=3')
+    expect(el).toHaveTextContent('now')
     expect(el).toHaveAttribute('data-now', '3')
-    expect(el.querySelector('bdi[dir="ltr"]')).not.toBeNull()
+    expect(q(el, 'bdi[dir="ltr"][data-reading]')).toHaveTextContent('t=3')
   })
 
   it('ms → 150 ms', () => {

@@ -28,6 +28,28 @@ describe('Record', () => {
     expect(container.querySelector('[data-field="title"]')?.textContent).toContain('title')
   })
 
+  it('lays card rows out as key | value | sidecar cells that line up across rows', () => {
+    const v: Value = {
+      kind: 'record',
+      fields: [
+        { key: 'due', value: s('Fri', { ts: 0, node: 'seed' }) },
+        { key: 'owner', value: s('Bob', { ts: 1, node: 'alice' }) },
+        { key: 'tags', value: { kind: 'list', items: [{ id: 'x', value: s('x') }] } },
+      ],
+    }
+    const { container } = renderValue('alice.task', v)
+    const rows = Array.from(container.querySelectorAll<HTMLElement>('[data-field]'))
+    expect(rows).toHaveLength(3)
+    for (const row of rows) expect(row.querySelector('[data-field-key]')).not.toBeNull()
+    // scalar fields are cells spanning the value + sidecar columns (stamps share the third column)
+    expect(node(container, 'alice.task.due').dataset.cell).toBe('')
+    expect(node(container, 'alice.task.owner').dataset.cell).toBe('')
+    expect(node(container, 'alice.task.owner@ts').dataset.hidden).toBeUndefined()
+    // other kinds take both columns in their own wrapper and draw their own sidecar
+    expect(node(container, 'alice.task.tags').dataset.cell).toBeUndefined()
+    expect(node(container, 'alice.task.tags').closest('[data-field-value]')).not.toBeNull()
+  })
+
   it('renders a tree with nested records inheriting the tree display', () => {
     const tree: Value = {
       kind: 'record',

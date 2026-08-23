@@ -16,6 +16,23 @@ export const rangePath = (path: Path, from: number, to: number): Path => `${path
 /** A value drawn inside a message token (payloads are not addressable; no shared layout ids). */
 export const isTokenPath = (path: Path): boolean => path.startsWith('msg:')
 
+/**
+ * The node that holds `path` (`alice.doc.title` → `alice.doc`, `alice.cart[milk]` → `alice.cart`,
+ * `alice.cart[milk].qty` → `alice.cart[milk]`); undefined for a root (`alice`, `msg:m1`). Keys never
+ * contain `.` / `[` / `]`; ids never contain `]` (DSL §3).
+ */
+export function parentPath(path: Path): Path | undefined {
+  const selector = path.indexOf('@')
+  const base = selector >= 0 ? path.slice(0, selector) : path
+  if (base.endsWith(']')) {
+    const open = base.lastIndexOf('[')
+    return open > 0 ? base.slice(0, open) : undefined
+  }
+  const dot = base.lastIndexOf('.')
+  if (dot <= 0 || dot < base.lastIndexOf(']')) return undefined
+  return base.startsWith('board.') && dot === 5 ? undefined : base.slice(0, dot)
+}
+
 const RANGE_TAIL = /^\[(\d+)\.\.(\d+)\]$/
 
 /**

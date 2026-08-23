@@ -1,9 +1,9 @@
 import { cleanup } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { Meta } from '@/lesson/types'
+import type { Meta, Value } from '@/lesson/types'
 import { orderEntries } from './format'
 import { MetaBadges } from './MetaBadges'
-import { makeFrame, markedFrame, node, nodes, renderStage } from './test-helpers'
+import { makeFrame, markedFrame, node, nodes, renderStage, renderValue, s } from './test-helpers'
 
 afterEach(cleanup)
 
@@ -83,11 +83,22 @@ describe('MetaBadges', () => {
     expect(node(ms.container, 'alice.v@ts').dataset.value).toBe('150 ms')
   })
 
-  it('renders nothing for an empty meta and the seed node as "init"', () => {
+  it('renders nothing for an empty meta; a seed stamp is hidden (anchor kept) unless pointed at', () => {
     const { container } = renderMeta({})
     expect(container.querySelector('[data-meta-badges]')).toBeNull()
-    const seed = renderMeta({ node: 'seed' })
+    const seed = renderMeta({ ts: 0, node: 'seed' })
     expect(node(seed.container, 'alice.v@node').textContent).toBe('init')
+    expect(node(seed.container, 'alice.v@node').dataset.hidden).toBe('')
+    expect(node(seed.container, 'alice.v@ts').dataset.hidden).toBe('')
+    // every badge hidden → the line itself is hidden too (no stray gap next to the value)
+    expect(seed.container.querySelector('[data-meta-badges]')?.getAttribute('data-hidden')).toBe('')
+    seed.unmount()
+    // a highlight on the stamp shows it, seed or not: the step points at it
+    const frame = markedFrame({ highlight: [{ path: 'alice.v@ts' }] })
+    const pointed = renderMeta({ ts: 0, node: 'seed' }, { frame })
+    expect(node(pointed.container, 'alice.v@ts').dataset.hidden).toBeUndefined()
+    expect(node(pointed.container, 'alice.v@ts').dataset.highlight).toBe('change')
+    expect(node(pointed.container, 'alice.v@node').dataset.hidden).toBe('')
   })
 
   it('lets a highlight target a badge, including the @tombstone alias of the @tomb badge', () => {
@@ -111,5 +122,117 @@ describe('MetaBadges', () => {
       carol: 0,
       zed: 1,
     })
+  })
+})
+
+// ─── composed documents ──────────────────────────────────────────────────────────────────────
+
+/** A `crdt.doc` value as toValue draws it: typed parts under an untyped map root. */
+const card: Value = {
+  kind: 'record',
+  fields: [
+    { key: 'title', value: s('Fix login', { type: 'lww-register', ts: 1, node: 'alice' }) },
+    {
+      key: 'labels',
+      value: {
+        kind: 'set',
+        meta: { type: 'or-set' },
+        items: [
+          { id: 'bug', value: s('bug', { tags: [{ tag: 'seed:1', alive: true }] }) },
+          { id: 'ui', value: s('ui', { tags: [{ tag: 'bob:1', alive: true }] }) },
+        ],
+      },
+    },
+    {
+      key: 'items',
+      value: {
+        kind: 'list',
+        meta: { type: 'rga' },
+        items: [
+          {
+            id: 'alice:1',
+            value: {
+              kind: 'record',
+              meta: { ts: 1, node: 'alice' },
+              fields: [
+                { key: 'text', value: s('deploy', { type: 'lww-register', ts: 1, node: 'alice' }) },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+}
+
+describe('MetaBadges inside a composed document', () => {
+  it('hides every badge the step does not point at; values stay', () => {
+    const { container } = renderValue('alice.card', card)
+    for (const p of [
+      'alice.card.title@type',
+      'alice.card.title@ts',
+      'alice.card.title@node',
+      'alice.card.labels@type',
+      'alice.card.labels[bug]@tags',
+      'alice.card.items@type',
+      'alice.card.items[alice:1]@ts',
+      'alice.card.items[alice:1].text@ts',
+    ]) {
+      const el = node(container, p)
+      expect(el.dataset.hidden, p).toBe('')
+      expect(el.dataset.kind).toBe('meta')
+    }
+    expect(node(container, 'alice.card.title').dataset.value).toBe('Fix login')
+    expect(node(container, 'alice.card.labels[bug]').dataset.value).toBe('bug')
+  })
+
+  it('shows the sidecar of a node that changed, landed via a message, or carries a mark', () => {
+    const frame = markedFrame({
+      changed: ['alice.card.title'],
+      highlight: [{ path: 'alice.card.labels[ui]' }],
+      via: { path: 'alice.card.items[alice:1].text', from: 'bob' },
+    })
+    const { container } = renderValue('alice.card', card, { frame })
+    expect(node(container, 'alice.card.title@ts').dataset.hidden).toBeUndefined()
+    expect(node(container, 'alice.card.title@node').dataset.hidden).toBeUndefined()
+    // the type chip stays quiet even on a changed part: the slot caption names the doc once
+    expect(node(container, 'alice.card.title@type').dataset.hidden).toBe('')
+    expect(node(container, 'alice.card.labels[ui]@tags').dataset.hidden).toBeUndefined()
+    expect(node(container, 'alice.card.labels[bug]@tags').dataset.hidden).toBe('')
+    expect(node(container, 'alice.card.items[alice:1].text@ts').dataset.hidden).toBeUndefined()
+    expect(node(container, 'alice.card.items[alice:1]@ts').dataset.hidden).toBe('')
+  })
+
+  it('shows the stamps of the direct children of a node that changed (a freshly added item)', () => {
+    const frame = markedFrame({ changed: ['alice.card.items[alice:1]'] })
+    const { container } = renderValue('alice.card', card, { frame })
+    expect(node(container, 'alice.card.items[alice:1]@ts').dataset.hidden).toBeUndefined()
+    expect(node(container, 'alice.card.items[alice:1].text@ts').dataset.hidden).toBeUndefined()
+    expect(node(container, 'alice.card.title@ts').dataset.hidden).toBe('')
+  })
+
+  it('a mark on a badge path shows that badge alone — type chips and tags included', () => {
+    const frame = markedFrame({
+      highlight: [{ path: 'alice.card.title@type' }, { path: 'alice.card.labels[bug]@tags' }],
+    })
+    const { container } = renderValue('alice.card', card, { frame })
+    const type = node(container, 'alice.card.title@type')
+    expect(type.dataset.hidden).toBeUndefined()
+    expect(type.dataset.highlight).toBe('change')
+    expect(type.textContent).toBe('LWW')
+    expect(node(container, 'alice.card.title@ts').dataset.hidden).toBe('')
+    expect(node(container, 'alice.card.labels[bug]@tags').dataset.hidden).toBeUndefined()
+    expect(node(container, 'alice.card.labels[ui]@tags').dataset.hidden).toBe('')
+  })
+
+  it('an atomic slot (no typed parts) keeps its sidecar', () => {
+    const atomic: Value = {
+      kind: 'set',
+      meta: { type: 'or-set' },
+      items: [{ id: 'bug', value: s('bug', { tags: [{ tag: 'bob:1', alive: true }] }) }],
+    }
+    const { container } = renderValue('alice.labels', atomic)
+    expect(node(container, 'alice.labels@type').dataset.hidden).toBeUndefined()
+    expect(node(container, 'alice.labels[bug]@tags').dataset.hidden).toBeUndefined()
   })
 })
