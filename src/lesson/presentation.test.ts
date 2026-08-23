@@ -42,6 +42,33 @@ describe('buildPresentation', () => {
       text: lwwRegisterTopic.realWorld,
     })
   })
+  it('adds a rules slide after the title screen when the topic has rules', () => {
+    const topic = {
+      ...lwwRegisterTopic,
+      rules: ['On every update, write down a new time.', 'On merge, keep the larger time.'],
+      shape: {
+        name: 'LWW register',
+        fields: [
+          { key: 'value', example: 'Lunch', role: 'value' as const },
+          { key: 'time', example: '2' },
+        ],
+      },
+    }
+    const frames = buildPresentation(topic, {
+      title: 'T',
+      subtitle: 'S',
+      labels: { ...labels, howItWorks: 'How it works', letsSee: "Let's see it work." },
+    })
+    expect(frames[1]?.slide).toMatchObject({
+      kind: 'rules',
+      heading: 'How it works',
+      rules: topic.rules,
+      cta: "Let's see it work.",
+    })
+    expect(frames[1]?.slide?.kind === 'rules' && frames[1].slide.shape?.name).toBe('LWW register')
+    expect(frames[1]?.sceneId).toBe(INTRO_SCENE)
+    expect(frames[2]?.step.id).toBe(lwwRegisterTopic.scenes[0]?.steps[0]?.id)
+  })
   it('is memoized per topic + options', () => {
     const a = buildPresentation(lwwRegisterTopic, { title: 'T', subtitle: 'S', labels })
     const b = buildPresentation(lwwRegisterTopic, { title: 'T', subtitle: 'S', labels })

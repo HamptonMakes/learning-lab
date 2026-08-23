@@ -151,20 +151,28 @@ function LessonPlayer({
   const labelUse = t('slide.whenToUse')
   const labelAvoid = t('slide.whenNotToUse')
   const labelWorld = t('slide.realWorld')
+  const labelHow = t('slide.howItWorks')
+  const labelSee = t('slide.letsSee')
   const built = useMemo<{ frames: Frame[]; error?: string }>(() => {
     try {
       return {
         frames: buildPresentation(topic, {
           title,
           subtitle,
-          labels: { use: labelUse, avoid: labelAvoid, world: labelWorld },
+          labels: {
+            use: labelUse,
+            avoid: labelAvoid,
+            world: labelWorld,
+            howItWorks: labelHow,
+            letsSee: labelSee,
+          },
           assertMode: 'warn',
         }),
       }
     } catch (e) {
       return { frames: [], error: e instanceof Error ? e.message : String(e) }
     }
-  }, [topic, title, subtitle, labelUse, labelAvoid, labelWorld])
+  }, [topic, title, subtitle, labelUse, labelAvoid, labelWorld, labelHow, labelSee])
 
   const player = usePlayer(built.frames, {
     initialIndex: (search.step ?? 1) - 1,

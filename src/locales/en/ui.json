@@ -299,5 +299,9 @@
   "tryIt.code.whole": "{fn} was not found by name, so here is the whole file ({file}).",
   "tryIt.code.detail.prepared": "{actor} built op {id}",
   "tryIt.code.detail.applied": "{actor} applied {id}",
-  "tryIt.code.detail.merged": "{into} ← {from}"
+  "tryIt.code.detail.merged": "{into} ← {from}",
+  "slide.howItWorks": "How it works",
+  "slide.letsSee": "Let's see it work.",
+  "slide.shape": "The data",
+  "slide.rules": "The rules"
 }

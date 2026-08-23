@@ -12,6 +12,10 @@ import type { Frame, Slide, Topic, World } from './types'
 export interface PresentationLabels {
   /** Narration for the title screen; defaults to `subtitle`. */
   intro?: string
+  /** "How it works" — heading + narration of the rules slide (rendered only when the topic has `rules`). */
+  howItWorks?: string
+  /** "Let's see it work." — the call to action under the rules. */
+  letsSee?: string
   /** e.g. "When to use it." */
   use: string
   /** e.g. "When not to use it." */
@@ -69,6 +73,18 @@ export function buildPresentation(topic: Topic, opts: PresentationOptions): Fram
     subtitle: opts.subtitle,
     goal: topic.goal,
   })
+  const rules: Frame[] =
+    topic.rules && topic.rules.length > 0
+      ? [
+          slideFrame(INTRO_SCENE, -1, 'rules', opts.labels.howItWorks ?? 'How it works', {
+            kind: 'rules',
+            heading: opts.labels.howItWorks ?? 'How it works',
+            rules: topic.rules,
+            ...(topic.shape ? { shape: topic.shape } : {}),
+            ...(opts.labels.letsSee ? { cta: opts.labels.letsSee } : {}),
+          }),
+        ]
+      : []
   const n = topic.scenes.length
   const summary: Frame[] = [
     slideFrame(SUMMARY_SCENE, n, 'use', opts.labels.use, {
@@ -90,7 +106,7 @@ export function buildPresentation(topic: Topic, opts: PresentationOptions): Fram
       tone: 'info',
     }),
   ]
-  const frames = [intro, ...lesson, ...summary].map((f, index) => ({ ...f, index }))
+  const frames = [intro, ...rules, ...lesson, ...summary].map((f, index) => ({ ...f, index }))
   byKey.set(key, frames)
   return frames
 }
