@@ -11,12 +11,14 @@ declare global {
   interface ImportMetaEnv {
     readonly VITE_UMAMI_SCRIPT_URL?: string
     readonly VITE_UMAMI_WEBSITE_ID?: string
+    readonly VITE_UMAMI_RECORDER_URL?: string
   }
 }
 
 export interface AnalyticsEnv {
   umamiScriptUrl?: string
   umamiWebsiteId?: string
+  umamiRecorderUrl?: string
   dev: boolean
 }
 
@@ -24,6 +26,7 @@ export function readAnalyticsEnv(): AnalyticsEnv {
   return {
     umamiScriptUrl: import.meta.env.VITE_UMAMI_SCRIPT_URL,
     umamiWebsiteId: import.meta.env.VITE_UMAMI_WEBSITE_ID,
+    umamiRecorderUrl: import.meta.env.VITE_UMAMI_RECORDER_URL,
     dev: import.meta.env.DEV,
   }
 }
@@ -31,7 +34,12 @@ export function readAnalyticsEnv(): AnalyticsEnv {
 export function createDefaultProvider(env: AnalyticsEnv = readAnalyticsEnv()): AnalyticsProvider {
   const scriptUrl = env.umamiScriptUrl?.trim()
   const websiteId = env.umamiWebsiteId?.trim()
-  if (scriptUrl && websiteId) return createUmamiProvider({ scriptUrl, websiteId })
+  if (scriptUrl && websiteId) {
+    const recorderUrl = env.umamiRecorderUrl?.trim()
+    return createUmamiProvider(
+      recorderUrl ? { scriptUrl, websiteId, recorderUrl } : { scriptUrl, websiteId },
+    )
+  }
   if (env.dev) return createConsoleProvider()
   return noopProvider
 }

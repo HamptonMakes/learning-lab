@@ -39,10 +39,9 @@ This repo is open source: secrets never live here. `.kamal/secrets` pulls the re
 Proton Pass CLI (`pass-cli`, vault `kamal`) at deploy time.
 
 ```sh
-cp .env.example .env            # set VITE_UMAMI_WEBSITE_ID (public, from analytics.lin.cat)
 pnpm docker:build               # local image check
-VITE_UMAMI_WEBSITE_ID=… kamal setup   # first time
-VITE_UMAMI_WEBSITE_ID=… kamal deploy
+kamal setup                     # first time (builds on the server, pushes to Docker Hub, starts the app)
+kamal deploy                    # every release — https://learn.hamptonmakes.com
 ```
 
 ## Author

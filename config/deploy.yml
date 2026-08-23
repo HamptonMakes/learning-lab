@@ -17,17 +17,20 @@ ssh:
   user: hampton
 
 builder:
+  # Build on the server (same as umami-deploy) — native amd64, no emulation on the Mac.
+  remote: ssh://hampton@178.156.220.157
   arch: amd64
   args:
     # Vite bakes these into the bundle at build time. They are public values, not secrets.
     VITE_UMAMI_SCRIPT_URL: https://analytics.lin.cat/script.js
-    VITE_UMAMI_WEBSITE_ID: <%= ENV.fetch("VITE_UMAMI_WEBSITE_ID", "") %>
+    VITE_UMAMI_WEBSITE_ID: 14a6bc82-38e2-49ae-8aef-f9a3713e8fcc
+    VITE_UMAMI_RECORDER_URL: https://analytics.lin.cat/recorder.js
     BASE_PATH: '/'
 
 proxy:
   ssl: true
   hosts:
-    - lab.hamptonmakes.com
+    - learn.hamptonmakes.com
   app_port: 80
   healthcheck:
     path: /up

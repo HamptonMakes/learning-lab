@@ -13,6 +13,8 @@ export interface UmamiOptions {
   websiteId: string
   /** Where events are posted (`data-host-url`). Defaults to the script's origin. */
   hostUrl?: string
+  /** Optional Umami session-replay recorder (recorder.js), injected next to the tracker. */
+  recorderUrl?: string
 }
 
 type UmamiPayload = Record<string, unknown>
@@ -50,7 +52,7 @@ function hasScript(websiteId: string): boolean {
 }
 
 export function createUmamiProvider(options: UmamiOptions): AnalyticsProvider {
-  const { scriptUrl, websiteId, hostUrl } = options
+  const { scriptUrl, websiteId, hostUrl, recorderUrl } = options
   const queue: Send[] = []
   let injected = false
   let scriptFailed = false
@@ -121,11 +123,25 @@ export function createUmamiProvider(options: UmamiOptions): AnalyticsProvider {
     return script
   }
 
+  const buildRecorder = (url: string): HTMLScriptElement => {
+    const rec = document.createElement('script')
+    rec.defer = true
+    rec.src = url
+    rec.dataset.websiteId = websiteId
+    rec.dataset.sampleRate = '0.15'
+    rec.dataset.maskLevel = 'moderate'
+    rec.dataset.maxDuration = '300000'
+    return rec
+  }
+
   const init = (): void => {
     if (injected || typeof document === 'undefined') return
     injected = true
     try {
       if (!hasScript(websiteId)) document.head.appendChild(buildScript())
+      if (recorderUrl && !document.querySelector(`script[src="${recorderUrl}"]`)) {
+        document.head.appendChild(buildRecorder(recorderUrl))
+      }
       startPolling()
     } catch {
       /* analytics must never throw */
