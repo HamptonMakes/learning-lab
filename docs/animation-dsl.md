@@ -726,7 +726,8 @@ export type Command =
 1. Transient marks (everything not `sticky`, incl. `unchanged`, `flow` and auto highlights) are
    cleared.
 2. Commands run in order; each is pure `reduce(world, cmd)` and appends the events it causes
-   (`sent`, `delivered`, `parked`, `dropped`, `sync`, value writes with their `via`) to the step's
+   (`sent`, `delivered`, `parked`, `dropped`, `sync`, value writes with their `via`, and the
+   `action` — the operation that caused a write, as a `stage.op.*` label) to the step's
    **event log**.
 3. Marks added in this step are resolved against the end-of-step world (§4.4): anchors checked,
    `compare` verdicts computed; sticky marks with vanished anchors are removed.
@@ -738,14 +739,17 @@ export type Command =
    layout, clock and mark changes come from the diff (two writes to one path collapse into one
    `changed`; marks are diffed against `prev` with its transient marks already cleared, so only
    real additions and removals appear); message and sync events come from the log, and a message
-   that lived and died inside the step is kept with `transient: true`.
+   that lived and died inside the step is kept with `transient: true`. Each `action` event folds into
+   the value change at its path (else the nearest ancestor change, else every change under it) as
+   `Change.action`; the last action on a path wins.
 6. Transient marks get fresh ids each step (re-issuing a highlight re-pulses it); sticky marks keep
    their id and rest until `clearMarks`/`unmark`.
 
 What is visible in the static frame after a step: all actors/boards/values, every message (flying
 on its arc, parked in the inbox tray), every mark (including `flow` arrows and `unchanged` pills),
-via chips on values that just landed, the outbox chips, the clock HUD / actor clock badges, status
-badges. Nothing depends on an animation having played.
+via chips on values that just landed, action chips on values that just changed (`inc 2`, `add milk
+#alice:1`, `merge` …), the outbox chips, the clock HUD / actor clock badges, status badges. Nothing
+depends on an animation having played.
 
 ---
 
@@ -1095,7 +1099,13 @@ Lints (content style):
 
 ```ts
 export type Change =
-  | { kind: 'value'; path: Path; op: 'added' | 'changed' | 'removed' | 'meta'; via?: MessageId } // also <actor>@outbox / @inbox
+  | {
+      kind: 'value'
+      path: Path
+      op: 'added' | 'changed' | 'removed' | 'meta'
+      via?: MessageId
+      action?: ActionLabel // the operation that caused it (drawn as an action chip)
+    } // also <actor>@outbox / @inbox
   | {
       kind: 'actor'
       id: ActorId
@@ -1112,6 +1122,13 @@ export type Change =
   | { kind: 'mark'; id: MarkId; op: 'added' | 'removed' }
   | { kind: 'layout'; from: Layout; to: Layout }
   | { kind: 'clock'; from: number; to: number }
+/** A translatable operation label: `key` is a `stage.op.*` catalog key, `vars` fills its placeholders,
+ *  `by` the acting actor (the local updater, the merge / receive source, an op's creator; absent for
+ *  a plain `set`). Keys: inc · dec · set · setField · removeField · add · addTag · remove · removeTags ·
+ *  insert · delete · tick · noop · docAdd · docAddEmpty · docRemove · docInsert · docInsertEmpty (the
+ *  CRDT op labels of §5.2) plus setPlain · insertPlain · append · deletePlain · deleteRange · move ·
+ *  sort · merge · receive. */
+export type ActionLabel = { key: string; vars?: Record<string, string | number>; by?: ActorId }
 export type Frame = {
   index: number // global across scenes
   sceneId: SceneId
@@ -1123,6 +1140,13 @@ export type Frame = {
 }
 ```
 
+- **`Change.action`:** every value write names its operation: `set` / `insert` (`append` at the end,
+  `add` into a set) / `delete` / `move` / `sort` → `stage.op.setPlain` … ; `crdt.update` → the op's
+  §5.2 label (`inc 1`, `add milk #alice:1`, `insert "h" after alice:1`) on the node the op touched,
+  `by` the actor; `crdt.merge` / `crdt.sync` / a delivered state → `merge` on each slot that changed,
+  `by` the source; a delivered op → its label `by` its creator; a clock receive → `receive`; a
+  `send.stamp` → `tick` on the sender's clock; `deliver … into` → `setPlain` `by` the sender. `patch`,
+  `annotate`, `view` carry none.
 - **Reducer (Vitest, node):** golden tests per command; error tests (bad paths, CRDT slot writes,
   unknown ids, unready applies); `buildTimeline` for every content topic; property tests: for every
   state type `reduce(crdt.merge)` equals the module's `merge` and merge-order permutations give equal

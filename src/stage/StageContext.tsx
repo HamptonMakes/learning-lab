@@ -1,10 +1,12 @@
 /**
  * Per-frame derived data shared by every stage primitive: the frame itself, which paths changed,
- * which landed via a message (for via chips), and the marks that anchor on each path. Computed once
- * per frame so value nodes and layers never re-derive it.
+ * which landed via a message (for via chips), which operation changed them (for action chips), and
+ * the marks that anchor on each path. Computed once per frame so value nodes and layers never
+ * re-derive it.
  */
 import { createContext, useContext, useMemo, type ReactNode } from 'react'
 import type {
+  ActionLabel,
   ActorColor,
   ActorId,
   Change,
@@ -14,6 +16,7 @@ import type {
   Path,
   World,
 } from '@/lesson/types'
+import { parentPath, slotRootOf } from './value/paths'
 
 export interface ViaInfo {
   message: MessageId
@@ -29,6 +32,12 @@ export interface StageFrame {
   changedPaths: ReadonlySet<Path>
   /** Paths whose value landed via a message this step → draw the via chip. */
   via: ReadonlyMap<Path, ViaInfo>
+  /**
+   * Paths that show an action chip this step — the operation that changed them (`Change.action`).
+   * A removed node's action sits on its container; one action folded into several nodes of a slot
+   * (a merge, a receive, an RGA macro) sits once on the slot root.
+   */
+  actions: ReadonlyMap<Path, ActionLabel>
   /** Marks anchored on a path (highlight / check / cross / callout / unchanged …). */
   marksByPath: ReadonlyMap<Path, Mark[]>
   /** Convenience: the strongest highlight tone on a path, if any. */
@@ -36,6 +45,34 @@ export interface StageFrame {
 }
 
 const Ctx = createContext<StageFrame | null>(null)
+
+type ValueChange = Extract<Change, { kind: 'value' }>
+
+const actionSignature = (a: ActionLabel): string =>
+  JSON.stringify([a.key, a.vars ?? null, a.by ?? null])
+
+/** Where each action chip draws: its node, the container of a removed node, or the slot root. */
+function placeActions(changes: readonly Change[]): Map<Path, ActionLabel> {
+  const withAction = changes.filter(
+    (c): c is ValueChange & { action: ActionLabel } => c.kind === 'value' && c.action !== undefined,
+  )
+  const perSlot = new Map<Path, Map<string, number>>()
+  for (const c of withAction) {
+    const root = slotRootOf(c.path)
+    const counts = perSlot.get(root) ?? new Map<string, number>()
+    const sig = actionSignature(c.action)
+    counts.set(sig, (counts.get(sig) ?? 0) + 1)
+    perSlot.set(root, counts)
+  }
+  const out = new Map<Path, ActionLabel>()
+  for (const c of withAction) {
+    const root = slotRootOf(c.path)
+    const shared = (perSlot.get(root)?.get(actionSignature(c.action)) ?? 0) > 1
+    const target = shared ? root : c.op === 'removed' ? (parentPath(c.path) ?? root) : c.path
+    out.set(target, c.action)
+  }
+  return out
+}
 
 export function deriveStageFrame(frame: Frame): StageFrame {
   const changedPaths = new Set<Path>()
@@ -51,6 +88,7 @@ export function deriveStageFrame(frame: Frame): StageFrame {
       }
     }
   }
+  const actions = placeActions(frame.changes)
   const marksByPath = new Map<Path, Mark[]>()
   const add = (p: Path, m: Mark) => {
     const list = marksByPath.get(p)
@@ -90,6 +128,7 @@ export function deriveStageFrame(frame: Frame): StageFrame {
     changes: frame.changes,
     changedPaths,
     via,
+    actions,
     marksByPath,
     highlightOf(path) {
       let best: Extract<Mark, { kind: 'highlight' }> | undefined

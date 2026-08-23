@@ -1,8 +1,11 @@
 /**
- * Pure geometry for the mark layers: the conflict bolt's zig-zag, arrow heads on an arc, and the
- * callout bubble placement. Stage-container pixels throughout (see AnchorRegistry).
+ * Pure geometry for the mark layers: the conflict bolt's zig-zag, arrow heads on an arc, the
+ * callout bubble placement and the action chip's side. Stage-container pixels throughout (see
+ * AnchorRegistry).
  */
+import type { Path } from '@/lesson/types'
 import { edgePoint, type Arc, type Point, type Rect } from '../geometry'
+import { slotRootOf } from '../value/paths'
 
 /** A zig-zag between the facing edges of two rects, plus its midpoint (for the badge). */
 export function boltPath(a: Rect, b: Rect, segments = 6): { d: string; mid: Point } {
@@ -80,3 +83,58 @@ export function placeCallout(
 }
 
 const r2 = (n: number) => Math.round(n * 100) / 100
+
+// ─── Action chips ─────────────────────────────────────────────────────────────────────────────
+
+/** How far the chip overlaps the node's corner (px); with a check / cross glyph there it steps clear. */
+export const CHIP_OVERLAP = 4
+export const CHIP_GLYPH_CLEARANCE = 6
+export const CHIP_H = 18
+/** Estimated chip width for the flip decision (icon + padding, then ~6.5px per character at 12px). */
+export const estimateChipWidth = (text: string): number => 30 + text.length * 6.5
+/** A chip may hang this far into a neighbouring card / board (its padding) before it flips inward. */
+const INTRUSION = 12
+
+function intersects(a: Rect, b: Rect, slack: number): boolean {
+  return (
+    a.x + slack < b.x + b.w &&
+    a.x + a.w - slack > b.x &&
+    a.y + slack < b.y + b.h &&
+    a.y + a.h - slack > b.y
+  )
+}
+
+/** The card / board a path belongs to (`alice.cart[milk]` → `alice`, `board.t[r1]` → `board.t`). */
+function rootOf(path: Path): Path {
+  return path.startsWith('board.') ? slotRootOf(path) : (slotRootOf(path).split('.')[0] ?? path)
+}
+
+/**
+ * Outward (hanging past the node's end edge) unless that would leave the stage or run more than
+ * its padding into another card or a board; then the chip extends back over the node's top edge.
+ */
+export function chipSide(
+  path: Path,
+  anchor: Rect,
+  width: number,
+  dir: 'ltr' | 'rtl',
+  bounds: { w: number; h: number } | null,
+  geometry: ReadonlyMap<Path, Rect>,
+  neighbours: readonly Path[],
+): 'outward' | 'inward' {
+  const endX = dir === 'rtl' ? anchor.x : anchor.x + anchor.w
+  const box: Rect = {
+    x: dir === 'rtl' ? endX + CHIP_OVERLAP - width : endX - CHIP_OVERLAP,
+    y: anchor.y + CHIP_OVERLAP - CHIP_H,
+    w: width,
+    h: CHIP_H,
+  }
+  if (bounds !== null && (box.x < 0 || box.x + box.w > bounds.w)) return 'inward'
+  const own = rootOf(path)
+  for (const key of neighbours) {
+    if (key === own) continue
+    const rect = geometry.get(key)
+    if (rect && intersects(box, rect, INTRUSION)) return 'inward'
+  }
+  return 'outward'
+}

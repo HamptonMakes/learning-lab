@@ -145,6 +145,79 @@ describe('CalloutLayer — unchanged pills', () => {
   })
 })
 
+describe('CalloutLayer — action chips', () => {
+  function renderActions(
+    changes: Parameters<typeof frame>[1],
+    opts: Opts = {},
+    geometry = GEO,
+    marks: Mark[] = [],
+  ) {
+    return render(
+      <Wrap f={frame(world({ marks }), changes)} opts={opts}>
+        <CalloutLayer geometry={geometry} />
+      </Wrap>,
+    )
+  }
+  const inc = { key: 'stage.op.inc', vars: { n: 1 }, by: 'alice' }
+  const doc = GEO.get('bob.doc')
+  if (!doc) throw new Error('fixture')
+
+  it("draws the operation on the node's top-end corner, in the acting actor's hue, with its icon", () => {
+    const { container } = renderActions([
+      { kind: 'value', path: 'bob.doc', op: 'changed', action: inc },
+    ])
+    const chip = q(container, '[data-action]')
+    expect(chip).toHaveAttribute('data-action', 'inc')
+    expect(chip).toHaveAttribute('data-action-key', 'stage.op.inc')
+    expect(chip).toHaveAttribute('data-action-by', 'alice')
+    expect(chip).toHaveAttribute('data-action-path', 'bob.doc')
+    expect(chip).toHaveAttribute('data-side', 'outward')
+    expect(chip).toHaveTextContent('inc 1')
+    expect(chip?.style.left).toBe(`${doc.x + doc.w}px`)
+    expect(chip?.style.top).toBe(`${doc.y}px`)
+    expect(chip?.style.getPropertyValue('--hue')).toBe('var(--actor-a)')
+    expect(chip?.querySelector('svg')).not.toBeNull() // icon: colour is never the only signal
+  })
+
+  it('falls back to the accent when nobody acted (a plain set) and mirrors the corner in RTL', () => {
+    const { container } = renderActions(
+      [{ kind: 'value', path: 'bob.doc', op: 'changed', action: { key: 'stage.op.setPlain' } }],
+      { dir: 'rtl' },
+    )
+    const chip = q(container, '[data-action]')
+    expect(chip).toHaveAttribute('data-action', 'set')
+    expect(chip).toHaveTextContent('set')
+    expect(chip?.style.left).toBe(`${doc.x}px`)
+    expect(chip?.style.getPropertyValue('--hue')).toBe('var(--accent)')
+  })
+
+  it('flips inward when hanging outward would run into the next card', () => {
+    const tight = new Map(GEO)
+    tight.set('carol', { x: doc.x + doc.w + 20, y: 0, w: 200, h: 140 })
+    const { container } = renderActions(
+      [{ kind: 'value', path: 'bob.doc', op: 'changed', action: inc }],
+      {},
+      tight,
+    )
+    expect(q(container, '[data-action]')).toHaveAttribute('data-side', 'inward')
+  })
+
+  it('draws nothing for a path without a rect; one chip per acted path', () => {
+    const { container } = renderActions([
+      { kind: 'value', path: 'nowhere.x', op: 'changed', action: inc },
+      {
+        kind: 'value',
+        path: 'alice.doc',
+        op: 'changed',
+        action: { key: 'stage.op.merge', by: 'bob' },
+      },
+      { kind: 'value', path: 'bob.doc', op: 'changed', action: inc },
+    ])
+    expect(container.querySelectorAll('[data-action]')).toHaveLength(2)
+    expect(q(container, '[data-action="merge"]')).toHaveAttribute('data-action-by', 'bob')
+  })
+})
+
 describe('CalloutLayer — hygiene', () => {
   it('uses no CSS transition/animation utilities', () => {
     const { container } = renderCallouts([

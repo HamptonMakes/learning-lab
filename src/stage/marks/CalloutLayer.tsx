@@ -1,12 +1,15 @@
 /**
- * CalloutLayer: the HTML overlay for marks that are words — callout bubbles near a path's rect and
- * "no change" pills on a slot's corner. Rects come from the anchor registry, or from the `geometry`
- * prop in tests. The layer measures its own size so bubbles can be clamped inside the stage.
+ * CalloutLayer: the HTML overlay for marks that are words — callout bubbles near a path's rect,
+ * "no change" pills on a slot's corner and action chips (the operation that just changed a node)
+ * on a node's corner. Rects come from the anchor registry, or from the `geometry` prop in tests.
+ * The layer measures its own size so bubbles and chips can be kept inside the stage.
  */
 import { useLayoutEffect, useRef, useState, type RefObject } from 'react'
 import { AnimatePresence } from 'motion/react'
+import type { Path } from '@/lesson/types'
 import { useStageMotion } from '../motion'
 import { useStageFrame } from '../StageContext'
+import { ActionChip } from './ActionChip'
 import { Callout } from './Callout'
 import { UnchangedPill } from './UnchangedPill'
 import { useLayerGeometry, type Geometry } from './useLayerGeometry'
@@ -17,11 +20,13 @@ export interface CalloutLayerProps {
 }
 
 export function CalloutLayer({ geometry }: CalloutLayerProps) {
-  const { world } = useStageFrame()
+  const { world, frame, actions, marksByPath } = useStageFrame()
   const { instant } = useStageMotion()
   const geo = useLayerGeometry(geometry)
   const root = useRef<HTMLDivElement>(null)
   const bounds = useBounds(root)
+  const hasGlyph = (path: Path) =>
+    (marksByPath.get(path) ?? []).some((m) => m.kind === 'check' || m.kind === 'cross')
   return (
     <div
       ref={root}
@@ -40,6 +45,17 @@ export function CalloutLayer({ geometry }: CalloutLayerProps) {
               return null
           }
         })}
+        {Array.from(actions, ([path, label]) => (
+          <ActionChip
+            key={`${frame.index}:${path}`}
+            path={path}
+            label={label}
+            anchor={geo.get(path)}
+            bounds={bounds}
+            geometry={geo}
+            glyph={hasGlyph(path)}
+          />
+        ))}
       </AnimatePresence>
     </div>
   )

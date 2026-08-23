@@ -156,6 +156,7 @@ describe('deliver', () => {
         transient: true,
       },
       { kind: 'via', path: 'bob.copy', message: 'm1' },
+      { kind: 'action', path: 'bob.copy', label: { key: 'stage.op.setPlain', by: 'alice' } },
     ])
   })
 
@@ -370,11 +371,17 @@ describe('drop / duplicate / relay', () => {
       c.log.events.map((e) =>
         e.kind === 'message'
           ? `${e.op}:${e.message.id}${e.transient ? '!' : ''}`
-          : e.kind === 'via'
-            ? `via:${e.path}`
+          : e.kind === 'via' || e.kind === 'action'
+            ? `${e.kind}:${e.path}`
             : e.kind,
       ),
-    ).toEqual(['sent:m-l@server!', 'delivered:m-l@server!', 'via:server.doc', 'sent:m-l@bob'])
+    ).toEqual([
+      'sent:m-l@server!',
+      'delivered:m-l@server!',
+      'via:server.doc',
+      'action:server.doc',
+      'sent:m-l@bob',
+    ])
   })
 
   it('relay keeps an id without the hub suffix as base, honours an explicit into, and needs an online hub', () => {

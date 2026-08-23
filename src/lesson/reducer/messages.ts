@@ -17,6 +17,7 @@ import {
   type Value,
   type World,
 } from '../types'
+import { plainAction, pushAction } from './actions'
 import { applyIncoming, stampForSend } from './crdt'
 import { mintId } from './ids'
 import { fail, type ReduceCtxX } from './scratch'
@@ -170,6 +171,7 @@ function land(
     assertPlainTarget(w, into, ctx, cmd)
     const next = setAt(w, into, msg.payload)
     ctx.log.push({ kind: 'via', path: into, message: msg.id })
+    pushAction(ctx, into, plainAction('stage.op.setPlain', undefined, msg.from))
     return next
   }
   ctx.log.push({ kind: 'via', path: msg.to, message: msg.id })

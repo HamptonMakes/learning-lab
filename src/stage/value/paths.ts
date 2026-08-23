@@ -33,6 +33,20 @@ export function parentPath(path: Path): Path | undefined {
   return base.startsWith('board.') && dot === 5 ? undefined : base.slice(0, dot)
 }
 
+const SEGMENT_END = /[.[@]/
+
+/**
+ * The slot a path lives in (`alice.cart[milk]@tags` → `alice.cart`, `board.t[r1].use` → `board.t`);
+ * a bare root (`alice`, `alice@outbox`) is its own slot root.
+ */
+export function slotRootOf(path: Path): Path {
+  const first = path.search(SEGMENT_END)
+  if (first < 0 || path[first] !== '.') return first < 0 ? path : path.slice(0, first)
+  const rest = path.slice(first + 1)
+  const second = rest.search(SEGMENT_END)
+  return second < 0 ? path : path.slice(0, first + 1 + second)
+}
+
 const RANGE_TAIL = /^\[(\d+)\.\.(\d+)\]$/
 
 /**

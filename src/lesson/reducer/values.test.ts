@@ -383,3 +383,45 @@ describe('annotate / unannotate / view', () => {
     expect(() => run(v, [{ t: 'view', path: 'alice.doc', display: 'hex' }])).toThrow(/bytes/)
   })
 })
+
+describe('action events (the mutation points a value change shows)', () => {
+  const actions = (c: ReturnType<typeof ctx>) =>
+    c.log.events.flatMap((e) => (e.kind === 'action' ? [{ path: e.path, ...e.label }] : []))
+
+  it('set / insert / append / add / delete / move / sort name their operation; patch, annotate and view do not', () => {
+    const w = withSlots({
+      l: list(['a', 'b']),
+      s: sset(['x']),
+      t: table(['use'], [['r1', { use: 1 }]]),
+      id: bytesOf('0011'),
+    })
+    const c = ctx()
+    run(
+      w,
+      [
+        { t: 'set', path: 'alice.doc', value: 'x' },
+        { t: 'patch', path: 'alice.doc', meta: { ts: 2 } },
+        { t: 'insert', path: 'alice.l', item: 'c' },
+        { t: 'insert', path: 'alice.l', item: 'z', index: 0 },
+        { t: 'insert', path: 'alice.s', item: 'y' },
+        { t: 'insert', path: 'alice.t', item: { id: 'r2', cells: { use: scalar(2) } } },
+        { t: 'delete', path: 'alice.l[a]' },
+        { t: 'move', path: 'alice.l[b]', to: 0 },
+        { t: 'sort', path: 'alice.l', by: ['value'] },
+        { t: 'annotate', path: 'alice.id', from: 0, to: 1 },
+        { t: 'view', path: 'alice.id', display: 'bits' },
+      ],
+      c,
+    )
+    expect(actions(c)).toEqual([
+      { path: 'alice.doc', key: 'stage.op.setPlain' },
+      { path: 'alice.l[c]', key: 'stage.op.append', vars: { value: 'c' } },
+      { path: 'alice.l[z]', key: 'stage.op.insertPlain', vars: { value: 'z' } },
+      { path: 'alice.s[y]', key: 'stage.op.add', vars: { value: 'y' } },
+      { path: 'alice.t[r2]', key: 'stage.op.append', vars: { value: 'r2' } },
+      { path: 'alice.l[a]', key: 'stage.op.deletePlain', vars: { value: 'a' } },
+      { path: 'alice.l[b]', key: 'stage.op.move', vars: { value: 'b' } },
+      { path: 'alice.l', key: 'stage.op.sort' },
+    ])
+  })
+})

@@ -8,6 +8,7 @@
 import { plainValue, plainValueAt, resolvePath } from '../path'
 import {
   ReducerError,
+  type ActionLabel,
   type AssertCommand,
   type Change,
   type Command,
@@ -254,14 +255,51 @@ function addAutoHighlights(w: World, prev: World, step: Step, ctx: ReduceCtxX): 
   return world
 }
 
-/** §6 step 5: message and sync events in log order, then the diff with `via` folded in. */
+type ValueChange = Extract<Change, { kind: 'value' }>
+
+/**
+ * Fold the step's action events into the value changes: an action lands on the change at its own
+ * path; failing that on the nearest ancestor change (a `move` rewrites the container, a range
+ * `set` the bytes); failing that on every change under it (a slot-level merge, an RGA macro). The
+ * last action on a path wins. Returns the actions by change path.
+ */
+function foldActions(
+  actions: ReadonlyArray<{ path: Path; label: ActionLabel }>,
+  values: readonly ValueChange[],
+): Map<Path, ActionLabel> {
+  const out = new Map<Path, ActionLabel>()
+  for (const a of actions) {
+    if (values.some((c) => c.path === a.path)) {
+      out.set(a.path, a.label)
+      continue
+    }
+    let ancestor: Path | undefined
+    for (const c of values) {
+      if (isUnder(a.path, c.path) && (ancestor === undefined || c.path.length > ancestor.length)) {
+        ancestor = c.path
+      }
+    }
+    if (ancestor !== undefined) {
+      out.set(ancestor, a.label)
+      continue
+    }
+    for (const c of values) if (isUnder(c.path, a.path)) out.set(c.path, a.label)
+  }
+  return out
+}
+
+/** §6 step 5: message and sync events in log order, then the diff with `via` / `action` folded in. */
 function reconcile(events: readonly ReducerEvent[], diff: readonly Change[]): Change[] {
   const out: Change[] = []
   const vias: Array<{ path: Path; message: MessageId }> = []
+  const actions: Array<{ path: Path; label: ActionLabel }> = []
   for (const e of events) {
     if (e.kind === 'via') vias.push(e)
+    else if (e.kind === 'action') actions.push(e)
     else out.push(e)
   }
+  const values = diff.filter((c): c is ValueChange => c.kind === 'value')
+  const actionAt = foldActions(actions, values)
   for (const c of diff) {
     if (c.kind !== 'value') {
       out.push(c)
@@ -273,7 +311,11 @@ function reconcile(events: readonly ReducerEvent[], diff: readonly Change[]): Ch
       if (!v.path.includes('.') && !v.path.includes('[')) continue
       if (isUnder(c.path, v.path)) via = v.message
     }
-    out.push(via === undefined ? c : { ...c, via })
+    const action = actionAt.get(c.path)
+    let next: Change = c
+    if (via !== undefined) next = { ...next, via }
+    if (action !== undefined) next = { ...next, action }
+    out.push(next)
   }
   return out
 }

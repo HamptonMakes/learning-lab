@@ -34,8 +34,8 @@ describe('applyStep: auto-highlights (§6 step 4)', () => {
       { id: 'k2', kind: 'highlight', paths: ['bob.new'], tone: 'change', auto: true },
     ])
     expect(s1.changes).toEqual([
-      { kind: 'value', path: 'alice.doc', op: 'changed' },
-      { kind: 'value', path: 'bob.new', op: 'added' },
+      { kind: 'value', path: 'alice.doc', op: 'changed', action: { key: 'stage.op.setPlain' } },
+      { kind: 'value', path: 'bob.new', op: 'added', action: { key: 'stage.op.setPlain' } },
       { kind: 'mark', id: 'k1', op: 'added' },
       { kind: 'mark', id: 'k2', op: 'added' },
     ])
@@ -45,7 +45,7 @@ describe('applyStep: auto-highlights (§6 step 4)', () => {
     ])
     // transient marks of s1 are not reported as removed: the diff runs against prev with transients cleared
     expect(s2.changes).toEqual([
-      { kind: 'value', path: 'alice.doc', op: 'changed' },
+      { kind: 'value', path: 'alice.doc', op: 'changed', action: { key: 'stage.op.setPlain' } },
       { kind: 'mark', id: 'k3', op: 'added' },
     ])
     const s3 = apply(s2.world, step('s03', { t: 'tick' }))
@@ -70,7 +70,9 @@ describe('applyStep: auto-highlights (§6 step 4)', () => {
       autoHighlight: false,
     })
     expect(off.world.marks).toEqual([])
-    expect(off.changes).toEqual([{ kind: 'value', path: 'alice.doc', op: 'changed' }])
+    expect(off.changes).toEqual([
+      { kind: 'value', path: 'alice.doc', op: 'changed', action: { key: 'stage.op.setPlain' } },
+    ])
     const parked = apply(
       w,
       step(
@@ -98,7 +100,7 @@ describe('applyStep: auto-highlights (§6 step 4)', () => {
     )
     expect(s.world.marks).toEqual([])
     expect(ofKind(s.changes, 'value')).toEqual([
-      { kind: 'value', path: 'alice.r.b', op: 'changed' },
+      { kind: 'value', path: 'alice.r.b', op: 'changed', action: { key: 'stage.op.setPlain' } },
     ])
   })
 
@@ -185,7 +187,13 @@ describe('applyStep: reconcile (§6 step 5)', () => {
         message: expect.objectContaining({ id: 'm3' }),
         transient: true,
       },
-      { kind: 'value', path: 'server.doc', op: 'added', via: 'm3' },
+      {
+        kind: 'value',
+        path: 'server.doc',
+        op: 'added',
+        via: 'm3',
+        action: { key: 'stage.op.setPlain', by: 'alice' },
+      },
       { kind: 'mark', id: 'k1', op: 'added' },
     ])
   })
@@ -230,8 +238,14 @@ describe('applyStep: reconcile (§6 step 5)', () => {
         message: expect.objectContaining({ id: 'm2' }),
         transient: true,
       },
-      { kind: 'value', path: 'bob.doc', op: 'changed' },
-      { kind: 'value', path: 'server.doc.b', op: 'changed', via: 'm1' },
+      { kind: 'value', path: 'bob.doc', op: 'changed', action: { key: 'stage.op.setPlain' } },
+      {
+        kind: 'value',
+        path: 'server.doc.b',
+        op: 'changed',
+        via: 'm1',
+        action: { key: 'stage.op.setPlain', by: 'alice' },
+      },
       { kind: 'mark', id: 'k1', op: 'added' },
       { kind: 'mark', id: 'k2', op: 'added' },
     ])
@@ -368,5 +382,97 @@ describe('expect / makeAssert (§4.5)', () => {
     expect(warn).not.toHaveBeenCalled()
     const assert = makeAssert('ignore')
     expect(assert(w, { t: 'expect', path: 'nope.nope', equals: 1 })).toBe(w)
+  })
+})
+
+describe('applyStep: action labels folded into changes (§14 Change.action)', () => {
+  const valuesOf = (changes: Change[]) => ofKind(changes, 'value')
+
+  it('an action lands on the change at its path; a set of a record lands on the fields that changed', () => {
+    const w = slots(fixtureWorld(), 'alice', { r: rec({ a: scalar(1), b: scalar(2) }) })
+    const s = apply(
+      w,
+      step(
+        's01',
+        { t: 'set', path: 'alice.n', value: 2 },
+        { t: 'set', path: 'alice.r', value: rec({ a: scalar(1), b: scalar(3) }) },
+      ),
+    )
+    expect(valuesOf(s.changes)).toEqual([
+      { kind: 'value', path: 'alice.n', op: 'changed', action: { key: 'stage.op.setPlain' } },
+      { kind: 'value', path: 'alice.r.b', op: 'changed', action: { key: 'stage.op.setPlain' } },
+    ])
+  })
+
+  it('a move / a range set (no change at their own path) ride on the nearest ancestor change', () => {
+    const w = slots(fixtureWorld(), 'alice', { l: list(['a', 'b']), id: bytesOf('0011') })
+    const s = apply(
+      w,
+      step(
+        's01',
+        { t: 'move', path: 'alice.l[b]', to: 0 },
+        { t: 'set', path: 'alice.id[0..1]', value: [0xff] as never },
+      ),
+    )
+    expect(valuesOf(s.changes)).toEqual([
+      {
+        kind: 'value',
+        path: 'alice.l',
+        op: 'changed',
+        action: { key: 'stage.op.move', vars: { value: 'b' } },
+      },
+      { kind: 'value', path: 'alice.id', op: 'changed', action: { key: 'stage.op.setPlain' } },
+    ])
+  })
+
+  it('the last action on a path wins; a CRDT op lands on the row it touched, in its actor', () => {
+    const s = apply(
+      fixtureWorld(),
+      step(
+        's01',
+        { t: 'crdt.init', actors: ['alice', 'bob'], slot: 'views', type: 'g-counter' },
+        { t: 'crdt.update', actor: 'alice', slot: 'views', op: 'inc' },
+        { t: 'crdt.update', actor: 'alice', slot: 'views', op: 'inc', args: [2] },
+        { t: 'set', path: 'alice.n', value: 5 },
+        { t: 'set', path: 'alice.n', value: 6 },
+      ),
+    )
+    expect(valuesOf(s.changes)).toEqual([
+      { kind: 'value', path: 'alice.n', op: 'changed', action: { key: 'stage.op.setPlain' } },
+      {
+        kind: 'value',
+        path: 'alice.views',
+        op: 'added',
+        action: { key: 'stage.op.inc', vars: { n: 2 }, by: 'alice' },
+      },
+      { kind: 'value', path: 'bob.views', op: 'added' },
+    ])
+  })
+
+  it('a whole-slot merge folds into every change under the slot; an unchanged side gets none', () => {
+    const w0 = apply(
+      fixtureWorld(),
+      step(
+        's00',
+        { t: 'crdt.init', actors: ['alice', 'bob'], slot: 'cart', type: 'or-set' },
+        { t: 'crdt.update', actor: 'alice', slot: 'cart', op: 'add', args: ['milk'] },
+        { t: 'crdt.update', actor: 'alice', slot: 'cart', op: 'add', args: ['eggs'] },
+      ),
+    ).world
+    const s = apply(w0, step('s01', { t: 'crdt.sync', a: 'alice', b: 'bob', slot: 'cart' }))
+    expect(valuesOf(s.changes)).toEqual([
+      {
+        kind: 'value',
+        path: 'bob.cart[eggs]',
+        op: 'added',
+        action: { key: 'stage.op.merge', by: 'alice' },
+      },
+      {
+        kind: 'value',
+        path: 'bob.cart[milk]',
+        op: 'added',
+        action: { key: 'stage.op.merge', by: 'alice' },
+      },
+    ])
   })
 })

@@ -79,14 +79,19 @@ import { vcDominates, vcMerge, vcReceive, vcTick } from '../../crdt/vector-clock
 import {
   decodeHlcStamp,
   encodeHlcStamp,
+  fmtQuoted,
   opLabel,
+  opLabelParts,
   orderedVc,
+  renderOpLabel,
   summarizeState,
   toValue as viewValue,
+  type OpLabelParts,
 } from '../crdt-view'
 import { setAt } from '../path'
 import {
   ReducerError,
+  type ActionLabel,
   type Actor,
   type ActorId,
   type CrdtArgs,
@@ -110,6 +115,7 @@ import {
   type ViewCtx,
   type World,
 } from '../types'
+import { actionOf, docPartPath, plainAction, pushAction, touchedPaths } from './actions'
 import type { ReduceCtx } from './context'
 import { mintId } from './ids'
 import { assertPlainTarget } from './values'
@@ -536,7 +542,7 @@ function applyLocalOp(
   cmdTs: number | undefined,
   ctx: ReduceCtx,
   cmd: unknown,
-): { world: World; id: Dot } {
+): { world: World; id: Dot; parts: OpLabelParts } {
   const actor = requireActor(w, actorId, ctx, cmd)
   const before = requireReplica(w, actorId, slot, ctx, cmd)
   const { world: w1, ts } = resolveTs(w, actor, before, cmdTs, u.path, ctx, cmd)
@@ -549,11 +555,12 @@ function applyLocalOp(
   const state = guard(ctx, cmd, where, () => T.effect(replica.state, op))
   const id = dot(actorId, replica.seq + 1)
   const used = Math.max(1, calls())
+  const parts = opLabelParts(replica.type, op, replica.state)
   const rec: OpRecord = {
     id,
     op,
     deps: replica.version,
-    label: opLabel(replica.type, op, replica.state),
+    label: renderOpLabel(parts),
     ts,
   }
   if (u.path !== undefined) rec.path = u.path
@@ -566,7 +573,19 @@ function applyLocalOp(
     log: [...replica.log, rec],
     pending: [...replica.pending, id],
   }
-  return { world: setReplica(w1, actorId, slot, next), id }
+  return { world: setReplica(w1, actorId, slot, next), id, parts }
+}
+
+/** The one action chip of an RGA macro (`type` / `deleteRange`): the whole run, not every character. */
+function macroAction(u: RealUpdate, by: ActorId): ActionLabel {
+  if (u.op === 'type') {
+    return plainAction(
+      'stage.op.insert',
+      { value: fmtQuoted(u.args[1]), anchor: String(u.args[0]) },
+      by,
+    )
+  }
+  return plainAction('stage.op.deleteRange', { from: String(u.args[0]), to: String(u.args[1]) }, by)
 }
 
 function reduceUpdate(w: World, cmd: UpdateCommand, ctx: ReduceCtx): World {
@@ -575,18 +594,28 @@ function reduceUpdate(w: World, cmd: UpdateCommand, ctx: ReduceCtx): World {
   let world = w
   const u: RealUpdate = { op: cmd.op, args: cmd.args ?? [] }
   if (cmd.path !== undefined) u.path = cmd.path
+  const macro = u.op === 'type' || u.op === 'deleteRange'
+  const slotPath = `${cmd.actor}.${cmd.slot}`
   runWithMacros(
     replica.type,
     u,
     () => requireReplica(world, cmd.actor, cmd.slot, ctx, cmd).state,
     (real) => {
+      const shown = world.actors[cmd.actor]?.holds[cmd.slot]
       const r = applyLocalOp(world, cmd.actor, cmd.slot, real, cmd.ts, ctx, cmd)
       world = r.world
+      if (!macro) {
+        // The action lands on the node the op touched (the row, item, field …), in the actor's hue.
+        const label = actionOf(r.parts, cmd.actor)
+        const touched = touchedPaths(shown, world.actors[cmd.actor]?.holds[cmd.slot], slotPath)
+        for (const path of touched) pushAction(ctx, path, label)
+      }
       return r.id
     },
     ctx,
     cmd,
   )
+  if (macro) pushAction(ctx, docPartPath(cmd.actor, cmd.slot, cmd.path), macroAction(u, cmd.actor))
   const after = valueOf(world, requireReplica(world, cmd.actor, cmd.slot, ctx, cmd), false)
   if (sameValue(before, after)) world = addUnchanged(world, cmd.actor, cmd.slot)
   return world
@@ -816,6 +845,11 @@ function mergeInto(
   return { world, changed: !sameValue(before, after) }
 }
 
+/** The whole-slot "merge" chip, in the hue of the replica the state came from. */
+function mergeAction(from: ActorId): ActionLabel {
+  return plainAction('stage.op.merge', undefined, from)
+}
+
 function requireOnlinePair(
   w: World,
   a: ActorId,
@@ -857,7 +891,8 @@ function reduceMerge(w: World, cmd: MergeCommand, ctx: ReduceCtx): World {
   )
   let out = addFlow(world, cmd.from, cmd.into, cmd.slot, false)
   ctx.log.push({ kind: 'sync', slot: cmd.slot, from: cmd.from, to: cmd.into, both: false })
-  if (!changed) out = addUnchanged(out, cmd.into, cmd.slot)
+  if (changed) pushAction(ctx, `${cmd.into}.${cmd.slot}`, mergeAction(cmd.from))
+  else out = addUnchanged(out, cmd.into, cmd.slot)
   return out
 }
 
@@ -870,8 +905,10 @@ function reduceSyncState(w: World, cmd: CrdtSyncCommand, ctx: ReduceCtx): World 
   const mb = mergeInto(ma.world, cmd.b, cmd.slot, ra, ctx, cmd, where)
   let out = addFlow(mb.world, cmd.a, cmd.b, cmd.slot, true)
   ctx.log.push({ kind: 'sync', slot: cmd.slot, from: cmd.a, to: cmd.b, both: true })
-  if (!ma.changed) out = addUnchanged(out, cmd.a, cmd.slot)
-  if (!mb.changed) out = addUnchanged(out, cmd.b, cmd.slot)
+  if (ma.changed) pushAction(ctx, `${cmd.a}.${cmd.slot}`, mergeAction(cmd.b))
+  else out = addUnchanged(out, cmd.a, cmd.slot)
+  if (mb.changed) pushAction(ctx, `${cmd.b}.${cmd.slot}`, mergeAction(cmd.a))
+  else out = addUnchanged(out, cmd.b, cmd.slot)
   return out
 }
 
@@ -1394,6 +1431,7 @@ function applyState(
   const { world, changed } = mergeInto(w, msg.to, data.slot, data, ctx, msg, `deliver ${msg.id}`)
   if (changed) {
     ctx.log.push({ kind: 'via', path: `${msg.to}.${data.slot}`, message: msg.id })
+    pushAction(ctx, `${msg.to}.${data.slot}`, mergeAction(msg.from))
     return world
   }
   return addUnchanged(world, msg.to, data.slot)
@@ -1440,6 +1478,13 @@ function applyOp(
   const world = setReplica(w, to, data.slot, next)
   if (sameValue(before, valueOf(world, next, false))) return addUnchanged(world, to, data.slot)
   ctx.log.push({ kind: 'via', path: `${to}.${data.slot}`, message: msg.id })
+  // The op's own label, in its creator's hue, on the node it touched here.
+  const label = actionOf(opLabelParts(replica.type, rec.op, replica.state), node)
+  const slotPath = `${to}.${data.slot}`
+  const shownBefore = w.actors[to]?.holds[data.slot]
+  for (const path of touchedPaths(shownBefore, world.actors[to]?.holds[data.slot], slotPath)) {
+    pushAction(ctx, path, label)
+  }
   return world
 }
 
@@ -1502,6 +1547,7 @@ function applyStamp(w: World, msg: Message, slot: SlotId, raw: unknown, ctx: Red
   const world = setReplica(w, msg.to, slot, { ...replica, state: next })
   if (canonicalJson(next) !== canonicalJson(replica.state)) {
     ctx.log.push({ kind: 'via', path: `${msg.to}.${slot}`, message: msg.id })
+    pushAction(ctx, `${msg.to}.${slot}`, plainAction('stage.op.receive', undefined, msg.from))
   }
   return world
 }
@@ -1533,6 +1579,7 @@ export function applyIncoming(
     assertPlainTarget(world, opts.into, ctx, msg)
     world = setAt(world, opts.into, msg.payload)
     ctx.log.push({ kind: 'via', path: opts.into, message: msg.id })
+    pushAction(ctx, opts.into, plainAction('stage.op.setPlain', undefined, msg.from))
   } else {
     ctx.log.push({ kind: 'via', path: msg.to, message: msg.id })
   }
@@ -1550,22 +1597,24 @@ export function stampForSend(
 ): { world: World; meta: Meta } {
   const actor = requireActor(w, from, ctx, { t: 'send', from, stamp: slot })
   const replica = requireReplica(w, from, slot, ctx, { t: 'send', from, stamp: slot })
+  // The send rule ticks the sender's clock: a visible change, chipped "tick" in the sender's hue.
+  const ticked = (state: unknown): World => {
+    pushAction(ctx, `${from}.${slot}`, plainAction('stage.op.tick', undefined, from))
+    return setReplica(w, from, slot, { ...replica, state })
+  }
   switch (replica.type) {
     case 'lamport-clock': {
       const next = lamportTick(replica.state as number)
-      return { world: setReplica(w, from, slot, { ...replica, state: next }), meta: { ts: next } }
+      return { world: ticked(next), meta: { ts: next } }
     }
     case 'vector-clock': {
       const next = vcTick(replica.state as VectorClock, from)
-      return {
-        world: setReplica(w, from, slot, { ...replica, state: next }),
-        meta: { vc: orderedVc(next, Object.keys(w.actors)) },
-      }
+      return { world: ticked(next), meta: { vc: orderedVc(next, Object.keys(w.actors)) } }
     }
     case 'hlc': {
       const next = hlcNow(replica.state as Hlc, wallTime(w, actor))
       return {
-        world: setReplica(w, from, slot, { ...replica, state: next }),
+        world: ticked(next),
         meta: { hlc: { wall: next.wall, counter: next.counter }, ts: encodeHlcStamp(next) },
       }
     }

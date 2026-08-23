@@ -529,7 +529,10 @@ describe('§15.1 LWW register — send and merge', () => {
       value: 'Lunch',
       meta: { ts: 2, node: 'bob' },
     })
-    expect(s07.log.events).toEqual([{ kind: 'via', path: 'alice.status', message: 'm2' }])
+    expect(s07.log.events).toEqual([
+      { kind: 'via', path: 'alice.status', message: 'm2' },
+      { kind: 'action', path: 'alice.status', label: { key: 'stage.op.merge', by: 'bob' } },
+    ])
     expect(plain(w, 'alice.status@node')).toBe('bob')
     expect(rep(w, 'alice', 'status').version).toEqual({ alice: 1, bob: 1 })
   })
@@ -630,6 +633,7 @@ describe('§15.1 LWW register — send and merge', () => {
     expect(marks(w)).toEqual([{ kind: 'flow', from: 'alice.views', to: 'bob.views' }])
     expect(c.log.events).toEqual([
       { kind: 'sync', slot: 'views', from: 'alice', to: 'bob', both: false },
+      { kind: 'action', path: 'bob.views', label: { key: 'stage.op.merge', by: 'alice' } },
     ])
     expect(rep(w, 'bob', 'views')).toMatchObject({ version: { alice: 1 }, pending: [] })
     w = local(w, { t: 'crdt.merge', into: 'bob', from: 'alice', slot: 'views' })
@@ -680,6 +684,7 @@ describe('§15.2 OR-Set — re-add after a concurrent remove (crdt.sync)', () =>
     ])
     expect(s03.log.events).toEqual([
       { kind: 'sync', slot: 'cart', from: 'alice', to: 'bob', both: true },
+      { kind: 'action', path: 'bob.cart', label: { key: 'stage.op.merge', by: 'alice' } },
     ])
     expect(rep(w, 'bob', 'cart').version).toEqual({ alice: 1 })
     // s04: Bob removes milk — he drops alice:1
@@ -743,7 +748,14 @@ describe('crdt.broadcast + deliver (ops on the wire)', () => {
     expect(plain(w, 'bob.likes')).toBe(1)
     expect(rep(w, 'bob', 'likes')).toMatchObject({ version: { alice: 1 }, applied: ['alice:1'] })
     expect(rep(w, 'bob', 'likes').log.map((r) => r.id)).toEqual(['alice:1'])
-    expect(c.log.events.at(-1)).toEqual({ kind: 'via', path: 'bob.likes', message: 'alice:1@bob' })
+    expect(c.log.events.slice(-2)).toEqual([
+      { kind: 'via', path: 'bob.likes', message: 'alice:1@bob' },
+      {
+        kind: 'action',
+        path: 'bob.likes',
+        label: { key: 'stage.op.inc', vars: { n: 1 }, by: 'alice' },
+      },
+    ])
     // a duplicate (retry) changes nothing and says so
     const dup: Message = { ...(out.messages[0] as Message), id: 'alice:1-retry@bob' }
     const w2 = applyIncoming(w, dup, {}, c)
@@ -933,8 +945,11 @@ describe('send.stamp / deliver recv (clock rules)', () => {
     expect(plain(w, 'bob.clock')).toBe(4)
     expect(holds(w, 'bob', 'note')).toEqual({ kind: 'scalar', value: 'hi', meta: { ts: 3 } })
     expect(s.c.log.events).toEqual([
+      { kind: 'action', path: 'alice.clock', label: { key: 'stage.op.tick', by: 'alice' } },
       { kind: 'via', path: 'bob.clock', message: 'm1' },
+      { kind: 'action', path: 'bob.clock', label: { key: 'stage.op.receive', by: 'alice' } },
       { kind: 'via', path: 'bob.note', message: 'm1' },
+      { kind: 'action', path: 'bob.note', label: { key: 'stage.op.setPlain', by: 'alice' } },
     ])
     // a bare `recv` on a plain message reads the stamp from payload.meta; no into ⇒ via on the card
     const c2 = ctx()
@@ -966,7 +981,9 @@ describe('send.stamp / deliver recv (clock rules)', () => {
     w = deliver(s.world, 'm1', s.c)
     expect(plain(w, 'bob.vc')).toEqual({ alice: 2, bob: 1 })
     expect(s.c.log.events).toEqual([
+      { kind: 'action', path: 'alice.vc', label: { key: 'stage.op.tick', by: 'alice' } },
       { kind: 'via', path: 'bob.vc', message: 'm1' },
+      { kind: 'action', path: 'bob.vc', label: { key: 'stage.op.receive', by: 'alice' } },
       { kind: 'via', path: 'bob', message: 'm1' },
     ])
   })
@@ -1185,5 +1202,146 @@ describe('determinism', () => {
     expect(a).toEqual(b)
     expect(JSON.stringify(w0)).toBe(frozen)
     expect(JSON.parse(JSON.stringify(a))).toEqual(a) // replicas are plain JSON
+  })
+})
+
+// ─── Action labels (DSL §14 `Change.action`) ──────────────────────────────────────────────────
+
+describe('action events (the mutation points a value change shows)', () => {
+  const actions = (c: Ctx) =>
+    c.log.events.flatMap((e) => (e.kind === 'action' ? [{ path: e.path, ...e.label }] : []))
+
+  it('crdt.update: the op label, in the actor, on the node the op touched', () => {
+    let w = local(world(), init(['alice', 'bob'], 'views', 'g-counter'))
+    const c1 = ctx()
+    w = local(w, update('alice', 'views', 'inc'), c1)
+    expect(actions(c1)).toEqual([
+      { path: 'alice.views[alice]', key: 'stage.op.inc', vars: { n: 1 }, by: 'alice' },
+    ])
+    w = local(w, init(['alice', 'bob'], 'status', 'lww-register'))
+    const c2 = ctx()
+    w = local(w, update('alice', 'status', 'set', ['Lunch']), c2)
+    expect(actions(c2)).toEqual([
+      { path: 'alice.status', key: 'stage.op.set', vars: { value: 'Lunch' }, by: 'alice' },
+    ])
+    w = local(w, init(['alice', 'bob'], 'cart', 'or-set'))
+    const c3 = ctx()
+    w = local(w, update('alice', 'cart', 'add', ['milk']), c3)
+    w = local(w, update('alice', 'cart', 'add', ['eggs']), c3)
+    w = local(w, update('alice', 'cart', 'remove', ['milk']), c3)
+    expect(actions(c3)).toEqual([
+      {
+        path: 'alice.cart[milk]',
+        key: 'stage.op.addTag',
+        vars: { value: 'milk', tag: 'alice:1' },
+        by: 'alice',
+      },
+      {
+        path: 'alice.cart[eggs]',
+        key: 'stage.op.addTag',
+        vars: { value: 'eggs', tag: 'alice:2' },
+        by: 'alice',
+      },
+      {
+        path: 'alice.cart[milk]',
+        key: 'stage.op.removeTags',
+        vars: { value: 'milk', tags: 'alice:1' },
+        by: 'alice',
+      },
+    ])
+    w = local(w, init(['alice', 'bob'], 'note', 'rga'))
+    const c4 = ctx()
+    w = local(w, update('alice', 'note', 'insertAfter', ['HEAD', 'h']), c4)
+    expect(actions(c4)).toEqual([
+      {
+        path: 'alice.note[alice:1]',
+        key: 'stage.op.insert',
+        vars: { value: '"h"', anchor: 'HEAD' },
+        by: 'alice',
+      },
+    ])
+    // an op that changes nothing visible (g-set re-add) names the slot; a clock tick names the slot
+    w = local(w, init(['alice'], 'seen', 'g-set'))
+    w = local(w, update('alice', 'seen', 'add', ['x']))
+    const c5 = ctx()
+    local(w, update('alice', 'seen', 'add', ['x']), c5)
+    expect(actions(c5)).toEqual([
+      { path: 'alice.seen', key: 'stage.op.add', vars: { value: 'x' }, by: 'alice' },
+    ])
+  })
+
+  it('crdt.update on a composed document lands on the part; rga macros make one chip for the run', () => {
+    let w = local(world(), {
+      t: 'crdt.doc',
+      actors: ['alice'],
+      slot: 'card',
+      fields: { title: 'lww-register', qty: 'g-counter', text: 'rga' },
+    })
+    const c = ctx()
+    w = local(w, update('alice', 'card', 'inc', [2], { path: 'qty' }), c)
+    w = local(w, update('alice', 'card', 'set', ['Q3'], { path: 'title' }), c)
+    w = local(w, update('alice', 'card', 'type', ['HEAD', 'hi'], { path: 'text' }), c)
+    expect(actions(c)).toEqual([
+      { path: 'alice.card.qty[alice]', key: 'stage.op.inc', vars: { n: 2 }, by: 'alice' },
+      { path: 'alice.card.title', key: 'stage.op.set', vars: { value: 'Q3' }, by: 'alice' },
+      {
+        path: 'alice.card.text',
+        key: 'stage.op.insert',
+        vars: { value: '"hi"', anchor: 'HEAD' },
+        by: 'alice',
+      },
+    ])
+    const c2 = ctx()
+    local(w, update('alice', 'card', 'deleteRange', ['alice:3', 'alice:4'], { path: 'text' }), c2)
+    expect(actions(c2)).toEqual([
+      {
+        path: 'alice.card.text',
+        key: 'stage.op.deleteRange',
+        vars: { from: 'alice:3', to: 'alice:4' },
+        by: 'alice',
+      },
+    ])
+  })
+
+  it('merge / sync: "merge" on every slot that changed, in the hue of where the state came from', () => {
+    let w = local(world(), init(['alice', 'bob'], 'cart', 'or-set'))
+    w = local(w, update('alice', 'cart', 'add', ['milk']))
+    w = local(w, update('bob', 'cart', 'add', ['eggs']))
+    const c = ctx()
+    w = local(w, { t: 'crdt.sync', a: 'alice', b: 'bob', slot: 'cart' }, c)
+    expect(actions(c)).toEqual([
+      { path: 'alice.cart', key: 'stage.op.merge', by: 'bob' },
+      { path: 'bob.cart', key: 'stage.op.merge', by: 'alice' },
+    ])
+    // nothing new for bob → no merge chip for him (the "no change" pill speaks)
+    w = local(w, update('alice', 'cart', 'add', ['jam']))
+    const c2 = ctx()
+    w = local(w, { t: 'crdt.merge', into: 'bob', from: 'alice', slot: 'cart' }, c2)
+    expect(actions(c2)).toEqual([{ path: 'bob.cart', key: 'stage.op.merge', by: 'alice' }])
+    const c3 = ctx()
+    local(w, { t: 'crdt.merge', into: 'bob', from: 'alice', slot: 'cart' }, c3)
+    expect(actions(c3)).toEqual([])
+  })
+
+  it('a delivered state merges ("merge"); a delivered op carries its own label in its creator', () => {
+    let w = local(world(), init(['alice', 'bob'], 'views', 'g-counter'))
+    w = local(w, update('alice', 'views', 'inc', [3]))
+    const sent = wire(w, { t: 'crdt.send', from: 'alice', to: 'bob', slot: 'views', id: 'm1' })
+    const c = ctx()
+    w = deliver(sent.world, 'm1', c)
+    expect(actions(c)).toEqual([{ path: 'bob.views', key: 'stage.op.merge', by: 'alice' }])
+    w = local(w, init(['alice', 'bob'], 'cart', 'or-set', { wire: 'ops' }))
+    w = local(w, update('alice', 'cart', 'add', ['milk']))
+    const out = wire(w, { t: 'crdt.broadcast', from: 'alice', slot: 'cart' })
+    const c2 = ctx()
+    deliver(out.world, 'alice:1@bob', c2)
+    expect(actions(c2)).toEqual([
+      {
+        path: 'bob.cart[milk]',
+        key: 'stage.op.addTag',
+        vars: { value: 'milk', tag: 'alice:1' },
+        by: 'alice',
+      },
+    ])
   })
 })

@@ -30,6 +30,7 @@ import {
   type ValueCommand,
   type World,
 } from '../types'
+import { plainAction, pushAction } from './actions'
 import { fail, markQuiet, type ReduceCtxX } from './scratch'
 import { isScalar } from './world'
 
@@ -215,6 +216,7 @@ export function reduceValues(w: World, cmd: ValueCommand, ctx: ReduceCtxX): Worl
         }
         next = setAt(w, cmd.path, value)
       }
+      pushAction(ctx, cmd.path, plainAction('stage.op.setPlain'))
       if (cmd.quiet) markQuiet(ctx, cmd.path)
       return next
     }
@@ -227,6 +229,8 @@ export function reduceValues(w: World, cmd: ValueCommand, ctx: ReduceCtxX): Worl
     case 'insert': {
       assertPlainTarget(w, cmd.path, ctx, cmd)
       let insertedId = ''
+      let insertedAs = ''
+      let actionKey = cmd.index === undefined ? 'stage.op.append' : 'stage.op.insertPlain'
       const next = updateAt(w, cmd.path, (container) => {
         if (container.kind === 'list' || container.kind === 'set') {
           const raw = cmd.item
@@ -242,6 +246,8 @@ export function reduceValues(w: World, cmd: ValueCommand, ctx: ReduceCtxX): Worl
             checkIndex(ctx, cmd, cmd.index, container.items.length, 'insert')
           }
           insertedId = item.id
+          insertedAs = isScalar(raw) ? String(raw) : item.id
+          if (container.kind === 'set') actionKey = 'stage.op.add'
           return { ...container, items: insertAtIndex(container.items, item, cmd.index) }
         }
         if (container.kind === 'table') {
@@ -262,10 +268,12 @@ export function reduceValues(w: World, cmd: ValueCommand, ctx: ReduceCtxX): Worl
             checkIndex(ctx, cmd, cmd.index, container.rows.length, 'insert')
           }
           insertedId = raw.id
+          insertedAs = raw.id
           return { ...container, rows: insertAtIndex(container.rows, raw, cmd.index) }
         }
         throw fail(ctx, cmd, `insert works on lists, sets and tables, not a ${container.kind}`)
       })
+      pushAction(ctx, `${cmd.path}[${insertedId}]`, plainAction(actionKey, { value: insertedAs }))
       if (cmd.quiet) markQuiet(ctx, `${cmd.path}[${insertedId}]`)
       return next
     }
@@ -325,6 +333,11 @@ export function reduceValues(w: World, cmd: ValueCommand, ctx: ReduceCtxX): Worl
           throw fail(ctx, cmd, `cannot delete "[${id}]" of a ${container.kind}`, cmd.path)
         })
       }
+      pushAction(
+        ctx,
+        cmd.path,
+        plainAction('stage.op.deletePlain', { value: 'key' in last ? last.key : last.id }),
+      )
       if (cmd.quiet) markQuiet(ctx, cmd.path)
       return next
     }
@@ -349,12 +362,14 @@ export function reduceValues(w: World, cmd: ValueCommand, ctx: ReduceCtxX): Worl
         }
         throw fail(ctx, cmd, `move works on list, set and table items`, cmd.path)
       })
+      pushAction(ctx, cmd.path, plainAction('stage.op.move', { value: last.id }))
       if (cmd.quiet) markQuiet(ctx, parent)
       return next
     }
     case 'sort': {
       assertPlainTarget(w, cmd.path, ctx, cmd)
       if (cmd.by.length === 0) throw fail(ctx, cmd, `sort needs at least one key`, cmd.path)
+      pushAction(ctx, cmd.path, plainAction('stage.op.sort'))
       return updateAt(w, cmd.path, (container) => {
         if (container.kind === 'list') {
           return {

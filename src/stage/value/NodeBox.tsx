@@ -7,7 +7,8 @@
  * registers the element in the anchor registry under its path (and any alias, e.g. `@tomb` and
  * `@tombstone`); and draws what sits ON the node: the highlight ring pulse, the change flash, the
  * via flash + chip, and the check / cross glyph. Layers draw everything else (callouts, pills,
- * bolts, links) from the registry. All motion goes through `tr()`; under `off` everything is at rest.
+ * action chips, bolts, links) from the registry. All motion goes through `tr()`; under `off`
+ * everything is at rest.
  */
 import { useCallback, type CSSProperties, type ReactNode } from 'react'
 import { motion, type HTMLMotionProps } from 'motion/react'

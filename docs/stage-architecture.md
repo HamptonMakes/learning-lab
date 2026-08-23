@@ -66,7 +66,7 @@ src/stage/
         annotations.ts (lane assignment, nibble snapping)
   message/MessageLayer.tsx  MessageToken.tsx  DeckToken.tsx  TransientFlight.tsx  TokenPayload.tsx
   marks/MarkLayer.tsx (SVG)  CalloutLayer.tsx (HTML)  Highlight.tsx  Callout.tsx  ConflictBolt.tsx
-        CompareLinks.tsx  VerdictChip.tsx  FlowArrow.tsx  UnchangedPill.tsx  CheckCross.tsx
+        CompareLinks.tsx  VerdictChip.tsx  FlowArrow.tsx  UnchangedPill.tsx  ActionChip.tsx  CheckCross.tsx
   hud/ClockHud.tsx      corner HUD (counter | ms | time)
   testing/lab.ts        window.__lab installer (dev / VITE_LAB_HOOK builds, and only with ?lab=1)
 src/regex/              backtracking VM driven by regex.init / regex.advance (DSL §5.3)
@@ -229,7 +229,9 @@ full in `title`), `applied` ≤ 3 ids (`+n`), `stats` (`5/7`), `type` chip ("LWW
 footnote. Sidecar selectors (`alice.status@ts`, `alice.status@node`, `bob.cart[milk]@tags`,
 `alice.cart[milk]@tomb`) are anchors too: each badge renders `data-path` for its key so highlights and
 callouts can point at it. `ViaChip` (sender initial
-in the sender's hue) sits on a value node whose path has a `via` change this frame.
+in the sender's hue) sits on a value node whose path has a `via` change this frame; the `ActionChip`
+(the operation that changed it — `inc 2`, `add milk #alice:1`, `merge` …, from `Change.action`) is
+pinned on the node's top-end corner by the `CalloutLayer` (§5.3).
 
 The sidecar is gated for legibility; a gated badge stays in the DOM, visually hidden (`sr-only`,
 `aria-hidden`, `data-hidden=""`), so its anchor and its `data-path` / `data-value` still resolve.
@@ -537,33 +539,34 @@ to the deck. The arc endpoint is `message.into` when given (a value node), else 
 
 ### 5.1 What animates per command / change
 
-| Command / change                                         | DOM strategy                                           | Motion API                                                                                                                                                                                   |
-| -------------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `spawn` / `remove` actor                                 | card mounts/unmounts                                   | `AnimatePresence` around cards; `initial={{opacity:0, scale:.96}}` / `exit`; siblings glide with `layout="position"`; in-flight tokens to/from it exit as `dropped` (poof)                   |
-| `note` / `removeBoard`                                   | board mounts / changes / unmounts in the gutter        | `AnimatePresence` + `layout="position"`; a replaced note crossfades its text (`AnimatePresence mode="wait"` on the text node keyed by `text`)                                                |
-| `layout` preset / hub                                    | `data-layout` + `data-slot` change                     | cards `layout="position"` inside `LayoutGroup` (forces siblings to re-measure)                                                                                                               |
-| `set` / `patch` (auto-highlight)                         | value node text / badge changes                        | `Highlight` ring: `animate={{ opacity:[0,1,.7] }}` once; resting state is the static look; badge `layout` + `AnimatePresence` for appearing badges                                           |
-| `insert` / `delete` / `move` / `sort` (list, set, table) | item mount/unmount/reorder                             | items `<motion.li layout layoutId={path}>`; `AnimatePresence mode="popLayout" anchorX={dir==='rtl'?'right':'left'}`; tombstones stay (`data-tombstone`) and only restyle                     |
-| `annotate` / `unannotate`                                | annotation lane mounts/unmounts under bytes/text       | `AnimatePresence` + `layout` on the lane; lanes are deterministic (sort by `from`, then `id`; first free lane) so two renders stack identically                                              |
-| `view` (bytes)                                           | display mode changes                                   | each byte cell `layoutId={`${path}[${i}]`}`; `hex`↔`bits` expands the `range`, `canonical` regroups into `8-4-4-4-12`, `dec` relabels; glyphs crossfade (`AnimatePresence mode="popLayout"`) |
-| `send` / `duplicate`                                     | token mounts                                           | `MessageToken` enters `offsetDistance 0% → stackOffset(i)%`; `duplicate` enters at the original's position                                                                                   |
-| `deliver`                                                | token unmounts, `into` path changes, via chip          | exit `→ 100%` + fade; destination node flashes in the sender's hue and shows the `ViaChip`; a control message (no `into`) flashes the recipient card                                         |
-| `deliver { park }` / send to an offline actor            | token changes `data-state` → `parked`                  | same token: `offsetDistance → 100%` then `x/y` to the `<to>@inbox` rect (two-phase `animate` sequence via keyframes + `times`); static = sitting in the tray                                 |
-| `drop`                                                   | token unmounts                                         | exit `→ 70%`, `scale: 1.4, opacity: 0` (poof); destination does not flash                                                                                                                    |
-| `relay`                                                  | original delivered + copies sent                       | the original's exit + new tokens' enter in one frame (or transient flights, below)                                                                                                           |
-| same-step send + deliver (`transient: true`)             | `TransientFlight` mounts for one frame                 | keyed by `${frame.index}:${message.id}`; `offsetDistance 0% → 100%` with `tr('travel')`, then unmount; not drawn under reduced motion / instant — the via chip is the record                 |
-| `offline` / `online`                                     | `data-online`                                          | card `animate={{ opacity: online ? 1 : .55 }}`; "no connection" badge presence                                                                                                               |
-| `status` / `skew`                                        | badge text / presence                                  | `AnimatePresence` on `StatusBadge`; `ClockBadge` digit flip                                                                                                                                  |
-| `tick`                                                   | clock HUD (+ every clock badge)                        | number flip via `AnimatePresence mode="popLayout"` on the digit; format by `clock.format` (`t3` / `150 ms` / `hh:mm` from `start`)                                                           |
-| `highlight`                                              | `data-highlight` on each of `paths`                    | ring pulse (as `set`), persistent when `sticky`                                                                                                                                              |
-| `callout`                                                | bubble mounts near anchor (card / value / board / msg) | `AnimatePresence` + `initial={{opacity:0, y:4}}`; on `msg:<id>` it mounts after the token's travel (`ms(TRAVEL_MS)`), instantly under reduced motion                                         |
-| `conflict`                                               | SVG bolt between two anchors                           | `<motion.path initial={{pathLength:0}} animate={{pathLength:1}}>` + ⚡ badge at midpoint                                                                                                     |
-| `compare`                                                | `=`/`≠` links (n paths) or a verdict chip (2 paths)    | links: `motion.path pathLength` draw-on; chip: glyph + word (`≺ before`, `∥ concurrent`, `< less`, `ts 1 < 2`), bidi-mirrored glyphs, `data-verdict`                                         |
-| `check` / `cross`                                        | glyph at anchor                                        | `motion.path pathLength` draw-on                                                                                                                                                             |
-| `unchanged` (reducer-generated)                          | "no change" pill at `<actor>.<slot>`                   | `AnimatePresence` + `initial={{opacity:0, scale:.9}}`; transient (one step)                                                                                                                  |
-| `flow` (reducer-generated, `sync` change)                | faint arrow between two slots (double-headed)          | `motion.path pathLength` draw-on along `arcBetween(slotA, slotB)`; transient                                                                                                                 |
-| `crdt.update` (outbox)                                   | chip appears in `OutboxChips`                          | `AnimatePresence` + `layout`; `crdt.broadcast` / `crdt.send` empty the chips as tokens take off                                                                                              |
-| `regex.advance`                                          | pattern/text cursors move, annotations, stack, meter   | cursor caret = a `motion.span layout` child keyed by index; `Meter` width animated with Motion (never CSS transitions)                                                                       |
+| Command / change                                                              | DOM strategy                                           | Motion API                                                                                                                                                                                              |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `spawn` / `remove` actor                                                      | card mounts/unmounts                                   | `AnimatePresence` around cards; `initial={{opacity:0, scale:.96}}` / `exit`; siblings glide with `layout="position"`; in-flight tokens to/from it exit as `dropped` (poof)                              |
+| `note` / `removeBoard`                                                        | board mounts / changes / unmounts in the gutter        | `AnimatePresence` + `layout="position"`; a replaced note crossfades its text (`AnimatePresence mode="wait"` on the text node keyed by `text`)                                                           |
+| `layout` preset / hub                                                         | `data-layout` + `data-slot` change                     | cards `layout="position"` inside `LayoutGroup` (forces siblings to re-measure)                                                                                                                          |
+| `set` / `patch` (auto-highlight)                                              | value node text / badge changes                        | `Highlight` ring: `animate={{ opacity:[0,1,.7] }}` once; resting state is the static look; badge `layout` + `AnimatePresence` for appearing badges                                                      |
+| `insert` / `delete` / `move` / `sort` (list, set, table)                      | item mount/unmount/reorder                             | items `<motion.li layout layoutId={path}>`; `AnimatePresence mode="popLayout" anchorX={dir==='rtl'?'right':'left'}`; tombstones stay (`data-tombstone`) and only restyle                                |
+| `annotate` / `unannotate`                                                     | annotation lane mounts/unmounts under bytes/text       | `AnimatePresence` + `layout` on the lane; lanes are deterministic (sort by `from`, then `id`; first free lane) so two renders stack identically                                                         |
+| `view` (bytes)                                                                | display mode changes                                   | each byte cell `layoutId={`${path}[${i}]`}`; `hex`↔`bits` expands the `range`, `canonical` regroups into `8-4-4-4-12`, `dec` relabels; glyphs crossfade (`AnimatePresence mode="popLayout"`)            |
+| `send` / `duplicate`                                                          | token mounts                                           | `MessageToken` enters `offsetDistance 0% → stackOffset(i)%`; `duplicate` enters at the original's position                                                                                              |
+| `deliver`                                                                     | token unmounts, `into` path changes, via chip          | exit `→ 100%` + fade; destination node flashes in the sender's hue and shows the `ViaChip`; a control message (no `into`) flashes the recipient card                                                    |
+| `deliver { park }` / send to an offline actor                                 | token changes `data-state` → `parked`                  | same token: `offsetDistance → 100%` then `x/y` to the `<to>@inbox` rect (two-phase `animate` sequence via keyframes + `times`); static = sitting in the tray                                            |
+| `drop`                                                                        | token unmounts                                         | exit `→ 70%`, `scale: 1.4, opacity: 0` (poof); destination does not flash                                                                                                                               |
+| `relay`                                                                       | original delivered + copies sent                       | the original's exit + new tokens' enter in one frame (or transient flights, below)                                                                                                                      |
+| same-step send + deliver (`transient: true`)                                  | `TransientFlight` mounts for one frame                 | keyed by `${frame.index}:${message.id}`; `offsetDistance 0% → 100%` with `tr('travel')`, then unmount; not drawn under reduced motion / instant — the via chip is the record                            |
+| `offline` / `online`                                                          | `data-online`                                          | card `animate={{ opacity: online ? 1 : .55 }}`; "no connection" badge presence                                                                                                                          |
+| `status` / `skew`                                                             | badge text / presence                                  | `AnimatePresence` on `StatusBadge`; `ClockBadge` digit flip                                                                                                                                             |
+| `tick`                                                                        | clock HUD (+ every clock badge)                        | number flip via `AnimatePresence mode="popLayout"` on the digit; format by `clock.format` (`t3` / `150 ms` / `hh:mm` from `start`)                                                                      |
+| `highlight`                                                                   | `data-highlight` on each of `paths`                    | ring pulse (as `set`), persistent when `sticky`                                                                                                                                                         |
+| `callout`                                                                     | bubble mounts near anchor (card / value / board / msg) | `AnimatePresence` + `initial={{opacity:0, y:4}}`; on `msg:<id>` it mounts after the token's travel (`ms(TRAVEL_MS)`), instantly under reduced motion                                                    |
+| `conflict`                                                                    | SVG bolt between two anchors                           | `<motion.path initial={{pathLength:0}} animate={{pathLength:1}}>` + ⚡ badge at midpoint                                                                                                                |
+| `compare`                                                                     | `=`/`≠` links (n paths) or a verdict chip (2 paths)    | links: `motion.path pathLength` draw-on; chip: glyph + word (`≺ before`, `∥ concurrent`, `< less`, `ts 1 < 2`), bidi-mirrored glyphs, `data-verdict`                                                    |
+| `check` / `cross`                                                             | glyph at anchor                                        | `motion.path pathLength` draw-on                                                                                                                                                                        |
+| `unchanged` (reducer-generated)                                               | "no change" pill at `<actor>.<slot>`                   | `AnimatePresence` + `initial={{opacity:0, scale:.9}}`; transient (one step)                                                                                                                             |
+| `Change.action` (any value write: set / insert / crdt op / merge / receive …) | action chip on the changed node's top-end corner       | `ActionChip` in `CalloutLayer` (positioned from the anchor registry): `initial={{opacity:0, y:3, scale:.92}}` with `tr('enter')`; keyed by frame + path so it re-enters each step; transient (one step) |
+| `flow` (reducer-generated, `sync` change)                                     | faint arrow between two slots (double-headed)          | `motion.path pathLength` draw-on along `arcBetween(slotA, slotB)`; transient                                                                                                                            |
+| `crdt.update` (outbox)                                                        | chip appears in `OutboxChips`                          | `AnimatePresence` + `layout`; `crdt.broadcast` / `crdt.send` empty the chips as tokens take off                                                                                                         |
+| `regex.advance`                                                               | pattern/text cursors move, annotations, stack, meter   | cursor caret = a `motion.span layout` child keyed by index; `Meter` width animated with Motion (never CSS transitions)                                                                                  |
 
 `pathLength` is a Motion SVG prop (drives `stroke-dasharray/offset`); `offsetDistance` is an
 animatable style (a CSS property on HTML; motion-dom also lists `offsetDistance/offsetPath/
@@ -756,6 +759,24 @@ Notes:
 - **Unchanged** pills (`t('stage.noChange')`) sit at the slot anchor's top-end corner; **callouts**
   are positioned by `CalloutLayer` from the anchor rect with a side chosen by available space
   (`start`/`end`/above/below in logical terms).
+- **Action chips** (`ActionChip`, drawn by `CalloutLayer`) make every mutation point visible: a value
+  change that carries `Change.action` (DSL §14 — `{ key: 'stage.op.*', vars?, by? }`, folded in by the
+  reducer) shows `t(key, vars)` — `inc 2`, `set Lunch`, `add milk #alice:1`, `insert "h" after
+alice:1`, `append c`, `delete a`, `move b`, `sort`, `merge`, `receive`, `tick` — as a small pill
+  (12px medium, hue-soft fill, hue text, 18px tall) pinned at the node's top-end corner: it hangs
+  above and outward of the corner, overlapping it by 4px, so it never sits on the value text; it
+  flips inward (back over the node's top edge) only when hanging outward would leave the stage or run
+  more than a card's padding into another card or a board (`chipSide`); RTL mirrors by itself. The hue
+  is the acting actor's (`by`: the local updater, the merge / receive source, the op's creator; the
+  accent when nobody acted — a plain `set`), and a tiny lucide icon names the family so colour is
+  never the only signal (`plus` inc / add / insert, `minus` dec / remove, `pencil` set, `trash`
+  delete, `arrows` move / sort, `merge`, `arrow-down-to-line` receive, `clock` tick, `ban` no-op).
+  `StageContext.actions` decides where each chip draws: on its node; on the container when the node
+  was removed (a plain `delete` — the node is gone); once on the slot root when one action was folded
+  into several nodes of a slot (a `merge` that changed three rows, a `receive` that bumped two clock
+  entries, an RGA `type` macro). A check / cross glyph on the same corner pushes the chip clear of it.
+  DOM: `data-action` (family), `data-action-key`, `data-action-by`, `data-action-path`, `data-side`.
+  Transient by construction (it rides on this step's changes); under `off` it renders at rest.
 - Tone colours come from tokens (`--change` maps to `--accent`, others to `--ok/--warn/--danger/--info`);
   the via flash uses the sender's actor hue (`--actor-a` …) **and** the `ViaChip` (sender initial), so
   colour is never the only signal. Icons accompany colour (check, x, bolt, verdict glyph).
@@ -1158,6 +1179,14 @@ replica after any CRDT command or delivery; the renderer never reads `replicas`.
 - `reconcile(log, diff)`: message and `sync` changes come from the log (a message that lived and died
   inside the step keeps both events with `transient: true`); everything else from the diff; `via` is
   copied onto the matching `value` changes; two writes to one path collapse into one `changed`.
+  `action` events (`{ kind: 'action', path, label }`, pushed by `set` / `insert` / `delete` / `move`
+  / `sort`, by `crdt.update` on the node the op touched (`actions.ts` diffs the slot's `holds` around
+  the op: `alice.views[alice]`, `alice.cart[milk]`, `alice.note[alice:3]`; an RGA macro pushes one
+  summary label on the slot), by `crdt.merge` / `crdt.sync` / a delivered state (`merge`, on every
+  slot that changed, `by` the source), by a delivered op (the op's own label, `by` its creator), by
+  a clock receive (`receive`) and a `send.stamp` tick (`tick`), and by `deliver … into` (`setPlain`))
+  fold into the `value` change at their path, else the nearest ancestor change (a `move` rewrites the
+  container), else every change under the path (a whole-slot merge); the last action on a path wins.
 - `addAutoHighlights` adds `{ kind: 'highlight', tone: 'change', auto: true, paths: [path] }` for each
   changed value path unless the step already marks that path (highlight / check / cross / conflict /
   compare), the command carried `quiet: true`, or the step declares `autoHighlight: false`. Values that
