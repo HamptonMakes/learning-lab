@@ -57,9 +57,10 @@ export const crdts: ModuleMeta = {
       summary: 'Send your whole state; merge with a rule that always agrees.',
       topics: [
         {
-          id: 'the-shape-of-a-state-crdt',
-          title: 'The shape of a state CRDT',
-          summary: 'State plus a merge that is commutative, associative, and idempotent.',
+          id: 'max-value',
+          title: 'Max value',
+          summary:
+            'The simplest CRDT: one number, merge = max. The three parts and the three laws.',
         },
         {
           id: 'lww-register',

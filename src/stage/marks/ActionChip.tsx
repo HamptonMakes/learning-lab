@@ -79,7 +79,7 @@ export function ActionChip({
         translate: `${tx} ${ty}`,
         ...(color ? hueVars(color) : ACCENT),
       }}
-      className="absolute inline-flex h-4.5 max-w-56 items-center gap-1 rounded-full bg-(--hue-soft) px-1.5 font-sans text-[12px] leading-none font-medium whitespace-nowrap text-(--hue) shadow-xs ring-1 ring-card"
+      className="absolute inline-flex h-4.5 max-w-48 items-center gap-1 rounded-full bg-(--hue-soft) px-1.5 font-sans text-[12px] leading-none font-medium whitespace-nowrap text-(--hue) shadow-xs ring-1 ring-card"
       initial={off ? false : { opacity: 0, y: 3, scale: 0.92 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, transition: tr('exit') }}

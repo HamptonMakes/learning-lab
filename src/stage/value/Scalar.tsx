@@ -49,7 +49,7 @@ export function Scalar({
     >
       <bdi
         className={cn(
-          'min-w-0 wrap-anywhere',
+          'min-w-0 wrap-break-word',
           type === 'number' && 'tabular-nums',
           (type === 'boolean' || type === 'null') && 'text-ink-2 italic',
           empty && 'text-ink-3',

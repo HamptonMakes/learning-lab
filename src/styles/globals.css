@@ -120,6 +120,19 @@
     @apply bg-background text-foreground;
     min-height: 100dvh;
   }
+  /* Clickable things show the hand (Tailwind v4's preflight leaves buttons at `cursor: default`). */
+  a[href],
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  [role='tab'],
+  [role='menuitem'],
+  [role='menuitemradio'],
+  [role='option'],
+  summary,
+  label[for],
+  input[type='range'] {
+    cursor: pointer;
+  }
   code,
   kbd,
   samp,

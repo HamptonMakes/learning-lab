@@ -33,7 +33,7 @@ export function Table({
       dataValue={dataValueOf(value)}
       tombstone={value.meta?.tombstone}
       className={cn(
-        'flex min-w-0 flex-col gap-1 rounded-sm font-mono text-(length:--value-fs) [--value-fs:13px]',
+        'flex min-w-0 flex-col gap-1 overflow-x-auto rounded-sm font-mono text-(length:--value-fs) [--value-fs:13px]',
         depth === 0 && 'px-0.5',
       )}
     >

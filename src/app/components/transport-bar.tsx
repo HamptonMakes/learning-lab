@@ -194,8 +194,8 @@ function ProgressDots({
 }) {
   const { t } = useI18n()
   if (total <= 0) return null
-  // Many steps: a slim scrubber instead of dots.
-  if (total > 40) {
+  // Many steps: a slim scrubber instead of dots (32 dots is what fits beside the keys at 1280px).
+  if (total > 32) {
     return (
       <input
         type="range"

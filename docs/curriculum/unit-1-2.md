@@ -748,7 +748,7 @@ Shared vocabulary, defined once in II.1 and reused: **state** (what one copy hol
 sidecar), **merge** (a function that takes two states and returns one), **sidecar** (the extra
 bookkeeping a CRDT carries next to the value — timestamps, node ids, tags, tombstones).
 
-### II.1 `the-shape-of-a-state-crdt`
+### II.1 `max-value` (was `the-shape-of-a-state-crdt`)
 
 **Goal.** Learn the shape every state-based CRDT has: a local state, local updates, and a `merge`
 that is commutative, associative, and idempotent — shown with one number.

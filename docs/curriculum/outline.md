@@ -14,7 +14,7 @@ Promise: finish the module and you can pick the right CRDT for a given piece of 
 
 ## Unit II — State-based CRDTs (send your state, merge)
 
-1. the-shape-of-a-state-crdt — state + merge(); merge is commutative, associative, idempotent (shown, not just said).
+1. max-value — state + merge(); merge is commutative, associative, idempotent (shown, not just said).
 2. lww-register — value + timestamp (+ node id tie-break). Update, merge, any order.
 3. lww-map — per-field LWW; a team-assignment doc where two people edit different fields.
 4. g-counter — per-node counts; merge = per-node max; value = sum.

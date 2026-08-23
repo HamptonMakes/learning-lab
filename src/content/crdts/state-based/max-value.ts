@@ -1,5 +1,5 @@
 /**
- * II.1 — The shape of a state CRDT. A max register (one number, merge = max) makes the three
+ * II.1 — Max value: the simplest CRDT. A max register (one number, merge = max) makes the three
  * parts (state, update, merge) and the three laws (commutative, associative, idempotent) visible
  * with plain arithmetic; the in-context scene lets a bad network lose, delay and duplicate
  * messages and shows the laws absorbing all of it. Every number on the stage is computed by
@@ -30,8 +30,8 @@ import {
 const RULE = 'merge(a, b) = max(a, b)'
 
 export default topic({
-  id: 'the-shape-of-a-state-crdt',
-  title: 'The shape of a state CRDT',
+  id: 'max-value',
+  title: 'Max value',
   goal: 'Learn what the three parts of a state-based CRDT are, the three laws its merge must obey, and why a bad network cannot break them.',
   rules: [
     'A state CRDT has three parts: a state, local updates, and a merge rule.',

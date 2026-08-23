@@ -36,6 +36,11 @@
   min-block-size: inherit;
 }
 
+/* The flow HUD (status line + keys) sits along the bottom edge; the layout reserves its row. */
+[data-stage]:has(> [data-flow-hud]) > .stage-layout {
+  padding-block-end: calc(var(--stage-pad) + 2.75rem);
+}
+
 /* The clock HUD sits at the top-end corner; the layout reserves its row so cards never run under it. */
 [data-stage]:has(> [data-clock]) > .stage-layout {
   padding-block-start: calc(var(--stage-pad) + var(--stage-clock-h));
@@ -151,7 +156,9 @@
    the card's far edge); a nested record keeps the same grid inside its cell. */
 [data-kind='record'][data-display='card'] {
   display: grid;
-  grid-template-columns: auto minmax(0, auto) auto;
+  /* The value column never shrinks below its longest word (a cramped grid drops columns instead;
+     see the container queries below) — `none` must never become `no / ne`. */
+  grid-template-columns: auto minmax(min-content, auto) auto;
   justify-content: start;
   column-gap: 0.625rem;
   row-gap: 0.125rem;
@@ -189,7 +196,35 @@
   inline-size: clamp(16rem, 30cqw, 22rem);
 }
 
-/* ---- narrow stage: gutter drops below the grid ---- */
+/* ---- the gutter drops below the grid when the cast needs the width ----
+   Three-column presets (triangle / hub / ring) and decision tables need more room than a side
+   gutter leaves, so they go column-wise earlier (≤ 72rem); pairs and rows hold out to 52rem. */
+@container stage (max-width: 72rem) {
+  .stage-layout:has(> .stage-actors[data-layout='triangle']),
+  .stage-layout:has(> .stage-actors[data-layout='hub']),
+  .stage-layout:has(> .stage-actors[data-layout='ring']),
+  .stage-layout:has(> .stage-boards > [data-board-kind='table']) {
+    flex-direction: column;
+  }
+  .stage-layout:has(> .stage-actors[data-layout='triangle']) > .stage-boards,
+  .stage-layout:has(> .stage-actors[data-layout='hub']) > .stage-boards,
+  .stage-layout:has(> .stage-actors[data-layout='ring']) > .stage-boards,
+  .stage-boards:has(> [data-board-kind='table']) {
+    inline-size: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: start;
+  }
+  .stage-layout:has(> .stage-actors[data-layout='triangle']) > .stage-boards > [data-board],
+  .stage-layout:has(> .stage-actors[data-layout='hub']) > .stage-boards > [data-board],
+  .stage-layout:has(> .stage-actors[data-layout='ring']) > .stage-boards > [data-board],
+  .stage-boards:has(> [data-board-kind='table']) > [data-board] {
+    flex: 1 1 14rem;
+  }
+  .stage-boards:has(> [data-board-kind='table']) > [data-board-kind='table'] {
+    flex: 1 1 100%;
+  }
+}
 @container stage (max-width: 52rem) {
   .stage-layout {
     flex-direction: column;
@@ -205,14 +240,31 @@
   }
 }
 
-/* ---- narrower still: every preset degrades to a two-column grid ---- */
+/* ---- narrower still: presets degrade to a two-column grid ----
+   Three-column presets go first (≤ 52rem: three cards across would crush record values); pairs
+   and rows hold until 40rem. */
+@container stage (max-width: 52rem) {
+  .stage-actors[data-layout='triangle'],
+  .stage-actors[data-layout='hub'],
+  .stage-actors[data-layout='ring'] {
+    grid-template-areas: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: row;
+  }
+  /* Beats the per-preset `[data-slot='s1'] { grid-area: s1 }` rules (same class+attr count, one more attr). */
+  .stage-actors[data-layout='triangle'] > [data-actor][data-slot],
+  .stage-actors[data-layout='hub'] > [data-actor][data-slot],
+  .stage-actors[data-layout='ring'] > [data-actor][data-slot] {
+    grid-area: auto;
+    max-inline-size: none;
+  }
+}
 @container stage (max-width: 40rem) {
   .stage-actors[data-layout] {
     grid-template-areas: none;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-auto-flow: row;
   }
-  /* Beats the per-preset `[data-slot='s1'] { grid-area: s1 }` rules (same class+attr count, one more attr). */
   .stage-actors[data-layout] > [data-actor][data-slot] {
     grid-area: auto;
     max-inline-size: none;

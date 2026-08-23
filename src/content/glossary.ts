@@ -60,7 +60,7 @@ export const GLOSSARY: GlossaryEntry[] = [
   {
     term: 'state-based',
     definition: 'A CRDT style where replicas send their whole state and merge it.',
-    href: '/crdts/state-based/the-shape-of-a-state-crdt',
+    href: '/crdts/state-based/max-value',
   },
   {
     term: 'operation-based',
@@ -76,12 +76,12 @@ export const GLOSSARY: GlossaryEntry[] = [
   {
     term: 'state',
     definition: 'Everything one copy holds: the value plus its sidecar (timestamps, ids, tags).',
-    href: '/crdts/state-based/the-shape-of-a-state-crdt',
+    href: '/crdts/state-based/max-value',
   },
   {
     term: 'max register',
     definition: 'The smallest state CRDT: one number; a merge keeps the bigger of the two.',
-    href: '/crdts/state-based/the-shape-of-a-state-crdt',
+    href: '/crdts/state-based/max-value',
   },
   {
     term: 'LWW register',

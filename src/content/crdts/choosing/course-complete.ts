@@ -103,7 +103,7 @@ export default topic({
         ),
         step(
           's03',
-          'State the three merge laws: order does not matter, grouping does not matter, merging twice is harmless ([The shape of a state CRDT](/crdts/state-based/the-shape-of-a-state-crdt)).',
+          'State the three merge laws: order does not matter, grouping does not matter, merging twice is harmless ([Max value](/crdts/state-based/max-value)).',
           insert('board.done', item('k2', 'The three merge laws')),
           check('board.done[k2]', { sticky: true, id: 'c2' }),
         ),
