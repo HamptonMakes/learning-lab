@@ -6,197 +6,225 @@
   "unitTitle": "How matching works",
   "topicTitle": "Backtracking",
   "firstInUnit": false,
-  "total": 27,
+  "total": 31,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "greedy-then-give-back",
-      "say": "Pattern `a.*b`: an a, then `.*` (any character, as many as possible), then a b. Text: \"aXbYb\".",
-      "file": "01-greedy-then-give-back-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "When greedy goes too far, the engine steps back.",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "greedy-then-give-back",
-      "say": "Position 0 is an a. Pass: cursor 1.",
-      "file": "02-greedy-then-give-back-s02.png"
+      "say": "Pattern `a.*b`: an a, then `.*` (any character, as many as possible), then a b. Text: \"aXbYb\".",
+      "file": "02-greedy-then-give-back-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "greedy-then-give-back",
-      "say": "`.*` is **greedy**: it takes as much as it can. First the X: its run, the span it holds, is 1 character, and a **choice point** c1 remembers that.",
-      "file": "03-greedy-then-give-back-s03.png"
+      "say": "Position 0 is an a. Pass: cursor 1.",
+      "file": "03-greedy-then-give-back-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "greedy-then-give-back",
-      "say": "Then b, Y, b. The run holds 4 and the cursor is at the end of the text, position 5.",
-      "file": "04-greedy-then-give-back-s04.png"
+      "say": "`.*` is **greedy**: it takes as much as it can. First the X: its run, the span it holds, is 1 character, and a **choice point** c1 remembers that.",
+      "file": "04-greedy-then-give-back-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "greedy-then-give-back",
-      "say": "The run asks for one more and finds no character left; that is a test, not a failure. The pattern moves on to b: 6 tries.",
-      "file": "05-greedy-then-give-back-s05.png"
+      "say": "Then b, Y, b. The run holds 4 and the cursor is at the end of the text, position 5.",
+      "file": "05-greedy-then-give-back-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "greedy-then-give-back",
-      "say": "Test b at position 5: nothing there. Fail, 7 tries.",
-      "file": "06-greedy-then-give-back-s06.png"
+      "say": "The run asks for one more and finds no character left; that is a test, not a failure. The pattern moves on to b: 6 tries.",
+      "file": "06-greedy-then-give-back-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "greedy-then-give-back",
-      "say": "**Backtracking**: back to c1, the run gives one character back (now 3), and b is tested at position 4: a b. Match, 0 to 5, 8 tries.",
-      "file": "07-greedy-then-give-back-s07.png"
+      "say": "Test b at position 5: nothing there. Fail, 7 tries.",
+      "file": "07-greedy-then-give-back-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "greedy-then-give-back",
-      "say": "Note which b it matched: the last one. Greedy means the longest span that works, not the first b it could have stopped at.",
-      "file": "08-greedy-then-give-back-s08.png"
+      "say": "**Backtracking**: back to c1, the run gives one character back (now 3), and b is tested at position 4: a b. Match, 0 to 5, 8 tries.",
+      "file": "08-greedy-then-give-back-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "greedy-then-give-back",
-      "say": "The **lazy** form `a.*?b` takes as little as it can. Reset: a passes, `.*?` takes nothing, and b is tested at position 1, an X: fail.",
-      "file": "09-greedy-then-give-back-s09.png"
+      "say": "Note which b it matched: the last one. Greedy means the longest span that works, not the first b it could have stopped at.",
+      "file": "09-greedy-then-give-back-s08.png"
     },
     {
       "index": 9,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "greedy-then-give-back",
-      "say": "Backtrack: the lazy run grows by one (the X), and b is tested at position 2: a b. Match, 0 to 3, the first b, in 4 tries.",
-      "file": "10-greedy-then-give-back-s10.png"
+      "say": "The **lazy** form `a.*?b` takes as little as it can. Reset: a passes, `.*?` takes nothing, and b is tested at position 1, an X: fail.",
+      "file": "10-greedy-then-give-back-s09.png"
     },
     {
       "index": 10,
-      "stepId": "s11",
+      "stepId": "s10",
       "sceneId": "greedy-then-give-back",
-      "say": "Both are correct; they answer different questions: the longest span, or the shortest. Every give-back is one more try.",
-      "file": "11-greedy-then-give-back-s11.png"
+      "say": "Backtrack: the lazy run grows by one (the X), and b is tested at position 2: a b. Match, 0 to 3, the first b, in 4 tries.",
+      "file": "11-greedy-then-give-back-s10.png"
     },
     {
       "index": 11,
-      "stepId": "s01",
-      "sceneId": "which-branch",
-      "say": "Alternation is a choice too: in `(a|ab)c`, group 1 is a or ab, then a c. Text: \"abc\".",
-      "file": "12-which-branch-s01.png"
+      "stepId": "s11",
+      "sceneId": "greedy-then-give-back",
+      "say": "Both are correct; they answer different questions: the longest span, or the shortest. Every give-back is one more try.",
+      "file": "12-greedy-then-give-back-s11.png"
     },
     {
       "index": 12,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "which-branch",
-      "say": "The engine takes the first branch, a, and saves choice point c1: the other branch, from position 0. The a passes and $1 is a.",
-      "file": "13-which-branch-s02.png"
+      "say": "Alternation is a choice too: in `(a|ab)c`, group 1 is a or ab, then a c. Text: \"abc\".",
+      "file": "13-which-branch-s01.png"
     },
     {
       "index": 13,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "which-branch",
-      "say": "Now c, at position 1: it is a b. Fail, 2 tries.",
-      "file": "14-which-branch-s03.png"
+      "say": "The engine takes the first branch, a, and saves choice point c1: the other branch, from position 0. The a passes and $1 is a.",
+      "file": "14-which-branch-s02.png"
     },
     {
       "index": 14,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "which-branch",
-      "say": "Backtrack: pop c1 and take the other branch from position 0. Its a passes; the group is open again, so $1 is empty.",
-      "file": "15-which-branch-s04.png"
+      "say": "Now c, at position 1: it is a b. Fail, 2 tries.",
+      "file": "15-which-branch-s03.png"
     },
     {
       "index": 15,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "which-branch",
-      "say": "Then b, at position 1: pass. Group 1 closes, and $1 is ab.",
-      "file": "16-which-branch-s05.png"
+      "say": "Backtrack: pop c1 and take the other branch from position 0. Its a passes; the group is open again, so $1 is empty.",
+      "file": "16-which-branch-s04.png"
     },
     {
       "index": 16,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "which-branch",
-      "say": "Then c, at position 2: pass. Match, 0 to 3, with $1 = ab, after 5 tries.",
-      "file": "17-which-branch-s06.png"
+      "say": "Then b, at position 1: pass. Group 1 closes, and $1 is ab.",
+      "file": "17-which-branch-s05.png"
     },
     {
       "index": 17,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "which-branch",
-      "say": "Each `|` and each quantifier is a place the engine may come back to. A few are cheap; many of them, nested, are not.",
-      "file": "18-which-branch-s07.png"
+      "say": "Then c, at position 2: pass. Match, 0 to 3, with $1 = ab, after 5 tries.",
+      "file": "18-which-branch-s06.png"
     },
     {
       "index": 18,
-      "stepId": "s01",
-      "sceneId": "blow-up",
-      "say": "Pattern `(a+)+b` on \"aaaX\" looks harmless: some a, then a b. But the inner `a+` sits inside an outer `+`: two quantifiers on the same characters.",
-      "file": "19-blow-up-s01.png"
+      "stepId": "s07",
+      "sceneId": "which-branch",
+      "say": "Each `|` and each quantifier is a place the engine may come back to. A few are cheap; many of them, nested, are not.",
+      "file": "19-which-branch-s07.png"
     },
     {
       "index": 19,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "blow-up",
-      "say": "Run it to the end: no match, and the tries meter reads 38. The engine tried every way to split aaa between the two pluses, then every later start.",
-      "file": "20-blow-up-s02.png"
+      "say": "Pattern `(a+)+b` on \"aaaX\" looks harmless: some a, then a b. But the inner `a+` sits inside an outer `+`: two quantifiers on the same characters.",
+      "file": "20-blow-up-s01.png"
     },
     {
       "index": 20,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "blow-up",
-      "say": "Same text, the plain pattern `a+b`: one quantifier. Run to the end: no match after 17 tries.",
-      "file": "21-blow-up-s03.png"
+      "say": "Run it to the end: no match, and the tries meter reads 38. The engine tried every way to split aaa between the two pluses, then every later start.",
+      "file": "21-blow-up-s02.png"
     },
     {
       "index": 21,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "blow-up",
-      "say": "One more a, \"aaaaX\": nested 84 tries, plain 26.",
-      "file": "22-blow-up-s04.png"
+      "say": "Same text, the plain pattern `a+b`: one quantifier. Run to the end: no match after 17 tries.",
+      "file": "22-blow-up-s03.png"
     },
     {
       "index": 22,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "blow-up",
-      "say": "Two more a, \"aaaaaaX\": nested 368 tries, plain 50. Each extra a about doubles the nested count; the plain count grows by a handful.",
-      "file": "23-blow-up-s05.png"
+      "say": "One more a, \"aaaaX\": nested 84 tries, plain 26.",
+      "file": "23-blow-up-s04.png"
     },
     {
       "index": 23,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "blow-up",
-      "say": "With 30 a characters in a row, the nested pattern needs about a billion tries (simplified). On a busy server, that is an outage.",
-      "file": "24-blow-up-s06.png"
+      "say": "Two more a, \"aaaaaaX\": nested 368 tries, plain 50. Each extra a about doubles the nested count; the plain count grows by a handful.",
+      "file": "24-blow-up-s05.png"
     },
     {
       "index": 24,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "blow-up",
-      "say": "Real outage: Cloudflare, 2019. One firewall rule ending in `.*.*=.*` pinned CPUs across the whole network for 27 minutes.",
-      "file": "25-blow-up-s07.png"
+      "say": "With 30 a characters in a row, the nested pattern needs about a billion tries (simplified). On a busy server, that is an outage.",
+      "file": "25-blow-up-s06.png"
     },
     {
       "index": 25,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "blow-up",
-      "say": "The fix: say what you mean. One quantifier per run of text, a class instead of `.*` (`[^\"]*` cannot run past a quote), and anchors.",
-      "file": "26-blow-up-s08.png"
+      "say": "Real outage: Cloudflare, 2019. One firewall rule ending in `.*.*=.*` pinned CPUs across the whole network for 27 minutes.",
+      "file": "26-blow-up-s07.png"
     },
     {
       "index": 26,
+      "stepId": "s08",
+      "sceneId": "blow-up",
+      "say": "The fix: say what you mean. One quantifier per run of text, a class instead of `.*` (`[^\"]*` cannot run past a quote), and anchors.",
+      "file": "27-blow-up-s08.png"
+    },
+    {
+      "index": 27,
       "stepId": "s09",
       "sceneId": "blow-up",
       "say": "Or use an engine that never backtracks (RE2, Go, Rust regex): no blow-ups, but no backreferences. Rule: no nested quantifiers on untrusted input.",
-      "file": "27-blow-up-s09.png"
+      "file": "28-blow-up-s09.png"
+    },
+    {
+      "index": 28,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "29-summary-use.png"
+    },
+    {
+      "index": 29,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "30-summary-avoid.png"
+    },
+    {
+      "index": 30,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "31-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:52:04.576Z"
+  "generatedAt": "2026-08-23T01:09:35.016Z"
 }

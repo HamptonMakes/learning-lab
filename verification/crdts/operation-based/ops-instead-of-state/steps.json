@@ -6,218 +6,246 @@
   "unitTitle": "Operation-based CRDTs",
   "topicTitle": "Ops instead of state",
   "firstInUnit": true,
-  "total": 30,
+  "total": 34,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "on-the-wire",
-      "say": "Alice, Bob and Carol each hold a copy of one shopping list: six items.",
-      "file": "01-on-the-wire-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "Ship operations; they must arrive once and in causal order.",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "on-the-wire",
-      "say": "Alice adds butter. Now she has to tell the others.",
-      "file": "02-on-the-wire-s02.png"
+      "say": "Alice, Bob and Carol each hold a copy of one shopping list: six items.",
+      "file": "02-on-the-wire-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "on-the-wire",
-      "say": "The Unit II way: send the whole state. Seven items travel to Bob for one change.",
-      "file": "03-on-the-wire-s03.png"
+      "say": "Alice adds butter. Now she has to tell the others.",
+      "file": "03-on-the-wire-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "on-the-wire",
-      "say": "Bob merges; his list was equal to hers, so the merge is a copy (simplified). It works, but the message was big.",
-      "file": "04-on-the-wire-s04.png"
+      "say": "The Unit II way: send the whole state. Seven items travel to Bob for one change.",
+      "file": "04-on-the-wire-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "on-the-wire",
-      "say": "The op-based way: send only what you did. Alice sends Carol one line: add butter.",
-      "file": "05-on-the-wire-s05.png"
+      "say": "Bob merges; his list was equal to hers, so the merge is a copy (simplified). It works, but the message was big.",
+      "file": "05-on-the-wire-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "on-the-wire",
-      "say": "Carol's connection is slow. Alice's app retries: the same op takes off a second time.",
-      "file": "06-on-the-wire-s06.png"
+      "say": "The op-based way: send only what you did. Alice sends Carol one line: add butter.",
+      "file": "06-on-the-wire-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "on-the-wire",
-      "say": "The first copy lands, and Carol applies it to her own list: butter. Same result as Bob, tiny message.",
-      "file": "07-on-the-wire-s07.png"
+      "say": "Carol's connection is slow. Alice's app retries: the same op takes off a second time.",
+      "file": "07-on-the-wire-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "on-the-wire",
-      "say": "The retry lands. Carol applies it again: add butter.",
-      "file": "08-on-the-wire-s08.png"
+      "say": "The first copy lands, and Carol applies it to her own list: butter. Same result as Bob, tiny message.",
+      "file": "08-on-the-wire-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "on-the-wire",
-      "say": "Whoops — Carol has butter twice, Alice once. One add became two.",
-      "file": "09-on-the-wire-s09.png"
+      "say": "The retry lands. Carol applies it again: add butter.",
+      "file": "09-on-the-wire-s08.png"
     },
     {
       "index": 9,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "on-the-wire",
-      "say": "The fix: give every op an id, and let each copy remember the ids it has applied. A repeat is then ignored.",
-      "file": "10-on-the-wire-s10.png"
+      "say": "Whoops — Carol has butter twice, Alice once. One add became two.",
+      "file": "10-on-the-wire-s09.png"
     },
     {
       "index": 10,
-      "stepId": "s11",
+      "stepId": "s10",
       "sceneId": "on-the-wire",
-      "say": "Send what you did, not what you have. It works only under two rules: every op once, and in **causal order**.",
-      "file": "11-on-the-wire-s11.png"
+      "say": "The fix: give every op an id, and let each copy remember the ids it has applied. A repeat is then ignored.",
+      "file": "11-on-the-wire-s10.png"
     },
     {
       "index": 11,
-      "stepId": "s01",
-      "sceneId": "every-op-once",
-      "say": "A like counter, the real thing this time. Every op gets an id, and each copy keeps a list of the ids it has applied.",
-      "file": "12-every-op-once-s01.png"
+      "stepId": "s11",
+      "sceneId": "on-the-wire",
+      "say": "Send what you did, not what you have. It works only under two rules: every op once, and in **causal order**.",
+      "file": "12-on-the-wire-s11.png"
     },
     {
       "index": 12,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "every-op-once",
-      "say": "Alice taps like. Her copy says 1, and her outbox holds one op, alice:1: inc 1.",
-      "file": "13-every-op-once-s02.png"
+      "say": "A like counter, the real thing this time. Every op gets an id, and each copy keeps a list of the ids it has applied.",
+      "file": "13-every-op-once-s01.png"
     },
     {
       "index": 13,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "every-op-once",
-      "say": "She broadcasts. The op flies to Bob with its id on the envelope.",
-      "file": "14-every-op-once-s03.png"
+      "say": "Alice taps like. Her copy says 1, and her outbox holds one op, alice:1: inc 1.",
+      "file": "14-every-op-once-s02.png"
     },
     {
       "index": 14,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "every-op-once",
-      "say": "The network is slow. Alice's app retries, and a second copy of alice:1 takes off.",
-      "file": "15-every-op-once-s04.png"
+      "say": "She broadcasts. The op flies to Bob with its id on the envelope.",
+      "file": "15-every-op-once-s03.png"
     },
     {
       "index": 15,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "every-op-once",
-      "say": "The first copy lands. Bob has not seen alice:1, so he applies it and writes alice:1 in his applied list: 1.",
-      "file": "16-every-op-once-s05.png"
+      "say": "The network is slow. Alice's app retries, and a second copy of alice:1 takes off.",
+      "file": "16-every-op-once-s04.png"
     },
     {
       "index": 16,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "every-op-once",
-      "say": "The retry lands. Bob finds alice:1 in his list and ignores it: no change.",
-      "file": "17-every-op-once-s06.png"
+      "say": "The first copy lands. Bob has not seen alice:1, so he applies it and writes alice:1 in his applied list: 1.",
+      "file": "17-every-op-once-s05.png"
     },
     {
       "index": 17,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "every-op-once",
-      "say": "Without that list, Bob would have added 1 again and shown 2. The id makes a repeat visible; the list makes it harmless.",
-      "file": "18-every-op-once-s07.png"
+      "say": "The retry lands. Bob finds alice:1 in his list and ignores it: no change.",
+      "file": "18-every-op-once-s06.png"
     },
     {
       "index": 18,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "every-op-once",
-      "say": "Alice likes again: a new op with a new id, alice:2. Bob has not seen alice:2, so it counts: 2.",
-      "file": "19-every-op-once-s08.png"
+      "say": "Without that list, Bob would have added 1 again and shown 2. The id makes a repeat visible; the list makes it harmless.",
+      "file": "19-every-op-once-s07.png"
     },
     {
       "index": 19,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "every-op-once",
-      "say": "Both say 2. Exactly once really means: at least once, and ignore what you have already applied.",
-      "file": "20-every-op-once-s09.png"
+      "say": "Alice likes again: a new op with a new id, alice:2. Bob has not seen alice:2, so it counts: 2.",
+      "file": "20-every-op-once-s08.png"
     },
     {
       "index": 20,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "every-op-once",
-      "say": "This check lives in the code that moves ops, not in the data type. Some types shrug off a repeat (a tagged add); a counter cannot.",
-      "file": "21-every-op-once-s10.png"
+      "say": "Both say 2. Exactly once really means: at least once, and ignore what you have already applied.",
+      "file": "21-every-op-once-s09.png"
     },
     {
       "index": 21,
-      "stepId": "s01",
-      "sceneId": "in-causal-order",
-      "say": "A shared list, the real thing: an **OR-Set** driven by ops. Both copies are empty.",
-      "file": "22-in-causal-order-s01.png"
+      "stepId": "s10",
+      "sceneId": "every-op-once",
+      "say": "This check lives in the code that moves ops, not in the data type. Some types shrug off a repeat (a tagged add); a counter cannot.",
+      "file": "22-every-op-once-s10.png"
     },
     {
       "index": 22,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "in-causal-order",
-      "say": "Alice adds milk: op alice:1. Then she changes her mind and removes it: op alice:2.",
-      "file": "23-in-causal-order-s02.png"
+      "say": "A shared list, the real thing: an **OR-Set** driven by ops. Both copies are empty.",
+      "file": "23-in-causal-order-s01.png"
     },
     {
       "index": 23,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "in-causal-order",
-      "say": "She broadcasts. Two ops fly to Bob, and the network does not promise to keep them in order.",
-      "file": "24-in-causal-order-s03.png"
+      "say": "Alice adds milk: op alice:1. Then she changes her mind and removes it: op alice:2.",
+      "file": "24-in-causal-order-s02.png"
     },
     {
       "index": 24,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "in-causal-order",
-      "say": "Whoops — alice:2 overtakes alice:1. The remove reaches Bob first, and he has nothing to remove yet.",
-      "file": "25-in-causal-order-s04.png"
+      "say": "She broadcasts. Two ops fly to Bob, and the network does not promise to keep them in order.",
+      "file": "25-in-causal-order-s03.png"
     },
     {
       "index": 25,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "in-causal-order",
-      "say": "Bob does not apply it. The op says it comes after alice:1, which he has not seen, so it waits in his inbox.",
-      "file": "26-in-causal-order-s05.png"
+      "say": "Whoops — alice:2 overtakes alice:1. The remove reaches Bob first, and he has nothing to remove yet.",
+      "file": "26-in-causal-order-s04.png"
     },
     {
       "index": 26,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "in-causal-order",
-      "say": "alice:1 arrives: add milk, tag alice:1. Bob applies it.",
-      "file": "27-in-causal-order-s06.png"
+      "say": "Bob does not apply it. The op says it comes after alice:1, which he has not seen, so it waits in his inbox.",
+      "file": "27-in-causal-order-s05.png"
     },
     {
       "index": 27,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "in-causal-order",
-      "say": "Now the parked op is ready. Bob applies alice:2: it kills tag alice:1, and milk is gone.",
-      "file": "28-in-causal-order-s07.png"
+      "say": "alice:1 arrives: add milk, tag alice:1. Bob applies it.",
+      "file": "28-in-causal-order-s06.png"
     },
     {
       "index": 28,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "in-causal-order",
-      "say": "Both lists are empty, and both agree. An op runs only after the ops it depends on.",
-      "file": "29-in-causal-order-s08.png"
+      "say": "Now the parked op is ready. Bob applies alice:2: it kills tag alice:1, and milk is gone.",
+      "file": "29-in-causal-order-s07.png"
     },
     {
       "index": 29,
+      "stepId": "s08",
+      "sceneId": "in-causal-order",
+      "say": "Both lists are empty, and both agree. An op runs only after the ops it depends on.",
+      "file": "30-in-causal-order-s08.png"
+    },
+    {
+      "index": 30,
       "stepId": "s09",
       "sceneId": "in-causal-order",
       "say": "Op ids, the applied list, and waiting for causal order are the price of sending ops. Real systems pay it with a server log or a sync protocol.",
-      "file": "30-in-causal-order-s09.png"
+      "file": "31-in-causal-order-s09.png"
+    },
+    {
+      "index": 31,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "32-summary-use.png"
+    },
+    {
+      "index": 32,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "33-summary-avoid.png"
+    },
+    {
+      "index": 33,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "34-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:48:36.247Z"
+  "generatedAt": "2026-08-23T01:05:33.055Z"
 }

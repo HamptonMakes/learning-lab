@@ -4,178 +4,206 @@
   "topic": "meet-crdts",
   "unitNumeral": "I",
   "unitTitle": "The Problem",
-  "topicTitle": "Meet CRDTs",
+  "topicTitle": "The CRDT idea",
   "firstInUnit": false,
-  "total": 24,
+  "total": 28,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "rule-up-front",
-      "say": "Three people, one set of tags. Before anyone types, we agree on one rule.",
-      "file": "01-rule-up-front-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "Rules set up front, merge in any order, every copy ends the same.",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "rule-up-front",
-      "say": "Each person gets an empty copy. This is a real **G-Set**, a preview of Unit II.",
-      "file": "02-rule-up-front-s02.png"
+      "say": "Three people, one set of tags. Before anyone types, we agree on one rule.",
+      "file": "02-rule-up-front-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "rule-up-front",
-      "say": "Alice adds \"urgent\", Bob adds \"bug\", Carol adds \"ui\". Nobody waits for anybody.",
-      "file": "03-rule-up-front-s03.png"
+      "say": "Each person gets an empty copy. This is a real **G-Set**, a preview of Unit II.",
+      "file": "03-rule-up-front-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "rule-up-front",
-      "say": "Three copies, three different states. In More than one copy, this was the problem.",
-      "file": "04-rule-up-front-s04.png"
+      "say": "Alice adds \"urgent\", Bob adds \"bug\", Carol adds \"ui\". Nobody waits for anybody.",
+      "file": "04-rule-up-front-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "rule-up-front",
-      "say": "Alice sends her copy to Bob. Bob **merges** it with the rule: union.",
-      "file": "05-rule-up-front-s05.png"
+      "say": "Three copies, three different states. In Copies that disagree, this was the problem.",
+      "file": "05-rule-up-front-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "rule-up-front",
-      "say": "Carol sends hers to Bob. Union again.",
-      "file": "06-rule-up-front-s06.png"
+      "say": "Alice sends her copy to Bob. Bob **merges** it with the rule: union.",
+      "file": "06-rule-up-front-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "rule-up-front",
-      "say": "Bob sends his copy to Alice and to Carol. Both merge.",
-      "file": "07-rule-up-front-s07.png"
+      "say": "Carol sends hers to Bob. Union again.",
+      "file": "07-rule-up-front-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "rule-up-front",
-      "say": "All three copies are the same. Nothing was lost, and nobody waited.",
-      "file": "08-rule-up-front-s08.png"
+      "say": "Bob sends his copy to Alice and to Carol. Both merge.",
+      "file": "08-rule-up-front-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "rule-up-front",
-      "say": "This is a **CRDT** (Conflict-free Replicated Data Type): copies change on their own, merge in any order, and always end up equal. The rule is the whole trick.",
-      "file": "09-rule-up-front-s09.png"
+      "say": "All three copies are the same. Nothing was lost, and nobody waited.",
+      "file": "09-rule-up-front-s08.png"
     },
     {
       "index": 9,
-      "stepId": "s01",
-      "sceneId": "any-order",
-      "say": "Same three tags, fresh copies. This time the messages arrive in a different order.",
-      "file": "10-any-order-s01.png"
+      "stepId": "s09",
+      "sceneId": "rule-up-front",
+      "say": "This is a **CRDT** (Conflict-free Replicated Data Type): copies change on their own, merge in any order, and always end up equal. The rule is the whole trick.",
+      "file": "10-rule-up-front-s09.png"
     },
     {
       "index": 10,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "any-order",
-      "say": "Everyone sends to everyone. Six messages are in flight.",
-      "file": "11-any-order-s02.png"
+      "say": "Same three tags, fresh copies. This time the messages arrive in a different order.",
+      "file": "11-any-order-s01.png"
     },
     {
       "index": 11,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "any-order",
-      "say": "Alice gets Carol's copy first, then Bob's.",
-      "file": "12-any-order-s03.png"
+      "say": "Everyone sends to everyone. Six messages are in flight.",
+      "file": "12-any-order-s02.png"
     },
     {
       "index": 12,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "any-order",
-      "say": "Bob gets Alice's first, then Carol's.",
-      "file": "13-any-order-s04.png"
+      "say": "Alice gets Carol's copy first, then Bob's.",
+      "file": "13-any-order-s03.png"
     },
     {
       "index": 13,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "any-order",
-      "say": "Carol's copy of Bob's message is slow. For now she only has Alice's.",
-      "file": "14-any-order-s05.png"
+      "say": "Bob gets Alice's first, then Carol's.",
+      "file": "14-any-order-s04.png"
     },
     {
       "index": 14,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "any-order",
-      "say": "Alice and Bob already agree, even though they merged in different orders.",
-      "file": "15-any-order-s06.png"
+      "say": "Carol's copy of Bob's message is slow. For now she only has Alice's.",
+      "file": "15-any-order-s05.png"
     },
     {
       "index": 15,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "any-order",
-      "say": "Bob's message finally lands. Now all three agree: this is **eventual consistency**.",
-      "file": "16-any-order-s07.png"
+      "say": "Alice and Bob already agree, even though they merged in different orders.",
+      "file": "16-any-order-s06.png"
     },
     {
       "index": 16,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "any-order",
-      "say": "Eventual means: once every message has arrived. Not always right now, but always the same in the end.",
-      "file": "17-any-order-s08.png"
+      "say": "Bob's message finally lands. Now all three agree: this is **eventual consistency**.",
+      "file": "17-any-order-s07.png"
     },
     {
       "index": 17,
-      "stepId": "s01",
-      "sceneId": "title-again",
-      "say": "Back to the title from More than one copy. This time we pick a rule first: the newest write wins (a preview of Unit II).",
-      "file": "18-title-again-s01.png"
+      "stepId": "s08",
+      "sceneId": "any-order",
+      "say": "Eventual means: once every message has arrived. Not always right now, but always the same in the end.",
+      "file": "18-any-order-s08.png"
     },
     {
       "index": 18,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "title-again",
-      "say": "Alice edits at t=1. Her copy remembers the value and the time.",
-      "file": "19-title-again-s02.png"
+      "say": "Back to the title from Copies that disagree. This time we pick a rule first: the newest write wins (a preview of Unit II).",
+      "file": "19-title-again-s01.png"
     },
     {
       "index": 19,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "title-again",
-      "say": "Bob edits at t=2. He has not seen Alice's edit.",
-      "file": "20-title-again-s03.png"
+      "say": "Alice edits at t=1. Her copy remembers the value and the time.",
+      "file": "20-title-again-s02.png"
     },
     {
       "index": 20,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "title-again",
-      "say": "Both save. The relay merges each one with the rule, and the order does not matter.",
-      "file": "21-title-again-s04.png"
+      "say": "Bob edits at t=2. He has not seen Alice's edit.",
+      "file": "21-title-again-s03.png"
     },
     {
       "index": 21,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "title-again",
-      "say": "Alice's save arrived last, but Bob's has the newer time, t=2. The relay keeps Bob's.",
-      "file": "22-title-again-s05.png"
+      "say": "Both save. The relay merges each one with the rule, and the order does not matter.",
+      "file": "22-title-again-s04.png"
     },
     {
       "index": 22,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "title-again",
-      "say": "The relay sends the result back. Every copy agrees, and everyone can see why.",
-      "file": "23-title-again-s06.png"
+      "say": "Alice's save arrived last, but Bob's has the newer time, t=2. The relay keeps Bob's.",
+      "file": "23-title-again-s05.png"
     },
     {
       "index": 23,
+      "stepId": "s06",
+      "sceneId": "title-again",
+      "say": "The relay sends the result back. Every copy agrees, and everyone can see why.",
+      "file": "24-title-again-s06.png"
+    },
+    {
+      "index": 24,
       "stepId": "s07",
       "sceneId": "title-again",
       "say": "Alice's edit still lost, but it lost by a rule everyone knows, not by luck. Unit II shows rules that lose less.",
-      "file": "24-title-again-s07.png"
+      "file": "25-title-again-s07.png"
+    },
+    {
+      "index": 25,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "26-summary-use.png"
+    },
+    {
+      "index": 26,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "27-summary-avoid.png"
+    },
+    {
+      "index": 27,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "28-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:46:47.117Z"
+  "generatedAt": "2026-08-23T01:03:25.327Z"
 }

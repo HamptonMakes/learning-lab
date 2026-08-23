@@ -6,162 +6,190 @@
   "unitTitle": "State-based CRDTs",
   "topicTitle": "G-Set",
   "firstInUnit": false,
-  "total": 22,
+  "total": 26,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "union",
-      "say": "A **G-Set** is a set you can only add to. The merge rule is **union**: keep everything either side has.",
-      "file": "01-union-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "A set you can only add to; merge is union.",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "union",
-      "say": "Each node has seen some message ids: Alice m1 and m2, Bob m2 and m3, Carol m4.",
-      "file": "02-union-s02.png"
+      "say": "A **G-Set** is a set you can only add to. The merge rule is **union**: keep everything either side has.",
+      "file": "02-union-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "union",
-      "say": "Alice sends her whole state to Bob.",
-      "file": "03-union-s03.png"
+      "say": "Each node has seen some message ids: Alice m1 and m2, Bob m2 and m3, Carol m4.",
+      "file": "03-union-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "union",
-      "say": "Bob merges: the union is m1, m2, m3. Both sides had m2, so it appears once.",
-      "file": "04-union-s04.png"
+      "say": "Alice sends her whole state to Bob.",
+      "file": "04-union-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "union",
-      "say": "Bob sends to Carol, and Carol sends on to Alice. Each merge is a union again.",
-      "file": "05-union-s05.png"
+      "say": "Bob merges: the union is m1, m2, m3. Both sides had m2, so it appears once.",
+      "file": "05-union-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "union",
-      "say": "Alice and Carol already agree. Bob is one step behind: nobody has told him about m4 yet.",
-      "file": "06-union-s06.png"
+      "say": "Bob sends to Carol, and Carol sends on to Alice. Each merge is a union again.",
+      "file": "06-union-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "union",
-      "say": "Alice sends to Bob once more. Now all three hold m1, m2, m3, m4.",
-      "file": "07-union-s07.png"
+      "say": "Alice and Carol already agree. Bob is one step behind: nobody has told him about m4 yet.",
+      "file": "07-union-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "union",
-      "say": "Carol got m1 through Bob, and Bob got m4 through Alice. The states went round in a ring; order and grouping did not matter.",
-      "file": "08-union-s08.png"
+      "say": "Alice sends to Bob once more. Now all three hold m1, m2, m3, m4.",
+      "file": "08-union-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "union",
-      "say": "Union is commutative, associative and idempotent by nature. A G-Set gets the three laws for free, with no sidecar at all.",
-      "file": "09-union-s09.png"
+      "say": "Carol got m1 through Bob, and Bob got m4 through Alice. The states went round in a ring; order and grouping did not matter.",
+      "file": "09-union-s08.png"
     },
     {
       "index": 9,
-      "stepId": "s01",
-      "sceneId": "no-remove",
-      "say": "A task has two tags, kept as a G-Set: draft and urgent. Both copies agree.",
-      "file": "10-no-remove-s01.png"
+      "stepId": "s09",
+      "sceneId": "union",
+      "say": "Union is commutative, associative and idempotent by nature. A G-Set gets the three laws for free, with no sidecar at all.",
+      "file": "10-union-s09.png"
     },
     {
       "index": 10,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "no-remove",
-      "say": "The task ships. Alice wants to remove draft.",
-      "file": "11-no-remove-s02.png"
+      "say": "A task has two tags, kept as a G-Set: draft and urgent. Both copies agree.",
+      "file": "11-no-remove-s01.png"
     },
     {
       "index": 11,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "no-remove",
-      "say": "Whoops — a G-Set has no remove. The only operation is add.",
-      "file": "12-no-remove-s03.png"
+      "say": "The task ships. Alice wants to remove draft.",
+      "file": "12-no-remove-s02.png"
     },
     {
       "index": 12,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "no-remove",
-      "say": "Even if her app hid draft on her screen, Bob still holds it. The next merge is a union, and union would bring it right back.",
-      "file": "13-no-remove-s04.png"
+      "say": "Whoops — a G-Set has no remove. The only operation is add.",
+      "file": "13-no-remove-s03.png"
     },
     {
       "index": 13,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "no-remove",
-      "say": "Bob syncs with Alice anyway. Both copies still show draft: no G-Set state can say that a tag is gone.",
-      "file": "14-no-remove-s05.png"
+      "say": "Even if her app hid draft on her screen, Bob still holds it. The next merge is a union, and union would bring it right back.",
+      "file": "14-no-remove-s04.png"
     },
     {
       "index": 14,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "no-remove",
-      "say": "If you need remove, you need more sidecar: a tombstone, a timestamp, or a tag. That is the next three topics.",
-      "file": "15-no-remove-s06.png"
+      "say": "Bob syncs with Alice anyway. Both copies still show draft: no G-Set state can say that a tag is gone.",
+      "file": "15-no-remove-s05.png"
     },
     {
       "index": 15,
-      "stepId": "s01",
-      "sceneId": "acks",
-      "say": "In context: an announcement. The title is an **LWW register**; the people who acknowledged it are a G-Set.",
-      "file": "16-acks-s01.png"
+      "stepId": "s06",
+      "sceneId": "no-remove",
+      "say": "If you need remove, you need more sidecar: a tombstone, a timestamp, or a tag. That is the next three topics.",
+      "file": "16-no-remove-s06.png"
     },
     {
       "index": 16,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "acks",
-      "say": "Alice taps acknowledge: her name joins acked. Carol is offline; she acknowledges too, and it waits on her phone.",
-      "file": "17-acks-s02.png"
+      "say": "In context: an announcement. The title is an **LWW register**; the people who acknowledged it are a G-Set.",
+      "file": "17-acks-s01.png"
     },
     {
       "index": 17,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "acks",
-      "say": "At t=1 Bob fixes a typo in the title, and acknowledges as well.",
-      "file": "18-acks-s03.png"
+      "say": "Alice taps acknowledge: her name joins acked. Carol is offline; she acknowledges too, and it waits on her phone.",
+      "file": "18-acks-s02.png"
     },
     {
       "index": 18,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "acks",
-      "say": "Alice and Bob sync with the relay. The relay now holds the fixed title and two acks.",
-      "file": "19-acks-s04.png"
+      "say": "At t=1 Bob fixes a typo in the title, and acknowledges as well.",
+      "file": "19-acks-s03.png"
     },
     {
       "index": 19,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "acks",
-      "say": "Carol comes back online and syncs. Her ack joins the union, and she gets the fixed title.",
-      "file": "20-acks-s05.png"
+      "say": "Alice and Bob sync with the relay. The relay now holds the fixed title and two acks.",
+      "file": "20-acks-s04.png"
     },
     {
       "index": 20,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "acks",
-      "say": "One more round with the relay. Every copy: the fixed title and three acks.",
-      "file": "21-acks-s06.png"
+      "say": "Carol comes back online and syncs. Her ack joins the union, and she gets the fixed title.",
+      "file": "21-acks-s05.png"
     },
     {
       "index": 21,
+      "stepId": "s06",
+      "sceneId": "acks",
+      "say": "One more round with the relay. Every copy: the fixed title and three acks.",
+      "file": "22-acks-s06.png"
+    },
+    {
+      "index": 22,
       "stepId": "s07",
       "sceneId": "acks",
       "say": "An ack can never be un-acked by accident. For this data, no remove is a feature, not a gap.",
-      "file": "22-acks-s07.png"
+      "file": "23-acks-s07.png"
+    },
+    {
+      "index": 23,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "24-summary-use.png"
+    },
+    {
+      "index": 24,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "25-summary-avoid.png"
+    },
+    {
+      "index": 25,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "26-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:47:50.058Z"
+  "generatedAt": "2026-08-23T01:04:38.841Z"
 }

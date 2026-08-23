@@ -6,155 +6,183 @@
   "unitTitle": "State-based CRDTs",
   "topicTitle": "LWW-Element-Set",
   "firstInUnit": false,
-  "total": 21,
+  "total": 25,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "two-times-per-element",
-      "say": "An **LWW-Element-Set** gives each element two timestamps: its newest add and its newest remove. The newer one decides.",
-      "file": "01-two-times-per-element-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "Timestamps per element. Add-wins or remove-wins.",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "two-times-per-element",
-      "say": "At t=1 Alice favorites jazz; at t=2 Bob favorites rock. Each add is stamped with its time.",
-      "file": "02-two-times-per-element-s02.png"
+      "say": "An **LWW-Element-Set** gives each element two timestamps: its newest add and its newest remove. The newer one decides.",
+      "file": "02-two-times-per-element-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "two-times-per-element",
-      "say": "They sync. Both hold jazz (added t=1) and rock (added t=2).",
-      "file": "03-two-times-per-element-s03.png"
+      "say": "At t=1 Alice favorites jazz; at t=2 Bob favorites rock. Each add is stamped with its time.",
+      "file": "03-two-times-per-element-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "two-times-per-element",
-      "say": "At t=3 Bob removes jazz. Jazz stays in the data with remove stamp t=3, but it is no longer in the set.",
-      "file": "04-two-times-per-element-s04.png"
+      "say": "They sync. Both hold jazz (added t=1) and rock (added t=2).",
+      "file": "04-two-times-per-element-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "two-times-per-element",
-      "say": "At t=4 Alice, who has not seen that, adds jazz again. Her add stamp is now t=4.",
-      "file": "05-two-times-per-element-s05.png"
+      "say": "At t=3 Bob removes jazz. Jazz stays in the data with remove stamp t=3, but it is no longer in the set.",
+      "file": "05-two-times-per-element-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "two-times-per-element",
-      "say": "They sync and keep the newest of each stamp per element. Jazz has add t=4 and remove t=3, so jazz is in.",
-      "file": "06-two-times-per-element-s06.png"
+      "say": "At t=4 Alice, who has not seen that, adds jazz again. Her add stamp is now t=4.",
+      "file": "06-two-times-per-element-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "two-times-per-element",
-      "say": "Re-add works, unlike the 2P-Set. The price: two timestamps per element, kept forever, and a clock you can trust.",
-      "file": "07-two-times-per-element-s07.png"
+      "say": "They sync and keep the newest of each stamp per element. Jazz has add t=4 and remove t=3, so jazz is in.",
+      "file": "07-two-times-per-element-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s01",
-      "sceneId": "bias",
-      "say": "Two sets that both hold pop, one per tie rule: addWins keeps pop on a tie, removeWins drops it. Alice and Bob each hold both.",
-      "file": "08-bias-s01.png"
+      "stepId": "s07",
+      "sceneId": "two-times-per-element",
+      "say": "Re-add works, unlike the 2P-Set. The price: two timestamps per element, kept forever, and a clock you can trust.",
+      "file": "08-two-times-per-element-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "bias",
-      "say": "At t=1, in both sets at once: Alice adds pop again (a fresh add stamp) and Bob removes pop. Neither has seen the other.",
-      "file": "09-bias-s02.png"
+      "say": "Two sets that both hold pop, one per tie rule: addWins keeps pop on a tie, removeWins drops it. Alice and Bob each hold both.",
+      "file": "09-bias-s01.png"
     },
     {
       "index": 9,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "bias",
-      "say": "Sync both sets. For pop, add t=1 and remove t=1: the timestamps tie and cannot decide.",
-      "file": "10-bias-s03.png"
+      "say": "At t=1, in both sets at once: Alice adds pop again (a fresh add stamp) and Bob removes pop. Neither has seen the other.",
+      "file": "10-bias-s02.png"
     },
     {
       "index": 10,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "bias",
-      "say": "addWins: pop is in. The tie went to the add, on both copies.",
-      "file": "11-bias-s04.png"
+      "say": "Sync both sets. For pop, add t=1 and remove t=1: the timestamps tie and cannot decide.",
+      "file": "11-bias-s03.png"
     },
     {
       "index": 11,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "bias",
-      "say": "removeWins: pop is out. Same stamps, other **bias**, and again both copies agree: the bias is part of the rule.",
-      "file": "12-bias-s05.png"
+      "say": "addWins: pop is in. The tie went to the add, on both copies.",
+      "file": "12-bias-s04.png"
     },
     {
       "index": 12,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "bias",
-      "say": "Pick the bias by cost: is an item wrongly present worse, or an item wrongly missing? Decide once, up front.",
-      "file": "13-bias-s06.png"
+      "say": "removeWins: pop is out. Same stamps, other **bias**, and again both copies agree: the bias is part of the rule.",
+      "file": "13-bias-s05.png"
     },
     {
       "index": 13,
-      "stepId": "s01",
-      "sceneId": "follows",
-      "say": "In context: a profile. The display name is an LWW register; the accounts Alice follows are an LWW-Element-Set, add-wins.",
-      "file": "14-follows-s01.png"
+      "stepId": "s06",
+      "sceneId": "bias",
+      "say": "Pick the bias by cost: is an item wrongly present worse, or an item wrongly missing? Decide once, up front.",
+      "file": "14-bias-s06.png"
     },
     {
       "index": 14,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "follows",
-      "say": "At t=1, on the phone, Alice follows @dan and syncs with the relay.",
-      "file": "15-follows-s02.png"
+      "say": "In context: a profile. The display name is an LWW register; the accounts Alice follows are an LWW-Element-Set, add-wins.",
+      "file": "15-follows-s01.png"
     },
     {
       "index": 15,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "follows",
-      "say": "The laptop syncs with the relay and sees @dan. Then the phone goes offline.",
-      "file": "16-follows-s03.png"
+      "say": "At t=1, on the phone, Alice follows @dan and syncs with the relay.",
+      "file": "16-follows-s02.png"
     },
     {
       "index": 16,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "follows",
-      "say": "At t=2, on the laptop, she unfollows @dan and renames herself to Alice Lee. The laptop syncs.",
-      "file": "17-follows-s04.png"
+      "say": "The laptop syncs with the relay and sees @dan. Then the phone goes offline.",
+      "file": "17-follows-s03.png"
     },
     {
       "index": 17,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "follows",
-      "say": "At t=3 the phone, still offline, taps follow @dan again. Its add stamp is t=3; it has not seen the remove.",
-      "file": "18-follows-s05.png"
+      "say": "At t=2, on the laptop, she unfollows @dan and renames herself to Alice Lee. The laptop syncs.",
+      "file": "18-follows-s04.png"
     },
     {
       "index": 18,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "follows",
-      "say": "The phone reconnects and syncs. For @dan, add t=3 beats remove t=2, so she is following again.",
-      "file": "19-follows-s06.png"
+      "say": "At t=3 the phone, still offline, taps follow @dan again. Its add stamp is t=3; it has not seen the remove.",
+      "file": "19-follows-s05.png"
     },
     {
       "index": 19,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "follows",
-      "say": "The laptop syncs too, and every copy agrees: name Alice Lee, following @dan. Her last tap won, which is what she meant.",
-      "file": "20-follows-s07.png"
+      "say": "The phone reconnects and syncs. For @dan, add t=3 beats remove t=2, so she is following again.",
+      "file": "20-follows-s06.png"
     },
     {
       "index": 20,
+      "stepId": "s07",
+      "sceneId": "follows",
+      "say": "The laptop syncs too, and every copy agrees: name Alice Lee, following @dan. Her last tap won, which is what she meant.",
+      "file": "21-follows-s07.png"
+    },
+    {
+      "index": 21,
       "stepId": "s08",
       "sceneId": "follows",
       "say": "Per element, the newest stamp wins. That only works when the stamps are honest; Unit IV is about making them so.",
-      "file": "21-follows-s08.png"
+      "file": "22-follows-s08.png"
+    },
+    {
+      "index": 22,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "23-summary-use.png"
+    },
+    {
+      "index": 23,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "24-summary-avoid.png"
+    },
+    {
+      "index": 24,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "25-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:48:04.883Z"
+  "generatedAt": "2026-08-23T01:04:56.340Z"
 }

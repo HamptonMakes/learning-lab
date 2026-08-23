@@ -6,127 +6,155 @@
   "unitTitle": "Vector Clocks & Causality",
   "topicTitle": "Hybrid logical clocks",
   "firstInUnit": false,
-  "total": 17,
+  "total": 21,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "wall-time-plus-a-counter",
-      "say": "An **HLC** is a wall time plus a small counter. Alice's phone runs five minutes fast; Bob's laptop is right.",
-      "file": "01-wall-time-plus-a-counter-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "Wall time plus a counter. Best of both.",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "wall-time-plus-a-counter",
-      "say": "Two rules: on an event take the bigger wall; on a receive also look at the stamp.",
-      "file": "02-wall-time-plus-a-counter-s02.png"
+      "say": "An **HLC** is a wall time plus a small counter. Alice's phone runs five minutes fast; Bob's laptop is right.",
+      "file": "02-wall-time-plus-a-counter-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "wall-time-plus-a-counter",
-      "say": "At 10:01 Alice edits and sends it to Bob. Her HLC takes her clock, 10:06, with counter 0: (10:06, 0).",
-      "file": "03-wall-time-plus-a-counter-s03.png"
+      "say": "Two rules: on an event take the bigger wall; on a receive also look at the stamp.",
+      "file": "03-wall-time-plus-a-counter-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "wall-time-plus-a-counter",
-      "say": "Bob's clock says 10:01. He receives (10:06, 0) and takes the biggest wall of the three, 10:06, with counter 0 + 1.",
-      "file": "04-wall-time-plus-a-counter-s04.png"
+      "say": "At 10:01 Alice edits and sends it to Bob. Her HLC takes her clock, 10:06, with counter 0: (10:06, 0).",
+      "file": "04-wall-time-plus-a-counter-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "wall-time-plus-a-counter",
-      "say": "Bob's HLC (10:06, 1) is now ahead of his own wall clock. That is allowed: the HLC runs ahead, and the counter keeps his edits in order meanwhile.",
-      "file": "05-wall-time-plus-a-counter-s05.png"
+      "say": "Bob's clock says 10:01. He receives (10:06, 0) and takes the biggest wall of the three, 10:06, with counter 0 + 1.",
+      "file": "05-wall-time-plus-a-counter-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "wall-time-plus-a-counter",
-      "say": "Bob edits: (10:06, 2). The wall part cannot move yet, so the counter climbs.",
-      "file": "06-wall-time-plus-a-counter-s06.png"
+      "say": "Bob's HLC (10:06, 1) is now ahead of his own wall clock. That is allowed: the HLC runs ahead, and the counter keeps his edits in order meanwhile.",
+      "file": "06-wall-time-plus-a-counter-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "wall-time-plus-a-counter",
-      "say": "Now the jump. Alice's phone syncs its clock with the network and drops back to 10:01, the true time.",
-      "file": "07-wall-time-plus-a-counter-s07.png"
+      "say": "Bob edits: (10:06, 2). The wall part cannot move yet, so the counter climbs.",
+      "file": "07-wall-time-plus-a-counter-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "wall-time-plus-a-counter",
-      "say": "She edits again: (10:06, 1). Her wall clock went backwards, but her HLC did not, and it never does.",
-      "file": "08-wall-time-plus-a-counter-s08.png"
+      "say": "Now the jump. Alice's phone syncs its clock with the network and drops back to 10:01, the true time.",
+      "file": "08-wall-time-plus-a-counter-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "wall-time-plus-a-counter",
-      "say": "Six minutes later, at 10:07, real time passes the HLC. Bob's next edit reads (10:07, 0): the wall moved, so the counter resets.",
-      "file": "09-wall-time-plus-a-counter-s09.png"
+      "say": "She edits again: (10:06, 1). Her wall clock went backwards, but her HLC did not, and it never does.",
+      "file": "09-wall-time-plus-a-counter-s08.png"
     },
     {
       "index": 9,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "wall-time-plus-a-counter",
-      "say": "Never backwards, cause before effect, and close to real time. Two rules, three properties.",
-      "file": "10-wall-time-plus-a-counter-s10.png"
+      "say": "Six minutes later, at 10:07, real time passes the HLC. Bob's next edit reads (10:07, 0): the wall moved, so the counter resets.",
+      "file": "10-wall-time-plus-a-counter-s09.png"
     },
     {
       "index": 10,
-      "stepId": "s01",
-      "sceneId": "the-title-fixed",
-      "say": "Same phone and laptop as in Wall clocks lie: Bob's laptop is five minutes slow. But now the LWW title takes its stamps from an HLC.",
-      "file": "11-the-title-fixed-s01.png"
+      "stepId": "s10",
+      "sceneId": "wall-time-plus-a-counter",
+      "say": "Never backwards, cause before effect, and close to real time. Two rules, three properties.",
+      "file": "11-wall-time-plus-a-counter-s10.png"
     },
     {
       "index": 11,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "the-title-fixed",
-      "say": "At 10:06 Alice renames the note to Draft. The stamp is her HLC reading: (10:06, 0).",
-      "file": "12-the-title-fixed-s02.png"
+      "say": "Same phone and laptop as in Wall-clock timestamps: Bob's laptop is five minutes slow. But now the LWW title takes its stamps from an HLC.",
+      "file": "12-the-title-fixed-s01.png"
     },
     {
       "index": 12,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "the-title-fixed",
-      "say": "She pushes to Bob. The stamp travels with the value, and Bob's HLC receives it: (10:06, 1), though his clock says 10:01.",
-      "file": "13-the-title-fixed-s03.png"
+      "say": "At 10:06 Alice renames the note to Draft. The stamp is her HLC reading: (10:06, 0).",
+      "file": "13-the-title-fixed-s02.png"
     },
     {
       "index": 13,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "the-title-fixed",
-      "say": "At 10:08 Bob renames it to Final. His clock says 10:03, but his HLC is already at 10:06, so the stamp is (10:06, 2).",
-      "file": "14-the-title-fixed-s04.png"
+      "say": "She pushes to Bob. The stamp travels with the value, and Bob's HLC receives it: (10:06, 1), though his clock says 10:01.",
+      "file": "14-the-title-fixed-s03.png"
     },
     {
       "index": 14,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "the-title-fixed",
-      "say": "Compare the stamps: Final (10:06, 2) is greater than Draft (10:06, 0). Bob knew about Alice's write, and his stamp says so.",
-      "file": "15-the-title-fixed-s05.png"
+      "say": "At 10:08 Bob renames it to Final. His clock says 10:03, but his HLC is already at 10:06, so the stamp is (10:06, 2).",
+      "file": "15-the-title-fixed-s04.png"
     },
     {
       "index": 15,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "the-title-fixed",
-      "say": "They sync. Final wins on both: this time the newest write in real time is the one that stays.",
-      "file": "16-the-title-fixed-s06.png"
+      "say": "Compare the stamps: Final (10:06, 2) is greater than Draft (10:06, 0). Bob knew about Alice's write, and his stamp says so.",
+      "file": "16-the-title-fixed-s05.png"
     },
     {
       "index": 16,
+      "stepId": "s06",
+      "sceneId": "the-title-fixed",
+      "say": "They sync. Final wins on both: this time the newest write in real time is the one that stays.",
+      "file": "17-the-title-fixed-s06.png"
+    },
+    {
+      "index": 17,
       "stepId": "s07",
       "sceneId": "the-title-fixed",
       "say": "An HLC fixes the case of a write that saw another write but came from a slower clock. Two edits with no contact are still a tie-break; no clock can fix that.",
-      "file": "17-the-title-fixed-s07.png"
+      "file": "18-the-title-fixed-s07.png"
+    },
+    {
+      "index": 18,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "19-summary-use.png"
+    },
+    {
+      "index": 19,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "20-summary-avoid.png"
+    },
+    {
+      "index": 20,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "21-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:50:22.030Z"
+  "generatedAt": "2026-08-23T01:07:35.803Z"
 }

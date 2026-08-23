@@ -4,199 +4,227 @@
   "topic": "which-crdt-for-which-data",
   "unitNumeral": "V",
   "unitTitle": "Choosing & Using CRDTs",
-  "topicTitle": "Which CRDT for which data",
+  "topicTitle": "The decision table",
   "firstInUnit": true,
-  "total": 27,
+  "total": 31,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "replace-or-add",
-      "say": "A likes count, kept two ways on each device: once as an LWW register, once as a PN-Counter.",
-      "file": "01-replace-or-add-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "Register, counter, set, map, or list?",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "replace-or-add",
-      "say": "Time 1: Alice taps like. Her code reads 0, adds 1 and writes 1, while the counter just adds 1.",
-      "file": "02-replace-or-add-s02.png"
+      "say": "A likes count, kept two ways on each device: once as an LWW register, once as a PN-Counter.",
+      "file": "02-replace-or-add-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "replace-or-add",
-      "say": "Time 2: Bob taps like too. He also reads 0 and writes 1.",
-      "file": "03-replace-or-add-s03.png"
+      "say": "Time 1: Alice taps like. Her code reads 0, adds 1 and writes 1, while the counter just adds 1.",
+      "file": "03-replace-or-add-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "replace-or-add",
-      "say": "The copies merge.",
-      "file": "04-replace-or-add-s04.png"
+      "say": "Time 2: Bob taps like too. He also reads 0 and writes 1.",
+      "file": "04-replace-or-add-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "replace-or-add",
-      "say": "Whoops — the register kept one 1 and dropped the other. One like is gone.",
-      "file": "05-replace-or-add-s05.png"
+      "say": "The copies merge.",
+      "file": "05-replace-or-add-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "replace-or-add",
-      "say": "The counter kept one tally per person: 1 + 1 = 2. Both likes count.",
-      "file": "06-replace-or-add-s06.png"
+      "say": "Whoops — the register kept one 1 and dropped the other. One like is gone.",
+      "file": "06-replace-or-add-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "replace-or-add",
-      "say": "Ask: does a new write replace the old value, or add to it? Replace means a register: row one ([LWW Register](/crdts/state-based/lww-register)).",
-      "file": "07-replace-or-add-s07.png"
+      "say": "The counter kept one tally per person: 1 + 1 = 2. Both likes count.",
+      "file": "07-replace-or-add-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "replace-or-add",
-      "say": "Add up means a counter: row two. Each row carries a watch-out; a counter has no floor ([PN-Counter](/crdts/state-based/pn-counter)).",
-      "file": "08-replace-or-add-s08.png"
+      "say": "Ask: does a new write replace the old value, or add to it? Replace means a register: row one ([LWW Register](/crdts/state-based/lww-register)).",
+      "file": "08-replace-or-add-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s01",
-      "sceneId": "one-value-or-fields",
-      "say": "A card with two fields, kept two ways: one register holds the whole card, and a map holds one register per field.",
-      "file": "09-one-value-or-fields-s01.png"
+      "stepId": "s08",
+      "sceneId": "replace-or-add",
+      "say": "Add up means a counter: row two. Each row carries a watch-out; a counter has no floor ([PN-Counter](/crdts/state-based/pn-counter)).",
+      "file": "09-replace-or-add-s08.png"
     },
     {
       "index": 9,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "one-value-or-fields",
-      "say": "Time 1. Alice renames the card on her phone, in both copies.",
-      "file": "10-one-value-or-fields-s02.png"
+      "say": "A card with two fields, kept two ways: one register holds the whole card, and a map holds one register per field.",
+      "file": "10-one-value-or-fields-s01.png"
     },
     {
       "index": 10,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "one-value-or-fields",
-      "say": "Bob is offline on a train. Time 2: he assigns the card to Carol, in both copies.",
-      "file": "11-one-value-or-fields-s03.png"
+      "say": "Time 1. Alice renames the card on her phone, in both copies.",
+      "file": "11-one-value-or-fields-s02.png"
     },
     {
       "index": 11,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "one-value-or-fields",
-      "say": "Bob is back online. The copies merge.",
-      "file": "12-one-value-or-fields-s04.png"
+      "say": "Bob is offline on a train. Time 2: he assigns the card to Carol, in both copies.",
+      "file": "12-one-value-or-fields-s03.png"
     },
     {
       "index": 12,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "one-value-or-fields",
-      "say": "Whoops — the whole-card register took Bob's card, because his write is newer. Alice's new title is gone.",
-      "file": "13-one-value-or-fields-s05.png"
+      "say": "Bob is back online. The copies merge.",
+      "file": "13-one-value-or-fields-s04.png"
     },
     {
       "index": 13,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "one-value-or-fields",
-      "say": "The map merged field by field: the title from Alice, the owner from Bob. Both edits survive.",
-      "file": "14-one-value-or-fields-s06.png"
+      "say": "Whoops — the whole-card register took Bob's card, because his write is newer. Alice's new title is gone.",
+      "file": "14-one-value-or-fields-s05.png"
     },
     {
       "index": 14,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "one-value-or-fields",
-      "say": "Ask: do people change the whole thing at once, or one field at a time? Fields that change alone get a map: row three ([LWW Map](/crdts/state-based/lww-map)).",
-      "file": "15-one-value-or-fields-s07.png"
+      "say": "The map merged field by field: the title from Alice, the owner from Bob. Both edits survive.",
+      "file": "15-one-value-or-fields-s06.png"
     },
     {
       "index": 15,
-      "stepId": "s01",
-      "sceneId": "members-or-order",
-      "say": "Labels are a set: what matters is who is in. Checklist steps are a list: what matters is the order.",
-      "file": "16-members-or-order-s01.png"
+      "stepId": "s07",
+      "sceneId": "one-value-or-fields",
+      "say": "Ask: do people change the whole thing at once, or one field at a time? Fields that change alone get a map: row three ([LWW Map](/crdts/state-based/lww-map)).",
+      "file": "16-one-value-or-fields-s07.png"
     },
     {
       "index": 16,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "members-or-order",
-      "say": "Alice adds the label 'urgent' while Bob adds 'backend'. Both at once.",
-      "file": "17-members-or-order-s02.png"
+      "say": "Labels are a set: what matters is who is in. Checklist steps are a list: what matters is the order.",
+      "file": "17-members-or-order-s01.png"
     },
     {
       "index": 17,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "members-or-order",
-      "say": "Merge: the set has all three. Order never mattered here.",
-      "file": "18-members-or-order-s03.png"
+      "say": "Alice adds the label 'urgent' while Bob adds 'backend'. Both at once.",
+      "file": "18-members-or-order-s02.png"
     },
     {
       "index": 18,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "members-or-order",
-      "say": "Now the list, at the same moment: Alice inserts 'review' after 'fix' and Bob inserts 'deploy' after 'fix'.",
-      "file": "19-members-or-order-s04.png"
+      "say": "Merge: the set has all three. Order never mattered here.",
+      "file": "19-members-or-order-s03.png"
     },
     {
       "index": 19,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "members-or-order",
-      "say": "Merge: both items are there, in the same order on both copies. A fixed rule picked that order, not luck ([Sequences](/crdts/operation-based/sequences-rga)).",
-      "file": "20-members-or-order-s05.png"
+      "say": "Now the list, at the same moment: Alice inserts 'review' after 'fix' and Bob inserts 'deploy' after 'fix'.",
+      "file": "20-members-or-order-s04.png"
     },
     {
       "index": 20,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "members-or-order",
-      "say": "One more question: can a member leave and come back? Alice removes 'bug'.",
-      "file": "21-members-or-order-s06.png"
+      "say": "Merge: both items are there, in the same order on both copies. A fixed rule picked that order, not luck ([Sequences](/crdts/operation-based/sequences-rga)).",
+      "file": "21-members-or-order-s05.png"
     },
     {
       "index": 21,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "members-or-order",
-      "say": "Bob has not seen that, and adds 'bug' again at the same time. His add gets a fresh tag, bob:2.",
-      "file": "22-members-or-order-s07.png"
+      "say": "One more question: can a member leave and come back? Alice removes 'bug'.",
+      "file": "22-members-or-order-s06.png"
     },
     {
       "index": 22,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "members-or-order",
-      "say": "Merge: 'bug' stays. Alice killed only the tag she had already seen, and Bob's fresh tag is still alive.",
-      "file": "23-members-or-order-s08.png"
+      "say": "Bob has not seen that, and adds 'bug' again at the same time. His add gets a fresh tag, bob:2.",
+      "file": "23-members-or-order-s07.png"
     },
     {
       "index": 23,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "members-or-order",
-      "say": "Ask: does order matter? No, and members come and go: an OR-Set, row four ([OR-Set](/crdts/state-based/or-set)).",
-      "file": "24-members-or-order-s09.png"
+      "say": "Merge: 'bug' stays. Alice killed only the tag she had already seen, and Bob's fresh tag is still alive.",
+      "file": "24-members-or-order-s08.png"
     },
     {
       "index": 24,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "members-or-order",
-      "say": "Yes, order matters: a sequence, row five. Its price is tombstones and causal delivery ([Sequences](/crdts/operation-based/sequences-rga)).",
-      "file": "25-members-or-order-s10.png"
+      "say": "Ask: does order matter? No, and members come and go: an OR-Set, row four ([OR-Set](/crdts/state-based/or-set)).",
+      "file": "25-members-or-order-s09.png"
     },
     {
       "index": 25,
-      "stepId": "s11",
+      "stepId": "s10",
       "sceneId": "members-or-order",
-      "say": "Last row, and a different answer: a rule that must hold across copies needs a transaction, not a CRDT ([Not everything needs a transaction](/crdts/the-problem/not-everything-needs-a-transaction)).",
-      "file": "26-members-or-order-s11.png"
+      "say": "Yes, order matters: a sequence, row five. Its price is tombstones and causal delivery ([Sequences](/crdts/operation-based/sequences-rga)).",
+      "file": "26-members-or-order-s10.png"
     },
     {
       "index": 26,
+      "stepId": "s11",
+      "sceneId": "members-or-order",
+      "say": "Last row, and a different answer: a rule that must hold across copies needs a transaction, not a CRDT ([Transactions vs merges](/crdts/the-problem/not-everything-needs-a-transaction)).",
+      "file": "27-members-or-order-s11.png"
+    },
+    {
+      "index": 27,
       "stepId": "s12",
       "sceneId": "members-or-order",
       "say": "Ask how the data changes, and the table names the type. Keep it: you will use it in every schema you design.",
-      "file": "27-members-or-order-s12.png"
+      "file": "28-members-or-order-s12.png"
+    },
+    {
+      "index": 28,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "29-summary-use.png"
+    },
+    {
+      "index": 29,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "30-summary-avoid.png"
+    },
+    {
+      "index": 30,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "31-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:50:38.034Z"
+  "generatedAt": "2026-08-23T01:07:54.402Z"
 }

@@ -6,183 +6,211 @@
   "unitTitle": "State-based CRDTs",
   "topicTitle": "LWW Map",
   "firstInUnit": false,
-  "total": 25,
+  "total": 29,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "different-fields",
-      "say": "A task card with three fields. In an **LWW map**, each field is its own LWW register, with its own timestamp and node.",
-      "file": "01-different-fields-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "A document where each field merges on its own.",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "different-fields",
-      "say": "The rule is the same as before, but applied field by field.",
-      "file": "02-different-fields-s02.png"
+      "say": "A task card with three fields. In an **LWW map**, each field is its own LWW register, with its own timestamp and node.",
+      "file": "02-different-fields-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "different-fields",
-      "say": "Time 1: Alice assigns the task to Bob. Only the owner field changes.",
-      "file": "03-different-fields-s03.png"
+      "say": "The rule is the same as before, but applied field by field.",
+      "file": "03-different-fields-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "different-fields",
-      "say": "Time 2: Bob has not seen that yet. He moves the status to Doing.",
-      "file": "04-different-fields-s04.png"
+      "say": "Time 1: Alice assigns the task to Bob. Only the owner field changes.",
+      "file": "04-different-fields-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "different-fields",
-      "say": "Two edits, two different fields. No conflict at all.",
-      "file": "05-different-fields-s05.png"
+      "say": "Time 2: Bob has not seen that yet. He moves the status to Doing.",
+      "file": "05-different-fields-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "different-fields",
-      "say": "They sync. Each field merges on its own: owner takes t=1 from Alice, status takes t=2 from Bob.",
-      "file": "06-different-fields-s06.png"
+      "say": "Two edits, two different fields. No conflict at all.",
+      "file": "06-different-fields-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "different-fields",
-      "say": "Both copies hold both edits. Nothing was lost.",
-      "file": "07-different-fields-s07.png"
+      "say": "They sync. Each field merges on its own: owner takes t=1 from Alice, status takes t=2 from Bob.",
+      "file": "07-different-fields-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "different-fields",
-      "say": "This is why a map of registers beats one big register: the race is per field, not per document.",
-      "file": "08-different-fields-s08.png"
+      "say": "Both copies hold both edits. Nothing was lost.",
+      "file": "08-different-fields-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s01",
-      "sceneId": "same-field",
-      "say": "Now both change the due date. Time 3: Alice moves it to Thu.",
-      "file": "09-same-field-s01.png"
+      "stepId": "s08",
+      "sceneId": "different-fields",
+      "say": "This is why a map of registers beats one big register: the race is per field, not per document.",
+      "file": "09-different-fields-s08.png"
     },
     {
       "index": 9,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "same-field",
-      "say": "Time 4: Bob has not seen that, and moves it to Mon.",
-      "file": "10-same-field-s02.png"
+      "say": "Now both change the due date. Time 3: Alice moves it to Thu.",
+      "file": "10-same-field-s01.png"
     },
     {
       "index": 10,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "same-field",
-      "say": "Whoops — one field, two writes: t=3 against t=4. Only one can survive the merge.",
-      "file": "11-same-field-s03.png"
+      "say": "Time 4: Bob has not seen that, and moves it to Mon.",
+      "file": "11-same-field-s02.png"
     },
     {
       "index": 11,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "same-field",
-      "say": "They sync. The newer stamp wins this field: Mon, t=4, on both copies.",
-      "file": "12-same-field-s04.png"
+      "say": "Whoops — one field, two writes: t=3 against t=4. Only one can survive the merge.",
+      "file": "12-same-field-s03.png"
     },
     {
       "index": 12,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "same-field",
-      "say": "Alice's Thu is gone. Same deal as the single register, only smaller.",
-      "file": "13-same-field-s05.png"
+      "say": "They sync. The newer stamp wins this field: Mon, t=4, on both copies.",
+      "file": "13-same-field-s04.png"
     },
     {
       "index": 13,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "same-field",
-      "say": "Owner and status were untouched by this race. Only the field that raced paid.",
-      "file": "14-same-field-s06.png"
+      "say": "Alice's Thu is gone. Same deal as the single register, only smaller.",
+      "file": "14-same-field-s05.png"
     },
     {
       "index": 14,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "same-field",
-      "say": "Per field, LWW still loses one side of a race. The map only makes the race smaller: one field, not the whole card.",
-      "file": "15-same-field-s07.png"
+      "say": "Owner and status were untouched by this race. Only the field that raced paid.",
+      "file": "15-same-field-s06.png"
     },
     {
       "index": 15,
-      "stepId": "s01",
-      "sceneId": "team-board",
-      "say": "A task card shared by a team. The relay keeps a copy, forwards states and merges like any other copy.",
-      "file": "16-team-board-s01.png"
+      "stepId": "s07",
+      "sceneId": "same-field",
+      "say": "Per field, LWW still loses one side of a race. The map only makes the race smaller: one field, not the whole card.",
+      "file": "16-same-field-s07.png"
     },
     {
       "index": 16,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "team-board",
-      "say": "Time 1: Carol raises the priority to P1. Time 2: Bob takes the task.",
-      "file": "17-team-board-s02.png"
+      "say": "A task card shared by a team. The relay keeps a copy, forwards states and merges like any other copy.",
+      "file": "17-team-board-s01.png"
     },
     {
       "index": 17,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "team-board",
-      "say": "Time 3: Alice renames it to Fix SSO login. Three people, three fields, and nobody waited for anybody.",
-      "file": "18-team-board-s03.png"
+      "say": "Time 1: Carol raises the priority to P1. Time 2: Bob takes the task.",
+      "file": "18-team-board-s02.png"
     },
     {
       "index": 18,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "team-board",
-      "say": "All three send their cards to the relay. Each message carries the whole card.",
-      "file": "19-team-board-s04.png"
+      "say": "Time 3: Alice renames it to Fix SSO login. Three people, three fields, and nobody waited for anybody.",
+      "file": "19-team-board-s03.png"
     },
     {
       "index": 19,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "team-board",
-      "say": "The relay merges them as they land, field by field. No two edits touched the same field, so all three survive.",
-      "file": "20-team-board-s05.png"
+      "say": "All three send their cards to the relay. Each message carries the whole card.",
+      "file": "20-team-board-s04.png"
     },
     {
       "index": 20,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "team-board",
-      "say": "The relay fans the merged card back out. Every copy now agrees.",
-      "file": "21-team-board-s06.png"
+      "say": "The relay merges them as they land, field by field. No two edits touched the same field, so all three survive.",
+      "file": "21-team-board-s05.png"
     },
     {
       "index": 21,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "team-board",
-      "say": "Now a real race. Time 4: Bob sets the status to Doing; time 5: Carol sets it to Blocked.",
-      "file": "22-team-board-s07.png"
+      "say": "The relay fans the merged card back out. Every copy now agrees.",
+      "file": "22-team-board-s06.png"
     },
     {
       "index": 22,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "team-board",
-      "say": "Bob syncs with the relay, then Carol does. For the status field, t=5 beats t=4: the relay ends with Blocked.",
-      "file": "23-team-board-s08.png"
+      "say": "Now a real race. Time 4: Bob sets the status to Doing; time 5: Carol sets it to Blocked.",
+      "file": "23-team-board-s07.png"
     },
     {
       "index": 23,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "team-board",
-      "say": "One more round for Bob and Alice. Blocked wins everywhere; Bob sees his change replaced, and sees by whom.",
-      "file": "24-team-board-s09.png"
+      "say": "Bob syncs with the relay, then Carol does. For the status field, t=5 beats t=4: the relay ends with Blocked.",
+      "file": "24-team-board-s08.png"
     },
     {
       "index": 24,
+      "stepId": "s09",
+      "sceneId": "team-board",
+      "say": "One more round for Bob and Alice. Blocked wins everywhere; Bob sees his change replaced, and sees by whom.",
+      "file": "25-team-board-s09.png"
+    },
+    {
+      "index": 25,
       "stepId": "s10",
       "sceneId": "team-board",
       "say": "A map of registers: independent fields merge freely, and a racing field picks a winner you can explain.",
-      "file": "25-team-board-s10.png"
+      "file": "26-team-board-s10.png"
+    },
+    {
+      "index": 26,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "27-summary-use.png"
+    },
+    {
+      "index": 27,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "28-summary-avoid.png"
+    },
+    {
+      "index": 28,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "29-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:47:26.592Z"
+  "generatedAt": "2026-08-23T01:04:11.359Z"
 }

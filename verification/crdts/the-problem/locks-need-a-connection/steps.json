@@ -4,164 +4,192 @@
   "topic": "locks-need-a-connection",
   "unitNumeral": "I",
   "unitTitle": "The Problem",
-  "topicTitle": "Locks need a connection",
+  "topicTitle": "The cost of a lock",
   "firstInUnit": false,
-  "total": 22,
+  "total": 26,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "offline",
-      "say": "Same lock as before. Alice is on a train, and the train enters a tunnel.",
-      "file": "01-offline-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "Offline devices cannot take a lock.",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "offline",
-      "say": "She wants to edit. Her phone tries to ask for the lock.",
-      "file": "02-offline-s02.png"
+      "say": "Same lock as before. Alice is on a train, and the train enters a tunnel.",
+      "file": "02-offline-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "offline",
-      "say": "The request never arrives. No connection, no lock.",
-      "file": "03-offline-s03.png"
+      "say": "She wants to edit. Her phone tries to ask for the lock.",
+      "file": "03-offline-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "offline",
-      "say": "Alice has two choices: wait for the tunnel to end, or edit without the lock.",
-      "file": "04-offline-s04.png"
+      "say": "The request never arrives. No connection, no lock.",
+      "file": "04-offline-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "offline",
-      "say": "Whoops — she edits anyway, and we are back in More than one copy. The lock did not help.",
-      "file": "05-offline-s05.png"
+      "say": "Alice has two choices: wait for the tunnel to end, or edit without the lock.",
+      "file": "05-offline-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "offline",
-      "say": "Rewind: Alice undoes her edit and leaves the tunnel. Now the other direction.",
-      "file": "06-offline-s06.png"
+      "say": "Whoops — she edits anyway, and we are back in Copies that disagree. The lock did not help.",
+      "file": "06-offline-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "offline",
-      "say": "Bob takes the lock, then his laptop goes to sleep.",
-      "file": "07-offline-s07.png"
+      "say": "Rewind: Alice undoes her edit and leaves the tunnel. Now the other direction.",
+      "file": "07-offline-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "offline",
-      "say": "Alice asks for the lock. The server says: wait.",
-      "file": "08-offline-s08.png"
+      "say": "Bob takes the lock, then his laptop goes to sleep.",
+      "file": "08-offline-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "offline",
-      "say": "And wait. Bob is gone, and he took the lock with him.",
-      "file": "09-offline-s09.png"
+      "say": "Alice asks for the lock. The server says: wait.",
+      "file": "09-offline-s08.png"
     },
     {
       "index": 9,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "offline",
-      "say": "A lock needs one **coordinator** and a live connection to it. Real systems add a **lease**, a lock that expires; it works, but it adds rules and waiting.",
-      "file": "10-offline-s10.png"
+      "say": "And wait. Bob is gone, and he took the lock with him.",
+      "file": "10-offline-s09.png"
     },
     {
       "index": 10,
-      "stepId": "s01",
-      "sceneId": "latency",
-      "say": "Alice is in Tokyo and the database is in Virginia. One message takes about 100 ms (simplified).",
-      "file": "11-latency-s01.png"
+      "stepId": "s10",
+      "sceneId": "offline",
+      "say": "A lock needs one **coordinator** and a live connection to it. Real systems add a **lease**, a lock that expires; it works, but it adds rules and waiting.",
+      "file": "11-offline-s10.png"
     },
     {
       "index": 11,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "latency",
-      "say": "She asks for the lock: one trip out.",
-      "file": "12-latency-s02.png"
+      "say": "Alice is in Tokyo and the database is in Virginia. One message takes about 100 ms (simplified).",
+      "file": "12-latency-s01.png"
     },
     {
       "index": 12,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "latency",
-      "say": "The answer comes back: one trip home. Only now can Alice type.",
-      "file": "13-latency-s03.png"
+      "say": "She asks for the lock: one trip out.",
+      "file": "13-latency-s02.png"
     },
     {
       "index": 13,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "latency",
-      "say": "She types. The save goes out, and the confirmation comes back: one **round trip** more.",
-      "file": "14-latency-s04.png"
+      "say": "The answer comes back: one trip home. Only now can Alice type.",
+      "file": "14-latency-s03.png"
     },
     {
       "index": 14,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "latency",
-      "say": "Then the unlock and its answer. Three round trips, 600 ms, for one title change.",
-      "file": "15-latency-s05.png"
+      "say": "She types. The save goes out, and the confirmation comes back: one **round trip** more.",
+      "file": "15-latency-s04.png"
     },
     {
       "index": 15,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "latency",
-      "say": "Every editor far from the coordinator pays this on every edit. The further away, the slower the lock.",
-      "file": "16-latency-s06.png"
+      "say": "Then the unlock and its answer. Three round trips, 600 ms, for one title change.",
+      "file": "16-latency-s05.png"
     },
     {
       "index": 16,
-      "stepId": "s01",
-      "sceneId": "shared-doc",
-      "say": "Three people open the same document. Each wants to type.",
-      "file": "17-shared-doc-s01.png"
+      "stepId": "s06",
+      "sceneId": "latency",
+      "say": "Every editor far from the coordinator pays this on every edit. The further away, the slower the lock.",
+      "file": "17-latency-s06.png"
     },
     {
       "index": 17,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "shared-doc",
-      "say": "Alice gets the lock. Bob and Carol must wait.",
-      "file": "18-shared-doc-s02.png"
+      "say": "Three people open the same document. Each wants to type.",
+      "file": "18-shared-doc-s01.png"
     },
     {
       "index": 18,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "shared-doc",
-      "say": "Alice types one line and saves.",
-      "file": "19-shared-doc-s03.png"
+      "say": "Alice gets the lock. Bob and Carol must wait.",
+      "file": "19-shared-doc-s02.png"
     },
     {
       "index": 19,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "shared-doc",
-      "say": "Now Bob's turn, and he gets Alice's line with the lock. Carol still waits for her turn.",
-      "file": "20-shared-doc-s04.png"
+      "say": "Alice types one line and saves.",
+      "file": "20-shared-doc-s03.png"
     },
     {
       "index": 20,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "shared-doc",
-      "say": "This is why collaborative editors do not lock the document. Every edit would be a turn in a queue.",
-      "file": "21-shared-doc-s05.png"
+      "say": "Now Bob's turn, and he gets Alice's line with the lock. Carol still waits for her turn.",
+      "file": "21-shared-doc-s04.png"
     },
     {
       "index": 21,
+      "stepId": "s05",
+      "sceneId": "shared-doc",
+      "say": "This is why collaborative editors do not lock the document. Every edit would be a turn in a queue.",
+      "file": "22-shared-doc-s05.png"
+    },
+    {
+      "index": 22,
       "stepId": "s06",
       "sceneId": "shared-doc",
       "say": "Next: which data really needs the lock, and which data does not.",
-      "file": "22-shared-doc-s06.png"
+      "file": "23-shared-doc-s06.png"
+    },
+    {
+      "index": 23,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "24-summary-use.png"
+    },
+    {
+      "index": 24,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "25-summary-avoid.png"
+    },
+    {
+      "index": 25,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "26-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:46:34.541Z"
+  "generatedAt": "2026-08-23T01:03:10.177Z"
 }

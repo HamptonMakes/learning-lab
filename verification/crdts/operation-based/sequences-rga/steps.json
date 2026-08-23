@@ -6,197 +6,225 @@
   "unitTitle": "Operation-based CRDTs",
   "topicTitle": "Sequences (RGA)",
   "firstInUnit": false,
-  "total": 27,
+  "total": 31,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "positions-break",
-      "say": "Alice and Bob both see \"cat\". The naive plan: send ops like insert h at position 1.",
-      "file": "01-positions-break-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "Insert after an id. Tombstones keep the order stable.",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "positions-break",
-      "say": "Alice inserts h at position 1: \"chat\". She sends the op.",
-      "file": "02-positions-break-s02.png"
+      "say": "Alice and Bob both see \"cat\". The naive plan: send ops like insert h at position 1.",
+      "file": "02-positions-break-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "positions-break",
-      "say": "At the same time Bob deletes position 0: \"at\". He sends his op.",
-      "file": "03-positions-break-s03.png"
+      "say": "Alice inserts h at position 1: \"chat\". She sends the op.",
+      "file": "03-positions-break-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "positions-break",
-      "say": "Alice applies delete position 0. Her chat becomes \"hat\".",
-      "file": "04-positions-break-s04.png"
+      "say": "At the same time Bob deletes position 0: \"at\". He sends his op.",
+      "file": "04-positions-break-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "positions-break",
-      "say": "Bob applies insert h at position 1 to \"at\": \"aht\".",
-      "file": "05-positions-break-s05.png"
+      "say": "Alice applies delete position 0. Her chat becomes \"hat\".",
+      "file": "05-positions-break-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "positions-break",
-      "say": "Whoops — \"hat\" and \"aht\". The positions moved under the ops, and the copies will never agree.",
-      "file": "06-positions-break-s06.png"
+      "say": "Bob applies insert h at position 1 to \"at\": \"aht\".",
+      "file": "06-positions-break-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "positions-break",
-      "say": "The fix: positions are not stable, but names can be. Give every character a name that never moves.",
-      "file": "07-positions-break-s07.png"
+      "say": "Whoops — \"hat\" and \"aht\". The positions moved under the ops, and the copies will never agree.",
+      "file": "07-positions-break-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s01",
-      "sceneId": "names-not-positions",
-      "say": "Same text, as an **RGA**: every character has a name, alice:1, alice:2, alice:3. Names never change.",
-      "file": "08-names-not-positions-s01.png"
+      "stepId": "s07",
+      "sceneId": "positions-break",
+      "say": "The fix: positions are not stable, but names can be. Give every character a name that never moves.",
+      "file": "08-positions-break-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "names-not-positions",
-      "say": "Bob inserts h after alice:1. The op says after alice:1, not at position 1; it is op bob:1.",
-      "file": "09-names-not-positions-s02.png"
+      "say": "Same text, as an **RGA**: every character has a name, alice:1, alice:2, alice:3. Names never change.",
+      "file": "09-names-not-positions-s01.png"
     },
     {
       "index": 9,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "names-not-positions",
-      "say": "He broadcasts. Alice finds alice:1 and puts h right after it: chat on both.",
-      "file": "10-names-not-positions-s03.png"
+      "say": "Bob inserts h after alice:1. The op says after alice:1, not at position 1; it is op bob:1.",
+      "file": "10-names-not-positions-s02.png"
     },
     {
       "index": 10,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "names-not-positions",
-      "say": "Alice deletes the c, alice:1, with op alice:4. It is not removed; it is marked dead: a **tombstone**.",
-      "file": "11-names-not-positions-s04.png"
+      "say": "He broadcasts. Alice finds alice:1 and puts h right after it: chat on both.",
+      "file": "11-names-not-positions-s03.png"
     },
     {
       "index": 11,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "names-not-positions",
-      "say": "At the same moment Bob inserts w after alice:1. For him the c is still alive: cwhat.",
-      "file": "12-names-not-positions-s05.png"
+      "say": "Alice deletes the c, alice:1, with op alice:4. It is not removed; it is marked dead: a **tombstone**.",
+      "file": "12-names-not-positions-s04.png"
     },
     {
       "index": 12,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "names-not-positions",
-      "say": "Both broadcast. A delete and an insert that points at the deleted name cross in the air.",
-      "file": "13-names-not-positions-s06.png"
+      "say": "At the same moment Bob inserts w after alice:1. For him the c is still alive: cwhat.",
+      "file": "13-names-not-positions-s05.png"
     },
     {
       "index": 13,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "names-not-positions",
-      "say": "Bob applies the delete: c becomes a tombstone. Bob reads what.",
-      "file": "14-names-not-positions-s07.png"
+      "say": "Both broadcast. A delete and an insert that points at the deleted name cross in the air.",
+      "file": "14-names-not-positions-s06.png"
     },
     {
       "index": 14,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "names-not-positions",
-      "say": "Alice applies the insert. The name alice:1 is dead but still there, so w slots in after it: what on both.",
-      "file": "15-names-not-positions-s08.png"
+      "say": "Bob applies the delete: c becomes a tombstone. Bob reads what.",
+      "file": "15-names-not-positions-s07.png"
     },
     {
       "index": 15,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "names-not-positions",
-      "say": "Had Alice really removed the c, the insert would have had no anchor. A tombstone is a forwarding address for ops still on their way.",
-      "file": "16-names-not-positions-s09.png"
+      "say": "Alice applies the insert. The name alice:1 is dead but still there, so w slots in after it: what on both.",
+      "file": "16-names-not-positions-s08.png"
     },
     {
       "index": 16,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "names-not-positions",
-      "say": "Names, insert-after and tombstones: that is the whole RGA. One question is left: two inserts after the same name.",
-      "file": "17-names-not-positions-s10.png"
+      "say": "Had Alice really removed the c, the insert would have had no anchor. A tombstone is a forwarding address for ops still on their way.",
+      "file": "17-names-not-positions-s09.png"
     },
     {
       "index": 17,
-      "stepId": "s01",
-      "sceneId": "same-anchor-tie",
-      "say": "Both see ab, names alice:1 and alice:2. Each character also carries a **timestamp**: a counter one bigger than any stamp the writer has seen.",
-      "file": "18-same-anchor-tie-s01.png"
+      "stepId": "s10",
+      "sceneId": "names-not-positions",
+      "say": "Names, insert-after and tombstones: that is the whole RGA. One question is left: two inserts after the same name.",
+      "file": "18-names-not-positions-s10.png"
     },
     {
       "index": 18,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "same-anchor-tie",
-      "say": "Alice inserts X after alice:1: op alice:3, stamp 1.",
-      "file": "19-same-anchor-tie-s02.png"
+      "say": "Both see ab, names alice:1 and alice:2. Each character also carries a **timestamp**: a counter one bigger than any stamp the writer has seen.",
+      "file": "19-same-anchor-tie-s01.png"
     },
     {
       "index": 19,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "same-anchor-tie",
-      "say": "At the same moment Bob inserts Y after alice:1: op bob:1, also stamp 1.",
-      "file": "20-same-anchor-tie-s03.png"
+      "say": "Alice inserts X after alice:1: op alice:3, stamp 1.",
+      "file": "20-same-anchor-tie-s02.png"
     },
     {
       "index": 20,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "same-anchor-tie",
-      "say": "Alice has aXb, Bob has aYb. Both broadcast, and the ops cross.",
-      "file": "21-same-anchor-tie-s04.png"
+      "say": "At the same moment Bob inserts Y after alice:1: op bob:1, also stamp 1.",
+      "file": "21-same-anchor-tie-s03.png"
     },
     {
       "index": 21,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "same-anchor-tie",
-      "say": "Both ops say after alice:1, so who goes first? Same stamp, so the higher node id goes first: bob beats alice, and Y lands before X.",
-      "file": "22-same-anchor-tie-s05.png"
+      "say": "Alice has aXb, Bob has aYb. Both broadcast, and the ops cross.",
+      "file": "22-same-anchor-tie-s04.png"
     },
     {
       "index": 22,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "same-anchor-tie",
-      "say": "Alice applies Bob's op. Y lands right after a, in front of X: aYXb.",
-      "file": "23-same-anchor-tie-s06.png"
+      "say": "Both ops say after alice:1, so who goes first? Same stamp, so the higher node id goes first: bob beats alice, and Y lands before X.",
+      "file": "23-same-anchor-tie-s05.png"
     },
     {
       "index": 23,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "same-anchor-tie",
-      "say": "Bob applies Alice's op. X also wants the spot after a, but Y outranks it, so X goes second: aYXb.",
-      "file": "24-same-anchor-tie-s07.png"
+      "say": "Alice applies Bob's op. Y lands right after a, in front of X: aYXb.",
+      "file": "24-same-anchor-tie-s06.png"
     },
     {
       "index": 24,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "same-anchor-tie",
-      "say": "Later, Bob inserts Z after alice:1 again. His stamp is now 2, bigger than any he has seen, so Z lands first: right after a.",
-      "file": "25-same-anchor-tie-s08.png"
+      "say": "Bob applies Alice's op. X also wants the spot after a, but Y outranks it, so X goes second: aYXb.",
+      "file": "25-same-anchor-tie-s07.png"
     },
     {
       "index": 25,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "same-anchor-tie",
-      "say": "Both copies agree, and the newest insert at a spot sits first, as typing expects. The stamp carries intent; the node id only breaks ties.",
-      "file": "26-same-anchor-tie-s09.png"
+      "say": "Later, Bob inserts Z after alice:1 again. His stamp is now 2, bigger than any he has seen, so Z lands first: right after a.",
+      "file": "26-same-anchor-tie-s08.png"
     },
     {
       "index": 26,
+      "stepId": "s09",
+      "sceneId": "same-anchor-tie",
+      "say": "Both copies agree, and the newest insert at a spot sits first, as typing expects. The stamp carries intent; the node id only breaks ties.",
+      "file": "27-same-anchor-tie-s09.png"
+    },
+    {
+      "index": 27,
       "stepId": "s10",
       "sceneId": "same-anchor-tie",
       "say": "The rule is arbitrary but the same on every copy. That is all a CRDT needs; nobody wins, and nobody has to ask.",
-      "file": "27-same-anchor-tie-s10.png"
+      "file": "28-same-anchor-tie-s10.png"
+    },
+    {
+      "index": 28,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "29-summary-use.png"
+    },
+    {
+      "index": 29,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "30-summary-avoid.png"
+    },
+    {
+      "index": 30,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "31-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:49:22.863Z"
+  "generatedAt": "2026-08-23T01:06:26.372Z"
 }

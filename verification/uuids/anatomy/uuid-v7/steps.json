@@ -6,106 +6,134 @@
   "unitTitle": "Anatomy of a UUID",
   "topicTitle": "UUID v7",
   "firstInUnit": false,
-  "total": 14,
+  "total": 18,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "time-first",
-      "say": "Take the current time as milliseconds since 1970: 1787392800000 (2026-08-22 10:00 UTC).",
-      "file": "01-time-first-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "A timestamp first, so ids sort by time.",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "time-first",
-      "say": "Start with 16 random bytes, like a v4 id.",
-      "file": "02-time-first-s02.png"
+      "say": "Take the current time as milliseconds since 1970: 1787392800000 (2026-08-22 10:00 UTC).",
+      "file": "02-time-first-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "time-first",
-      "say": "Write the time as 6 bytes: 01 a0 28 e9 b5 00. They replace the first 6 bytes.",
-      "file": "03-time-first-s03.png"
+      "say": "Start with 16 random bytes, like a v4 id.",
+      "file": "03-time-first-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "time-first",
-      "say": "Byte 6: its top 4 bits become 0111, version 7. Byte 8: its top 2 bits become 10, the variant.",
-      "file": "04-time-first-s04.png"
+      "say": "Write the time as 6 bytes: 01 a0 28 e9 b5 00. They replace the first 6 bytes.",
+      "file": "04-time-first-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "time-first",
-      "say": "Everything else stays random: 74 bits (simplified).",
-      "file": "05-time-first-s05.png"
+      "say": "Byte 6: its top 4 bits become 0111, version 7. Byte 8: its top 2 bits become 10, the variant.",
+      "file": "05-time-first-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "time-first",
-      "say": "Canonical text: 01a028e9-b500-7471-ad66-c0158af34102. The 7 shows the version.",
-      "file": "06-time-first-s06.png"
+      "say": "Everything else stays random: 74 bits (simplified).",
+      "file": "06-time-first-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "time-first",
-      "say": "One millisecond later, a new id starts with …b501. The time part is bigger, so the text sorts after.",
-      "file": "07-time-first-s07.png"
+      "say": "Canonical text: 01a028e9-b500-7471-ad66-c0158af34102. The 7 shows the version.",
+      "file": "07-time-first-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "time-first",
-      "say": "Anyone who sees a v7 id learns when it was made, to the millisecond. Decide if that is OK before you choose it.",
-      "file": "08-time-first-s08.png"
+      "say": "One millisecond later, a new id starts with …b501. The time part is bigger, so the text sorts after.",
+      "file": "08-time-first-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s01",
-      "sceneId": "sorts-by-time",
-      "say": "Three devices made v7 ids at 10:00:00.000, .001 and .002. They reach the server in a different order: .001, .002, .000.",
-      "file": "09-sorts-by-time-s01.png"
+      "stepId": "s08",
+      "sceneId": "time-first",
+      "say": "Anyone who sees a v7 id learns when it was made, to the millisecond. Decide if that is OK before you choose it.",
+      "file": "09-time-first-s08.png"
     },
     {
       "index": 9,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "sorts-by-time",
-      "say": "Sort the three by id, as plain text. The made times come out in order: .000, .001, .002.",
-      "file": "10-sorts-by-time-s02.png"
+      "say": "Three devices made v7 ids at 10:00:00.000, .001 and .002. They reach the server in a different order: .001, .002, .000.",
+      "file": "10-sorts-by-time-s01.png"
     },
     {
       "index": 10,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "sorts-by-time",
-      "say": "Why: the first 6 bytes are the time. Byte 5 reads 00, 01, 02 down the list, so the earlier id has the smaller bytes and sorts first.",
-      "file": "11-sorts-by-time-s03.png"
+      "say": "Sort the three by id, as plain text. The made times come out in order: .000, .001, .002.",
+      "file": "11-sorts-by-time-s02.png"
     },
     {
       "index": 11,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "sorts-by-time",
-      "say": "Now the same three moments with v4 ids, arriving in the same order: .001, .002, .000.",
-      "file": "12-sorts-by-time-s04.png"
+      "say": "Why: the first 6 bytes are the time. Byte 5 reads 00, 01, 02 down the list, so the earlier id has the smaller bytes and sorts first.",
+      "file": "12-sorts-by-time-s03.png"
     },
     {
       "index": 12,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "sorts-by-time",
-      "say": "Sort them by id: .002, .000, .001. Time is not inside a v4 id, so sorting by id says nothing about when.",
-      "file": "13-sorts-by-time-s05.png"
+      "say": "Now the same three moments with v4 ids, arriving in the same order: .001, .002, .000.",
+      "file": "13-sorts-by-time-s04.png"
     },
     {
       "index": 13,
+      "stepId": "s05",
+      "sceneId": "sorts-by-time",
+      "say": "Sort them by id: .002, .000, .001. Time is not inside a v4 id, so sorting by id says nothing about when.",
+      "file": "14-sorts-by-time-s05.png"
+    },
+    {
+      "index": 14,
       "stepId": "s06",
       "sceneId": "sorts-by-time",
       "say": "Pick v4 when the id should say nothing. Pick v7 when it is a key you insert a lot and want to read back in time order.",
-      "file": "14-sorts-by-time-s06.png"
+      "file": "15-sorts-by-time-s06.png"
+    },
+    {
+      "index": 15,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "16-summary-use.png"
+    },
+    {
+      "index": 16,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "17-summary-avoid.png"
+    },
+    {
+      "index": 17,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "18-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:51:40.795Z"
+  "generatedAt": "2026-08-23T01:09:07.316Z"
 }

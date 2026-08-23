@@ -6,176 +6,204 @@
   "unitTitle": "State-based CRDTs",
   "topicTitle": "LWW Register",
   "firstInUnit": false,
-  "total": 24,
+  "total": 28,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "update-and-merge",
-      "say": "An **LWW register** holds a value and a timestamp. The sidecar also remembers who wrote it.",
-      "file": "01-update-and-merge-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "One value, one timestamp. Newest wins.",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "update-and-merge",
-      "say": "The rule: on merge, the newer timestamp wins.",
-      "file": "02-update-and-merge-s02.png"
+      "say": "An **LWW register** holds a value and a timestamp. The sidecar also remembers who wrote it.",
+      "file": "02-update-and-merge-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "update-and-merge",
-      "say": "Time moves to 1. Alice sets her status; her copy records the value, t=1, node alice.",
-      "file": "03-update-and-merge-s03.png"
+      "say": "The rule: on merge, the newer timestamp wins.",
+      "file": "03-update-and-merge-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "update-and-merge",
-      "say": "Time 2. Bob sets a different status on the laptop.",
-      "file": "04-update-and-merge-s04.png"
+      "say": "Time moves to 1. Alice sets her status; her copy records the value, t=1, node alice.",
+      "file": "04-update-and-merge-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "update-and-merge",
-      "say": "Alice sends her state to Bob.",
-      "file": "05-update-and-merge-s05.png"
+      "say": "Time 2. Bob sets a different status on the laptop.",
+      "file": "05-update-and-merge-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "update-and-merge",
-      "say": "Bob compares timestamps: 2 is newer than 1. He keeps Lunch.",
-      "file": "06-update-and-merge-s06.png"
+      "say": "Alice sends her state to Bob.",
+      "file": "06-update-and-merge-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "update-and-merge",
-      "say": "Bob sends his state to Alice. She compares: 2 beats 1, so she takes Lunch.",
-      "file": "07-update-and-merge-s07.png"
+      "say": "Bob compares timestamps: 2 is newer than 1. He keeps Lunch.",
+      "file": "07-update-and-merge-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "update-and-merge",
-      "say": "Both copies agree, and both carry the same sidecar: t=2, bob.",
-      "file": "08-update-and-merge-s08.png"
+      "say": "Bob sends his state to Alice. She compares: 2 beats 1, so she takes Lunch.",
+      "file": "08-update-and-merge-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "update-and-merge",
-      "say": "Alice's status was lost. LWW always loses one side of a race; that is the deal you accept when you pick it.",
-      "file": "09-update-and-merge-s09.png"
+      "say": "Both copies agree, and both carry the same sidecar: t=2, bob.",
+      "file": "09-update-and-merge-s08.png"
     },
     {
       "index": 9,
-      "stepId": "s01",
-      "sceneId": "tie-break",
-      "say": "Timestamps can tie. Time 3: Alice sets Away and Bob sets Busy, with no message in between.",
-      "file": "10-tie-break-s01.png"
+      "stepId": "s09",
+      "sceneId": "update-and-merge",
+      "say": "Alice's status was lost. LWW always loses one side of a race; that is the deal you accept when you pick it.",
+      "file": "10-update-and-merge-s09.png"
     },
     {
       "index": 10,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "tie-break",
-      "say": "Whoops — both writes say t=3. The timestamp alone cannot pick a winner.",
-      "file": "11-tie-break-s02.png"
+      "say": "Timestamps can tie. Time 3: Alice sets Away and Bob sets Busy, with no message in between.",
+      "file": "11-tie-break-s01.png"
     },
     {
       "index": 11,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "tie-break",
-      "say": "The fix: the rule has a second part. Compare **node ids**: bob sorts after alice, so Bob wins the tie.",
-      "file": "12-tie-break-s03.png"
+      "say": "Whoops — both writes say t=3. The timestamp alone cannot pick a winner.",
+      "file": "12-tie-break-s02.png"
     },
     {
       "index": 12,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "tie-break",
-      "say": "They sync. Both copies pick Busy, stamped t=3, bob.",
-      "file": "13-tie-break-s04.png"
+      "say": "The fix: the rule has a second part. Compare **node ids**: bob sorts after alice, so Bob wins the tie.",
+      "file": "13-tie-break-s03.png"
     },
     {
       "index": 13,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "tie-break",
-      "say": "Alice lost, though her write was not older. The tie-break is arbitrary, but it is the same on every copy.",
-      "file": "14-tie-break-s05.png"
+      "say": "They sync. Both copies pick Busy, stamped t=3, bob.",
+      "file": "14-tie-break-s04.png"
     },
     {
       "index": 14,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "tie-break",
-      "say": "Any fixed rule works, as long as every copy uses the same one. Without it, two copies could disagree forever.",
-      "file": "15-tie-break-s06.png"
+      "say": "Alice lost, though her write was not older. The tie-break is arbitrary, but it is the same on every copy.",
+      "file": "15-tie-break-s05.png"
     },
     {
       "index": 15,
-      "stepId": "s01",
-      "sceneId": "status-sync",
-      "say": "One person, two devices, one relay: Alice's phone, Alice's laptop, and a relay that keeps a copy and merges like everyone else.",
-      "file": "16-status-sync-s01.png"
+      "stepId": "s06",
+      "sceneId": "tie-break",
+      "say": "Any fixed rule works, as long as every copy uses the same one. Without it, two copies could disagree forever.",
+      "file": "16-tie-break-s06.png"
     },
     {
       "index": 16,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "status-sync",
-      "say": "The phone goes offline in the subway.",
-      "file": "17-status-sync-s02.png"
+      "say": "One person, two devices, one relay: Alice's phone, Alice's laptop, and a relay that keeps a copy and merges like everyone else.",
+      "file": "17-status-sync-s01.png"
     },
     {
       "index": 17,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "status-sync",
-      "say": "Time 5: on the phone, Alice sets Commuting. The phone cannot send yet.",
-      "file": "18-status-sync-s03.png"
+      "say": "The phone goes offline in the subway.",
+      "file": "18-status-sync-s02.png"
     },
     {
       "index": 18,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "status-sync",
-      "say": "Time 7: at her desk, she sets At desk on the laptop. The laptop sends to the relay right away, and the relay merges.",
-      "file": "19-status-sync-s04.png"
+      "say": "Time 5: on the phone, Alice sets Commuting. The phone cannot send yet.",
+      "file": "19-status-sync-s03.png"
     },
     {
       "index": 19,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "status-sync",
-      "say": "Time 9: the phone is back online and sends its state, Commuting with t=5.",
-      "file": "20-status-sync-s05.png"
+      "say": "Time 7: at her desk, she sets At desk on the laptop. The laptop sends to the relay right away, and the relay merges.",
+      "file": "20-status-sync-s04.png"
     },
     {
       "index": 20,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "status-sync",
-      "say": "Whoops — an older write arrives after a newer one. In a store without timestamps, the last arrival would overwrite At desk.",
-      "file": "21-status-sync-s06.png"
+      "say": "Time 9: the phone is back online and sends its state, Commuting with t=5.",
+      "file": "21-status-sync-s05.png"
     },
     {
       "index": 21,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "status-sync",
-      "say": "The relay compares timestamps: Commuting is t=5, At desk is t=7. Newer wins, so At desk stays.",
-      "file": "22-status-sync-s07.png"
+      "say": "Whoops — an older write arrives after a newer one. In a store without timestamps, the last arrival would overwrite At desk.",
+      "file": "22-status-sync-s06.png"
     },
     {
       "index": 22,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "status-sync",
-      "say": "The relay answers with its state. The phone takes At desk, and all three copies agree.",
-      "file": "23-status-sync-s08.png"
+      "say": "The relay compares timestamps: Commuting is t=5, At desk is t=7. Newer wins, so At desk stays.",
+      "file": "23-status-sync-s07.png"
     },
     {
       "index": 23,
+      "stepId": "s08",
+      "sceneId": "status-sync",
+      "say": "The relay answers with its state. The phone takes At desk, and all three copies agree.",
+      "file": "24-status-sync-s08.png"
+    },
+    {
+      "index": 24,
       "stepId": "s09",
       "sceneId": "status-sync",
       "say": "One caveat: our clock is a simple counter. Real device clocks drift, and Unit IV shows what that breaks and how to fix it.",
-      "file": "24-status-sync-s09.png"
+      "file": "25-status-sync-s09.png"
+    },
+    {
+      "index": 25,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "26-summary-use.png"
+    },
+    {
+      "index": 26,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "27-summary-avoid.png"
+    },
+    {
+      "index": 27,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "28-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:47:18.217Z"
+  "generatedAt": "2026-08-23T01:04:01.558Z"
 }

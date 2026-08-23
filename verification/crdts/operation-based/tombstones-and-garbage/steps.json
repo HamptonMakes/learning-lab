@@ -6,190 +6,218 @@
   "unitTitle": "Operation-based CRDTs",
   "topicTitle": "Tombstones and garbage",
   "firstInUnit": false,
-  "total": 26,
+  "total": 30,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "tombstones-pile-up",
-      "say": "A short text: cat. The **sidecar** counts what each copy stores and what it shows: 3 stored, 3 visible.",
-      "file": "01-tombstones-pile-up-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "Deletes leave markers. Eventually you clean up.",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "tombstones-pile-up",
-      "say": "Alice deletes the c, op alice:4. The **tombstone** stays: 3 stored, 2 visible.",
-      "file": "02-tombstones-pile-up-s02.png"
+      "say": "A short text: cat. The **sidecar** counts what each copy stores and what it shows: 3 stored, 3 visible.",
+      "file": "02-tombstones-pile-up-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "tombstones-pile-up",
-      "say": "At the same time Bob inserts h after alice:1. For him the c is alive: chat.",
-      "file": "03-tombstones-pile-up-s03.png"
+      "say": "Alice deletes the c, op alice:4. The **tombstone** stays: 3 stored, 2 visible.",
+      "file": "03-tombstones-pile-up-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "tombstones-pile-up",
-      "say": "Both broadcast, and the two ops cross.",
-      "file": "04-tombstones-pile-up-s04.png"
+      "say": "At the same time Bob inserts h after alice:1. For him the c is alive: chat.",
+      "file": "04-tombstones-pile-up-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "tombstones-pile-up",
-      "say": "Bob applies the delete: hat, with one tombstone.",
-      "file": "05-tombstones-pile-up-s05.png"
+      "say": "Both broadcast, and the two ops cross.",
+      "file": "05-tombstones-pile-up-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "tombstones-pile-up",
-      "say": "Alice applies the insert. The anchor alice:1 is dead but present, so h slots in after it: hat on both.",
-      "file": "06-tombstones-pile-up-s06.png"
+      "say": "Bob applies the delete: hat, with one tombstone.",
+      "file": "06-tombstones-pile-up-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "tombstones-pile-up",
-      "say": "Alice rewrites the word: she deletes h, a, t and types hey after the last one. Three deletes, three inserts, six ops.",
-      "file": "07-tombstones-pile-up-s07.png"
+      "say": "Alice applies the insert. The anchor alice:1 is dead but present, so h slots in after it: hat on both.",
+      "file": "07-tombstones-pile-up-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "tombstones-pile-up",
-      "say": "She broadcasts; Bob applies all six. Now 7 stored, 3 visible on both: more than half of the text is dead.",
-      "file": "08-tombstones-pile-up-s08.png"
+      "say": "Alice rewrites the word: she deletes h, a, t and types hey after the last one. Three deletes, three inserts, six ops.",
+      "file": "08-tombstones-pile-up-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "tombstones-pile-up",
-      "say": "Readers never see tombstones, but every copy stores them, ships them and walks past them on every edit. After a week, most of a document can be dead.",
-      "file": "09-tombstones-pile-up-s09.png"
+      "say": "She broadcasts; Bob applies all six. Now 7 stored, 3 visible on both: more than half of the text is dead.",
+      "file": "09-tombstones-pile-up-s08.png"
     },
     {
       "index": 9,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "tombstones-pile-up",
-      "say": "So we want to throw tombstones away. The question is when that is safe: the next scene.",
-      "file": "10-tombstones-pile-up-s10.png"
+      "say": "Readers never see tombstones, but every copy stores them, ships them and walks past them on every edit. After a week, most of a document can be dead.",
+      "file": "10-tombstones-pile-up-s09.png"
     },
     {
       "index": 10,
-      "stepId": "s01",
-      "sceneId": "safe-to-collect",
-      "say": "Three copies of cat. The sidecar now also shows how far each copy has read from each writer: alice 3 so far.",
-      "file": "11-safe-to-collect-s01.png"
+      "stepId": "s10",
+      "sceneId": "tombstones-pile-up",
+      "say": "So we want to throw tombstones away. The question is when that is safe: the next scene.",
+      "file": "11-tombstones-pile-up-s10.png"
     },
     {
       "index": 11,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "safe-to-collect",
-      "say": "Alice deletes the t at the end, op alice:4. She cannot drop the tombstone yet: Bob or Carol may still insert after alice:3.",
-      "file": "12-safe-to-collect-s02.png"
+      "say": "Three copies of cat. The sidecar now also shows how far each copy has read from each writer: alice 3 so far.",
+      "file": "12-safe-to-collect-s01.png"
     },
     {
       "index": 12,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "safe-to-collect",
-      "say": "Carol is offline. Alice broadcasts: Bob applies the delete, and Carol's copy waits at her door.",
-      "file": "13-safe-to-collect-s03.png"
+      "say": "Alice deletes the t at the end, op alice:4. She cannot drop the tombstone yet: Bob or Carol may still insert after alice:3.",
+      "file": "13-safe-to-collect-s02.png"
     },
     {
       "index": 13,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "safe-to-collect",
-      "say": "Bob has the tombstone too, but they still cannot drop it. Carol has read alice up to 3, and she could still anchor an op on the t.",
-      "file": "14-safe-to-collect-s04.png"
+      "say": "Carol is offline. Alice broadcasts: Bob applies the delete, and Carol's copy waits at her door.",
+      "file": "14-safe-to-collect-s03.png"
     },
     {
       "index": 14,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "safe-to-collect",
-      "say": "Carol comes online and applies the delete. Now every copy knows the t is dead, and every copy has read alice up to 4.",
-      "file": "15-safe-to-collect-s05.png"
+      "say": "Bob has the tombstone too, but they still cannot drop it. Carol has read alice up to 3, and she could still anchor an op on the t.",
+      "file": "15-safe-to-collect-s04.png"
     },
     {
       "index": 15,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "safe-to-collect",
-      "say": "Alice still needs proof that everyone has seen alice:4. The copies compare how far each has read (simplified): all three tables agree.",
-      "file": "16-safe-to-collect-s06.png"
+      "say": "Carol comes online and applies the delete. Now every copy knows the t is dead, and every copy has read alice up to 4.",
+      "file": "16-safe-to-collect-s05.png"
     },
     {
       "index": 16,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "safe-to-collect",
-      "say": "The tombstone is stable: nothing can still point at it. Alice collects it: 2 stored, 2 visible.",
-      "file": "17-safe-to-collect-s07.png"
+      "say": "Alice still needs proof that everyone has seen alice:4. The copies compare how far each has read (simplified): all three tables agree.",
+      "file": "17-safe-to-collect-s06.png"
     },
     {
       "index": 17,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "safe-to-collect",
-      "say": "Bob and Carol collect too. Same text, zero tombstones, on all three.",
-      "file": "18-safe-to-collect-s08.png"
+      "say": "The tombstone is stable: nothing can still point at it. Alice collects it: 2 stored, 2 visible.",
+      "file": "18-safe-to-collect-s07.png"
     },
     {
       "index": 18,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "safe-to-collect",
-      "say": "That table of how far each copy has read is a **vector clock**. Unit IV is about it.",
-      "file": "19-safe-to-collect-s09.png"
+      "say": "Bob and Carol collect too. Same text, zero tombstones, on all three.",
+      "file": "19-safe-to-collect-s08.png"
     },
     {
       "index": 19,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "safe-to-collect",
-      "say": "Few systems prove stability: Yjs and Automerge keep every delete, only smaller (Unit V). Cassandra waits a fixed time, and a node down longer revives rows.",
-      "file": "20-safe-to-collect-s10.png"
+      "say": "That table of how far each copy has read is a **vector clock**. Unit IV is about it.",
+      "file": "20-safe-to-collect-s09.png"
     },
     {
       "index": 20,
-      "stepId": "s01",
-      "sceneId": "collect-too-early",
-      "say": "Two copies of cat, synced by state this time (Unit II style). Alice deletes the t, op alice:4: one tombstone.",
-      "file": "21-collect-too-early-s01.png"
+      "stepId": "s10",
+      "sceneId": "safe-to-collect",
+      "say": "Few systems prove stability: Yjs and Automerge keep every delete, only smaller (Unit V). Cassandra waits a fixed time, and a node down longer revives rows.",
+      "file": "21-safe-to-collect-s10.png"
     },
     {
       "index": 21,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "collect-too-early",
-      "say": "Bob is offline and has not seen the delete. Alice is impatient and collects the tombstone without proof (simplified): 2 stored, and no trace of alice:3.",
-      "file": "22-collect-too-early-s02.png"
+      "say": "Two copies of cat, synced by state this time (Unit II style). Alice deletes the t, op alice:4: one tombstone.",
+      "file": "22-collect-too-early-s01.png"
     },
     {
       "index": 22,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "collect-too-early",
-      "say": "Bob comes back and they sync their states. Bob's copy still holds the t, alive; Alice's copy has no record of it, dead or alive.",
-      "file": "23-collect-too-early-s03.png"
+      "say": "Bob is offline and has not seen the delete. Alice is impatient and collects the tombstone without proof (simplified): 2 stored, and no trace of alice:3.",
+      "file": "23-collect-too-early-s02.png"
     },
     {
       "index": 23,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "collect-too-early",
-      "say": "Whoops — the t is back on both copies. Merge is a union, Alice had no tombstone to say no, and the delete is lost.",
-      "file": "24-collect-too-early-s04.png"
+      "say": "Bob comes back and they sync their states. Bob's copy still holds the t, alive; Alice's copy has no record of it, dead or alive.",
+      "file": "24-collect-too-early-s03.png"
     },
     {
       "index": 24,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "collect-too-early",
-      "say": "The fix: never collect without proof that every copy has seen the delete. That is what the last scene did, with the read tables.",
-      "file": "25-collect-too-early-s05.png"
+      "say": "Whoops — the t is back on both copies. Merge is a union, Alice had no tombstone to say no, and the delete is lost.",
+      "file": "25-collect-too-early-s04.png"
     },
     {
       "index": 25,
+      "stepId": "s05",
+      "sceneId": "collect-too-early",
+      "say": "The fix: never collect without proof that every copy has seen the delete. That is what the last scene did, with the read tables.",
+      "file": "26-collect-too-early-s05.png"
+    },
+    {
+      "index": 26,
       "stepId": "s06",
       "sceneId": "collect-too-early",
       "say": "This is the Cassandra zombie row: a replica that misses a delete for longer than the grace period revives it on repair. Tombstones are cheap; zombies are not.",
-      "file": "26-collect-too-early-s06.png"
+      "file": "27-collect-too-early-s06.png"
+    },
+    {
+      "index": 27,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "28-summary-use.png"
+    },
+    {
+      "index": 28,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "29-summary-avoid.png"
+    },
+    {
+      "index": 29,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "30-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:49:37.679Z"
+  "generatedAt": "2026-08-23T01:06:43.755Z"
 }

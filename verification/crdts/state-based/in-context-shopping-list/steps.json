@@ -4,171 +4,199 @@
   "topic": "in-context-shopping-list",
   "unitNumeral": "II",
   "unitTitle": "State-based CRDTs",
-  "topicTitle": "In context: a shared shopping list",
+  "topicTitle": "In context: a shopping list",
   "firstInUnit": false,
-  "total": 23,
+  "total": 27,
   "steps": [
     {
       "index": 0,
-      "stepId": "s01",
-      "sceneId": "build-it",
-      "say": "One shared list. The title is an LWW register; the items are an **OR-Set**; each item has a name (LWW) and a qty (**PN-Counter**).",
-      "file": "01-build-it-s01.png"
+      "stepId": "intro",
+      "sceneId": "intro",
+      "say": "Compose LWW fields, an OR-Set, and PN-Counters.",
+      "file": "01-intro-intro.png"
     },
     {
       "index": 1,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "build-it",
-      "say": "Alice adds milk. The new item gets the tag alice:1 as its id, and its qty starts at 0.",
-      "file": "02-build-it-s02.png"
+      "say": "One shared list. The title is an LWW register; the items are an **OR-Set**; each item has a name (LWW) and a qty (**PN-Counter**).",
+      "file": "02-build-it-s01.png"
     },
     {
       "index": 2,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "build-it",
-      "say": "She sets qty to 2: two increments on the milk counter, in her own row.",
-      "file": "03-build-it-s03.png"
+      "say": "Alice adds milk. The new item gets the tag alice:1 as its id, and its qty starts at 0.",
+      "file": "03-build-it-s02.png"
     },
     {
       "index": 3,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "build-it",
-      "say": "Bob adds eggs (tag bob:1) with qty 12.",
-      "file": "04-build-it-s04.png"
+      "say": "She sets qty to 2: two increments on the milk counter, in her own row.",
+      "file": "04-build-it-s03.png"
     },
     {
       "index": 4,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "build-it",
-      "say": "Both sync through the server. The item set unions; each qty merges row by row; the title is untouched so far.",
-      "file": "05-build-it-s05.png"
+      "say": "Bob adds eggs (tag bob:1) with qty 12.",
+      "file": "05-build-it-s04.png"
     },
     {
       "index": 5,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "build-it",
-      "say": "Look at the sidecar: a stamp on the title, a tag on each item, a per-node row in each qty. Each part carries what its rule needs.",
-      "file": "06-build-it-s06.png"
+      "say": "Both sync through the server. The item set unions; each qty merges row by row; the title is untouched so far.",
+      "file": "06-build-it-s05.png"
     },
     {
       "index": 6,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "build-it",
-      "say": "Every part brought its own merge rule, so the whole document has one. Now let us break the network.",
-      "file": "07-build-it-s07.png"
+      "say": "Look at the sidecar: a stamp on the title, a tag on each item, a per-node row in each qty. Each part carries what its rule needs.",
+      "file": "07-build-it-s06.png"
     },
     {
       "index": 7,
-      "stepId": "s01",
-      "sceneId": "offline-weekend",
-      "say": "Saturday: both devices lose the server. They keep editing their own copies.",
-      "file": "08-offline-weekend-s01.png"
+      "stepId": "s07",
+      "sceneId": "build-it",
+      "say": "Every part brought its own merge rule, so the whole document has one. Now let us break the network.",
+      "file": "08-build-it-s07.png"
     },
     {
       "index": 8,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "offline-weekend",
-      "say": "At t=1 Alice renames the list to Party shop and adds one more milk: her qty reads 3.",
-      "file": "09-offline-weekend-s02.png"
+      "say": "Saturday: both devices lose the server. They keep editing their own copies.",
+      "file": "09-offline-weekend-s01.png"
     },
     {
       "index": 9,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "offline-weekend",
-      "say": "At t=2 Bob buys the eggs and removes them. He also drops milk by one: his qty reads 1.",
-      "file": "10-offline-weekend-s03.png"
+      "say": "At t=1 Alice renames the list to Party shop and adds one more milk: her qty reads 3.",
+      "file": "10-offline-weekend-s02.png"
     },
     {
       "index": 10,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "offline-weekend",
-      "say": "At t=3 Bob renames the list too: Sat shopping. Two titles, one race.",
-      "file": "11-offline-weekend-s04.png"
+      "say": "At t=2 Bob buys the eggs and removes them. He also drops milk by one: his qty reads 1.",
+      "file": "11-offline-weekend-s03.png"
     },
     {
       "index": 11,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "offline-weekend",
-      "say": "Sunday: both come back online and sync through the server. Watch each part.",
-      "file": "12-offline-weekend-s05.png"
+      "say": "At t=3 Bob renames the list too: Sat shopping. Two titles, one race.",
+      "file": "12-offline-weekend-s04.png"
     },
     {
       "index": 12,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "offline-weekend",
-      "say": "Title: LWW. Sat shopping carries t=3, the newest stamp, so it wins on every copy — and nobody was asked.",
-      "file": "13-offline-weekend-s06.png"
+      "say": "Sunday: both come back online and sync through the server. Watch each part.",
+      "file": "13-offline-weekend-s05.png"
     },
     {
       "index": 13,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "offline-weekend",
-      "say": "Eggs: OR-Set. Bob dropped the only tag, bob:1, and nobody added eggs again, so eggs are gone everywhere.",
-      "file": "14-offline-weekend-s07.png"
+      "say": "Title: LWW. Sat shopping carries t=3, the newest stamp, so it wins on every copy — and nobody was asked.",
+      "file": "14-offline-weekend-s06.png"
     },
     {
       "index": 14,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "offline-weekend",
-      "say": "Milk qty is a PN-Counter: Alice +3 in her row, Bob −1 in his, total 2. Both edits counted; nothing was overwritten.",
-      "file": "15-offline-weekend-s08.png"
+      "say": "Eggs: OR-Set. Bob dropped the only tag, bob:1, and nobody added eggs again, so eggs are gone everywhere.",
+      "file": "15-offline-weekend-s07.png"
     },
     {
       "index": 15,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "offline-weekend",
-      "say": "Every copy agrees: Sat shopping, milk with qty 2, no eggs. No lock, no lost edit, no conflict screen.",
-      "file": "16-offline-weekend-s09.png"
+      "say": "Milk qty is a PN-Counter: Alice +3 in her row, Bob −1 in his, total 2. Both edits counted; nothing was overwritten.",
+      "file": "16-offline-weekend-s08.png"
     },
     {
       "index": 16,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "offline-weekend",
-      "say": "Each part merged by its own rule, so the document as a whole did too. Composition is how real apps use CRDTs.",
-      "file": "17-offline-weekend-s10.png"
+      "say": "Every copy agrees: Sat shopping, milk with qty 2, no eggs. No lock, no lost edit, no conflict screen.",
+      "file": "17-offline-weekend-s09.png"
     },
     {
       "index": 17,
-      "stepId": "s01",
-      "sceneId": "one-more-race",
-      "say": "One last race. Alice removes milk from her phone: she drops its tag, alice:1.",
-      "file": "18-one-more-race-s01.png"
+      "stepId": "s10",
+      "sceneId": "offline-weekend",
+      "say": "Each part merged by its own rule, so the document as a whole did too. Composition is how real apps use CRDTs.",
+      "file": "18-offline-weekend-s10.png"
     },
     {
       "index": 18,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "one-more-race",
-      "say": "At the same time, on the laptop, Bob bumps milk to qty 3. Neither has seen the other.",
-      "file": "19-one-more-race-s02.png"
+      "say": "One last race. Alice removes milk from her phone: she drops its tag, alice:1.",
+      "file": "19-one-more-race-s01.png"
     },
     {
       "index": 19,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "one-more-race",
-      "say": "They sync. Membership is the OR-Set's call: Alice dropped the only tag and Bob added none, so milk is gone, counter and all.",
-      "file": "20-one-more-race-s03.png"
+      "say": "At the same time, on the laptop, Bob bumps milk to qty 3. Neither has seen the other.",
+      "file": "20-one-more-race-s02.png"
     },
     {
       "index": 20,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "one-more-race",
-      "say": "Whoops — Bob's +1 vanished with the item. An edit inside an element does not protect it from a remove.",
-      "file": "21-one-more-race-s04.png"
+      "say": "They sync. Membership is the OR-Set's call: Alice dropped the only tag and Bob added none, so milk is gone, counter and all.",
+      "file": "21-one-more-race-s03.png"
     },
     {
       "index": 21,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "one-more-race",
-      "say": "The fix, if any edit should keep the item: the app re-adds on edit, with a new tag. That is an app rule on top of the CRDT.",
-      "file": "22-one-more-race-s05.png"
+      "say": "Whoops — Bob's +1 vanished with the item. An edit inside an element does not protect it from a remove.",
+      "file": "22-one-more-race-s04.png"
     },
     {
       "index": 22,
+      "stepId": "s05",
+      "sceneId": "one-more-race",
+      "say": "The fix, if any edit should keep the item: the app re-adds on edit, with a new tag. That is an app rule on top of the CRDT.",
+      "file": "23-one-more-race-s05.png"
+    },
+    {
+      "index": 23,
       "stepId": "s06",
       "sceneId": "one-more-race",
       "say": "Removing an item beats editing inside it. Decide whether that is what you want before you ship the schema.",
-      "file": "23-one-more-race-s06.png"
+      "file": "24-one-more-race-s06.png"
+    },
+    {
+      "index": 24,
+      "stepId": "use",
+      "sceneId": "summary",
+      "say": "When to use it.",
+      "file": "25-summary-use.png"
+    },
+    {
+      "index": 25,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "26-summary-avoid.png"
+    },
+    {
+      "index": 26,
+      "stepId": "world",
+      "sceneId": "summary",
+      "say": "In the real world.",
+      "file": "27-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-22T21:48:19.808Z"
+  "generatedAt": "2026-08-23T01:05:13.955Z"
 }
