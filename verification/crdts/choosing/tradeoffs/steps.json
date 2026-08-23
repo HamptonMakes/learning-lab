@@ -6,7 +6,7 @@
   "unitTitle": "Choosing & Using CRDTs",
   "topicTitle": "Trade-offs",
   "firstInUnit": false,
-  "total": 38,
+  "total": 39,
   "steps": [
     {
       "index": 0,
@@ -255,25 +255,32 @@
     },
     {
       "index": 35,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "36-summary-use.png"
+      "stepId": "flow",
+      "sceneId": "flow",
+      "say": "Now it runs by itself: updates land on the copies, the copies sync now and then, and every copy ends up agreeing. Press → when you have seen enough.",
+      "file": "36-flow-flow.png"
     },
     {
       "index": 36,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "37-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "37-summary-use.png"
     },
     {
       "index": 37,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "38-summary-avoid.png"
+    },
+    {
+      "index": 38,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "38-summary-world.png"
+      "file": "39-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T16:09:08.456Z"
+  "generatedAt": "2026-08-23T17:19:58.172Z"
 }

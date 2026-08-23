@@ -1634,3 +1634,28 @@ covers it); a `values` overlay that rewrites the world (A-M1).
 - A `max-register` and `hlc` entry in `src/crdt/index.ts` (small, tracked with the reducer work).
 - Whether `verify` should also render one RTL storyboard per unit (currently one topic per unit).
 - A locale actually needing the `values` relabel map (§12) — none planned for the first five.
+
+## 11.4 Flow — the lesson runs by itself
+
+Every CRDT topic whose last lesson world has something pressable (`canFlow(world)`: the sandbox
+would offer at least one local op) gets a synthetic **Flow** frame between the lesson and the
+summary (`presentation.ts`, scene id `flow`, slide `{ kind: 'flow', heading }`). The frame keeps the
+lesson's last world; on the page `FlowStage` wraps it in a sandbox and an **autopilot**
+(`src/lesson/flow/autopilot.ts`) plans one beat at a time from exactly the controls
+`deriveControls` derives for that world — so every beat is one the learner could have pressed, and
+every value is computed by the real CRDT code:
+
+- the bar has ten beats: local updates, with **syncs on beats 2, 5, 7, 9** (op-wired slots
+  alternate broadcast and delivery); on beat 3 a copy sometimes goes **offline** (it keeps taking
+  updates, the copies drift) and is back **online** by beat 8, so the next syncs show the drift heal;
+- prompts are filled like a curious learner would: small numbers (sometimes lower, so a max
+  register shows "no change"), short words, real field keys, existing items;
+- seeded (`mulberry32(seedOf(topicId))`): a topic's flow opens the same way every time; **Shuffle**
+  reseeds; the player's speed multiplier scales the beat (`BEAT_MS`);
+- autoplay is off under `motion=off` (verify), the reduced-motion setting and the OS preference —
+  the **Run** key still works; the player dwells 24 s on the frame before autoplay moves on
+  (`FLOW_DWELL_MS`), and the lesson itself never changes (the sandbox is discarded on leaving).
+
+Tests: `src/lesson/flow/autopilot.test.ts` drives 30 beats of every topic's flow through the real
+reducer without a `ReducerError`, and checks the LWW-register flow converges once everything is
+delivered and synced. `e2e/flow.spec.ts` watches it run in a real browser.

@@ -12,7 +12,7 @@
  * measured in its coordinates. AnchorRegistryProvider wraps the root (not the reverse) so its layout
  * effects run after the root's ref is attached.
  */
-import { createContext, useCallback, useContext, useRef } from 'react'
+import { createContext, useCallback, useContext, useRef, type ReactNode } from 'react'
 import { LayoutGroup } from 'motion/react'
 import { SlideView } from './Slide'
 import type { ActorId, Frame, Message } from '@/lesson/types'
@@ -53,6 +53,8 @@ export interface StageProps {
   dir: 'ltr' | 'rtl'
   onEvent?: StageEventHandler
   className?: string
+  /** Extra chrome drawn inside the root over the layers (the flow's status line and keys). */
+  hud?: ReactNode
 }
 
 export function Stage({
@@ -63,6 +65,7 @@ export function Stage({
   dir,
   onEvent,
   className,
+  hud,
 }: StageProps) {
   const container = useRef<HTMLDivElement>(null)
   const emit = useCallback<StageEventHandler>((event) => onEvent?.(event), [onEvent])
@@ -102,6 +105,7 @@ export function Stage({
                     <CalloutLayer />
                   </LayoutGroup>
                 )}
+                {hud}
               </div>
             </div>
           </AnchorRegistryProvider>

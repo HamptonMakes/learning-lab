@@ -28,6 +28,8 @@ export function SlideView({ slide }: { slide: Slide }) {
           <Intro slide={slide} />
         ) : slide.kind === 'rules' ? (
           <Rules slide={slide} />
+        ) : slide.kind === 'flow' ? (
+          <Flow slide={slide} />
         ) : (
           <Summary slide={slide} />
         )}
@@ -94,6 +96,15 @@ function Summary({ slide }: { slide: Extract<Slide, { kind: 'summary' }> }) {
           {slide.text}
         </p>
       )}
+    </div>
+  )
+}
+
+/** The flow frame drawn as a slide (the lesson page swaps in the live FlowStage instead). */
+function Flow({ slide }: { slide: Extract<Slide, { kind: 'flow' }> }) {
+  return (
+    <div className="text-center" data-slide-flow>
+      <h2 className="text-3xl font-semibold tracking-tight text-ink">{slide.heading}</h2>
     </div>
   )
 }

@@ -6,7 +6,7 @@
   "unitTitle": "Vector Clocks & Causality",
   "topicTitle": "Wall-clock timestamps",
   "firstInUnit": true,
-  "total": 27,
+  "total": 28,
   "steps": [
     {
       "index": 0,
@@ -178,25 +178,32 @@
     },
     {
       "index": 24,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "25-summary-use.png"
+      "stepId": "flow",
+      "sceneId": "flow",
+      "say": "Now it runs by itself: updates land on the copies, the copies sync now and then, and every copy ends up agreeing. Press → when you have seen enough.",
+      "file": "25-flow-flow.png"
     },
     {
       "index": 25,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "26-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "26-summary-use.png"
     },
     {
       "index": 26,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "27-summary-avoid.png"
+    },
+    {
+      "index": 27,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "27-summary-world.png"
+      "file": "28-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T16:07:28.808Z"
+  "generatedAt": "2026-08-23T17:18:46.223Z"
 }

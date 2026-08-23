@@ -6,7 +6,7 @@
   "unitTitle": "Vector Clocks & Causality",
   "topicTitle": "In context: a notes app",
   "firstInUnit": false,
-  "total": 26,
+  "total": 27,
   "steps": [
     {
       "index": 0,
@@ -171,25 +171,32 @@
     },
     {
       "index": 23,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "24-summary-use.png"
+      "stepId": "flow",
+      "sceneId": "flow",
+      "say": "Now it runs by itself: updates land on the copies, the copies sync now and then, and every copy ends up agreeing. Press → when you have seen enough.",
+      "file": "24-flow-flow.png"
     },
     {
       "index": 24,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "25-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "25-summary-use.png"
     },
     {
       "index": 25,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "26-summary-avoid.png"
+    },
+    {
+      "index": 26,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "26-summary-world.png"
+      "file": "27-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T16:08:22.690Z"
+  "generatedAt": "2026-08-23T17:19:36.422Z"
 }

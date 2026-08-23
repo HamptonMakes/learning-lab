@@ -6,7 +6,7 @@
   "unitTitle": "Choosing & Using CRDTs",
   "topicTitle": "Composing a document",
   "firstInUnit": false,
-  "total": 36,
+  "total": 37,
   "steps": [
     {
       "index": 0,
@@ -241,25 +241,32 @@
     },
     {
       "index": 33,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "34-summary-use.png"
+      "stepId": "flow",
+      "sceneId": "flow",
+      "say": "Now it runs by itself: updates land on the copies, the copies sync now and then, and every copy ends up agreeing. Press → when you have seen enough.",
+      "file": "34-flow-flow.png"
     },
     {
       "index": 34,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "35-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "35-summary-use.png"
     },
     {
       "index": 35,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "36-summary-avoid.png"
+    },
+    {
+      "index": 36,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "36-summary-world.png"
+      "file": "37-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T16:08:55.856Z"
+  "generatedAt": "2026-08-23T17:19:52.206Z"
 }

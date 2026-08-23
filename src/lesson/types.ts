@@ -513,6 +513,8 @@ export type Frame = {
 export type Slide =
   | { kind: 'intro'; title: string; subtitle: string; goal?: string }
   | { kind: 'rules'; heading: string; rules: string[]; shape?: Shape; cta?: string }
+  /** "Watch it flow": the frame keeps the lesson's last world; the page runs the autopilot on it. */
+  | { kind: 'flow'; heading: string }
   | {
       kind: 'summary'
       heading: string

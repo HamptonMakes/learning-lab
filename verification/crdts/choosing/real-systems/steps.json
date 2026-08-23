@@ -6,7 +6,7 @@
   "unitTitle": "Choosing & Using CRDTs",
   "topicTitle": "Real systems",
   "firstInUnit": false,
-  "total": 30,
+  "total": 31,
   "steps": [
     {
       "index": 0,
@@ -199,25 +199,32 @@
     },
     {
       "index": 27,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "28-summary-use.png"
+      "stepId": "flow",
+      "sceneId": "flow",
+      "say": "Now it runs by itself: updates land on the copies, the copies sync now and then, and every copy ends up agreeing. Press → when you have seen enough.",
+      "file": "28-flow-flow.png"
     },
     {
       "index": 28,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "29-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "29-summary-use.png"
     },
     {
       "index": 29,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "30-summary-avoid.png"
+    },
+    {
+      "index": 30,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "30-summary-world.png"
+      "file": "31-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T16:09:18.421Z"
+  "generatedAt": "2026-08-23T17:20:08.571Z"
 }

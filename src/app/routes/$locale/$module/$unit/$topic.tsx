@@ -16,6 +16,7 @@ import { useSetting } from '@/settings'
 import { TransportBar } from '@/app/components/transport-bar'
 import { Narration } from '@/app/components/narration'
 import { TryIt, TryItTrigger } from '@/app/components/try-it/TryIt'
+import { FlowStage } from '@/app/components/flow/FlowStage'
 
 // TanStack Router JSON-parses search values, so `?lab=1` arrives as the number 1; normalise.
 const flag = (on: string) =>
@@ -153,6 +154,8 @@ function LessonPlayer({
   const labelWorld = t('slide.realWorld')
   const labelHow = t('slide.howItWorks')
   const labelSee = t('slide.letsSee')
+  const labelFlow = t('flow.heading')
+  const labelFlowSay = t('flow.say')
   const built = useMemo<{ frames: Frame[]; error?: string }>(() => {
     try {
       return {
@@ -165,6 +168,8 @@ function LessonPlayer({
             world: labelWorld,
             howItWorks: labelHow,
             letsSee: labelSee,
+            flow: labelFlow,
+            flowSay: labelFlowSay,
           },
           assertMode: 'warn',
         }),
@@ -172,7 +177,18 @@ function LessonPlayer({
     } catch (e) {
       return { frames: [], error: e instanceof Error ? e.message : String(e) }
     }
-  }, [topic, title, subtitle, labelUse, labelAvoid, labelWorld, labelHow, labelSee])
+  }, [
+    topic,
+    title,
+    subtitle,
+    labelUse,
+    labelAvoid,
+    labelWorld,
+    labelHow,
+    labelSee,
+    labelFlow,
+    labelFlowSay,
+  ])
 
   const player = usePlayer(built.frames, {
     initialIndex: (search.step ?? 1) - 1,
@@ -209,7 +225,7 @@ function LessonPlayer({
 
   const instant = player.instant
   const scene = topic.scenes.find((s) => s.id === frame.sceneId)
-  const scenes = presentationScenes(topic)
+  const scenes = presentationScenes(topic, built.frames)
   // The sandbox starts from the data on stage; on the title/summary slides use the lesson's last frame.
   const sandboxFrame = frame.slide
     ? ([...built.frames].reverse().find((f) => !f.slide) ?? frame)
@@ -232,7 +248,9 @@ function LessonPlayer({
               ? t('slide.start')
               : s.synthetic === 'summary'
                 ? t('slide.summary')
-                : `${i}. ${s.title ?? s.id}`
+                : s.synthetic === 'flow'
+                  ? t('slide.flow')
+                  : `${i}. ${s.title ?? s.id}`
           return (
             <li key={s.id}>
               <button
@@ -292,13 +310,25 @@ function LessonPlayer({
             transition={{ duration: instant ? 0 : 0.2 / player.state.speed }}
             className="flex flex-col"
           >
-            <Stage
-              frame={frame}
-              speed={player.state.speed}
-              reducedSetting={reducedPref === 'on'}
-              instant={instant}
-              dir={dir}
-            />
+            {frame.slide?.kind === 'flow' ? (
+              <FlowStage
+                frame={frame}
+                speed={player.state.speed}
+                reducedSetting={reducedPref === 'on'}
+                instant={instant}
+                autoStart={search.motion !== 'off'}
+                dir={dir}
+                topicId={topicId}
+              />
+            ) : (
+              <Stage
+                frame={frame}
+                speed={player.state.speed}
+                reducedSetting={reducedPref === 'on'}
+                instant={instant}
+                dir={dir}
+              />
+            )}
           </motion.div>
         </AnimatePresence>
 

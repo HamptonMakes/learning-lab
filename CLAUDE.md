@@ -63,7 +63,9 @@ config/           Kamal deploy.yml
 
 ## 4. The animation model (the heart of the project)
 
-- A **Topic** has one or more **Scenes**. A Scene declares its **world** (actors, documents, data
+- A **Topic** has one or more **Scenes**. The presentation wraps them in synthetic frames: a title
+  screen, a "How it works" slide, a **Flow** frame (CRDT topics: the autopilot runs the real code by
+  itself — `docs/animation-dsl.md` §11.4) and the summary slides. A Scene declares its **world** (actors, documents, data
   structures) and an ordered list of **Steps**.
 - A **Step** = `{ id, say, do }`: a stable id, one or two plain sentences of narration, and a list of
   **commands**. Commands are typed data (`set`, `send`, `deliver`, `merge`, `highlight`, `callout`,

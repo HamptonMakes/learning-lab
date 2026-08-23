@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { lwwRegisterTopic } from './fixtures/lww-register'
 import { buildTimeline } from './reducer/timeline'
-import { buildPresentation, INTRO_SCENE, SUMMARY_SCENE, presentationScenes } from './presentation'
+import {
+  buildPresentation,
+  FLOW_SCENE,
+  INTRO_SCENE,
+  SUMMARY_SCENE,
+  presentationScenes,
+} from './presentation'
 
 const labels = { use: 'When to use it.', avoid: 'When not to use it.', world: 'In the real world.' }
 
@@ -13,7 +19,15 @@ describe('buildPresentation', () => {
       subtitle: 'One value, one timestamp.',
       labels,
     })
-    expect(frames).toHaveLength(lesson.length + 4)
+    // title + lesson + flow (the lesson has replicas) + three summary slides
+    expect(frames).toHaveLength(lesson.length + 5)
+    const flow = frames.find((f) => f.sceneId === FLOW_SCENE)
+    expect(flow?.slide).toMatchObject({ kind: 'flow', heading: 'Watch it flow' })
+    const lastLesson = lesson[lesson.length - 1]
+    expect(flow?.world.replicas).toBe(lastLesson?.world.replicas)
+    expect(flow?.world.actors).toBe(lastLesson?.world.actors)
+    expect(flow?.world.marks).toEqual([]) // the lesson's callouts do not follow into the flow
+    expect(frames.indexOf(flow as (typeof frames)[number])).toBe(frames.length - 4)
     expect(frames.map((f) => f.index)).toEqual(frames.map((_, i) => i))
     expect(frames[0]?.slide).toMatchObject({
       kind: 'intro',

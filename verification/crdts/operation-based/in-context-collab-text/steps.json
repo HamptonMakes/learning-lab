@@ -6,7 +6,7 @@
   "unitTitle": "Operation-based CRDTs",
   "topicTitle": "In context: a text editor",
   "firstInUnit": false,
-  "total": 24,
+  "total": 25,
   "steps": [
     {
       "index": 0,
@@ -157,25 +157,32 @@
     },
     {
       "index": 21,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "22-summary-use.png"
+      "stepId": "flow",
+      "sceneId": "flow",
+      "say": "Now it runs by itself: updates land on the copies, the copies sync now and then, and every copy ends up agreeing. Press → when you have seen enough.",
+      "file": "22-flow-flow.png"
     },
     {
       "index": 22,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "23-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "23-summary-use.png"
     },
     {
       "index": 23,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "24-summary-avoid.png"
+    },
+    {
+      "index": 24,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "24-summary-world.png"
+      "file": "25-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T16:07:09.525Z"
+  "generatedAt": "2026-08-23T17:18:26.342Z"
 }

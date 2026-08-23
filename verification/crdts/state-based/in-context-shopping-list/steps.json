@@ -6,7 +6,7 @@
   "unitTitle": "State-based CRDTs",
   "topicTitle": "In context: a shopping list",
   "firstInUnit": false,
-  "total": 28,
+  "total": 29,
   "steps": [
     {
       "index": 0,
@@ -185,25 +185,32 @@
     },
     {
       "index": 25,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "26-summary-use.png"
+      "stepId": "flow",
+      "sceneId": "flow",
+      "say": "Now it runs by itself: updates land on the copies, the copies sync now and then, and every copy ends up agreeing. Press → when you have seen enough.",
+      "file": "26-flow-flow.png"
     },
     {
       "index": 26,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "27-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "27-summary-use.png"
     },
     {
       "index": 27,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "28-summary-avoid.png"
+    },
+    {
+      "index": 28,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "28-summary-world.png"
+      "file": "29-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T16:05:46.444Z"
+  "generatedAt": "2026-08-23T17:17:37.843Z"
 }

@@ -27,7 +27,11 @@ export function animBudget(changes: readonly Change[]): number {
  * `(animBudget(changes) + HOLD[step.hold ?? 'normal']) / speed`; `reduced` zeroes the animation
  * budget (holds are unchanged, DSL §7). `speed` must be > 0.
  */
+/** The flow frame dwells long enough to watch a few bars before autoplay moves on (at 1×). */
+export const FLOW_DWELL_MS = 24_000
+
 export function holdMs(frame: Frame, speed: number, reduced: boolean): number {
+  if (frame.slide?.kind === 'flow') return FLOW_DWELL_MS / speed
   const anim = reduced ? 0 : animBudget(frame.changes)
   return (anim + HOLD[frame.step.hold ?? 'normal']) / speed
 }

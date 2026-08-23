@@ -6,7 +6,7 @@
   "unitTitle": "Choosing & Using CRDTs",
   "topicTitle": "Course summary",
   "firstInUnit": false,
-  "total": 34,
+  "total": 35,
   "steps": [
     {
       "index": 0,
@@ -40,7 +40,7 @@
       "index": 4,
       "stepId": "s03",
       "sceneId": "the-checklist",
-      "say": "State the three merge laws: order does not matter, grouping does not matter, merging twice is harmless ([The shape of a state CRDT](/crdts/state-based/the-shape-of-a-state-crdt)).",
+      "say": "State the three merge laws: order does not matter, grouping does not matter, merging twice is harmless ([Max value](/crdts/state-based/max-value)).",
       "file": "05-the-checklist-s03.png"
     },
     {
@@ -227,25 +227,32 @@
     },
     {
       "index": 31,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "32-summary-use.png"
+      "stepId": "flow",
+      "sceneId": "flow",
+      "say": "Now it runs by itself: updates land on the copies, the copies sync now and then, and every copy ends up agreeing. Press → when you have seen enough.",
+      "file": "32-flow-flow.png"
     },
     {
       "index": 32,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "33-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "33-summary-use.png"
     },
     {
       "index": 33,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "34-summary-avoid.png"
+    },
+    {
+      "index": 34,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "34-summary-world.png"
+      "file": "35-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T16:09:29.805Z"
+  "generatedAt": "2026-08-23T17:20:14.038Z"
 }

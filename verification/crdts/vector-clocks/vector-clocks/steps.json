@@ -6,7 +6,7 @@
   "unitTitle": "Vector Clocks & Causality",
   "topicTitle": "Vector clocks",
   "firstInUnit": false,
-  "total": 33,
+  "total": 34,
   "steps": [
     {
       "index": 0,
@@ -220,25 +220,32 @@
     },
     {
       "index": 30,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "31-summary-use.png"
+      "stepId": "flow",
+      "sceneId": "flow",
+      "say": "Now it runs by itself: updates land on the copies, the copies sync now and then, and every copy ends up agreeing. Press → when you have seen enough.",
+      "file": "31-flow-flow.png"
     },
     {
       "index": 31,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "32-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "32-summary-use.png"
     },
     {
       "index": 32,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "33-summary-avoid.png"
+    },
+    {
+      "index": 33,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "33-summary-world.png"
+      "file": "34-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T16:07:58.023Z"
+  "generatedAt": "2026-08-23T17:19:10.706Z"
 }

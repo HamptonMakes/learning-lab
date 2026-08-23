@@ -1047,6 +1047,7 @@ export const SlideSchema = z.discriminatedUnion('kind', [
     shape: ShapeSchema.optional(),
     cta: z.string().optional(),
   }),
+  z.strictObject({ kind: z.literal('flow'), heading: z.string() }),
   z.strictObject({
     kind: z.literal('summary'),
     heading: z.string(),
