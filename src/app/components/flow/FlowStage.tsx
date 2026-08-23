@@ -7,11 +7,11 @@
  * still works there. The player's speed multiplier scales the beat.
  */
 import { useCallback, useMemo } from 'react'
-import { useReducedMotion } from 'motion/react'
 import { Pause, Play, Shuffle } from 'lucide-react'
 import { Stage } from '@/stage'
 import { Button } from '@/ui/button'
 import { useI18n } from '@/i18n'
+import { useReducedMotion } from '@/settings'
 import { cn } from '@/lib/utils'
 import type { Frame } from '@/lesson/types'
 import type { UiText } from '@/lesson/sandbox'
@@ -40,7 +40,7 @@ export function FlowStage({
   topicId,
 }: FlowStageProps) {
   const { t } = useI18n()
-  const osReduced = useReducedMotion() === true
+  const reduced = useReducedMotion()
   const text = useCallback((ui: UiText) => ('text' in ui ? ui.text : t(ui.key, ui.vars)), [t])
   // The sandbox starts from the frame's world, drawn as a plain stage (no slide).
   const start = useMemo<Frame>(() => {
@@ -50,7 +50,7 @@ export function FlowStage({
   const flow = useFlow(start, {
     ctx: { sceneId: frame.sceneId, topicId },
     speed,
-    autoStart: autoStart && !reducedSetting && !osReduced,
+    autoStart: autoStart && !reduced,
     text,
   })
   return (

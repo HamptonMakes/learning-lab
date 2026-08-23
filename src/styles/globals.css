@@ -71,6 +71,8 @@
   --color-led: var(--led);
   --color-led-panel: var(--led-panel);
   --color-led-amber: var(--led-amber);
+  --color-metal: var(--metal);
+  --color-metal-2: var(--metal-2);
   --color-teal: var(--accent);
   --color-teal-ink: var(--accent-ink);
   --color-teal-soft: var(--accent-soft);

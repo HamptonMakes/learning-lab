@@ -1,5 +1,7 @@
 /*
-  Stage layout (stage-architecture §3.1). Imported once by Stage.tsx.
+  Stage layout (stage-architecture §3.1). Imported once by Stage.tsx. The stage dimension tokens
+  (--stage-gap/-pad/-min-h, --value-fs …) live in tokens.css on :root, so a page can scale one
+  stage instance down by overriding them on a wrapper (the landing hero does).
 
   [data-stage]            the stage root (position: relative, never transformed)
     .stage-layout         actor grid | board gutter; a size container so presets adapt to the
@@ -11,14 +13,6 @@
   Only logical properties, so `dir="rtl"` on the root mirrors every preset for free. Tokens only;
   no pixels, no transitions (Motion owns every animation inside the stage).
 */
-
-[data-stage] {
-  --stage-gap: 1.5rem;
-  --stage-pad: 1.5rem;
-  --stage-token-h: 2rem; /* the inbox tray reserves one token row while messages are parked */
-  --stage-clock-h: 2.75rem; /* headroom for the clock HUD (caption + LED panel) when the scene shows one */
-  --value-fs: 16px; /* the hero size for values; dense records / tables step down to 14px */
-}
 
 /* The stage root is the size container, so `.stage-layout` and its children can all respond to
    `@container stage (...)` — an element never matches a container query against itself. */

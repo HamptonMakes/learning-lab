@@ -5,7 +5,7 @@ test.describe('app shell', () => {
     await page.goto('/')
     await expect(page).toHaveURL(/\/en$/)
     await expect(page.getByTestId('home')).toBeVisible()
-    await expect(page.getByRole('heading', { level: 1 })).toContainText(/Concept/)
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(/computer science/i)
   })
 
   test('CTA opens the first topic; breadcrumb and sidebar reflect location; reload works', async ({
