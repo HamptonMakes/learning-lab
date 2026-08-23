@@ -47,8 +47,8 @@ function TopicPage() {
   const { t } = useI18n()
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col" data-testid="topic-page">
-      <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-5 md:px-6">
+    <div className="flex min-h-0 flex-col" data-testid="topic-page">
+      <div className="mx-auto flex w-full max-w-6xl flex-col px-4 py-5 md:px-6">
         <header className="mb-4">
           <p className="font-mono text-xs text-ink-3">
             <span className="text-teal">{ref.unit.numeral}</span> · {ref.unit.title}
@@ -76,7 +76,7 @@ function TopicPage() {
         ) : (
           <section
             aria-label={t('a11y.stage')}
-            className="relative min-h-(--stage-min-h) flex-1 rounded-xl border border-line stage-surface shadow-xs"
+            className="relative min-h-(--stage-min-h) rounded-xl border border-line stage-surface shadow-xs"
             data-testid="stage"
           >
             <div className="absolute inset-0 grid place-items-center text-sm text-ink-3">
@@ -190,7 +190,7 @@ function LessonPlayer({
   if (built.error || built.frames.length === 0 || !frame) {
     return (
       <section
-        className="relative min-h-(--stage-min-h) flex-1 rounded-xl border border-danger/40 stage-surface shadow-xs"
+        className="relative min-h-(--stage-min-h) rounded-xl border border-danger/40 stage-surface shadow-xs"
         data-testid="stage"
         data-error
       >
@@ -218,7 +218,7 @@ function LessonPlayer({
 
   return (
     <div
-      className="flex flex-1 flex-col gap-3"
+      className="flex flex-col gap-3"
       data-testid="lesson-player"
       data-scene={frame.sceneId}
       data-step={frame.step.id}
@@ -253,7 +253,7 @@ function LessonPlayer({
         })}
       </ol>
 
-      <div className="flex flex-1 flex-col gap-3" data-testid="lesson-frame">
+      <div className="flex flex-col gap-3" data-testid="lesson-frame">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={frame.sceneId}
@@ -261,7 +261,7 @@ function LessonPlayer({
             animate={{ opacity: 1 }}
             exit={instant ? undefined : { opacity: 0 }}
             transition={{ duration: instant ? 0 : 0.2 / player.state.speed }}
-            className="flex flex-1 flex-col"
+            className="flex flex-col"
           >
             <Stage
               frame={frame}
@@ -269,7 +269,6 @@ function LessonPlayer({
               reducedSetting={reducedPref === 'on'}
               instant={instant}
               dir={dir}
-              className="flex-1"
             />
           </motion.div>
         </AnimatePresence>
