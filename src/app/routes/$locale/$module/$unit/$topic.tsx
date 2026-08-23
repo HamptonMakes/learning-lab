@@ -15,7 +15,7 @@ import { useI18n } from '@/i18n'
 import { useSetting } from '@/settings'
 import { TransportBar } from '@/app/components/transport-bar'
 import { Narration } from '@/app/components/narration'
-import { TryIt } from '@/app/components/try-it/TryIt'
+import { TryIt, TryItTrigger } from '@/app/components/try-it/TryIt'
 
 // TanStack Router JSON-parses search values, so `?lab=1` arrives as the number 1; normalise.
 const flag = (on: string) =>
@@ -289,6 +289,9 @@ function LessonPlayer({
                 topicRef={{ module: moduleId, unit: unitId, topic: topicId }}
                 sceneId={sandboxFrame.sceneId}
                 tryIt={scene?.tryIt}
+                renderTrigger={(open) => (
+                  <TryItTrigger onClick={open} size="sm" variant="outline" />
+                )}
               />
             ) : undefined
           }

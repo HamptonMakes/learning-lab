@@ -56,6 +56,8 @@ export type SandboxControl = {
   prompt?: SandboxPrompt
   /** Present ⇒ the button is disabled; the value says why. */
   disabled?: UiText
+  /** The CRDT slot this control acts on (absent for offline / online / tick / deliver / drop all). */
+  slot?: SlotId
   /** The commands of one sandbox step. Pure; `input` comes from the prompt (if any). */
   commands: (input?: SandboxInput) => Command[]
   /** The narration of that step. */
@@ -81,8 +83,9 @@ export type SandboxControls = {
 
 type Vars = Record<string, string | number>
 
+/** An op label: verb-first, e.g. "Add to {slot}"; `bindOp` fills `{slot}` in. */
 const L = (name: string, vars?: Vars): UiText =>
-  vars ? { key: `tryIt.op.${name}`, vars } : { key: `tryIt.op.${name}` }
+  vars ? { key: `tryIt.act.${name}`, vars } : { key: `tryIt.act.${name}` }
 const N = (name: string, vars?: Vars): UiText =>
   vars ? { key: `tryIt.net.${name}`, vars } : { key: `tryIt.net.${name}` }
 const R = (name: string): UiText => ({ key: `tryIt.reason.${name}` })
@@ -390,10 +393,13 @@ function overrideOpSpecs(defaults: OpSpec[], tryIt: TryIt): OpSpec[] {
  */
 function bindOp(actor: Actor, slot: SlotId, spec: OpSpec, pretick: boolean): SandboxControl {
   const suffix = spec.path !== undefined ? `-${spec.path}` : ''
+  const label: UiText =
+    'key' in spec.label ? { key: spec.label.key, vars: { slot, ...spec.label.vars } } : spec.label
   const control: SandboxControl = {
     id: `op-${actor.id}-${slot}-${spec.op}${suffix}`,
     action: spec.action,
-    label: spec.label,
+    label,
+    slot,
     commands: (input) => {
       const u: Parameters<typeof crdt.updateWith>[0] = {
         actor: actor.id,
@@ -492,6 +498,7 @@ function broadcastControl(actor: Actor, slot: SlotId, replica: Replica): Sandbox
     id: `net-${actor.id}-${slot}-broadcast`,
     action: 'broadcast',
     label: N('broadcast', { slot }),
+    slot,
     commands: () => [crdt.broadcast(actor.id, slot)],
     say: () => SAY('broadcast', { actor: actor.label, slot }),
   }
@@ -504,6 +511,7 @@ function sendControl(from: Actor, to: Actor, slot: SlotId): SandboxControl {
     id: `net-${from.id}-${slot}-send-${to.id}`,
     action: 'send',
     label: N('send', { to: to.label, slot }),
+    slot,
     commands: () => [crdt.send(from.id, to.id, slot)],
     say: () => SAY('send', { actor: from.label, to: to.label, slot }),
   }
@@ -514,6 +522,7 @@ function syncControl(a: Actor, b: Actor, slot: SlotId): SandboxControl {
     id: `net-sync-${slot}-${a.id}-${b.id}`,
     action: 'sync',
     label: N('sync', { a: a.label, b: b.label, slot }),
+    slot,
     commands: () => [crdt.sync(a.id, b.id, slot)],
     say: () => SAY('sync', { a: a.label, b: b.label, slot }),
   }

@@ -272,7 +272,10 @@ describe('deriveControls: op buttons per type', () => {
     ])
     const ops = opsOf(deriveControls(w), 'alice', 'card')
     expect(ids(ops)).toEqual(['op-alice-card-set-title', 'op-alice-card-set-note'])
-    expect(ops[0]?.label).toEqual({ key: 'tryIt.op.setDoc', vars: { field: 'title' } })
+    expect(ops[0]?.label).toEqual({
+      key: 'tryIt.act.setDoc',
+      vars: { slot: 'card', field: 'title' },
+    })
     expect(ops[0]?.commands({ value: 'Plan' })).toEqual([
       { t: 'tick' },
       { t: 'crdt.update', actor: 'alice', slot: 'card', path: 'title', op: 'set', args: ['Plan'] },

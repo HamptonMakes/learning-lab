@@ -1,4 +1,7 @@
-/** The Try-it sandbox: derived controls (pure) + the React hook that drives the reducer. */
+/**
+ * The Try-it sandbox: derived controls, suggestions and "what ran" (pure) + the React hook that
+ * drives the reducer.
+ */
 export {
   defaultOpSpecs,
   deliverableMessages,
@@ -19,3 +22,14 @@ export {
   type SandboxCtx,
   type SandboxMove,
 } from './useSandbox'
+export { suggestExperiments, historyEvents, type Suggestion, type SuggestionKind } from './suggest'
+export {
+  extractFunction,
+  whatRan,
+  whyNothingRan,
+  wireFn,
+  type CrdtFn,
+  type ExtractedFn,
+  type RanCall,
+  type ReplicaType,
+} from './code'

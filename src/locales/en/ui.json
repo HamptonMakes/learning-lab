@@ -252,7 +252,7 @@
   "slide.whenToUse": "When to use it.",
   "slide.whenNotToUse": "When not to use it.",
   "slide.realWorld": "In the real world.",
-  "tryIt.intro": "The data is on the left. The buttons on the right change it. Every press runs the real CRDT code.",
+  "tryIt.intro": "The stage holds the data. The buttons change it. Every press runs the real CRDT code.",
   "tryIt.stage": "The data",
   "tryIt.actions": "Actions",
   "tryIt.actorCan": "{actor} can…",
