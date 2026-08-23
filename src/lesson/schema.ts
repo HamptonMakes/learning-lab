@@ -948,11 +948,28 @@ export const SceneSchema = z
     unique(ctx, s.steps, (step) => step.id, 'step id', ['steps'])
   })
 
+export const ShapeSchema = z.strictObject({
+  name: z.string().min(1).max(40),
+  fields: z
+    .array(
+      z.strictObject({
+        key: z.string().min(1).max(16),
+        example: z.string().max(40),
+        role: z.enum(['value', 'meta']).optional(),
+        note: z.string().max(90).optional(),
+      }),
+    )
+    .min(1)
+    .max(6),
+  note: z.string().max(160).optional(),
+})
 export const TopicSchema = z
   .strictObject({
     id: IdSchema,
     title: z.string().min(1),
     goal: z.string().min(1),
+    rules: z.array(z.string().min(1).max(160)).min(1).max(5).optional(),
+    shape: ShapeSchema.optional(),
     whenToUse: z.array(z.string().min(1)),
     whenNotToUse: z.array(z.string().min(1)),
     realWorld: z.string().min(1),
@@ -981,6 +998,13 @@ export const ChangeSchema = z.discriminatedUnion('kind', [
     path: PathSchema,
     op: z.enum(['added', 'changed', 'removed', 'meta']),
     via: IdSchema.optional(),
+    action: z
+      .strictObject({
+        key: z.string(),
+        vars: z.record(z.string(), z.union([z.string(), z.number()])).optional(),
+        by: z.string().optional(),
+      })
+      .optional(),
   }),
   z.strictObject({
     kind: z.literal('actor'),
@@ -1015,6 +1039,13 @@ export const SlideSchema = z.discriminatedUnion('kind', [
     title: z.string(),
     subtitle: z.string(),
     goal: z.string().optional(),
+  }),
+  z.strictObject({
+    kind: z.literal('rules'),
+    heading: z.string(),
+    rules: z.array(z.string()),
+    shape: ShapeSchema.optional(),
+    cta: z.string().optional(),
   }),
   z.strictObject({
     kind: z.literal('summary'),
