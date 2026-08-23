@@ -422,10 +422,26 @@ export type Topic = {
   id: string // URL segment; must exist in src/content/catalog.ts
   title: string
   goal: string // one sentence: what the learner can do afterwards
+  /** The basic logic in 2–4 plain rules, shown on the "How it works" slide before the scenes. */
+  rules?: string[]
+  /** The data structure as an object with its sub-attributes, drawn on the same slide. */
+  shape?: Shape
   whenToUse: string[] // bullets for the "When to use" panel
   whenNotToUse: string[]
   realWorld: string // the anchor example
   scenes: Scene[]
+}
+
+/** A schematic of one data structure: the value and its sidecar as named sub-attributes. */
+export type Shape = {
+  name: string // e.g. "LWW register"
+  fields: Array<{
+    key: string // "value", "time", "by", "tags", "rows"…
+    example: string // a short example, e.g. "Lunch", "2", "bob"
+    role?: 'value' | 'meta' // draws the value bold and the sidecar quiet (default 'meta' unless key === 'value')
+    note?: string // one short clause, e.g. "the logical clock when it was written"
+  }>
+  note?: string // one sentence under the diagram
 }
 export type Scene = {
   id: SceneId
@@ -454,7 +470,14 @@ export type TryIt = {
 
 // ─── 14 Testing contract ──────────────────────────────────────────────────────────────────────
 export type Change =
-  | { kind: 'value'; path: Path; op: 'added' | 'changed' | 'removed' | 'meta'; via?: MessageId } // also <actor>@outbox / @inbox
+  | {
+      kind: 'value'
+      path: Path
+      op: 'added' | 'changed' | 'removed' | 'meta'
+      via?: MessageId
+      /** The operation that caused it, as a translatable label (`stage.op.*` key + vars), drawn as an action chip. */
+      action?: ActionLabel
+    } // also <actor>@outbox / @inbox
   | {
       kind: 'actor'
       id: ActorId
@@ -471,6 +494,9 @@ export type Change =
   | { kind: 'mark'; id: MarkId; op: 'added' | 'removed' }
   | { kind: 'layout'; from: Layout; to: Layout }
   | { kind: 'clock'; from: number; to: number }
+/** A translatable operation label: `key` is a `stage.op.*` catalog key, `vars` fills its placeholders. */
+export type ActionLabel = { key: string; vars?: Record<string, string | number>; by?: ActorId }
+
 export type Frame = {
   index: number // global across scenes
   sceneId: SceneId
@@ -486,6 +512,7 @@ export type Frame = {
 /** A keynote-style slide the stage draws instead of the world (see src/lesson/presentation.ts). */
 export type Slide =
   | { kind: 'intro'; title: string; subtitle: string; goal?: string }
+  | { kind: 'rules'; heading: string; rules: string[]; shape?: Shape; cta?: string }
   | {
       kind: 'summary'
       heading: string
