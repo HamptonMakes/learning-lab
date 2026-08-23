@@ -6,7 +6,7 @@
   "unitTitle": "The Problem",
   "topicTitle": "Copies that disagree",
   "firstInUnit": true,
-  "total": 22,
+  "total": 23,
   "steps": [
     {
       "index": 0,
@@ -17,151 +17,158 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "copies",
-      "say": "One document lives on the server. It has one field: a title.",
-      "file": "02-copies-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "copies",
-      "say": "Alice opens it on her phone. The phone now holds its own copy, a **replica**.",
-      "file": "03-copies-s02.png"
+      "say": "One document lives on the server. It has one field: a title.",
+      "file": "03-copies-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "copies",
-      "say": "Bob opens it on his laptop. That is a third copy.",
-      "file": "04-copies-s03.png"
+      "say": "Alice opens it on her phone. The phone now holds its own copy, a **replica**.",
+      "file": "04-copies-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "copies",
-      "say": "Three copies. Right now they all agree.",
-      "file": "05-copies-s04.png"
+      "say": "Bob opens it on his laptop. That is a third copy.",
+      "file": "05-copies-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "copies",
-      "say": "Alice changes the title on her phone.",
-      "file": "06-copies-s05.png"
+      "say": "Three copies. Right now they all agree.",
+      "file": "06-copies-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "copies",
-      "say": "At the same moment, Bob changes it too. He has not seen Alice's change.",
-      "file": "07-copies-s06.png"
+      "say": "Alice changes the title on her phone.",
+      "file": "07-copies-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "copies",
-      "say": "Whoops — now we have a problem. Two copies disagree, and neither one is a mistake.",
-      "file": "08-copies-s07.png"
+      "say": "At the same moment, Bob changes it too. He has not seen Alice's change.",
+      "file": "08-copies-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "copies",
-      "say": "Alice saves first. The server takes her title.",
-      "file": "09-copies-s08.png"
+      "say": "Whoops — now we have a problem. Two copies disagree, and neither one is a mistake.",
+      "file": "09-copies-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "copies",
-      "say": "Bob saves a moment later. The server takes his title.",
-      "file": "10-copies-s09.png"
+      "say": "Alice saves first. The server takes her title.",
+      "file": "10-copies-s08.png"
     },
     {
       "index": 10,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "copies",
-      "say": "On the server, Alice's change is gone. Nobody was told.",
-      "file": "11-copies-s10.png"
+      "say": "Bob saves a moment later. The server takes his title.",
+      "file": "11-copies-s09.png"
     },
     {
       "index": 11,
-      "stepId": "s11",
+      "stepId": "s10",
       "sceneId": "copies",
-      "say": "More than one copy, two writes at the same time, and no rule for what should happen. That is the whole course in one picture.",
-      "file": "12-copies-s11.png"
+      "say": "On the server, Alice's change is gone. Nobody was told.",
+      "file": "12-copies-s10.png"
     },
     {
       "index": 12,
-      "stepId": "s01",
-      "sceneId": "copies-everywhere",
-      "say": "You may think you have one copy. A normal web app has many.",
-      "file": "13-copies-everywhere-s01.png"
+      "stepId": "s11",
+      "sceneId": "copies",
+      "say": "More than one copy, two writes at the same time, and no rule for what should happen. That is the whole course in one picture.",
+      "file": "13-copies-s11.png"
     },
     {
       "index": 13,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "copies-everywhere",
-      "say": "A database replica holds one.",
-      "file": "14-copies-everywhere-s02.png"
+      "say": "You may think you have one copy. A normal web app has many.",
+      "file": "14-copies-everywhere-s01.png"
     },
     {
       "index": 14,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "copies-everywhere",
-      "say": "A **cache** in front of the API holds one, so reads are fast.",
-      "file": "15-copies-everywhere-s03.png"
+      "say": "A database replica holds one.",
+      "file": "15-copies-everywhere-s02.png"
     },
     {
       "index": 15,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "copies-everywhere",
-      "say": "The browser tab holds one. The phone app holds one.",
-      "file": "16-copies-everywhere-s04.png"
+      "say": "A **cache** in front of the API holds one, so reads are fast.",
+      "file": "16-copies-everywhere-s03.png"
     },
     {
       "index": 16,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "copies-everywhere",
-      "say": "Five copies, and we only drew the obvious ones.",
-      "file": "17-copies-everywhere-s05.png"
+      "say": "The browser tab holds one. The phone app holds one.",
+      "file": "17-copies-everywhere-s04.png"
     },
     {
       "index": 17,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "copies-everywhere",
-      "say": "Any two of them can disagree: a cache goes stale, a replica lags, two people edit at once. The last scene can happen here too.",
-      "file": "18-copies-everywhere-s06.png"
+      "say": "Five copies, and we only drew the obvious ones.",
+      "file": "18-copies-everywhere-s05.png"
     },
     {
       "index": 18,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "copies-everywhere",
-      "say": "Every system with more than one copy needs an answer to this. Next: the classic answer, a lock.",
-      "file": "19-copies-everywhere-s07.png"
+      "say": "Any two of them can disagree: a cache goes stale, a replica lags, two people edit at once. The last scene can happen here too.",
+      "file": "19-copies-everywhere-s06.png"
     },
     {
       "index": 19,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "20-summary-use.png"
+      "stepId": "s07",
+      "sceneId": "copies-everywhere",
+      "say": "Every system with more than one copy needs an answer to this. Next: the classic answer, a lock.",
+      "file": "20-copies-everywhere-s07.png"
     },
     {
       "index": 20,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "21-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "21-summary-use.png"
     },
     {
       "index": 21,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "22-summary-avoid.png"
+    },
+    {
+      "index": 22,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "22-summary-world.png"
+      "file": "23-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:02:47.327Z"
+  "generatedAt": "2026-08-23T02:42:37.772Z"
 }

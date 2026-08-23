@@ -6,7 +6,7 @@
   "unitTitle": "Choosing & Using CRDTs",
   "topicTitle": "Course summary",
   "firstInUnit": false,
-  "total": 33,
+  "total": 34,
   "steps": [
     {
       "index": 0,
@@ -17,228 +17,235 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "the-checklist",
-      "say": "Eight things you can now do. We tick one off per step, each with the topic it came from.",
-      "file": "02-the-checklist-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "the-checklist",
-      "say": "Say what a CRDT is: a data type whose merge rule is fixed up front, so copies change alone and still end up equal ([The CRDT idea](/crdts/the-problem/meet-crdts)).",
-      "file": "03-the-checklist-s02.png"
+      "say": "Eight things you can now do. We tick one off per step, each with the topic it came from.",
+      "file": "03-the-checklist-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "the-checklist",
-      "say": "State the three merge laws: order does not matter, grouping does not matter, merging twice is harmless ([The shape of a state CRDT](/crdts/state-based/the-shape-of-a-state-crdt)).",
-      "file": "04-the-checklist-s03.png"
+      "say": "Say what a CRDT is: a data type whose merge rule is fixed up front, so copies change alone and still end up equal ([The CRDT idea](/crdts/the-problem/meet-crdts)).",
+      "file": "04-the-checklist-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "the-checklist",
-      "say": "Tell the two styles apart: send the whole state and merge, or send what you did, once and in causal order ([Ops instead of state](/crdts/operation-based/ops-instead-of-state)).",
-      "file": "05-the-checklist-s04.png"
+      "say": "State the three merge laws: order does not matter, grouping does not matter, merging twice is harmless ([The shape of a state CRDT](/crdts/state-based/the-shape-of-a-state-crdt)).",
+      "file": "05-the-checklist-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "the-checklist",
-      "say": "Use registers and counters: a register replaces and needs a stamp, a counter adds up with one tally per node ([LWW Register](/crdts/state-based/lww-register)).",
-      "file": "06-the-checklist-s05.png"
+      "say": "Tell the two styles apart: send the whole state and merge, or send what you did, once and in causal order ([Ops instead of state](/crdts/operation-based/ops-instead-of-state)).",
+      "file": "06-the-checklist-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "the-checklist",
-      "say": "Pick a set: G only grows, 2P never re-adds, LWW-element decides by time, OR-Set tags every add ([OR-Set](/crdts/state-based/or-set)).",
-      "file": "07-the-checklist-s06.png"
+      "say": "Use registers and counters: a register replaces and needs a stamp, a counter adds up with one tally per node ([LWW Register](/crdts/state-based/lww-register)).",
+      "file": "07-the-checklist-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "the-checklist",
-      "say": "Keep an order: a sequence inserts after an id and keeps tombstones, so every copy reads the same list ([Sequences](/crdts/operation-based/sequences-rga)).",
-      "file": "08-the-checklist-s07.png"
+      "say": "Pick a set: G only grows, 2P never re-adds, LWW-element decides by time, OR-Set tags every add ([OR-Set](/crdts/state-based/or-set)).",
+      "file": "08-the-checklist-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "the-checklist",
-      "say": "Read a clock: wall clocks lie, Lamport gives an order, vector clocks tell before, after or concurrent ([Vector clocks](/crdts/vector-clocks/vector-clocks)).",
-      "file": "09-the-checklist-s08.png"
+      "say": "Keep an order: a sequence inserts after an id and keeps tombstones, so every copy reads the same list ([Sequences](/crdts/operation-based/sequences-rga)).",
+      "file": "09-the-checklist-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "the-checklist",
-      "say": "And this unit: choose by how the data changes, compose a document from parts, and pay for metadata on purpose.",
-      "file": "10-the-checklist-s09.png"
+      "say": "Read a clock: wall clocks lie, Lamport gives an order, vector clocks tell before, after or concurrent ([Vector clocks](/crdts/vector-clocks/vector-clocks)).",
+      "file": "10-the-checklist-s08.png"
     },
     {
       "index": 10,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "the-checklist",
-      "say": "That is the whole course. One thing is left, and it is the one that keeps people out of trouble: knowing when not to use any of it.",
-      "file": "11-the-checklist-s10.png"
+      "say": "And this unit: choose by how the data changes, compose a document from parts, and pay for metadata on purpose.",
+      "file": "11-the-checklist-s09.png"
     },
     {
       "index": 11,
-      "stepId": "s01",
-      "sceneId": "when-not-to-use-one",
-      "say": "A bank balance of 100, with a copy at each branch, kept as a PN-Counter. Every merge here will be correct; watch anyway.",
-      "file": "12-when-not-to-use-one-s01.png"
+      "stepId": "s10",
+      "sceneId": "the-checklist",
+      "say": "That is the whole course. One thing is left, and it is the one that keeps people out of trouble: knowing when not to use any of it.",
+      "file": "12-the-checklist-s10.png"
     },
     {
       "index": 12,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "when-not-to-use-one",
-      "say": "A customer takes 80 out at Branch A. The copy there checks 100, says yes, and reads 20.",
-      "file": "13-when-not-to-use-one-s02.png"
+      "say": "A bank balance of 100, with a copy at each branch, kept as a PN-Counter. Every merge here will be correct; watch anyway.",
+      "file": "13-when-not-to-use-one-s01.png"
     },
     {
       "index": 13,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "when-not-to-use-one",
-      "say": "At the same moment Branch B pays out 80 as well. Its copy also checked 100 and also reads 20.",
-      "file": "14-when-not-to-use-one-s03.png"
+      "say": "A customer takes 80 out at Branch A. The copy there checks 100, says yes, and reads 20.",
+      "file": "14-when-not-to-use-one-s02.png"
     },
     {
       "index": 14,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "when-not-to-use-one",
-      "say": "Whoops — merge, and the counter is honest: 100 - 80 - 80 = -60.",
-      "file": "15-when-not-to-use-one-s04.png"
+      "say": "At the same moment Branch B pays out 80 as well. Its copy also checked 100 and also reads 20.",
+      "file": "15-when-not-to-use-one-s03.png"
     },
     {
       "index": 15,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "when-not-to-use-one",
-      "say": "The maths merged perfectly. What broke is the rule that a balance must never go below zero, and no merge can hold that across copies.",
-      "file": "16-when-not-to-use-one-s05.png"
+      "say": "Whoops — merge, and the counter is honest: 100 - 80 - 80 = -60.",
+      "file": "16-when-not-to-use-one-s04.png"
     },
     {
       "index": 16,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "when-not-to-use-one",
-      "say": "An **invariant** like that needs coordination: a lock, a transaction, or one owner of the value ([Locks: the classic answer](/crdts/the-problem/locks-the-classic-answer)).",
-      "file": "17-when-not-to-use-one-s06.png"
+      "say": "The maths merged perfectly. What broke is the rule that a balance must never go below zero, and no merge can hold that across copies.",
+      "file": "17-when-not-to-use-one-s05.png"
     },
     {
       "index": 17,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "when-not-to-use-one",
-      "say": "The second case is uniqueness. Time 1 and 2: both branches hand out the same username, each sure it is free.",
-      "file": "18-when-not-to-use-one-s07.png"
+      "say": "An **invariant** like that needs coordination: a lock, a transaction, or one owner of the value ([Locks: the classic answer](/crdts/the-problem/locks-the-classic-answer)).",
+      "file": "18-when-not-to-use-one-s06.png"
     },
     {
       "index": 18,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "when-not-to-use-one",
-      "say": "Merge: the newer write wins, so one of the two loses the name after their screen already said it was theirs.",
-      "file": "19-when-not-to-use-one-s08.png"
+      "say": "The second case is uniqueness. Time 1 and 2: both branches hand out the same username, each sure it is free.",
+      "file": "19-when-not-to-use-one-s07.png"
     },
     {
       "index": 19,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "when-not-to-use-one",
-      "say": "Uniqueness needs one place to ask first. A merge rule can only decide what to keep, never stop the second write from happening.",
-      "file": "20-when-not-to-use-one-s09.png"
+      "say": "Merge: the newer write wins, so one of the two loses the name after their screen already said it was theirs.",
+      "file": "20-when-not-to-use-one-s08.png"
     },
     {
       "index": 20,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "when-not-to-use-one",
-      "say": "So: CRDTs for facts that merge, coordination for rules that must hold. Most real apps need both, and that is design, not failure.",
-      "file": "21-when-not-to-use-one-s10.png"
+      "say": "Uniqueness needs one place to ask first. A merge rule can only decide what to keep, never stop the second write from happening.",
+      "file": "21-when-not-to-use-one-s09.png"
     },
     {
       "index": 21,
-      "stepId": "s01",
-      "sceneId": "one-last-round-trip",
-      "say": "The notes app from Unit IV, built out of everything in this course. Five parts, five rules.",
-      "file": "22-one-last-round-trip-s01.png"
+      "stepId": "s10",
+      "sceneId": "when-not-to-use-one",
+      "say": "So: CRDTs for facts that merge, coordination for rules that must hold. Most real apps need both, and that is design, not failure.",
+      "file": "22-when-not-to-use-one-s10.png"
     },
     {
       "index": 22,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "one-last-round-trip",
-      "say": "The phone goes offline on the plane. Time 1: you rename the note there and type at the end of the body.",
-      "file": "23-one-last-round-trip-s02.png"
+      "say": "The notes app from Unit IV, built out of everything in this course. Five parts, five rules.",
+      "file": "23-one-last-round-trip-s01.png"
     },
     {
       "index": 23,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "one-last-round-trip",
-      "say": "Meanwhile the laptop types at the start, adds a tag, and pins the note at time 2.",
-      "file": "24-one-last-round-trip-s03.png"
+      "say": "The phone goes offline on the plane. Time 1: you rename the note there and type at the end of the body.",
+      "file": "24-one-last-round-trip-s02.png"
     },
     {
       "index": 24,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "one-last-round-trip",
-      "say": "The laptop syncs with iCloud.",
-      "file": "25-one-last-round-trip-s04.png"
+      "say": "Meanwhile the laptop types at the start, adds a tag, and pins the note at time 2.",
+      "file": "25-one-last-round-trip-s03.png"
     },
     {
       "index": 25,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "one-last-round-trip",
-      "say": "The plane lands. The phone comes back and syncs, then iCloud brings the laptop up to date.",
-      "file": "26-one-last-round-trip-s05.png"
+      "say": "The laptop syncs with iCloud.",
+      "file": "26-one-last-round-trip-s04.png"
     },
     {
       "index": 26,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "one-last-round-trip",
-      "say": "Title and pinned took the newer write. The body kept both runs of typing in one fixed order, with no interleaving.",
-      "file": "27-one-last-round-trip-s06.png"
+      "say": "The plane lands. The phone comes back and syncs, then iCloud brings the laptop up to date.",
+      "file": "27-one-last-round-trip-s05.png"
     },
     {
       "index": 27,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "one-last-round-trip",
-      "say": "Tags are the union of both sides, and views is the sum: 1 from the phone plus 2 from the laptop.",
-      "file": "28-one-last-round-trip-s07.png"
+      "say": "Title and pinned took the newer write. The body kept both runs of typing in one fixed order, with no interleaving.",
+      "file": "28-one-last-round-trip-s06.png"
     },
     {
       "index": 28,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "one-last-round-trip",
-      "say": "Three copies, one state, and nobody waited for a lock.",
-      "file": "29-one-last-round-trip-s08.png"
+      "say": "Tags are the union of both sides, and views is the sum: 1 from the phone plus 2 from the laptop.",
+      "file": "29-one-last-round-trip-s07.png"
     },
     {
       "index": 29,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "one-last-round-trip",
-      "say": "You picked every one of those rules yourself. Next door: UUIDs, and how a device names a new thing without asking anyone.",
-      "file": "30-one-last-round-trip-s09.png"
+      "say": "Three copies, one state, and nobody waited for a lock.",
+      "file": "30-one-last-round-trip-s08.png"
     },
     {
       "index": 30,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "31-summary-use.png"
+      "stepId": "s09",
+      "sceneId": "one-last-round-trip",
+      "say": "You picked every one of those rules yourself. Next door: UUIDs, and how a device names a new thing without asking anyone.",
+      "file": "31-one-last-round-trip-s09.png"
     },
     {
       "index": 31,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "32-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "32-summary-use.png"
     },
     {
       "index": 32,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "33-summary-avoid.png"
+    },
+    {
+      "index": 33,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "33-summary-world.png"
+      "file": "34-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:08:48.918Z"
+  "generatedAt": "2026-08-23T02:49:20.228Z"
 }

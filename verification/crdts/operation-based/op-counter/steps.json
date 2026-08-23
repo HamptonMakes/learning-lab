@@ -6,7 +6,7 @@
   "unitTitle": "Operation-based CRDTs",
   "topicTitle": "Op-based counter",
   "firstInUnit": false,
-  "total": 33,
+  "total": 34,
   "steps": [
     {
       "index": 0,
@@ -17,228 +17,235 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "increments-commute",
-      "say": "Three devices share a like counter driven by ops. Each op is +1 or −1, and each copy adds what it receives.",
-      "file": "02-increments-commute-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "increments-commute",
-      "say": "Alice taps like twice. Her copy says 2, and two ops wait in her outbox: alice:1 and alice:2.",
-      "file": "03-increments-commute-s02.png"
+      "say": "Three devices share a like counter driven by ops. Each op is +1 or −1, and each copy adds what it receives.",
+      "file": "03-increments-commute-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "increments-commute",
-      "say": "Bob taps once: bob:1.",
-      "file": "04-increments-commute-s03.png"
+      "say": "Alice taps like twice. Her copy says 2, and two ops wait in her outbox: alice:1 and alice:2.",
+      "file": "04-increments-commute-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "increments-commute",
-      "say": "Everyone broadcasts. Six small messages are in flight, two per op.",
-      "file": "05-increments-commute-s04.png"
+      "say": "Bob taps once: bob:1.",
+      "file": "05-increments-commute-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "increments-commute",
-      "say": "Carol gets Bob's op first, then Alice's two. Carol: 3.",
-      "file": "06-increments-commute-s05.png"
+      "say": "Everyone broadcasts. Six small messages are in flight, two per op.",
+      "file": "06-increments-commute-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "increments-commute",
-      "say": "Bob already counted his own tap. Alice's two ops land on top: 3.",
-      "file": "07-increments-commute-s06.png"
+      "say": "Carol gets Bob's op first, then Alice's two. Carol: 3.",
+      "file": "07-increments-commute-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "increments-commute",
-      "say": "Alice counted her two first; Bob's op lands last. Alice: 3.",
-      "file": "08-increments-commute-s07.png"
+      "say": "Bob already counted his own tap. Alice's two ops land on top: 3.",
+      "file": "08-increments-commute-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "increments-commute",
-      "say": "Everyone says 3. The ops arrived in a different order on every copy, and 1 + 1 + 1 is 3 in any order.",
-      "file": "09-increments-commute-s08.png"
+      "say": "Alice counted her two first; Bob's op lands last. Alice: 3.",
+      "file": "09-increments-commute-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "increments-commute",
-      "say": "Each copy also keeps the ids it applied: three each. The counter itself is one number; that **sidecar** list is what makes a repeat harmless.",
-      "file": "10-increments-commute-s09.png"
+      "say": "Everyone says 3. The ops arrived in a different order on every copy, and 1 + 1 + 1 is 3 in any order.",
+      "file": "10-increments-commute-s08.png"
     },
     {
       "index": 10,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "increments-commute",
-      "say": "A counter needs each op once, and nothing else. It never cares about order, because every +1 commutes with every other.",
-      "file": "11-increments-commute-s10.png"
+      "say": "Each copy also keeps the ids it applied: three each. The counter itself is one number; that **sidecar** list is what makes a repeat harmless.",
+      "file": "11-increments-commute-s09.png"
     },
     {
       "index": 11,
-      "stepId": "s01",
-      "sceneId": "minus-and-repeats",
-      "say": "A like can be undone. The op is −1, and it commutes with every +1 just the same.",
-      "file": "12-minus-and-repeats-s01.png"
+      "stepId": "s10",
+      "sceneId": "increments-commute",
+      "say": "A counter needs each op once, and nothing else. It never cares about order, because every +1 commutes with every other.",
+      "file": "12-increments-commute-s10.png"
     },
     {
       "index": 12,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "minus-and-repeats",
-      "say": "Alice likes (alice:1) and Bob likes (bob:1). Both broadcast, both apply: 2 everywhere.",
-      "file": "13-minus-and-repeats-s02.png"
+      "say": "A like can be undone. The op is −1, and it commutes with every +1 just the same.",
+      "file": "13-minus-and-repeats-s01.png"
     },
     {
       "index": 13,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "minus-and-repeats",
-      "say": "Alice changes her mind: −1, op alice:2. Her copy says 1, and she broadcasts.",
-      "file": "14-minus-and-repeats-s03.png"
+      "say": "Alice likes (alice:1) and Bob likes (bob:1). Both broadcast, both apply: 2 everywhere.",
+      "file": "14-minus-and-repeats-s02.png"
     },
     {
       "index": 14,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "minus-and-repeats",
-      "say": "The network is slow, and Alice's app retries: a second copy of alice:2 takes off.",
-      "file": "15-minus-and-repeats-s04.png"
+      "say": "Alice changes her mind: −1, op alice:2. Her copy says 1, and she broadcasts.",
+      "file": "15-minus-and-repeats-s03.png"
     },
     {
       "index": 15,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "minus-and-repeats",
-      "say": "The first copy lands, and Bob applies −1 and writes alice:2 in his list. Bob: 1.",
-      "file": "16-minus-and-repeats-s05.png"
+      "say": "The network is slow, and Alice's app retries: a second copy of alice:2 takes off.",
+      "file": "16-minus-and-repeats-s04.png"
     },
     {
       "index": 16,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "minus-and-repeats",
-      "say": "The retry lands. alice:2 is already on the list, so the counter never sees it: no change.",
-      "file": "17-minus-and-repeats-s06.png"
+      "say": "The first copy lands, and Bob applies −1 and writes alice:2 in his list. Bob: 1.",
+      "file": "17-minus-and-repeats-s05.png"
     },
     {
       "index": 17,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "minus-and-repeats",
-      "say": "Without the list, the counter would subtract again and show 0, with no way to notice. Adding a delta twice is not **idempotent**; the list makes a repeat harmless.",
-      "file": "18-minus-and-repeats-s07.png"
+      "say": "The retry lands. alice:2 is already on the list, so the counter never sees it: no change.",
+      "file": "18-minus-and-repeats-s06.png"
     },
     {
       "index": 18,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "minus-and-repeats",
-      "say": "Both say 1. Careful: nothing stops a copy from dipping below zero, for a moment or for good.",
-      "file": "19-minus-and-repeats-s08.png"
+      "say": "Without the list, the counter would subtract again and show 0, with no way to notice. Adding a delta twice is not **idempotent**; the list makes a repeat harmless.",
+      "file": "19-minus-and-repeats-s07.png"
     },
     {
       "index": 19,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "minus-and-repeats",
-      "say": "A counter cannot enforce a floor or a quota. It only adds what it is told, in any order, once.",
-      "file": "20-minus-and-repeats-s09.png"
+      "say": "Both say 1. Careful: nothing stops a copy from dipping below zero, for a moment or for good.",
+      "file": "20-minus-and-repeats-s08.png"
     },
     {
       "index": 20,
-      "stepId": "s01",
-      "sceneId": "team-poll",
-      "say": "A team poll on three devices: a question and two op-based counters in one document. The sidecar shows how far each copy has read.",
-      "file": "21-team-poll-s01.png"
+      "stepId": "s09",
+      "sceneId": "minus-and-repeats",
+      "say": "A counter cannot enforce a floor or a quota. It only adds what it is told, in any order, once.",
+      "file": "21-minus-and-repeats-s09.png"
     },
     {
       "index": 21,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "team-poll",
-      "say": "Alice votes pizza, Bob votes sushi, Carol votes pizza. Three ops wait in three outboxes.",
-      "file": "22-team-poll-s02.png"
+      "say": "A team poll on three devices: a question and two op-based counters in one document. The sidecar shows how far each copy has read.",
+      "file": "22-team-poll-s01.png"
     },
     {
       "index": 22,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "team-poll",
-      "say": "Carol boards a plane and goes offline before anything is sent.",
-      "file": "23-team-poll-s03.png"
+      "say": "Alice votes pizza, Bob votes sushi, Carol votes pizza. Three ops wait in three outboxes.",
+      "file": "23-team-poll-s02.png"
     },
     {
       "index": 23,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "team-poll",
-      "say": "Alice and Bob can still reach each other. Each sends the other its vote, and each applies it: pizza 1, sushi 1.",
-      "file": "24-team-poll-s04.png"
+      "say": "Carol boards a plane and goes offline before anything is sent.",
+      "file": "24-team-poll-s03.png"
     },
     {
       "index": 24,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "team-poll",
-      "say": "Bob votes pizza again, bob:2, and sends it to Alice: pizza 2 there. Carol still sees pizza 1, sushi 0.",
-      "file": "25-team-poll-s05.png"
+      "say": "Alice and Bob can still reach each other. Each sends the other its vote, and each applies it: pizza 1, sushi 1.",
+      "file": "25-team-poll-s04.png"
     },
     {
       "index": 25,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "team-poll",
-      "say": "Carol lands. She and Alice compare how far each has read, and each sends only what the other lacks: three ops one way, carol:1 the other.",
-      "file": "26-team-poll-s06.png"
+      "say": "Bob votes pizza again, bob:2, and sends it to Alice: pizza 2 there. Carol still sees pizza 1, sushi 0.",
+      "file": "26-team-poll-s05.png"
     },
     {
       "index": 26,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "team-poll",
-      "say": "Carol applies the three ops: pizza 3, sushi 1. Alice applies carol:1: pizza 3.",
-      "file": "27-team-poll-s07.png"
+      "say": "Carol lands. She and Alice compare how far each has read, and each sends only what the other lacks: three ops one way, carol:1 the other.",
+      "file": "27-team-poll-s06.png"
     },
     {
       "index": 27,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "team-poll",
-      "say": "Carol and Bob compare too. Bob lacks only carol:1; Carol lacks nothing from Bob, so one op flies.",
-      "file": "28-team-poll-s08.png"
+      "say": "Carol applies the three ops: pizza 3, sushi 1. Alice applies carol:1: pizza 3.",
+      "file": "28-team-poll-s07.png"
     },
     {
       "index": 28,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "team-poll",
-      "say": "Bob applies it. Everyone: pizza 3, sushi 1, after three different arrival orders.",
-      "file": "29-team-poll-s09.png"
+      "say": "Carol and Bob compare too. Bob lacks only carol:1; Carol lacks nothing from Bob, so one op flies.",
+      "file": "29-team-poll-s08.png"
     },
     {
       "index": 29,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "team-poll",
-      "say": "Comparing how far each side has read and sending only the gap is how Yjs catches a peer up. Unit IV names that table: a **vector clock**.",
-      "file": "30-team-poll-s10.png"
+      "say": "Bob applies it. Everyone: pizza 3, sushi 1, after three different arrival orders.",
+      "file": "30-team-poll-s09.png"
     },
     {
       "index": 30,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "31-summary-use.png"
+      "stepId": "s10",
+      "sceneId": "team-poll",
+      "say": "Comparing how far each side has read and sending only the gap is how Yjs catches a peer up. Unit IV names that table: a **vector clock**.",
+      "file": "31-team-poll-s10.png"
     },
     {
       "index": 31,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "32-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "32-summary-use.png"
     },
     {
       "index": 32,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "33-summary-avoid.png"
+    },
+    {
+      "index": 33,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "33-summary-world.png"
+      "file": "34-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:06:05.255Z"
+  "generatedAt": "2026-08-23T02:46:30.482Z"
 }

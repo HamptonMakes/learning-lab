@@ -6,7 +6,7 @@
   "unitTitle": "Vector Clocks & Causality",
   "topicTitle": "In context: a notes app",
   "firstInUnit": false,
-  "total": 25,
+  "total": 26,
   "steps": [
     {
       "index": 0,
@@ -17,172 +17,179 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "fast-forward",
-      "say": "A note on phone, laptop and server: title, body, tags. Each copy carries a version vector: how many changes it holds from each device, {alice 2}.",
-      "file": "02-fast-forward-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "fast-forward",
-      "say": "The sync rule: compare vectors first; fast-forward when one is before the other, merge when they are concurrent.",
-      "file": "03-fast-forward-s02.png"
+      "say": "A note on phone, laptop and server: title, body, tags. Each copy carries a version vector: how many changes it holds from each device, {alice 2}.",
+      "file": "03-fast-forward-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "fast-forward",
-      "say": "The phone edits the title. Its vector becomes {alice 3}.",
-      "file": "04-fast-forward-s03.png"
+      "say": "The sync rule: compare vectors first; fast-forward when one is before the other, merge when they are concurrent.",
+      "file": "04-fast-forward-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "fast-forward",
-      "say": "Push to the server. Compare: the server's {alice 2} is before the phone's {alice 3}, so there is nothing to resolve.",
-      "file": "05-fast-forward-s04.png"
+      "say": "The phone edits the title. Its vector becomes {alice 3}.",
+      "file": "05-fast-forward-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "fast-forward",
-      "say": "Fast-forward: the server just takes the phone's copy, vector and all.",
-      "file": "06-fast-forward-s05.png"
+      "say": "Push to the server. Compare: the server's {alice 2} is before the phone's {alice 3}, so there is nothing to resolve.",
+      "file": "06-fast-forward-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "fast-forward",
-      "say": "The laptop pulls. Same story: its {alice 2} is before the server's {alice 3}.",
-      "file": "07-fast-forward-s06.png"
+      "say": "Fast-forward: the server just takes the phone's copy, vector and all.",
+      "file": "07-fast-forward-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "fast-forward",
-      "say": "Fast-forward again. No merge work, no banner; all three copies agree.",
-      "file": "08-fast-forward-s07.png"
+      "say": "The laptop pulls. Same story: its {alice 2} is before the server's {alice 3}.",
+      "file": "08-fast-forward-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "fast-forward",
-      "say": "Most syncs look like this. The vector clock says nothing to resolve, and the app skips the work.",
-      "file": "09-fast-forward-s08.png"
+      "say": "Fast-forward again. No merge work, no banner; all three copies agree.",
+      "file": "09-fast-forward-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s01",
-      "sceneId": "concurrent-different-fields",
-      "say": "The phone goes offline and edits the body. Its vector: {alice 4}.",
-      "file": "10-concurrent-different-fields-s01.png"
+      "stepId": "s08",
+      "sceneId": "fast-forward",
+      "say": "Most syncs look like this. The vector clock says nothing to resolve, and the app skips the work.",
+      "file": "10-fast-forward-s08.png"
     },
     {
       "index": 10,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "concurrent-different-fields",
-      "say": "The laptop adds the tag home and pushes. The server fast-forwards again: {alice 3, bob 1}.",
-      "file": "11-concurrent-different-fields-s02.png"
+      "say": "The phone goes offline and edits the body. Its vector: {alice 4}.",
+      "file": "11-concurrent-different-fields-s01.png"
     },
     {
       "index": 11,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "concurrent-different-fields",
-      "say": "The phone comes back and pushes. Compare: {alice 3, bob 1} and {alice 4} are concurrent.",
-      "file": "12-concurrent-different-fields-s03.png"
+      "say": "The laptop adds the tag home and pushes. The server fast-forwards again: {alice 3, bob 1}.",
+      "file": "12-concurrent-different-fields-s02.png"
     },
     {
       "index": 12,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "concurrent-different-fields",
-      "say": "Concurrent means merge, part by part: the body by its own rule, the tags by union. The vector becomes the join, {alice 4, bob 1}.",
-      "file": "13-concurrent-different-fields-s04.png"
+      "say": "The phone comes back and pushes. Compare: {alice 3, bob 1} and {alice 4} are concurrent.",
+      "file": "13-concurrent-different-fields-s03.png"
     },
     {
       "index": 13,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "concurrent-different-fields",
-      "say": "Both devices pull. Everyone agrees, and nothing was lost: the two edits touched different fields.",
-      "file": "14-concurrent-different-fields-s05.png"
+      "say": "Concurrent means merge, part by part: the body by its own rule, the tags by union. The vector becomes the join, {alice 4, bob 1}.",
+      "file": "14-concurrent-different-fields-s04.png"
     },
     {
       "index": 14,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "concurrent-different-fields",
-      "say": "The app shows a small merged badge, nothing more. Concurrent is not the same as conflict.",
-      "file": "15-concurrent-different-fields-s06.png"
+      "say": "Both devices pull. Everyone agrees, and nothing was lost: the two edits touched different fields.",
+      "file": "15-concurrent-different-fields-s05.png"
     },
     {
       "index": 15,
-      "stepId": "s01",
-      "sceneId": "concurrent-same-field",
-      "say": "Both go offline and edit the body. The phone writes Buy oat milk; the laptop writes Buy milk, eggs, bread.",
-      "file": "16-concurrent-same-field-s01.png"
+      "stepId": "s06",
+      "sceneId": "concurrent-different-fields",
+      "say": "The app shows a small merged badge, nothing more. Concurrent is not the same as conflict.",
+      "file": "16-concurrent-different-fields-s06.png"
     },
     {
       "index": 16,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "concurrent-same-field",
-      "say": "Both come back and push. The phone lands first; then the laptop: {alice 5, bob 1} and {alice 4, bob 2} are concurrent again.",
-      "file": "17-concurrent-same-field-s02.png"
+      "say": "Both go offline and edit the body. The phone writes Buy oat milk; the laptop writes Buy milk, eggs, bread.",
+      "file": "17-concurrent-same-field-s01.png"
     },
     {
       "index": 17,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "concurrent-same-field",
-      "say": "Whoops — this time the same field. The body is an **MV register**, so the server keeps both texts as siblings instead of guessing.",
-      "file": "18-concurrent-same-field-s03.png"
+      "say": "Both come back and push. The phone lands first; then the laptop: {alice 5, bob 1} and {alice 4, bob 2} are concurrent again.",
+      "file": "18-concurrent-same-field-s02.png"
     },
     {
       "index": 18,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "concurrent-same-field",
-      "say": "Title and tags merged on their own; only the body needs a human. The app shows both texts and lets the user pick.",
-      "file": "19-concurrent-same-field-s04.png"
+      "say": "Whoops — this time the same field. The body is an **MV register**, so the server keeps both texts as siblings instead of guessing.",
+      "file": "19-concurrent-same-field-s03.png"
     },
     {
       "index": 19,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "concurrent-same-field",
-      "say": "Alice pulls, sees both, and writes the text she wants. Her write has seen both siblings, so it collapses them.",
-      "file": "20-concurrent-same-field-s05.png"
+      "say": "Title and tags merged on their own; only the body needs a human. The app shows both texts and lets the user pick.",
+      "file": "20-concurrent-same-field-s04.png"
     },
     {
       "index": 20,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "concurrent-same-field",
-      "say": "She pushes; the laptop pulls. One body again, on every copy, and nothing silently disappeared.",
-      "file": "21-concurrent-same-field-s06.png"
+      "say": "Alice pulls, sees both, and writes the text she wants. Her write has seen both siblings, so it collapses them.",
+      "file": "21-concurrent-same-field-s05.png"
     },
     {
       "index": 21,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "concurrent-same-field",
-      "say": "The vector clock finds it, the CRDT merges it, the app decides what the user sees. Three layers, three jobs.",
-      "file": "22-concurrent-same-field-s07.png"
+      "say": "She pushes; the laptop pulls. One body again, on every copy, and nothing silently disappeared.",
+      "file": "22-concurrent-same-field-s06.png"
     },
     {
       "index": 22,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "23-summary-use.png"
+      "stepId": "s07",
+      "sceneId": "concurrent-same-field",
+      "say": "The vector clock finds it, the CRDT merges it, the app decides what the user sees. Three layers, three jobs.",
+      "file": "23-concurrent-same-field-s07.png"
     },
     {
       "index": 23,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "24-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "24-summary-use.png"
     },
     {
       "index": 24,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "25-summary-avoid.png"
+    },
+    {
+      "index": 25,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "25-summary-world.png"
+      "file": "26-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:07:44.136Z"
+  "generatedAt": "2026-08-23T02:48:13.147Z"
 }

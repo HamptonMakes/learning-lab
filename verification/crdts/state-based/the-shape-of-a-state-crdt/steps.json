@@ -6,7 +6,7 @@
   "unitTitle": "State-based CRDTs",
   "topicTitle": "The shape of a state CRDT",
   "firstInUnit": true,
-  "total": 32,
+  "total": 33,
   "steps": [
     {
       "index": 0,
@@ -17,221 +17,228 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "state-and-merge",
-      "say": "Alice and Bob play the same game on two devices. Each device keeps a best score, and both start at 0.",
-      "file": "02-state-and-merge-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "state-and-merge",
-      "say": "A **state-based** CRDT has three parts: a **state**, local updates, and a **merge** rule. Here the state is one number and the rule is max.",
-      "file": "03-state-and-merge-s02.png"
+      "say": "Alice and Bob play the same game on two devices. Each device keeps a best score, and both start at 0.",
+      "file": "03-state-and-merge-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "state-and-merge",
-      "say": "Alice plays and scores 3. Only her copy changes; nobody else knows yet.",
-      "file": "04-state-and-merge-s03.png"
+      "say": "A **state-based** CRDT has three parts: a **state**, local updates, and a **merge** rule. Here the state is one number and the rule is max.",
+      "file": "04-state-and-merge-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "state-and-merge",
-      "say": "Bob plays on the laptop and scores 5. Two copies, two different numbers.",
-      "file": "05-state-and-merge-s04.png"
+      "say": "Alice plays and scores 3. Only her copy changes; nobody else knows yet.",
+      "file": "05-state-and-merge-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "state-and-merge",
-      "say": "Alice sends her whole state to Bob. That is what state-based means: the message is the state itself.",
-      "file": "06-state-and-merge-s05.png"
+      "say": "Bob plays on the laptop and scores 5. Two copies, two different numbers.",
+      "file": "06-state-and-merge-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "state-and-merge",
-      "say": "Bob merges: max(5, 3) = 5. His copy does not change.",
-      "file": "07-state-and-merge-s06.png"
+      "say": "Alice sends her whole state to Bob. That is what state-based means: the message is the state itself.",
+      "file": "07-state-and-merge-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "state-and-merge",
-      "say": "Bob sends his state to Alice. She merges: max(3, 5) = 5.",
-      "file": "08-state-and-merge-s07.png"
+      "say": "Bob merges: max(5, 3) = 5. His copy does not change.",
+      "file": "08-state-and-merge-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "state-and-merge",
-      "say": "Both copies say 5. No lock, no coordinator, no waiting.",
-      "file": "09-state-and-merge-s08.png"
+      "say": "Bob sends his state to Alice. She merges: max(3, 5) = 5.",
+      "file": "09-state-and-merge-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "state-and-merge",
-      "say": "The trick is to design a state, often with a **sidecar** of timestamps or ids, so that a merge like this exists. This unit is a catalog of such states.",
-      "file": "10-state-and-merge-s09.png"
+      "say": "Both copies say 5. No lock, no coordinator, no waiting.",
+      "file": "10-state-and-merge-s08.png"
     },
     {
       "index": 10,
-      "stepId": "s01",
-      "sceneId": "three-laws",
-      "say": "Three copies: Alice 3, Bob 5, Carol 4. Three laws make the merge safe.",
-      "file": "11-three-laws-s01.png"
+      "stepId": "s09",
+      "sceneId": "state-and-merge",
+      "say": "The trick is to design a state, often with a **sidecar** of timestamps or ids, so that a merge like this exists. This unit is a catalog of such states.",
+      "file": "11-state-and-merge-s09.png"
     },
     {
       "index": 11,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "three-laws",
-      "say": "Law 1, **commutative**: merge(a, b) = merge(b, a). Alice and Bob send each other their states at the same time.",
-      "file": "12-three-laws-s02.png"
+      "say": "Three copies: Alice 3, Bob 5, Carol 4. Three laws make the merge safe.",
+      "file": "12-three-laws-s01.png"
     },
     {
       "index": 12,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "three-laws",
-      "say": "Alice merges Bob's 5: max(3, 5) = 5.",
-      "file": "13-three-laws-s03.png"
+      "say": "Law 1, **commutative**: merge(a, b) = merge(b, a). Alice and Bob send each other their states at the same time.",
+      "file": "13-three-laws-s02.png"
     },
     {
       "index": 13,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "three-laws",
-      "say": "Bob merges the 3 Alice sent: max(5, 3) = 5. Opposite order, same answer.",
-      "file": "14-three-laws-s04.png"
+      "say": "Alice merges Bob's 5: max(3, 5) = 5.",
+      "file": "14-three-laws-s03.png"
     },
     {
       "index": 14,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "three-laws",
-      "say": "Law 2, **associative**: merge(merge(a, b), c) = merge(a, merge(b, c)). Carol merges Alice's copy, which already holds Bob's 5.",
-      "file": "15-three-laws-s05.png"
+      "say": "Bob merges the 3 Alice sent: max(5, 3) = 5. Opposite order, same answer.",
+      "file": "15-three-laws-s04.png"
     },
     {
       "index": 15,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "three-laws",
-      "say": "max(max(3, 5), 4) = 5, and max(3, max(5, 4)) = 5 too. How you group the merges does not matter.",
-      "file": "16-three-laws-s06.png"
+      "say": "Law 2, **associative**: merge(merge(a, b), c) = merge(a, merge(b, c)). Carol merges Alice's copy, which already holds Bob's 5.",
+      "file": "16-three-laws-s05.png"
     },
     {
       "index": 16,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "three-laws",
-      "say": "Law 3, **idempotent**: merge(a, a) = a. Bob sends his 5 to Carol, who already holds it: the merge changes nothing.",
-      "file": "17-three-laws-s07.png"
+      "say": "max(max(3, 5), 4) = 5, and max(3, max(5, 4)) = 5 too. How you group the merges does not matter.",
+      "file": "17-three-laws-s06.png"
     },
     {
       "index": 17,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "three-laws",
-      "say": "A duplicate message is harmless. That is why state-based CRDTs never need exactly-once delivery.",
-      "file": "18-three-laws-s08.png"
+      "say": "Law 3, **idempotent**: merge(a, a) = a. Bob sends his 5 to Carol, who already holds it: the merge changes nothing.",
+      "file": "18-three-laws-s07.png"
     },
     {
       "index": 18,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "three-laws",
-      "say": "Three laws, one result: any copy can merge anything, in any order, any number of times.",
-      "file": "19-three-laws-s09.png"
+      "say": "A duplicate message is harmless. That is why state-based CRDTs never need exactly-once delivery.",
+      "file": "19-three-laws-s08.png"
     },
     {
       "index": 19,
-      "stepId": "s01",
-      "sceneId": "bad-network",
-      "say": "Now a bad network: late, lost and duplicated messages. Same three copies, 3, 5 and 4; watch the three laws do the work.",
-      "file": "20-bad-network-s01.png"
+      "stepId": "s09",
+      "sceneId": "three-laws",
+      "say": "Three laws, one result: any copy can merge anything, in any order, any number of times.",
+      "file": "20-three-laws-s09.png"
     },
     {
       "index": 20,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "bad-network",
-      "say": "Everyone sends to everyone: six messages in flight.",
-      "file": "21-bad-network-s02.png"
+      "say": "Now a bad network: late, lost and duplicated messages. Same three copies, 3, 5 and 4; watch the three laws do the work.",
+      "file": "21-bad-network-s01.png"
     },
     {
       "index": 21,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "bad-network",
-      "say": "Bob's message to Carol is lost on the way. The network also retries his message to Alice, so two copies of it are in flight.",
-      "file": "22-bad-network-s03.png"
+      "say": "Everyone sends to everyone: six messages in flight.",
+      "file": "22-bad-network-s02.png"
     },
     {
       "index": 22,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "bad-network",
-      "say": "Alice merges Bob's 5: max(3, 5) = 5.",
-      "file": "23-bad-network-s04.png"
+      "say": "Bob's message to Carol is lost on the way. The network also retries his message to Alice, so two copies of it are in flight.",
+      "file": "23-bad-network-s03.png"
     },
     {
       "index": 23,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "bad-network",
-      "say": "The retried copy lands. Same state a second time: no change.",
-      "file": "24-bad-network-s05.png"
+      "say": "Alice merges Bob's 5: max(3, 5) = 5.",
+      "file": "24-bad-network-s04.png"
     },
     {
       "index": 24,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "bad-network",
-      "say": "Carol's 4 arrives at Alice and at Bob. Nothing beats 5: no change on either side.",
-      "file": "25-bad-network-s06.png"
+      "say": "The retried copy lands. Same state a second time: no change.",
+      "file": "25-bad-network-s05.png"
     },
     {
       "index": 25,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "bad-network",
-      "say": "Alice's old 3 arrives last, at Bob and at Carol. Bob keeps 5; Carol keeps 4, since max(4, 3) = 4.",
-      "file": "26-bad-network-s07.png"
+      "say": "Carol's 4 arrives at Alice and at Bob. Nothing beats 5: no change on either side.",
+      "file": "26-bad-network-s06.png"
     },
     {
       "index": 26,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "bad-network",
-      "say": "Whoops — Carol is behind: the lost message carried the 5. Alice and Bob agree, Carol does not.",
-      "file": "27-bad-network-s08.png"
+      "say": "Alice's old 3 arrives last, at Bob and at Carol. Bob keeps 5; Carol keeps 4, since max(4, 3) = 4.",
+      "file": "27-bad-network-s07.png"
     },
     {
       "index": 27,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "bad-network",
-      "say": "The fix is free: any copy that has 5 can send it again, at any time. Alice does, and all three agree.",
-      "file": "28-bad-network-s09.png"
+      "say": "Whoops — Carol is behind: the lost message carried the 5. Alice and Bob agree, Carol does not.",
+      "file": "28-bad-network-s08.png"
     },
     {
       "index": 28,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "bad-network",
-      "say": "Lost, late, duplicated: the laws absorbed all of it. Each copy only needs to hear the newest state eventually, by any route.",
-      "file": "29-bad-network-s10.png"
+      "say": "The fix is free: any copy that has 5 can send it again, at any time. Alice does, and all three agree.",
+      "file": "29-bad-network-s09.png"
     },
     {
       "index": 29,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "30-summary-use.png"
+      "stepId": "s10",
+      "sceneId": "bad-network",
+      "say": "Lost, late, duplicated: the laws absorbed all of it. Each copy only needs to hear the newest state eventually, by any route.",
+      "file": "30-bad-network-s10.png"
     },
     {
       "index": 30,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "31-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "31-summary-use.png"
     },
     {
       "index": 31,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "32-summary-avoid.png"
+    },
+    {
+      "index": 32,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "32-summary-world.png"
+      "file": "33-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:03:41.826Z"
+  "generatedAt": "2026-08-23T02:43:34.504Z"
 }

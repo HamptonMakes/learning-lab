@@ -6,7 +6,7 @@
   "unitTitle": "State-based CRDTs",
   "topicTitle": "The cost of state",
   "firstInUnit": false,
-  "total": 24,
+  "total": 25,
   "steps": [
     {
       "index": 0,
@@ -17,165 +17,172 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "full-state",
-      "say": "A shared list with seven items, already in sync on both sides.",
-      "file": "02-full-state-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "full-state",
-      "say": "Alice adds one item: tea. One small change, one new tag.",
-      "file": "03-full-state-s02.png"
+      "say": "A shared list with seven items, already in sync on both sides.",
+      "file": "03-full-state-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "full-state",
-      "say": "To sync, she sends her whole state: every item and every tag, for one new word. The token shows its size: 388 B.",
-      "file": "04-full-state-s03.png"
+      "say": "Alice adds one item: tea. One small change, one new tag.",
+      "file": "04-full-state-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "full-state",
-      "say": "Bob merges. Seven of the eight items were already there; the whole state travelled for one.",
-      "file": "05-full-state-s04.png"
+      "say": "To sync, she sends her whole state: every item and every tag, for one new word. The token shows its size: 388 B.",
+      "file": "05-full-state-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "full-state",
-      "say": "Bob removes salt and adds jam, then sends his whole state back: 441 B. The state grew, so the token grew.",
-      "file": "06-full-state-s05.png"
+      "say": "Bob merges. Seven of the eight items were already there; the whole state travelled for one.",
+      "file": "06-full-state-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "full-state",
-      "say": "Alice merges. Every round costs the whole state, and the state only grows.",
-      "file": "07-full-state-s06.png"
+      "say": "Bob removes salt and adds jam, then sends his whole state back: 441 B. The state grew, so the token grew.",
+      "file": "07-full-state-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "full-state",
-      "say": "With a big document and many peers this adds up fast: size × peers × rounds. Deltas are the first fix.",
-      "file": "08-full-state-s07.png"
+      "say": "Alice merges. Every round costs the whole state, and the state only grows.",
+      "file": "08-full-state-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s01",
-      "sceneId": "delta",
-      "say": "Same list. Alice adds eggs: one more change.",
-      "file": "09-delta-s01.png"
+      "stepId": "s07",
+      "sceneId": "full-state",
+      "say": "With a big document and many peers this adds up fast: size × peers × rounds. Deltas are the first fix.",
+      "file": "09-full-state-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "delta",
-      "say": "This time she sends a **delta**: a small state that holds only eggs and its tag (simplified). The token reads 73 B; the last full state was 441 B.",
-      "file": "10-delta-s02.png"
+      "say": "Same list. Alice adds eggs: one more change.",
+      "file": "10-delta-s01.png"
     },
     {
       "index": 10,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "delta",
-      "say": "Bob merges the delta with the same merge() as before. A delta is itself a small state, so the three laws still hold.",
-      "file": "11-delta-s03.png"
+      "say": "This time she sends a **delta**: a small state that holds only eggs and its tag (simplified). The token reads 73 B; the last full state was 441 B.",
+      "file": "11-delta-s02.png"
     },
     {
       "index": 11,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "delta",
-      "say": "Bob removes tea and sends a delta back: 44 B (simplified). It carries only the dead tag, alice:1.",
-      "file": "12-delta-s04.png"
+      "say": "Bob merges the delta with the same merge() as before. A delta is itself a small state, so the three laws still hold.",
+      "file": "12-delta-s03.png"
     },
     {
       "index": 12,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "delta",
-      "say": "Alice merges. Tea is gone: the union of tombstones killed alice:1, and the rest of her state stayed as it was.",
-      "file": "13-delta-s05.png"
+      "say": "Bob removes tea and sends a delta back: 44 B (simplified). It carries only the dead tag, alice:1.",
+      "file": "13-delta-s04.png"
     },
     {
       "index": 13,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "delta",
-      "say": "The catch: the sender must know what the other side has not seen yet. Lose track, and you fall back to the full state.",
-      "file": "14-delta-s06.png"
+      "say": "Alice merges. Tea is gone: the union of tombstones killed alice:1, and the rest of her state stayed as it was.",
+      "file": "14-delta-s05.png"
     },
     {
       "index": 14,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "delta",
-      "say": "Deltas keep the three laws, so the same merge() works. Operations (Unit III) are the other answer: send what you did.",
-      "file": "15-delta-s07.png"
+      "say": "The catch: the sender must know what the other side has not seen yet. Lose track, and you fall back to the full state.",
+      "file": "15-delta-s06.png"
     },
     {
       "index": 15,
-      "stepId": "s01",
-      "sceneId": "sidecar-grows",
-      "say": "State also grows on the inside. Watch one item through a busy day.",
-      "file": "16-sidecar-grows-s01.png"
+      "stepId": "s07",
+      "sceneId": "delta",
+      "say": "Deltas keep the three laws, so the same merge() works. Operations (Unit III) are the other answer: send what you did.",
+      "file": "16-delta-s07.png"
     },
     {
       "index": 16,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "sidecar-grows",
-      "say": "Bob removes milk, Alice adds it back, they sync. Each add is a new tag, and each removed tag stays as a tombstone.",
-      "file": "17-sidecar-grows-s02.png"
+      "say": "State also grows on the inside. Watch one item through a busy day.",
+      "file": "17-sidecar-grows-s01.png"
     },
     {
       "index": 17,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "sidecar-grows",
-      "say": "Again: remove, add, sync. One milk in the cart, three tags in the sidecar, two of them dead.",
-      "file": "18-sidecar-grows-s03.png"
+      "say": "Bob removes milk, Alice adds it back, they sync. Each add is a new tag, and each removed tag stays as a tombstone.",
+      "file": "18-sidecar-grows-s02.png"
     },
     {
       "index": 18,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "sidecar-grows",
-      "say": "The sidecar never shrinks by itself: a 2P-Set keeps every tombstone, an OR-Set keeps every tag it has seen.",
-      "file": "19-sidecar-grows-s04.png"
+      "say": "Again: remove, add, sync. One milk in the cart, three tags in the sidecar, two of them dead.",
+      "file": "19-sidecar-grows-s03.png"
     },
     {
       "index": 19,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "sidecar-grows",
-      "say": "Real systems compact: they drop sidecar that everyone has seen. Knowing what everyone has seen is Unit IV.",
-      "file": "20-sidecar-grows-s05.png"
+      "say": "The sidecar never shrinks by itself: a 2P-Set keeps every tombstone, an OR-Set keeps every tag it has seen.",
+      "file": "20-sidecar-grows-s04.png"
     },
     {
       "index": 20,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "sidecar-grows",
-      "say": "State-based sync is simple, and fine for small state. For big documents with small edits, use deltas or operations.",
-      "file": "21-sidecar-grows-s06.png"
+      "say": "Real systems compact: they drop sidecar that everyone has seen. Knowing what everyone has seen is Unit IV.",
+      "file": "21-sidecar-grows-s05.png"
     },
     {
       "index": 21,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "22-summary-use.png"
+      "stepId": "s06",
+      "sceneId": "sidecar-grows",
+      "say": "State-based sync is simple, and fine for small state. For big documents with small edits, use deltas or operations.",
+      "file": "22-sidecar-grows-s06.png"
     },
     {
       "index": 22,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "23-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "23-summary-use.png"
     },
     {
       "index": 23,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "24-summary-avoid.png"
+    },
+    {
+      "index": 24,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "24-summary-world.png"
+      "file": "25-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:05:21.873Z"
+  "generatedAt": "2026-08-23T02:45:17.968Z"
 }

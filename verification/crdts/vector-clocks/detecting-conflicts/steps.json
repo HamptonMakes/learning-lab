@@ -6,7 +6,7 @@
   "unitTitle": "Vector Clocks & Causality",
   "topicTitle": "Detecting conflicts",
   "firstInUnit": false,
-  "total": 25,
+  "total": 26,
   "steps": [
     {
       "index": 0,
@@ -17,172 +17,179 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "siblings",
-      "say": "A shopping cart, Dynamo style. Store, phone and laptop hold it as an **MV register**: a value plus the version vector of the write that made it.",
-      "file": "02-siblings-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "siblings",
-      "say": "Two rules: a write builds on everything it has seen; a merge keeps every version nothing else dominates.",
-      "file": "03-siblings-s02.png"
+      "say": "A shopping cart, Dynamo style. Store, phone and laptop hold it as an **MV register**: a value plus the version vector of the write that made it.",
+      "file": "03-siblings-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "siblings",
-      "say": "Alice adds eggs on the phone. Her write builds on {alice 1}, so the new version is {alice 2}.",
-      "file": "04-siblings-s03.png"
+      "say": "Two rules: a write builds on everything it has seen; a merge keeps every version nothing else dominates.",
+      "file": "04-siblings-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "siblings",
-      "say": "Bob is offline. He adds bread on the laptop, also building on {alice 1}: version {alice 1, bob 1}.",
-      "file": "05-siblings-s04.png"
+      "say": "Alice adds eggs on the phone. Her write builds on {alice 1}, so the new version is {alice 2}.",
+      "file": "05-siblings-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "siblings",
-      "say": "Alice pushes. The store compares its {alice 1} with her {alice 2}: before, because hers has seen everything the store has.",
-      "file": "06-siblings-s05.png"
+      "say": "Bob is offline. He adds bread on the laptop, also building on {alice 1}: version {alice 1, bob 1}.",
+      "file": "06-siblings-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "siblings",
-      "say": "A fast-forward: the store just takes her version.",
-      "file": "07-siblings-s06.png"
+      "say": "Alice pushes. The store compares its {alice 1} with her {alice 2}: before, because hers has seen everything the store has.",
+      "file": "07-siblings-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "siblings",
-      "say": "Bob comes online and pushes {alice 1, bob 1}. Compared with {alice 2} it is concurrent: neither write saw the other.",
-      "file": "08-siblings-s07.png"
+      "say": "A fast-forward: the store just takes her version.",
+      "file": "08-siblings-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "siblings",
-      "say": "Whoops — a conflict. The store does not guess: it keeps both versions as **siblings**, each with its own vector.",
-      "file": "09-siblings-s08.png"
+      "say": "Bob comes online and pushes {alice 1, bob 1}. Compared with {alice 2} it is concurrent: neither write saw the other.",
+      "file": "09-siblings-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "siblings",
-      "say": "Alice opens the cart and pulls. She gets both siblings, and now the app must resolve them.",
-      "file": "10-siblings-s09.png"
+      "say": "Whoops — a conflict. The store does not guess: it keeps both versions as **siblings**, each with its own vector.",
+      "file": "10-siblings-s08.png"
     },
     {
       "index": 10,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "siblings",
-      "say": "The app merges them with a union: milk, eggs, bread. Its write has seen both siblings, so its vector covers both: {alice 3, bob 1}.",
-      "file": "11-siblings-s10.png"
+      "say": "Alice opens the cart and pulls. She gets both siblings, and now the app must resolve them.",
+      "file": "11-siblings-s09.png"
     },
     {
       "index": 11,
-      "stepId": "s11",
+      "stepId": "s10",
       "sceneId": "siblings",
-      "say": "Push. {alice 3, bob 1} is after both siblings, so the store collapses them into one value.",
-      "file": "12-siblings-s11.png"
+      "say": "The app merges them with a union: milk, eggs, bread. Its write has seen both siblings, so its vector covers both: {alice 3, bob 1}.",
+      "file": "12-siblings-s10.png"
     },
     {
       "index": 12,
-      "stepId": "s12",
+      "stepId": "s11",
       "sceneId": "siblings",
-      "say": "Bob pulls: one cart, three items. Both devices and the store agree.",
-      "file": "13-siblings-s12.png"
+      "say": "Push. {alice 3, bob 1} is after both siblings, so the store collapses them into one value.",
+      "file": "13-siblings-s11.png"
     },
     {
       "index": 13,
-      "stepId": "s13",
+      "stepId": "s12",
       "sceneId": "siblings",
-      "say": "The vector clock found the conflict, and the app decided what to do about it. Two different jobs: detect, then resolve.",
-      "file": "14-siblings-s13.png"
+      "say": "Bob pulls: one cart, three items. Both devices and the store agree.",
+      "file": "14-siblings-s12.png"
     },
     {
       "index": 14,
-      "stepId": "s01",
-      "sceneId": "the-item-that-came-back",
-      "say": "Same cart, a day later. Everyone holds milk, eggs with version {alice 2}, and the app still resolves siblings by union.",
-      "file": "15-the-item-that-came-back-s01.png"
+      "stepId": "s13",
+      "sceneId": "siblings",
+      "say": "The vector clock found the conflict, and the app decided what to do about it. Two different jobs: detect, then resolve.",
+      "file": "15-siblings-s13.png"
     },
     {
       "index": 15,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "the-item-that-came-back",
-      "say": "Alice removes eggs on the phone: milk, version {alice 3}.",
-      "file": "16-the-item-that-came-back-s02.png"
+      "say": "Same cart, a day later. Everyone holds milk, eggs with version {alice 2}, and the app still resolves siblings by union.",
+      "file": "16-the-item-that-came-back-s01.png"
     },
     {
       "index": 16,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "the-item-that-came-back",
-      "say": "Bob, offline, adds bread on the laptop: milk, eggs, bread, version {alice 2, bob 1}.",
-      "file": "17-the-item-that-came-back-s03.png"
+      "say": "Alice removes eggs on the phone: milk, version {alice 3}.",
+      "file": "17-the-item-that-came-back-s02.png"
     },
     {
       "index": 17,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "the-item-that-came-back",
-      "say": "Both push. {alice 3} and {alice 2, bob 1} are concurrent, so the store keeps two siblings again.",
-      "file": "18-the-item-that-came-back-s04.png"
+      "say": "Bob, offline, adds bread on the laptop: milk, eggs, bread, version {alice 2, bob 1}.",
+      "file": "18-the-item-that-came-back-s03.png"
     },
     {
       "index": 18,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "the-item-that-came-back",
-      "say": "Alice pulls, and the app applies its rule: the union is milk, eggs, bread. Its vector covers both siblings: {alice 4, bob 1}.",
-      "file": "19-the-item-that-came-back-s05.png"
+      "say": "Both push. {alice 3} and {alice 2, bob 1} are concurrent, so the store keeps two siblings again.",
+      "file": "19-the-item-that-came-back-s04.png"
     },
     {
       "index": 19,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "the-item-that-came-back",
-      "say": "Whoops — eggs is back. Alice had removed it, and a union cannot tell removed from never added.",
-      "file": "20-the-item-that-came-back-s06.png"
+      "say": "Alice pulls, and the app applies its rule: the union is milk, eggs, bread. Its vector covers both siblings: {alice 4, bob 1}.",
+      "file": "20-the-item-that-came-back-s05.png"
     },
     {
       "index": 20,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "the-item-that-came-back",
-      "say": "The Dynamo paper describes this exact effect: deleted items can resurface. The fix is a data type that records removes, the **OR-Set**.",
-      "file": "21-the-item-that-came-back-s07.png"
+      "say": "Whoops — eggs is back. Alice had removed it, and a union cannot tell removed from never added.",
+      "file": "21-the-item-that-came-back-s06.png"
     },
     {
       "index": 21,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "the-item-that-came-back",
-      "say": "Vector clocks say there is a conflict. Only a data type with the right merge rule says how to resolve it.",
-      "file": "22-the-item-that-came-back-s08.png"
+      "say": "The Dynamo paper describes this exact effect: deleted items can resurface. The fix is a data type that records removes, the **OR-Set**.",
+      "file": "22-the-item-that-came-back-s07.png"
     },
     {
       "index": 22,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "23-summary-use.png"
+      "stepId": "s08",
+      "sceneId": "the-item-that-came-back",
+      "say": "Vector clocks say there is a conflict. Only a data type with the right merge rule says how to resolve it.",
+      "file": "23-the-item-that-came-back-s08.png"
     },
     {
       "index": 23,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "24-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "24-summary-use.png"
     },
     {
       "index": 24,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "25-summary-avoid.png"
+    },
+    {
+      "index": 25,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "25-summary-world.png"
+      "file": "26-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:07:28.836Z"
+  "generatedAt": "2026-08-23T02:47:57.263Z"
 }

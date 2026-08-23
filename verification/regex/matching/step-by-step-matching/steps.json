@@ -6,7 +6,7 @@
   "unitTitle": "How matching works",
   "topicTitle": "Step-by-step matching",
   "firstInUnit": true,
-  "total": 27,
+  "total": 28,
   "steps": [
     {
       "index": 0,
@@ -17,186 +17,193 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "tests-in-a-row",
-      "say": "The pattern `cat` is three tests in a row: a c, then an a, then a t. The text is \"the cat sat\".",
-      "file": "02-tests-in-a-row-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "tests-in-a-row",
-      "say": "Start at position 0: test 1 wants a c and sees a t, so it fails. The tries meter counts every character test: 1.",
-      "file": "03-tests-in-a-row-s02.png"
+      "say": "The pattern `cat` is three tests in a row: a c, then an a, then a t. The text is \"the cat sat\".",
+      "file": "03-tests-in-a-row-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "tests-in-a-row",
-      "say": "A fail means: move the start one to the right and try again. Position 1 is an h: fail, tries 2.",
-      "file": "04-tests-in-a-row-s03.png"
+      "say": "Start at position 0: test 1 wants a c and sees a t, so it fails. The tries meter counts every character test: 1.",
+      "file": "04-tests-in-a-row-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "tests-in-a-row",
-      "say": "Position 2 (an e) and position 3 (a space) fail too. Four starts, four red marks, 4 tries.",
-      "file": "05-tests-in-a-row-s04.png"
+      "say": "A fail means: move the start one to the right and try again. Position 1 is an h: fail, tries 2.",
+      "file": "05-tests-in-a-row-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "tests-in-a-row",
-      "say": "Position 4 is a c. Test 1 passes, and both cursors move: the text cursor to 5, the pattern cursor to the a.",
-      "file": "06-tests-in-a-row-s05.png"
+      "say": "Position 2 (an e) and position 3 (a space) fail too. Four starts, four red marks, 4 tries.",
+      "file": "06-tests-in-a-row-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "tests-in-a-row",
-      "say": "Test 2 wants an a and sees an a. Pass: cursor 6, and the pattern cursor moves to the t.",
-      "file": "07-tests-in-a-row-s06.png"
+      "say": "Position 4 is a c. Test 1 passes, and both cursors move: the text cursor to 5, the pattern cursor to the a.",
+      "file": "07-tests-in-a-row-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "tests-in-a-row",
-      "say": "Test 3 wants a t and sees a t. Every test passed: a match from 4 to 7, after 7 tries.",
-      "file": "08-tests-in-a-row-s07.png"
+      "say": "Test 2 wants an a and sees an a. Pass: cursor 6, and the pattern cursor moves to the t.",
+      "file": "08-tests-in-a-row-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "tests-in-a-row",
-      "say": "That is the whole idea: a cursor in the text, a cursor in the pattern, one test per step, and a restart on fail.",
-      "file": "09-tests-in-a-row-s08.png"
+      "say": "Test 3 wants a t and sees a t. Every test passed: a match from 4 to 7, after 7 tries.",
+      "file": "09-tests-in-a-row-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s01",
-      "sceneId": "optional",
-      "say": "A test can be optional: `colou?r` is six tests, and the fifth, `u?`, means a u or nothing. Text: \"colour\".",
-      "file": "10-optional-s01.png"
+      "stepId": "s08",
+      "sceneId": "tests-in-a-row",
+      "say": "That is the whole idea: a cursor in the text, a cursor in the pattern, one test per step, and a restart on fail.",
+      "file": "10-tests-in-a-row-s08.png"
     },
     {
       "index": 10,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "optional",
-      "say": "c, o, l, o: four tests, four passes. Cursor at 4, 4 tries.",
-      "file": "11-optional-s02.png"
+      "say": "A test can be optional: `colou?r` is six tests, and the fifth, `u?`, means a u or nothing. Text: \"colour\".",
+      "file": "11-optional-s01.png"
     },
     {
       "index": 11,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "optional",
-      "say": "Test 5, `u?`, sees a u and takes it: cursor 5. The engine also saves a **choice point**, c1: it could give that u back later.",
-      "file": "12-optional-s03.png"
+      "say": "c, o, l, o: four tests, four passes. Cursor at 4, 4 tries.",
+      "file": "12-optional-s02.png"
     },
     {
       "index": 12,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "optional",
-      "say": "Test 6 wants an r and sees an r. Match, 0 to 6, in 6 tries; the choice point was never needed.",
-      "file": "13-optional-s04.png"
+      "say": "Test 5, `u?`, sees a u and takes it: cursor 5. The engine also saves a **choice point**, c1: it could give that u back later.",
+      "file": "13-optional-s03.png"
     },
     {
       "index": 13,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "optional",
-      "say": "Same pattern on \"color\". c, o, l, o pass again: cursor 4.",
-      "file": "14-optional-s05.png"
+      "say": "Test 6 wants an r and sees an r. Match, 0 to 6, in 6 tries; the choice point was never needed.",
+      "file": "14-optional-s04.png"
     },
     {
       "index": 14,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "optional",
-      "say": "`u?` sees an r, not a u, so it takes nothing and passes anyway: that is what optional means. No choice point this time, cursor still 4.",
-      "file": "15-optional-s06.png"
+      "say": "Same pattern on \"color\". c, o, l, o pass again: cursor 4.",
+      "file": "15-optional-s05.png"
     },
     {
       "index": 15,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "optional",
-      "say": "Test 6 wants an r and sees an r: match, 0 to 5, in 6 tries. One pattern, two spellings.",
-      "file": "16-optional-s07.png"
+      "say": "`u?` sees an r, not a u, so it takes nothing and passes anyway: that is what optional means. No choice point this time, cursor still 4.",
+      "file": "16-optional-s06.png"
     },
     {
       "index": 16,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "optional",
-      "say": "The question mark is a **quantifier**, like plus and star: one test that may take more or fewer characters. Each one is a place the engine may come back to.",
-      "file": "17-optional-s08.png"
+      "say": "Test 6 wants an r and sees an r: match, 0 to 5, in 6 tries. One pattern, two spellings.",
+      "file": "17-optional-s07.png"
     },
     {
       "index": 17,
-      "stepId": "s01",
-      "sceneId": "order-id",
-      "say": "A log line, and we want the order number. Pattern `ORD-(\\d{4})`: O, R, D, a dash, then exactly four digits inside a **capture group**.",
-      "file": "18-order-id-s01.png"
+      "stepId": "s08",
+      "sceneId": "optional",
+      "say": "The question mark is a **quantifier**, like plus and star: one test that may take more or fewer characters. Each one is a place the engine may come back to.",
+      "file": "18-optional-s08.png"
     },
     {
       "index": 18,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "order-id",
-      "say": "Positions 0 to 15 all fail on the first test: none of them is an O. The start slides right one place at a time: 16 tries.",
-      "file": "19-order-id-s02.png"
+      "say": "A log line, and we want the order number. Pattern `ORD-(\\d{4})`: O, R, D, a dash, then exactly four digits inside a **capture group**.",
+      "file": "19-order-id-s01.png"
     },
     {
       "index": 19,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "order-id",
-      "say": "Position 16 is an O. Pass: cursor 17, and the pattern cursor moves on to R.",
-      "file": "20-order-id-s03.png"
+      "say": "Positions 0 to 15 all fail on the first test: none of them is an O. The start slides right one place at a time: 16 tries.",
+      "file": "20-order-id-s02.png"
     },
     {
       "index": 20,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "order-id",
-      "say": "R, D and the dash pass one by one. Cursor 20; the pattern cursor is on `\\d{4}`, inside the group.",
-      "file": "21-order-id-s04.png"
+      "say": "Position 16 is an O. Pass: cursor 17, and the pattern cursor moves on to R.",
+      "file": "21-order-id-s03.png"
     },
     {
       "index": 21,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "order-id",
-      "say": "`\\d{4}` is one test run exactly four times: a digit each time. 0, 0, 4 so far: cursor 23.",
-      "file": "22-order-id-s05.png"
+      "say": "R, D and the dash pass one by one. Cursor 20; the pattern cursor is on `\\d{4}`, inside the group.",
+      "file": "22-order-id-s04.png"
     },
     {
       "index": 22,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "order-id",
-      "say": "The fourth digit, 2, passes: a match from 16 to 24. The group captured 0042, so $1 hands you only the number.",
-      "file": "23-order-id-s06.png"
+      "say": "`\\d{4}` is one test run exactly four times: a digit each time. 0, 0, 4 so far: cursor 23.",
+      "file": "23-order-id-s05.png"
     },
     {
       "index": 23,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "order-id",
-      "say": "A line with no ORD- fails at all 21 starts (0 to 20) and reports no match: 21 tries, then it stops. Next topic: when it does not stop so soon.",
-      "file": "24-order-id-s07.png"
+      "say": "The fourth digit, 2, passes: a match from 16 to 24. The group captured 0042, so $1 hands you only the number.",
+      "file": "24-order-id-s06.png"
     },
     {
       "index": 24,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "25-summary-use.png"
+      "stepId": "s07",
+      "sceneId": "order-id",
+      "say": "A line with no ORD- fails at all 21 starts (0 to 20) and reports no match: 21 tries, then it stops. Next topic: when it does not stop so soon.",
+      "file": "25-order-id-s07.png"
     },
     {
       "index": 25,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "26-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "26-summary-use.png"
     },
     {
       "index": 26,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "27-summary-avoid.png"
+    },
+    {
+      "index": 27,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "27-summary-world.png"
+      "file": "28-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:09:16.099Z"
+  "generatedAt": "2026-08-23T02:49:48.893Z"
 }

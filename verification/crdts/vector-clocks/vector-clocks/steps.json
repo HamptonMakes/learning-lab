@@ -6,7 +6,7 @@
   "unitTitle": "Vector Clocks & Causality",
   "topicTitle": "Vector clocks",
   "firstInUnit": false,
-  "total": 32,
+  "total": 33,
   "steps": [
     {
       "index": 0,
@@ -17,221 +17,228 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "one-counter-per-node",
-      "say": "Three devices. Each keeps a **vector clock**: one counter per device, all zero to start.",
-      "file": "02-one-counter-per-node-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "one-counter-per-node",
-      "say": "Three rules, like Lamport, but applied per entry.",
-      "file": "03-one-counter-per-node-s02.png"
+      "say": "Three devices. Each keeps a **vector clock**: one counter per device, all zero to start.",
+      "file": "03-one-counter-per-node-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "one-counter-per-node",
-      "say": "Alice edits: only her own entry ticks. {alice 1, bob 0, carol 0}.",
-      "file": "04-one-counter-per-node-s03.png"
+      "say": "Three rules, like Lamport, but applied per entry.",
+      "file": "04-one-counter-per-node-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "one-counter-per-node",
-      "say": "Alice sends Bob a message. A send ticks her entry too, {alice 2, bob 0, carol 0}, and the message carries the whole clock.",
-      "file": "05-one-counter-per-node-s04.png"
+      "say": "Alice edits: only her own entry ticks. {alice 1, bob 0, carol 0}.",
+      "file": "05-one-counter-per-node-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "one-counter-per-node",
-      "say": "Bob receives. Max per entry, then his own entry + 1: {alice 2, bob 1, carol 0}.",
-      "file": "06-one-counter-per-node-s05.png"
+      "say": "Alice sends Bob a message. A send ticks her entry too, {alice 2, bob 0, carol 0}, and the message carries the whole clock.",
+      "file": "06-one-counter-per-node-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "one-counter-per-node",
-      "say": "Carol edits twice on her own: {alice 0, bob 0, carol 2}. She has heard nothing from anyone.",
-      "file": "07-one-counter-per-node-s06.png"
+      "say": "Bob receives. Max per entry, then his own entry + 1: {alice 2, bob 1, carol 0}.",
+      "file": "07-one-counter-per-node-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "one-counter-per-node",
-      "say": "Bob sends Carol a message. His clock ticks to {alice 2, bob 2, carol 0} and travels with it.",
-      "file": "08-one-counter-per-node-s07.png"
+      "say": "Carol edits twice on her own: {alice 0, bob 0, carol 2}. She has heard nothing from anyone.",
+      "file": "08-one-counter-per-node-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "one-counter-per-node",
-      "say": "Carol receives: max per entry, plus her own tick. {alice 2, bob 2, carol 3}.",
-      "file": "09-one-counter-per-node-s08.png"
+      "say": "Bob sends Carol a message. His clock ticks to {alice 2, bob 2, carol 0} and travels with it.",
+      "file": "09-one-counter-per-node-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "one-counter-per-node",
-      "say": "Carol's clock says exactly what she has heard of: 2 events from Alice, 2 from Bob, 3 of her own.",
-      "file": "10-one-counter-per-node-s09.png"
+      "say": "Carol receives: max per entry, plus her own tick. {alice 2, bob 2, carol 3}.",
+      "file": "10-one-counter-per-node-s08.png"
     },
     {
       "index": 10,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "one-counter-per-node",
-      "say": "A vector clock is a summary of everything you have heard. That is what makes comparing two of them meaningful.",
-      "file": "11-one-counter-per-node-s10.png"
+      "say": "Carol's clock says exactly what she has heard of: 2 events from Alice, 2 from Bob, 3 of her own.",
+      "file": "11-one-counter-per-node-s09.png"
     },
     {
       "index": 11,
-      "stepId": "s01",
-      "sceneId": "before-after-concurrent",
-      "say": "Two fresh clocks, {alice 0, bob 0} on both sides. Compare them entry by entry: equal.",
-      "file": "12-before-after-concurrent-s01.png"
+      "stepId": "s10",
+      "sceneId": "one-counter-per-node",
+      "say": "A vector clock is a summary of everything you have heard. That is what makes comparing two of them meaningful.",
+      "file": "12-one-counter-per-node-s10.png"
     },
     {
       "index": 12,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "before-after-concurrent",
-      "say": "Alice edits twice: {alice 2, bob 0}. Bob does nothing: still {alice 0, bob 0}.",
-      "file": "13-before-after-concurrent-s02.png"
+      "say": "Two fresh clocks, {alice 0, bob 0} on both sides. Compare them entry by entry: equal.",
+      "file": "13-before-after-concurrent-s01.png"
     },
     {
       "index": 13,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "before-after-concurrent",
-      "say": "Every entry of Bob's clock is ≤ the same entry of Alice's, and one is smaller. Bob's clock is before Alice's.",
-      "file": "14-before-after-concurrent-s03.png"
+      "say": "Alice edits twice: {alice 2, bob 0}. Bob does nothing: still {alice 0, bob 0}.",
+      "file": "14-before-after-concurrent-s02.png"
     },
     {
       "index": 14,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "before-after-concurrent",
-      "say": "Alice sends Bob her clock. Her send makes it {alice 3, bob 0}; his receive makes his {alice 3, bob 1}.",
-      "file": "15-before-after-concurrent-s04.png"
+      "say": "Every entry of Bob's clock is ≤ the same entry of Alice's, and one is smaller. Bob's clock is before Alice's.",
+      "file": "15-before-after-concurrent-s03.png"
     },
     {
       "index": 15,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "before-after-concurrent",
-      "say": "Now Bob's clock is after Alice's. It holds everything she sent, plus his own receive.",
-      "file": "16-before-after-concurrent-s05.png"
+      "say": "Alice sends Bob her clock. Her send makes it {alice 3, bob 0}; his receive makes his {alice 3, bob 1}.",
+      "file": "16-before-after-concurrent-s04.png"
     },
     {
       "index": 16,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "before-after-concurrent",
-      "say": "Both edit on their own. Alice is at {alice 4, bob 0}, Bob at {alice 3, bob 2}.",
-      "file": "17-before-after-concurrent-s06.png"
+      "say": "Now Bob's clock is after Alice's. It holds everything she sent, plus his own receive.",
+      "file": "17-before-after-concurrent-s05.png"
     },
     {
       "index": 17,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "before-after-concurrent",
-      "say": "Alice's entry is bigger on her side; Bob's entry is bigger on his. Neither has seen the other: concurrent.",
-      "file": "18-before-after-concurrent-s07.png"
+      "say": "Both edit on their own. Alice is at {alice 4, bob 0}, Bob at {alice 3, bob 2}.",
+      "file": "18-before-after-concurrent-s06.png"
     },
     {
       "index": 18,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "before-after-concurrent",
-      "say": "This is the answer a Lamport clock could not give. Two numbers would have said less or greater; two vectors say independent.",
-      "file": "19-before-after-concurrent-s08.png"
+      "say": "Alice's entry is bigger on her side; Bob's entry is bigger on his. Neither has seen the other: concurrent.",
+      "file": "19-before-after-concurrent-s07.png"
     },
     {
       "index": 19,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "before-after-concurrent",
-      "say": "Before, after, concurrent, equal. Four answers, one loop over the entries: all ≤ means before; bigger on both sides means concurrent.",
-      "file": "20-before-after-concurrent-s09.png"
+      "say": "This is the answer a Lamport clock could not give. Two numbers would have said less or greater; two vectors say independent.",
+      "file": "20-before-after-concurrent-s08.png"
     },
     {
       "index": 20,
-      "stepId": "s01",
-      "sceneId": "what-do-i-send-you",
-      "say": "Phone, laptop and server share a note, an **RGA**. Each copy keeps a **version vector**: how many ops it holds from each device, {alice 3}.",
-      "file": "21-what-do-i-send-you-s01.png"
+      "stepId": "s09",
+      "sceneId": "before-after-concurrent",
+      "say": "Before, after, concurrent, equal. Four answers, one loop over the entries: all ≤ means before; bigger on both sides means concurrent.",
+      "file": "21-before-after-concurrent-s09.png"
     },
     {
       "index": 21,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "what-do-i-send-you",
-      "say": "The phone goes offline and types the word time after Tea: ops alice:4 to alice:8. Its vector: {alice 8}.",
-      "file": "22-what-do-i-send-you-s02.png"
+      "say": "Phone, laptop and server share a note, an **RGA**. Each copy keeps a **version vector**: how many ops it holds from each device, {alice 3}.",
+      "file": "22-what-do-i-send-you-s01.png"
     },
     {
       "index": 22,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "what-do-i-send-you",
-      "say": "The laptop lowercases the T: delete alice:1, insert t at the start, two ops. It pushes them to the server, whose vector becomes {alice 3, bob 2}.",
-      "file": "23-what-do-i-send-you-s03.png"
+      "say": "The phone goes offline and types the word time after Tea: ops alice:4 to alice:8. Its vector: {alice 8}.",
+      "file": "23-what-do-i-send-you-s02.png"
     },
     {
       "index": 23,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "what-do-i-send-you",
-      "say": "The phone comes back, but it does not send everything: first the vectors are compared. {alice 3, bob 2} and {alice 8} are concurrent.",
-      "file": "24-what-do-i-send-you-s04.png"
+      "say": "The laptop lowercases the T: delete alice:1, insert t at the start, two ops. It pushes them to the server, whose vector becomes {alice 3, bob 2}.",
+      "file": "24-what-do-i-send-you-s03.png"
     },
     {
       "index": 24,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "what-do-i-send-you",
-      "say": "Concurrent means each side has ops the other lacks. The server needs alice:4 to alice:8, the phone needs bob:1 and bob:2, and only those travel.",
-      "file": "25-what-do-i-send-you-s05.png"
+      "say": "The phone comes back, but it does not send everything: first the vectors are compared. {alice 3, bob 2} and {alice 8} are concurrent.",
+      "file": "25-what-do-i-send-you-s04.png"
     },
     {
       "index": 25,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "what-do-i-send-you",
-      "say": "Each side applies what it was missing. Both read tea time, and both vectors are {alice 8, bob 2}.",
-      "file": "26-what-do-i-send-you-s06.png"
+      "say": "Concurrent means each side has ops the other lacks. The server needs alice:4 to alice:8, the phone needs bob:1 and bob:2, and only those travel.",
+      "file": "26-what-do-i-send-you-s05.png"
     },
     {
       "index": 26,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "what-do-i-send-you",
-      "say": "The laptop pulls the same way. Its vector {alice 3, bob 2} is before the server's {alice 8, bob 2}: it only needs the five phone ops.",
-      "file": "27-what-do-i-send-you-s07.png"
+      "say": "Each side applies what it was missing. Both read tea time, and both vectors are {alice 8, bob 2}.",
+      "file": "27-what-do-i-send-you-s06.png"
     },
     {
       "index": 27,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "what-do-i-send-you",
-      "say": "Five ops come down, nothing goes up. All three copies read tea time with the same vector.",
-      "file": "28-what-do-i-send-you-s08.png"
+      "say": "The laptop pulls the same way. Its vector {alice 3, bob 2} is before the server's {alice 8, bob 2}: it only needs the five phone ops.",
+      "file": "28-what-do-i-send-you-s07.png"
     },
     {
       "index": 28,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "what-do-i-send-you",
-      "say": "Yjs calls this vector a state vector. Every sync starts with: here is what I have seen, send me the rest.",
-      "file": "29-what-do-i-send-you-s09.png"
+      "say": "Five ops come down, nothing goes up. All three copies read tea time with the same vector.",
+      "file": "29-what-do-i-send-you-s08.png"
     },
     {
       "index": 29,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "30-summary-use.png"
+      "stepId": "s09",
+      "sceneId": "what-do-i-send-you",
+      "say": "Yjs calls this vector a state vector. Every sync starts with: here is what I have seen, send me the rest.",
+      "file": "30-what-do-i-send-you-s09.png"
     },
     {
       "index": 30,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "31-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "31-summary-use.png"
     },
     {
       "index": 31,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "32-summary-avoid.png"
+    },
+    {
+      "index": 32,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "32-summary-world.png"
+      "file": "33-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:07:20.487Z"
+  "generatedAt": "2026-08-23T02:47:48.545Z"
 }

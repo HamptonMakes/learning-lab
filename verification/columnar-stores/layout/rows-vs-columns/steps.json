@@ -6,7 +6,7 @@
   "unitTitle": "Rows vs columns",
   "topicTitle": "Rows vs columns",
   "firstInUnit": true,
-  "total": 14,
+  "total": 15,
   "steps": [
     {
       "index": 0,
@@ -17,95 +17,102 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "one-query-two-layouts",
-      "say": "One table, events: 6 rows, 4 columns, 24 values. Two stores will keep the same data; only the layout on disk differs.",
-      "file": "02-one-query-two-layouts-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "one-query-two-layouts",
-      "say": "A **row store** keeps the values of one row together on disk: row 1, then row 2, and so on. Six blocks, one per row (simplified).",
-      "file": "03-one-query-two-layouts-s02.png"
+      "say": "One table, events: 6 rows, 4 columns, 24 values. Two stores will keep the same data; only the layout on disk differs.",
+      "file": "03-one-query-two-layouts-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "one-query-two-layouts",
-      "say": "A **column store** keeps the values of one column together: all ids, then all users, then all prices, then all countries. Four blocks.",
-      "file": "04-one-query-two-layouts-s03.png"
+      "say": "A **row store** keeps the values of one row together on disk: row 1, then row 2, and so on. Six blocks, one per row (simplified).",
+      "file": "04-one-query-two-layouts-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "one-query-two-layouts",
-      "say": "Query: the average price, which needs one column, price, from every row. The meters count bytes read, at 4 bytes a value (simplified).",
-      "file": "05-one-query-two-layouts-s04.png"
+      "say": "A **column store** keeps the values of one column together: all ids, then all users, then all prices, then all countries. Four blocks.",
+      "file": "05-one-query-two-layouts-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "one-query-two-layouts",
-      "say": "Row store: every price sits inside its row, so it reads all 6 blocks. 24 values, 96 bytes, to keep 6 of them.",
-      "file": "06-one-query-two-layouts-s05.png"
+      "say": "Query: the average price, which needs one column, price, from every row. The meters count bytes read, at 4 bytes a value (simplified).",
+      "file": "06-one-query-two-layouts-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "one-query-two-layouts",
-      "say": "Column store: read the price block only. 6 values, 24 bytes, and the same answer for a quarter of the reading.",
-      "file": "07-one-query-two-layouts-s06.png"
+      "say": "Row store: every price sits inside its row, so it reads all 6 blocks. 24 values, 96 bytes, to keep 6 of them.",
+      "file": "07-one-query-two-layouts-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "one-query-two-layouts",
-      "say": "With 100 columns the gap is a hundred times. That is why analytics databases store columns.",
-      "file": "08-one-query-two-layouts-s07.png"
+      "say": "Column store: read the price block only. 6 values, 24 bytes, and the same answer for a quarter of the reading.",
+      "file": "08-one-query-two-layouts-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "one-query-two-layouts",
-      "say": "Bonus: a column holds one kind of value, so it compresses well. US US US FR FR DE shrinks to US×3 FR×2 DE (simplified).",
-      "file": "09-one-query-two-layouts-s08.png"
+      "say": "With 100 columns the gap is a hundred times. That is why analytics databases store columns.",
+      "file": "09-one-query-two-layouts-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "one-query-two-layouts",
-      "say": "The other query: one whole row, id 3. Row store: one block, 16 bytes; column store: all four blocks, 96 bytes (simplified).",
-      "file": "10-one-query-two-layouts-s09.png"
+      "say": "Bonus: a column holds one kind of value, so it compresses well. US US US FR FR DE shrinks to US×3 FR×2 DE (simplified).",
+      "file": "10-one-query-two-layouts-s08.png"
     },
     {
       "index": 10,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "one-query-two-layouts",
-      "say": "Rows for \"get this one record\", columns for \"sum this field over everything\". Pick the layout by the question you ask most.",
-      "file": "11-one-query-two-layouts-s10.png"
+      "say": "The other query: one whole row, id 3. Row store: one block, 16 bytes; column store: all four blocks, 96 bytes (simplified).",
+      "file": "11-one-query-two-layouts-s09.png"
     },
     {
       "index": 11,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "12-summary-use.png"
+      "stepId": "s10",
+      "sceneId": "one-query-two-layouts",
+      "say": "Rows for \"get this one record\", columns for \"sum this field over everything\". Pick the layout by the question you ask most.",
+      "file": "12-one-query-two-layouts-s10.png"
     },
     {
       "index": 12,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "13-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "13-summary-use.png"
     },
     {
       "index": 13,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "14-summary-avoid.png"
+    },
+    {
+      "index": 14,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "14-summary-world.png"
+      "file": "15-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:09:39.715Z"
+  "generatedAt": "2026-08-23T02:50:13.576Z"
 }

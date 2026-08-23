@@ -6,7 +6,7 @@
   "unitTitle": "Operation-based CRDTs",
   "topicTitle": "Op-based OR-Set",
   "firstInUnit": false,
-  "total": 33,
+  "total": 34,
   "steps": [
     {
       "index": 0,
@@ -17,228 +17,235 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "add-and-remove-by-tag",
-      "say": "Alice and Bob share the labels on one task: an **OR-Set** driven by ops. Every add mints a tag, and a remove names tags.",
-      "file": "02-add-and-remove-by-tag-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "add-and-remove-by-tag",
-      "say": "Alice adds urgent. The op carries a fresh tag: alice:1.",
-      "file": "03-add-and-remove-by-tag-s02.png"
+      "say": "Alice and Bob share the labels on one task: an **OR-Set** driven by ops. Every add mints a tag, and a remove names tags.",
+      "file": "03-add-and-remove-by-tag-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "add-and-remove-by-tag",
-      "say": "She broadcasts and Bob applies: urgent with tag alice:1 on both.",
-      "file": "04-add-and-remove-by-tag-s03.png"
+      "say": "Alice adds urgent. The op carries a fresh tag: alice:1.",
+      "file": "04-add-and-remove-by-tag-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "add-and-remove-by-tag",
-      "say": "Bob adds bug, tag bob:1. He broadcasts, and Alice applies.",
-      "file": "05-add-and-remove-by-tag-s04.png"
+      "say": "She broadcasts and Bob applies: urgent with tag alice:1 on both.",
+      "file": "05-add-and-remove-by-tag-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "add-and-remove-by-tag",
-      "say": "Every add is unique, even for the same word. Alice adds urgent again: a second tag, alice:2.",
-      "file": "06-add-and-remove-by-tag-s05.png"
+      "say": "Bob adds bug, tag bob:1. He broadcasts, and Alice applies.",
+      "file": "06-add-and-remove-by-tag-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "add-and-remove-by-tag",
-      "say": "Broadcast; Bob applies. One word, two adds, two tags on both copies.",
-      "file": "07-add-and-remove-by-tag-s06.png"
+      "say": "Every add is unique, even for the same word. Alice adds urgent again: a second tag, alice:2.",
+      "file": "07-add-and-remove-by-tag-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "add-and-remove-by-tag",
-      "say": "Bob removes urgent. His op does not say delete the word; it lists the tags he has seen: alice:1, alice:2.",
-      "file": "08-add-and-remove-by-tag-s07.png"
+      "say": "Broadcast; Bob applies. One word, two adds, two tags on both copies.",
+      "file": "08-add-and-remove-by-tag-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "add-and-remove-by-tag",
-      "say": "Broadcast; Alice applies. Exactly those two tags die, and urgent is gone on both.",
-      "file": "09-add-and-remove-by-tag-s08.png"
+      "say": "Bob removes urgent. His op does not say delete the word; it lists the tags he has seen: alice:1, alice:2.",
+      "file": "09-add-and-remove-by-tag-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "add-and-remove-by-tag",
-      "say": "Alice adds urgent back: a fresh tag, alice:3. Bob applies it, and urgent is back on both: re-add works, unlike the **2P-Set**.",
-      "file": "10-add-and-remove-by-tag-s09.png"
+      "say": "Broadcast; Alice applies. Exactly those two tags die, and urgent is gone on both.",
+      "file": "10-add-and-remove-by-tag-s08.png"
     },
     {
       "index": 10,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "add-and-remove-by-tag",
-      "say": "A remove never deletes a word. It deletes the tags its author had seen, and that detail is the whole trick.",
-      "file": "11-add-and-remove-by-tag-s10.png"
+      "say": "Alice adds urgent back: a fresh tag, alice:3. Bob applies it, and urgent is back on both: re-add works, unlike the **2P-Set**.",
+      "file": "11-add-and-remove-by-tag-s09.png"
     },
     {
       "index": 11,
-      "stepId": "s01",
-      "sceneId": "add-vs-remove-race",
-      "say": "Both hold eggs with tag bob:1. Now two people act at the same moment.",
-      "file": "12-add-vs-remove-race-s01.png"
+      "stepId": "s10",
+      "sceneId": "add-and-remove-by-tag",
+      "say": "A remove never deletes a word. It deletes the tags its author had seen, and that detail is the whole trick.",
+      "file": "12-add-and-remove-by-tag-s10.png"
     },
     {
       "index": 12,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "add-vs-remove-race",
-      "say": "Alice removes eggs. Her op kills the one tag she has seen: bob:1.",
-      "file": "13-add-vs-remove-race-s02.png"
+      "say": "Both hold eggs with tag bob:1. Now two people act at the same moment.",
+      "file": "13-add-vs-remove-race-s01.png"
     },
     {
       "index": 13,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "add-vs-remove-race",
-      "say": "At the same moment Bob adds eggs again: a new tag, bob:2.",
-      "file": "14-add-vs-remove-race-s03.png"
+      "say": "Alice removes eggs. Her op kills the one tag she has seen: bob:1.",
+      "file": "14-add-vs-remove-race-s02.png"
     },
     {
       "index": 14,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "add-vs-remove-race",
-      "say": "Both broadcast. The two ops cross in the air.",
-      "file": "15-add-vs-remove-race-s04.png"
+      "say": "At the same moment Bob adds eggs again: a new tag, bob:2.",
+      "file": "15-add-vs-remove-race-s03.png"
     },
     {
       "index": 15,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "add-vs-remove-race",
-      "say": "Bob applies Alice's remove: tag bob:1 dies, but bob:2 lives, so eggs stays.",
-      "file": "16-add-vs-remove-race-s05.png"
+      "say": "Both broadcast. The two ops cross in the air.",
+      "file": "16-add-vs-remove-race-s04.png"
     },
     {
       "index": 16,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "add-vs-remove-race",
-      "say": "Alice applies Bob's add: eggs comes back with tag bob:2.",
-      "file": "17-add-vs-remove-race-s06.png"
+      "say": "Bob applies Alice's remove: tag bob:1 dies, but bob:2 lives, so eggs stays.",
+      "file": "17-add-vs-remove-race-s05.png"
     },
     {
       "index": 17,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "add-vs-remove-race",
-      "say": "Both copies: eggs, live tag bob:2. Add wins, and both agree.",
-      "file": "18-add-vs-remove-race-s07.png"
+      "say": "Alice applies Bob's add: eggs comes back with tag bob:2.",
+      "file": "18-add-vs-remove-race-s06.png"
     },
     {
       "index": 18,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "add-vs-remove-race",
-      "say": "Alice's remove could only kill what Alice had seen, and she never saw bob:2. That is observed remove, with no clock involved.",
-      "file": "19-add-vs-remove-race-s08.png"
+      "say": "Both copies: eggs, live tag bob:2. Add wins, and both agree.",
+      "file": "19-add-vs-remove-race-s07.png"
     },
     {
       "index": 19,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "add-vs-remove-race",
-      "say": "Add wins is right for labels and shopping lists. It is wrong for bans and revoked access, where remove must win; that needs a different design.",
-      "file": "20-add-vs-remove-race-s09.png"
+      "say": "Alice's remove could only kill what Alice had seen, and she never saw bob:2. That is observed remove, with no clock involved.",
+      "file": "20-add-vs-remove-race-s08.png"
     },
     {
       "index": 20,
-      "stepId": "s01",
-      "sceneId": "shared-playlist",
-      "say": "A shared playlist on three phones. Tracks are an OR-Set of small documents; each track has a name and a play counter.",
-      "file": "21-shared-playlist-s01.png"
+      "stepId": "s09",
+      "sceneId": "add-vs-remove-race",
+      "say": "Add wins is right for labels and shopping lists. It is wrong for bans and revoked access, where remove must win; that needs a different design.",
+      "file": "21-add-vs-remove-race-s09.png"
     },
     {
       "index": 21,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "shared-playlist",
-      "say": "Alice adds Blue Train: a new track whose id is the tag of the add, alice:1. She broadcasts; both apply.",
-      "file": "22-shared-playlist-s02.png"
+      "say": "A shared playlist on three phones. Tracks are an OR-Set of small documents; each track has a name and a play counter.",
+      "file": "22-shared-playlist-s01.png"
     },
     {
       "index": 22,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "shared-playlist",
-      "say": "Bob plays it twice, Carol once. Each play is a +1 op on that track's counter.",
-      "file": "23-shared-playlist-s03.png"
+      "say": "Alice adds Blue Train: a new track whose id is the tag of the add, alice:1. She broadcasts; both apply.",
+      "file": "23-shared-playlist-s02.png"
     },
     {
       "index": 23,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "shared-playlist",
-      "say": "Broadcast and apply. Everyone: 3 plays.",
-      "file": "24-shared-playlist-s04.png"
+      "say": "Bob plays it twice, Carol once. Each play is a +1 op on that track's counter.",
+      "file": "24-shared-playlist-s03.png"
     },
     {
       "index": 24,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "shared-playlist",
-      "say": "Bob goes offline and plays it once more: bob:3 waits in his outbox. Meanwhile Alice removes the track, tag alice:1.",
-      "file": "25-shared-playlist-s05.png"
+      "say": "Broadcast and apply. Everyone: 3 plays.",
+      "file": "25-shared-playlist-s04.png"
     },
     {
       "index": 25,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "shared-playlist",
-      "say": "Alice broadcasts. Carol applies, and the track is gone for her; Bob's copy waits at his door.",
-      "file": "26-shared-playlist-s06.png"
+      "say": "Bob goes offline and plays it once more: bob:3 waits in his outbox. Meanwhile Alice removes the track, tag alice:1.",
+      "file": "26-shared-playlist-s05.png"
     },
     {
       "index": 26,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "shared-playlist",
-      "say": "Bob comes online and broadcasts his last play. Alice and Carol apply it: the removed track still counts it, and the visible list does not change.",
-      "file": "27-shared-playlist-s07.png"
+      "say": "Alice broadcasts. Carol applies, and the track is gone for her; Bob's copy waits at his door.",
+      "file": "27-shared-playlist-s06.png"
     },
     {
       "index": 27,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "shared-playlist",
-      "say": "Bob applies Alice's remove. Gone for Bob too, and all three agree.",
-      "file": "28-shared-playlist-s08.png"
+      "say": "Bob comes online and broadcasts his last play. Alice and Carol apply it: the removed track still counts it, and the visible list does not change.",
+      "file": "28-shared-playlist-s07.png"
     },
     {
       "index": 28,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "shared-playlist",
-      "say": "Carol adds Blue Train again. It is a new element, carol:2, with a new counter: 0 plays.",
-      "file": "29-shared-playlist-s09.png"
+      "say": "Bob applies Alice's remove. Gone for Bob too, and all three agree.",
+      "file": "29-shared-playlist-s08.png"
     },
     {
       "index": 29,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "shared-playlist",
-      "say": "Re-add is a fresh start. If the old count must survive, keep a stable track id and use a hidden flag instead: a design choice, not a CRDT law.",
-      "file": "30-shared-playlist-s10.png"
+      "say": "Carol adds Blue Train again. It is a new element, carol:2, with a new counter: 0 plays.",
+      "file": "30-shared-playlist-s09.png"
     },
     {
       "index": 30,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "31-summary-use.png"
+      "stepId": "s10",
+      "sceneId": "shared-playlist",
+      "say": "Re-add is a fresh start. If the old count must survive, keep a stable track id and use a hidden flag instead: a design choice, not a CRDT law.",
+      "file": "31-shared-playlist-s10.png"
     },
     {
       "index": 31,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "32-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "32-summary-use.png"
     },
     {
       "index": 32,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "33-summary-avoid.png"
+    },
+    {
+      "index": 33,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "33-summary-world.png"
+      "file": "34-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:06:16.155Z"
+  "generatedAt": "2026-08-23T02:46:41.716Z"
 }

@@ -6,7 +6,7 @@
   "unitTitle": "Choosing & Using CRDTs",
   "topicTitle": "Composing a document",
   "firstInUnit": false,
-  "total": 35,
+  "total": 36,
   "steps": [
     {
       "index": 0,
@@ -17,242 +17,249 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "pick-a-type-per-field",
-      "say": "A card is a document made of parts. We pick one CRDT type per part before we write any code.",
-      "file": "02-pick-a-type-per-field-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "pick-a-type-per-field",
-      "say": "Title: one short value that people replace. An LWW register.",
-      "file": "03-pick-a-type-per-field-s02.png"
+      "say": "A card is a document made of parts. We pick one CRDT type per part before we write any code.",
+      "file": "03-pick-a-type-per-field-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "pick-a-type-per-field",
-      "say": "Description: long text that two people may type in at once. A sequence of characters.",
-      "file": "04-pick-a-type-per-field-s03.png"
+      "say": "Title: one short value that people replace. An LWW register.",
+      "file": "04-pick-a-type-per-field-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "pick-a-type-per-field",
-      "say": "Labels: members come and go, and their order means nothing. An OR-Set, so a re-add survives.",
-      "file": "05-pick-a-type-per-field-s04.png"
+      "say": "Description: long text that two people may type in at once. A sequence of characters.",
+      "file": "05-pick-a-type-per-field-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "pick-a-type-per-field",
-      "say": "Votes: they add up, and they can be taken back. A PN-Counter.",
-      "file": "06-pick-a-type-per-field-s05.png"
+      "say": "Labels: members come and go, and their order means nothing. An OR-Set, so a re-add survives.",
+      "file": "06-pick-a-type-per-field-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "pick-a-type-per-field",
-      "say": "Checklist: ordered items, and each item is a small document of its own.",
-      "file": "07-pick-a-type-per-field-s06.png"
+      "say": "Votes: they add up, and they can be taken back. A PN-Counter.",
+      "file": "07-pick-a-type-per-field-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "pick-a-type-per-field",
-      "say": "Every item needs a stable id, so an edit and a delete can point at the same thing. Never use the position as the id.",
-      "file": "08-pick-a-type-per-field-s07.png"
+      "say": "Checklist: ordered items, and each item is a small document of its own.",
+      "file": "08-pick-a-type-per-field-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "pick-a-type-per-field",
-      "say": "That is the whole **schema**: five parts, five rules, decided up front. Now we run real edits through it.",
-      "file": "09-pick-a-type-per-field-s08.png"
+      "say": "Every item needs a stable id, so an edit and a delete can point at the same thing. Never use the position as the id.",
+      "file": "09-pick-a-type-per-field-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s01",
-      "sceneId": "one-merge-many-rules",
-      "say": "Alice and Bob hold the same card (description left out for space). The checklist has two items, each with a text and a done flag.",
-      "file": "10-one-merge-many-rules-s01.png"
+      "stepId": "s08",
+      "sceneId": "pick-a-type-per-field",
+      "say": "That is the whole **schema**: five parts, five rules, decided up front. Now we run real edits through it.",
+      "file": "10-pick-a-type-per-field-s08.png"
     },
     {
       "index": 10,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "one-merge-many-rules",
-      "say": "Each part keeps its own type. The chip on a part tells you which rule it will merge with.",
-      "file": "11-one-merge-many-rules-s02.png"
+      "say": "Alice and Bob hold the same card (description left out for space). The checklist has two items, each with a text and a done flag.",
+      "file": "11-one-merge-many-rules-s01.png"
     },
     {
       "index": 11,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "one-merge-many-rules",
-      "say": "Time 1. Alice ticks the first item: 'write test' is done.",
-      "file": "12-one-merge-many-rules-s03.png"
+      "say": "Each part keeps its own type. The chip on a part tells you which rule it will merge with.",
+      "file": "12-one-merge-many-rules-s02.png"
     },
     {
       "index": 12,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "one-merge-many-rules",
-      "say": "Time 2. At the same moment Bob fixes a typo in that same item: 'write tests'.",
-      "file": "13-one-merge-many-rules-s04.png"
+      "say": "Time 1. Alice ticks the first item: 'write test' is done.",
+      "file": "13-one-merge-many-rules-s03.png"
     },
     {
       "index": 13,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "one-merge-many-rules",
-      "say": "Bob also adds a step after 'fix'. His new item gets its own id, bob:2.",
-      "file": "14-one-merge-many-rules-s05.png"
+      "say": "Time 2. At the same moment Bob fixes a typo in that same item: 'write tests'.",
+      "file": "14-one-merge-many-rules-s04.png"
     },
     {
       "index": 14,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "one-merge-many-rules",
-      "say": "Both vote for the card, and Bob adds the label 'backend'.",
-      "file": "15-one-merge-many-rules-s06.png"
+      "say": "Bob also adds a step after 'fix'. His new item gets its own id, bob:2.",
+      "file": "15-one-merge-many-rules-s05.png"
     },
     {
       "index": 15,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "one-merge-many-rules",
-      "say": "One merge, in one direction and back.",
-      "file": "16-one-merge-many-rules-s07.png"
+      "say": "Both vote for the card, and Bob adds the label 'backend'.",
+      "file": "16-one-merge-many-rules-s06.png"
     },
     {
       "index": 16,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "one-merge-many-rules",
-      "say": "Inside the first item: 'done' took Alice's write and 'text' took Bob's. Different fields, no conflict.",
-      "file": "17-one-merge-many-rules-s08.png"
+      "say": "One merge, in one direction and back.",
+      "file": "17-one-merge-many-rules-s07.png"
     },
     {
       "index": 17,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "one-merge-many-rules",
-      "say": "Bob's new step sits after 'fix' on both copies, in the same place, with the same id.",
-      "file": "18-one-merge-many-rules-s09.png"
+      "say": "Inside the first item: 'done' took Alice's write and 'text' took Bob's. Different fields, no conflict.",
+      "file": "18-one-merge-many-rules-s08.png"
     },
     {
       "index": 18,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "one-merge-many-rules",
-      "say": "Votes added up to 2, and the labels are the union of both sides.",
-      "file": "19-one-merge-many-rules-s10.png"
+      "say": "Bob's new step sits after 'fix' on both copies, in the same place, with the same id.",
+      "file": "19-one-merge-many-rules-s09.png"
     },
     {
       "index": 19,
-      "stepId": "s11",
+      "stepId": "s10",
       "sceneId": "one-merge-many-rules",
-      "say": "Both copies are equal again. That is the rule of a **composed document**: merge every part with its own rule, then put the parts back together.",
-      "file": "20-one-merge-many-rules-s11.png"
+      "say": "Votes added up to 2, and the labels are the union of both sides.",
+      "file": "20-one-merge-many-rules-s10.png"
     },
     {
       "index": 20,
-      "stepId": "s12",
+      "stepId": "s11",
       "sceneId": "one-merge-many-rules",
-      "say": "No field had to wait for another, and no server picked a winner. You chose each rule when you wrote the schema.",
-      "file": "21-one-merge-many-rules-s12.png"
+      "say": "Both copies are equal again. That is the rule of a **composed document**: merge every part with its own rule, then put the parts back together.",
+      "file": "21-one-merge-many-rules-s11.png"
     },
     {
       "index": 21,
-      "stepId": "s01",
-      "sceneId": "moving-a-card",
-      "say": "A board with three columns. Each column is a sequence of cards, and one card sits in To do.",
-      "file": "22-moving-a-card-s01.png"
+      "stepId": "s12",
+      "sceneId": "one-merge-many-rules",
+      "say": "No field had to wait for another, and no server picked a winner. You chose each rule when you wrote the schema.",
+      "file": "22-one-merge-many-rules-s12.png"
     },
     {
       "index": 22,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "moving-a-card",
-      "say": "Alice moves the card from To do to Doing. In this schema a move is a delete plus an insert.",
-      "file": "23-moving-a-card-s02.png"
+      "say": "A board with three columns. Each column is a sequence of cards, and one card sits in To do.",
+      "file": "23-moving-a-card-s01.png"
     },
     {
       "index": 23,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "moving-a-card",
-      "say": "Bob is offline. He moves the same card to Done: another delete, another insert.",
-      "file": "24-moving-a-card-s03.png"
+      "say": "Alice moves the card from To do to Doing. In this schema a move is a delete plus an insert.",
+      "file": "24-moving-a-card-s02.png"
     },
     {
       "index": 24,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "moving-a-card",
-      "say": "Bob comes back, and the copies merge.",
-      "file": "25-moving-a-card-s04.png"
+      "say": "Bob is offline. He moves the same card to Done: another delete, another insert.",
+      "file": "25-moving-a-card-s03.png"
     },
     {
       "index": 25,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "moving-a-card",
-      "say": "Whoops — the card is now in Doing and in Done. Two inserts, both kept; each sequence did exactly its job.",
-      "file": "26-moving-a-card-s05.png"
+      "say": "Bob comes back, and the copies merge.",
+      "file": "26-moving-a-card-s04.png"
     },
     {
       "index": 26,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "moving-a-card",
-      "say": "The schema caused this, not the CRDT. A move is one change to the user, so it must be one change in the data.",
-      "file": "27-moving-a-card-s06.png"
+      "say": "Whoops — the card is now in Doing and in Done. Two inserts, both kept; each sequence did exactly its job.",
+      "file": "27-moving-a-card-s05.png"
     },
     {
       "index": 27,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "moving-a-card",
-      "say": "The fix: keep one list of cards, and give each card a column field. A register, so it holds one column at a time.",
-      "file": "28-moving-a-card-s07.png"
+      "say": "The schema caused this, not the CRDT. A move is one change to the user, so it must be one change in the data.",
+      "file": "28-moving-a-card-s06.png"
     },
     {
       "index": 28,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "moving-a-card",
-      "say": "Time 1: Alice sets column = doing. Time 2: Bob, offline again, sets column = done.",
-      "file": "29-moving-a-card-s08.png"
+      "say": "The fix: keep one list of cards, and give each card a column field. A register, so it holds one column at a time.",
+      "file": "29-moving-a-card-s07.png"
     },
     {
       "index": 29,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "moving-a-card",
-      "say": "Merge: the card is in exactly one column, the later write. One card, one place — a conflict, but a clean one.",
-      "file": "30-moving-a-card-s09.png"
+      "say": "Time 1: Alice sets column = doing. Time 2: Bob, offline again, sets column = done.",
+      "file": "30-moving-a-card-s08.png"
     },
     {
       "index": 30,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "moving-a-card",
-      "say": "Position inside a column is a field too: a sortable number between its neighbours, so reordering is also one write.",
-      "file": "31-moving-a-card-s10.png"
+      "say": "Merge: the card is in exactly one column, the later write. One card, one place — a conflict, but a clean one.",
+      "file": "31-moving-a-card-s09.png"
     },
     {
       "index": 31,
-      "stepId": "s11",
+      "stepId": "s10",
       "sceneId": "moving-a-card",
-      "say": "Real tools do this: Figma stores a parent and a position on every object instead of moving it between lists ([Real systems](/crdts/choosing/real-systems)).",
-      "file": "32-moving-a-card-s11.png"
+      "say": "Position inside a column is a field too: a sortable number between its neighbours, so reordering is also one write.",
+      "file": "32-moving-a-card-s10.png"
     },
     {
       "index": 32,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "33-summary-use.png"
+      "stepId": "s11",
+      "sceneId": "moving-a-card",
+      "say": "Real tools do this: Figma stores a parent and a position on every object instead of moving it between lists ([Real systems](/crdts/choosing/real-systems)).",
+      "file": "33-moving-a-card-s11.png"
     },
     {
       "index": 33,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "34-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "34-summary-use.png"
     },
     {
       "index": 34,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "35-summary-avoid.png"
+    },
+    {
+      "index": 35,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "35-summary-world.png"
+      "file": "36-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:08:16.052Z"
+  "generatedAt": "2026-08-23T02:48:46.246Z"
 }

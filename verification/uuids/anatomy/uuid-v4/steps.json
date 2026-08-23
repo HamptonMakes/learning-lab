@@ -6,7 +6,7 @@
   "unitTitle": "Anatomy of a UUID",
   "topicTitle": "UUID v4",
   "firstInUnit": true,
-  "total": 19,
+  "total": 20,
   "steps": [
     {
       "index": 0,
@@ -17,130 +17,137 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "random-bytes",
-      "say": "A **UUID** is 16 bytes. Start with 16 random bytes (we rolled them once for this lesson).",
-      "file": "02-random-bytes-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "random-bytes",
-      "say": "Byte 6 (count from 0): its top 4 bits are replaced by 0100, the version, 4. So 07 becomes 47.",
-      "file": "03-random-bytes-s02.png"
+      "say": "A **UUID** is 16 bytes. Start with 16 random bytes (we rolled them once for this lesson).",
+      "file": "03-random-bytes-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "random-bytes",
-      "say": "Byte 8: its top 2 bits become 10, the variant, which says this is a standard UUID. So 2d becomes ad.",
-      "file": "04-random-bytes-s03.png"
+      "say": "Byte 6 (count from 0): its top 4 bits are replaced by 0100, the version, 4. So 07 becomes 47.",
+      "file": "04-random-bytes-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "random-bytes",
-      "say": "Everything else stays random: 122 bits. Six fixed bits, 122 rolled ones.",
-      "file": "05-random-bytes-s04.png"
+      "say": "Byte 8: its top 2 bits become 10, the variant, which says this is a standard UUID. So 2d becomes ad.",
+      "file": "05-random-bytes-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "random-bytes",
-      "say": "Write each byte as two hex digits, with dashes in an 8-4-4-4-12 pattern: 3fa85c12-9be4-4771-ad66-c0158af341b9.",
-      "file": "06-random-bytes-s05.png"
+      "say": "Everything else stays random: 122 bits. Six fixed bits, 122 rolled ones.",
+      "file": "06-random-bytes-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "random-bytes",
-      "say": "The third group starts with 4: the version. The fourth group starts with 8, 9, a or b: the variant bits 10.",
-      "file": "07-random-bytes-s06.png"
+      "say": "Write each byte as two hex digits, with dashes in an 8-4-4-4-12 pattern: 3fa85c12-9be4-4771-ad66-c0158af341b9.",
+      "file": "07-random-bytes-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "random-bytes",
-      "say": "122 random bits give about 5.3 × 10^36 ids. Two devices rolling at once will not collide in practice: odds, not a promise.",
-      "file": "08-random-bytes-s07.png"
+      "say": "The third group starts with 4: the version. The fourth group starts with 8, 9, a or b: the variant bits 10.",
+      "file": "08-random-bytes-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "random-bytes",
-      "say": "No counter, no server, no clock. That is why every device can make its own id, and why the id says nothing about when or where.",
-      "file": "09-random-bytes-s08.png"
+      "say": "122 random bits give about 5.3 × 10^36 ids. Two devices rolling at once will not collide in practice: odds, not a promise.",
+      "file": "09-random-bytes-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s01",
-      "sceneId": "two-orders",
-      "say": "Two devices, both offline. Each starts a new order and needs an id for it right now.",
-      "file": "10-two-orders-s01.png"
+      "stepId": "s08",
+      "sceneId": "random-bytes",
+      "say": "No counter, no server, no clock. That is why every device can make its own id, and why the id says nothing about when or where.",
+      "file": "10-random-bytes-s08.png"
     },
     {
       "index": 10,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "two-orders",
-      "say": "Each rolls its own v4 id. No request to a server, no shared counter.",
-      "file": "11-two-orders-s02.png"
+      "say": "Two devices, both offline. Each starts a new order and needs an id for it right now.",
+      "file": "11-two-orders-s01.png"
     },
     {
       "index": 11,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "two-orders",
-      "say": "Both come back online and send their orders to the server.",
-      "file": "12-two-orders-s03.png"
+      "say": "Each rolls its own v4 id. No request to a server, no shared counter.",
+      "file": "12-two-orders-s02.png"
     },
     {
       "index": 12,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "two-orders",
-      "say": "The server stores both. Different ids, no clash, and it never had to hand out numbers.",
-      "file": "13-two-orders-s04.png"
+      "say": "Both come back online and send their orders to the server.",
+      "file": "13-two-orders-s03.png"
     },
     {
       "index": 13,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "two-orders",
-      "say": "Whoops — with serial numbers, both devices would have said order 1001. Two orders, one key.",
-      "file": "14-two-orders-s05.png"
+      "say": "The server stores both. Different ids, no clash, and it never had to hand out numbers.",
+      "file": "14-two-orders-s04.png"
     },
     {
       "index": 14,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "two-orders",
-      "say": "The fix: every device names its own things, and random names do not collide in practice. The CRDT course uses this for [op ids](/crdts/operation-based/every-device-needs-a-name).",
-      "file": "15-two-orders-s06.png"
+      "say": "Whoops — with serial numbers, both devices would have said order 1001. Two orders, one key.",
+      "file": "15-two-orders-s05.png"
     },
     {
       "index": 15,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "two-orders",
-      "say": "One more thing: a v4 id tells you nothing, not when, not where. Good for privacy, bad for sorting, and that is where v7 comes in.",
-      "file": "16-two-orders-s07.png"
+      "say": "The fix: every device names its own things, and random names do not collide in practice. The CRDT course uses this for [op ids](/crdts/operation-based/every-device-needs-a-name).",
+      "file": "16-two-orders-s06.png"
     },
     {
       "index": 16,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "17-summary-use.png"
+      "stepId": "s07",
+      "sceneId": "two-orders",
+      "say": "One more thing: a v4 id tells you nothing, not when, not where. Good for privacy, bad for sorting, and that is where v7 comes in.",
+      "file": "17-two-orders-s07.png"
     },
     {
       "index": 17,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "18-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "18-summary-use.png"
     },
     {
       "index": 18,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "19-summary-avoid.png"
+    },
+    {
+      "index": 19,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "19-summary-world.png"
+      "file": "20-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:08:55.251Z"
+  "generatedAt": "2026-08-23T02:49:26.927Z"
 }

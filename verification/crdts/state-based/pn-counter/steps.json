@@ -6,7 +6,7 @@
   "unitTitle": "State-based CRDTs",
   "topicTitle": "PN-Counter",
   "firstInUnit": false,
-  "total": 27,
+  "total": 28,
   "steps": [
     {
       "index": 0,
@@ -17,186 +17,193 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "likes-and-unlikes",
-      "say": "A **PN-Counter** counts likes. It is two G-Counters side by side: P counts likes, N counts unlikes, one row per node in each.",
-      "file": "02-likes-and-unlikes-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "likes-and-unlikes",
-      "say": "The value is the sum of P minus the sum of N. Merge is the same as before: max per row, in P and in N.",
-      "file": "03-likes-and-unlikes-s02.png"
+      "say": "A **PN-Counter** counts likes. It is two G-Counters side by side: P counts likes, N counts unlikes, one row per node in each.",
+      "file": "03-likes-and-unlikes-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "likes-and-unlikes",
-      "say": "Alice likes the post. Her row's P goes to 1, and her value is 1.",
-      "file": "04-likes-and-unlikes-s03.png"
+      "say": "The value is the sum of P minus the sum of N. Merge is the same as before: max per row, in P and in N.",
+      "file": "04-likes-and-unlikes-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "likes-and-unlikes",
-      "say": "Bob likes it too, on his copy. His P goes to 1.",
-      "file": "05-likes-and-unlikes-s04.png"
+      "say": "Alice likes the post. Her row's P goes to 1, and her value is 1.",
+      "file": "05-likes-and-unlikes-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "likes-and-unlikes",
-      "say": "Alice changes her mind and unlikes. P does not go down; her N goes to 1, and her value is 1 − 1 = 0.",
-      "file": "06-likes-and-unlikes-s05.png"
+      "say": "Bob likes it too, on his copy. His P goes to 1.",
+      "file": "06-likes-and-unlikes-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "likes-and-unlikes",
-      "say": "Carol likes it as well. Three copies, three rows, and nobody has talked yet.",
-      "file": "07-likes-and-unlikes-s06.png"
+      "say": "Alice changes her mind and unlikes. P does not go down; her N goes to 1, and her value is 1 − 1 = 0.",
+      "file": "07-likes-and-unlikes-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "likes-and-unlikes",
-      "say": "Alice and Bob both send their tables to Carol.",
-      "file": "08-likes-and-unlikes-s07.png"
+      "say": "Carol likes it as well. Three copies, three rows, and nobody has talked yet.",
+      "file": "08-likes-and-unlikes-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s08",
+      "stepId": "s07",
       "sceneId": "likes-and-unlikes",
-      "say": "Carol merges Alice's table: P 1 and N 1 land in Alice's row. Carol's value: 2 − 1 = 1.",
-      "file": "09-likes-and-unlikes-s08.png"
+      "say": "Alice and Bob both send their tables to Carol.",
+      "file": "09-likes-and-unlikes-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s09",
+      "stepId": "s08",
       "sceneId": "likes-and-unlikes",
-      "say": "Then Bob's table: his row lands with P 1. Carol's value: 3 − 1 = 2.",
-      "file": "10-likes-and-unlikes-s09.png"
+      "say": "Carol merges Alice's table: P 1 and N 1 land in Alice's row. Carol's value: 2 − 1 = 1.",
+      "file": "10-likes-and-unlikes-s08.png"
     },
     {
       "index": 10,
-      "stepId": "s10",
+      "stepId": "s09",
       "sceneId": "likes-and-unlikes",
-      "say": "Carol sends back to both. Every table agrees: 2 likes.",
-      "file": "11-likes-and-unlikes-s10.png"
+      "say": "Then Bob's table: his row lands with P 1. Carol's value: 3 − 1 = 2.",
+      "file": "11-likes-and-unlikes-s09.png"
     },
     {
       "index": 11,
-      "stepId": "s11",
+      "stepId": "s10",
       "sceneId": "likes-and-unlikes",
-      "say": "Why not subtract from P? A row could then go down, and max per row would lose the unlike; two grow-only tables keep the math safe.",
-      "file": "12-likes-and-unlikes-s11.png"
+      "say": "Carol sends back to both. Every table agrees: 2 likes.",
+      "file": "12-likes-and-unlikes-s10.png"
     },
     {
       "index": 12,
-      "stepId": "s01",
-      "sceneId": "no-floor",
-      "say": "Can a counter stop at zero? Try it with stock: one item left, and both the web shop and the shop see 1.",
-      "file": "13-no-floor-s01.png"
+      "stepId": "s11",
+      "sceneId": "likes-and-unlikes",
+      "say": "Why not subtract from P? A row could then go down, and max per row would lose the unlike; two grow-only tables keep the math safe.",
+      "file": "13-likes-and-unlikes-s11.png"
     },
     {
       "index": 13,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "no-floor",
-      "say": "A customer buys it on the web. The web shop sees 1, says yes, and decrements to 0.",
-      "file": "14-no-floor-s02.png"
+      "say": "Can a counter stop at zero? Try it with stock: one item left, and both the web shop and the shop see 1.",
+      "file": "14-no-floor-s01.png"
     },
     {
       "index": 14,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "no-floor",
-      "say": "At the same moment a customer buys it in the shop. The shop also sees 1, says yes, and goes to 0.",
-      "file": "15-no-floor-s03.png"
+      "say": "A customer buys it on the web. The web shop sees 1, says yes, and decrements to 0.",
+      "file": "15-no-floor-s02.png"
     },
     {
       "index": 15,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "no-floor",
-      "say": "Whoops — they sync, and the value is 1 − 2 = −1. Oversold.",
-      "file": "16-no-floor-s04.png"
+      "say": "At the same moment a customer buys it in the shop. The shop also sees 1, says yes, and goes to 0.",
+      "file": "16-no-floor-s03.png"
     },
     {
       "index": 16,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "no-floor",
-      "say": "The counter did exactly what it was told: two decrements from one. Refusing the second sale needs both copies to agree first, and a merge cannot do that.",
-      "file": "17-no-floor-s05.png"
+      "say": "Whoops — they sync, and the value is 1 − 2 = −1. Oversold.",
+      "file": "17-no-floor-s04.png"
     },
     {
       "index": 17,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "no-floor",
-      "say": "A counter cannot say no. If a floor or a ceiling matters, use a **transaction** or a lock, not a CRDT (see Transactions vs merges).",
-      "file": "18-no-floor-s06.png"
+      "say": "The counter did exactly what it was told: two decrements from one. Refusing the second sale needs both copies to agree first, and a merge cannot do that.",
+      "file": "18-no-floor-s05.png"
     },
     {
       "index": 18,
-      "stepId": "s01",
-      "sceneId": "cart-item",
-      "say": "A cart line has a name and a quantity, in one document: the name is an LWW register, the quantity a PN-Counter.",
-      "file": "19-cart-item-s01.png"
+      "stepId": "s06",
+      "sceneId": "no-floor",
+      "say": "A counter cannot say no. If a floor or a ceiling matters, use a **transaction** or a lock, not a CRDT (see Transactions vs merges).",
+      "file": "19-no-floor-s06.png"
     },
     {
       "index": 19,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "cart-item",
-      "say": "Time 1: on the phone, Alice adds two more. The quantity part takes inc 2; the name part is untouched.",
-      "file": "20-cart-item-s02.png"
+      "say": "A cart line has a name and a quantity, in one document: the name is an LWW register, the quantity a PN-Counter.",
+      "file": "20-cart-item-s01.png"
     },
     {
       "index": 20,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "cart-item",
-      "say": "Time 2: on the laptop, she removes one and fixes the name. Two parts change, each with its own sidecar.",
-      "file": "21-cart-item-s03.png"
+      "say": "Time 1: on the phone, Alice adds two more. The quantity part takes inc 2; the name part is untouched.",
+      "file": "21-cart-item-s02.png"
     },
     {
       "index": 21,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "cart-item",
-      "say": "They sync. Each part merges with its own rule: the name by timestamp, the quantity by max per row.",
-      "file": "22-cart-item-s04.png"
+      "say": "Time 2: on the laptop, she removes one and fixes the name. Two parts change, each with its own sidecar.",
+      "file": "22-cart-item-s03.png"
     },
     {
       "index": 22,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "cart-item",
-      "say": "Both show Oat milk 1L with quantity 2: 1 + 2 − 1. Neither device lost its change.",
-      "file": "23-cart-item-s05.png"
+      "say": "They sync. Each part merges with its own rule: the name by timestamp, the quantity by max per row.",
+      "file": "23-cart-item-s04.png"
     },
     {
       "index": 23,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "cart-item",
-      "say": "Composing CRDTs is nesting them: each field brings its own merge rule. Later in this unit, a shared shopping list is built this way.",
-      "file": "24-cart-item-s06.png"
+      "say": "Both show Oat milk 1L with quantity 2: 1 + 2 − 1. Neither device lost its change.",
+      "file": "24-cart-item-s05.png"
     },
     {
       "index": 24,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "25-summary-use.png"
+      "stepId": "s06",
+      "sceneId": "cart-item",
+      "say": "Composing CRDTs is nesting them: each field brings its own merge rule. Later in this unit, a shared shopping list is built this way.",
+      "file": "25-cart-item-s06.png"
     },
     {
       "index": 25,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "26-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "26-summary-use.png"
     },
     {
       "index": 26,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "27-summary-avoid.png"
+    },
+    {
+      "index": 27,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "27-summary-world.png"
+      "file": "28-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:04:30.241Z"
+  "generatedAt": "2026-08-23T02:44:24.368Z"
 }

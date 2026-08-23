@@ -6,7 +6,7 @@
   "unitTitle": "The Problem",
   "topicTitle": "CRDTs in real products",
   "firstInUnit": false,
-  "total": 18,
+  "total": 19,
   "steps": [
     {
       "index": 0,
@@ -17,123 +17,130 @@
     },
     {
       "index": 1,
-      "stepId": "s01",
-      "sceneId": "gallery",
-      "say": "CRDTs are best known from collaborative editors. Many people type, nobody locks.",
-      "file": "02-gallery-s01.png"
+      "stepId": "rules",
+      "sceneId": "intro",
+      "say": "How it works",
+      "file": "02-intro-rules.png"
     },
     {
       "index": 2,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "gallery",
-      "say": "Design tools: every shape on the canvas is shared data. Two people move shapes at once.",
-      "file": "03-gallery-s02.png"
+      "say": "CRDTs are best known from collaborative editors. Many people type, nobody locks.",
+      "file": "03-gallery-s01.png"
     },
     {
       "index": 3,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "gallery",
-      "say": "Notes apps: you edit on the plane, your laptop edits at home, and both edits survive.",
-      "file": "04-gallery-s03.png"
+      "say": "Design tools: every shape on the canvas is shared data. Two people move shapes at once.",
+      "file": "04-gallery-s02.png"
     },
     {
       "index": 4,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "gallery",
-      "say": "Databases: several regions accept writes and merge later.",
-      "file": "05-gallery-s04.png"
+      "say": "Notes apps: you edit on the plane, your laptop edits at home, and both edits survive.",
+      "file": "05-gallery-s03.png"
     },
     {
       "index": 5,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "gallery",
-      "say": "Counters and presence: likes, views, who is online.",
-      "file": "06-gallery-s05.png"
+      "say": "Databases: several regions accept writes and merge later.",
+      "file": "06-gallery-s04.png"
     },
     {
       "index": 6,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "gallery",
-      "say": "Different products, one shape: many copies, one merge rule, and nobody waits for a lock.",
-      "file": "07-gallery-s06.png"
+      "say": "Counters and presence: likes, views, who is online.",
+      "file": "07-gallery-s05.png"
     },
     {
       "index": 7,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "gallery",
-      "say": "Next unit: the rules, one data type at a time.",
-      "file": "08-gallery-s07.png"
+      "say": "Different products, one shape: many copies, one merge rule, and nobody waits for a lock.",
+      "file": "08-gallery-s06.png"
     },
     {
       "index": 8,
-      "stepId": "s01",
-      "sceneId": "notes-sync",
-      "say": "A notes app with a relay that only forwards and holds no lock. Each field merges on its own: newest write wins (simplified).",
-      "file": "09-notes-sync-s01.png"
+      "stepId": "s07",
+      "sceneId": "gallery",
+      "say": "Next unit: the rules, one data type at a time.",
+      "file": "09-gallery-s07.png"
     },
     {
       "index": 9,
-      "stepId": "s02",
+      "stepId": "s01",
       "sceneId": "notes-sync",
-      "say": "Alice's phone goes offline. She keeps editing the body.",
-      "file": "10-notes-sync-s02.png"
+      "say": "A notes app with a relay that only forwards and holds no lock. Each field merges on its own: newest write wins (simplified).",
+      "file": "10-notes-sync-s01.png"
     },
     {
       "index": 10,
-      "stepId": "s03",
+      "stepId": "s02",
       "sceneId": "notes-sync",
-      "say": "Bob renames the note from his laptop.",
-      "file": "11-notes-sync-s03.png"
+      "say": "Alice's phone goes offline. She keeps editing the body.",
+      "file": "11-notes-sync-s02.png"
     },
     {
       "index": 11,
-      "stepId": "s04",
+      "stepId": "s03",
       "sceneId": "notes-sync",
-      "say": "Bob's new title reaches the relay. The relay keeps it.",
-      "file": "12-notes-sync-s04.png"
+      "say": "Bob renames the note from his laptop.",
+      "file": "12-notes-sync-s03.png"
     },
     {
       "index": 12,
-      "stepId": "s05",
+      "stepId": "s04",
       "sceneId": "notes-sync",
-      "say": "Alice is back online. She sends her new body to the relay, and the relay sends her Bob's new title.",
-      "file": "13-notes-sync-s05.png"
+      "say": "Bob's new title reaches the relay. The relay keeps it.",
+      "file": "13-notes-sync-s04.png"
     },
     {
       "index": 13,
-      "stepId": "s06",
+      "stepId": "s05",
       "sceneId": "notes-sync",
-      "say": "The relay forwards the new body to Bob. All three copies agree: new title, new body.",
-      "file": "14-notes-sync-s06.png"
+      "say": "Alice is back online. She sends her new body to the relay, and the relay sends her Bob's new title.",
+      "file": "14-notes-sync-s05.png"
     },
     {
       "index": 14,
-      "stepId": "s07",
+      "stepId": "s06",
       "sceneId": "notes-sync",
-      "say": "No lock, no waiting, no lost edit. That is the goal; Unit II shows how each piece works.",
-      "file": "15-notes-sync-s07.png"
+      "say": "The relay forwards the new body to Bob. All three copies agree: new title, new body.",
+      "file": "15-notes-sync-s06.png"
     },
     {
       "index": 15,
-      "stepId": "use",
-      "sceneId": "summary",
-      "say": "When to use it.",
-      "file": "16-summary-use.png"
+      "stepId": "s07",
+      "sceneId": "notes-sync",
+      "say": "No lock, no waiting, no lost edit. That is the goal; Unit II shows how each piece works.",
+      "file": "16-notes-sync-s07.png"
     },
     {
       "index": 16,
-      "stepId": "avoid",
+      "stepId": "use",
       "sceneId": "summary",
-      "say": "When not to use it.",
-      "file": "17-summary-avoid.png"
+      "say": "When to use it.",
+      "file": "17-summary-use.png"
     },
     {
       "index": 17,
+      "stepId": "avoid",
+      "sceneId": "summary",
+      "say": "When not to use it.",
+      "file": "18-summary-avoid.png"
+    },
+    {
+      "index": 18,
       "stepId": "world",
       "sceneId": "summary",
       "say": "In the real world.",
-      "file": "18-summary-world.png"
+      "file": "19-summary-world.png"
     }
   ],
-  "generatedAt": "2026-08-23T01:03:31.294Z"
+  "generatedAt": "2026-08-23T02:43:23.772Z"
 }
