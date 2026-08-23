@@ -43,8 +43,10 @@ content  ──►  lesson  ──►  stage  ──►  app
 ## Data flow on a topic page
 
 1. The route loader finds the topic in the catalog and lazy-loads its module from the registry.
-2. `buildTimeline(topic)` folds every scene: `initWorld(scene.world)` → `applyStep` per step →
-   `Frame { index, sceneId, step, world, prev, changes }`. Memoized per topic.
+2. `buildPresentation(topic, …)` wraps `buildTimeline(topic)` — which folds every scene:
+   `initWorld(scene.world)` → `applyStep` per step → `Frame { index, sceneId, step, world, prev, changes }` —
+   with a title screen (what it is + goal) at the start and three summary slides (when to use / when
+   not / real world) at the end; slide frames carry `frame.slide` instead of actors. Memoized per topic.
 3. `usePlayer(frames)` owns the index, play/pause, speed and hold timer; `next` animates, `prev`/seek
    commit instantly (Motion's `useInstantTransition`); it emits analytics, sounds and progress, and
    syncs `?step=`.
