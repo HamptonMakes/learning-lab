@@ -1,5 +1,5 @@
 /**
- * III.2 — Every device needs a name. `same-name` is plain on purpose: two phones with one name
+ * III.2 — Node ids and op ids. `same-name` is plain on purpose: two phones with one name
  * mint the same op id and a naive server drops a real tap — a failure no real CRDT can compute.
  * `node-and-counter` is the real OR-Set driven by ops: ids `alice:1…3` / `bob:1` are minted by the
  * reducer, and a gap in one node's counter parks an op. `where-names-come-from` contrasts a
@@ -37,8 +37,8 @@ import {
 
 export default topic({
   id: 'every-device-needs-a-name',
-  title: 'Every device needs a name',
-  goal: 'Give every replica a unique, stable node id, read an op id as (node, counter), and choose where the name comes from.',
+  title: 'Node ids and op ids',
+  goal: 'Learn why every replica needs a unique, stable node id, how to read an op id as (node, counter), and where the name comes from.',
   whenToUse: [
     '(node, counter) op ids when one node makes ops in sequence: cheap, sortable, gaps show.',
     'Random 128-bit node ids (UUID v4) when devices must start offline with no server.',

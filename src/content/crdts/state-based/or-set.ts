@@ -29,7 +29,7 @@ import { orSetTagsTopic } from '@/lesson/fixtures/or-set-tags'
 export default topic({
   id: 'or-set',
   title: 'OR-Set',
-  goal: 'Pick an OR-Set when a re-add must win a race, and explain why a tag, not a clock, decides.',
+  goal: 'Learn when an OR-Set is right (a re-add must win a race) and why a tag, not a clock, decides.',
   whenToUse: [
     'Sets with frequent add and remove where add-wins on a race is right: cart items, tags.',
     'You do not want to depend on timestamps.',

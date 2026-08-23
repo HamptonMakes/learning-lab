@@ -1,5 +1,5 @@
 /**
- * V.5 — Course complete. Three scenes: a checklist built one item at a time (each step is the
+ * V.5 — Course summary. Three scenes: a checklist built one item at a time (each step is the
  * one-line recap of a topic, with the link back), the two cases where a CRDT is the wrong tool
  * (an invariant and a unique name), and one last round trip through a composed note that uses
  * every type in the course. Storyboard: docs/curriculum/unit-5-prototypes.md §V.5.
@@ -48,8 +48,8 @@ const NOTE = {
 
 export default topic({
   id: 'course-complete',
-  title: 'Course complete',
-  goal: 'Name every type, law, clock and choice rule from this course, and say out loud when a CRDT is the wrong tool.',
+  title: 'Course summary',
+  goal: 'Learn what you can now do: name every type, law, clock and choice rule, and say out loud when a CRDT is the wrong tool.',
   whenToUse: [
     'More than one writer, sometimes disconnected, and the data must come back together.',
     '"Briefly different, then the same everywhere" is acceptable for this data.',
@@ -80,7 +80,7 @@ export default topic({
         ),
         step(
           's02',
-          'Say what a CRDT is: a data type whose merge rule is fixed up front, so copies change alone and still end up equal ([Meet CRDTs](/crdts/the-problem/meet-crdts)).',
+          'Say what a CRDT is: a data type whose merge rule is fixed up front, so copies change alone and still end up equal ([The CRDT idea](/crdts/the-problem/meet-crdts)).',
           insert('board.done', item('k1', 'What a CRDT is')),
           check('board.done[k1]', { sticky: true, id: 'c1' }),
         ),

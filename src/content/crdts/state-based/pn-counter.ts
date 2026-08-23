@@ -39,7 +39,7 @@ const RULE = 'value = sum(P) − sum(N) · merge = max per row, in P and in N'
 export default topic({
   id: 'pn-counter',
   title: 'PN-Counter',
-  goal: 'Pick a PN-Counter for a count that goes up and down, and explain why it cannot hold a floor.',
+  goal: 'Learn when a PN-Counter fits a count that goes up and down, and why it cannot hold a floor.',
   whenToUse: [
     'Counts that go up and down (likes and unlikes, cart quantities, unread badges).',
     'Many writers, each adjusting locally, often offline or far apart.',
@@ -170,7 +170,7 @@ export default topic({
         ),
         step.long(
           's06',
-          'A counter cannot say no. If a floor or a ceiling matters, use a **transaction** or a lock, not a CRDT (see Not everything needs a transaction).',
+          'A counter cannot say no. If a floor or a ceiling matters, use a **transaction** or a lock, not a CRDT (see Transactions vs merges).',
         ),
       ],
     ),

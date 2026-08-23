@@ -41,7 +41,7 @@ const groceries = () => list(ITEMS)
 export default topic({
   id: 'ops-instead-of-state',
   title: 'Ops instead of state',
-  goal: 'Explain what an op-based CRDT puts on the wire, and name the two delivery rules it needs: every op once, and in causal order.',
+  goal: 'Learn what an op-based CRDT puts on the wire, and the two delivery rules it needs: every op once, and in causal order.',
   whenToUse: [
     'Ops are small and the state is big (long documents, long lists).',
     'You have a reliable channel: a sync server, a log, a queue that can drop repeats.',

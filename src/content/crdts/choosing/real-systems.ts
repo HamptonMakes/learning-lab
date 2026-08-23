@@ -61,7 +61,7 @@ const systems = (...rows: TableRow[]) =>
 export default topic({
   id: 'real-systems',
   title: 'Real systems',
-  goal: 'Say what Yjs, Automerge, Riak, Redis Enterprise, Apple Notes and Figma use, and pick the kind of system your own problem needs.',
+  goal: 'Learn what Yjs, Automerge, Riak, Redis Enterprise, Apple Notes and Figma use, and which kind of system your own problem needs.',
   whenToUse: [
     'A document library (Yjs, Automerge) when the client must keep working alone.',
     'Yjs for editors: rich text, many editor bindings, small binary updates.',

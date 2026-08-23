@@ -1,5 +1,5 @@
 /**
- * I.5 — Meet CRDTs. The one topic in Unit I that drives real CRDTs (a preview): a G-Set of tags
+ * I.5 — The CRDT idea. The one topic in Unit I that drives real CRDTs (a preview): a G-Set of tags
  * merged by union in any order (`rule-up-front`, `any-order`), then the title race from topic
  * I.1 replayed with an LWW register and a relay (`title-again`, in context). Every merge result
  * on the stage is computed by src/crdt/. Storyboard: docs/curriculum/unit-1-2.md §I.5.
@@ -34,15 +34,15 @@ const UNION_RULE = 'Rule: merge = union (keep every tag anyone added)'
 
 export default topic({
   id: 'meet-crdts',
-  title: 'Meet CRDTs',
-  goal: 'Explain the CRDT idea in one breath: agree on the merge rule first, update every copy on its own, merge in any order, end up the same.',
+  title: 'The CRDT idea',
+  goal: 'Learn what a CRDT is: agree on the merge rule first, update every copy on its own, merge in any order, end up the same.',
   whenToUse: [
     'The data fits a merge rule everyone accepts (Unit II gives you a catalog).',
     'Writers may be offline or far apart.',
     'You would rather keep everyone working than make them wait.',
   ],
   whenNotToUse: [
-    'A wrong value, even for a moment, is expensive (see Not everything needs a transaction).',
+    'A wrong value, even for a moment, is expensive (see Transactions vs merges).',
     'You need exactly one winner decided right now (a seat, a username).',
     'The merge rule would surprise users (two edits to one paragraph must not both survive).',
   ],
@@ -69,7 +69,7 @@ export default topic({
       ),
       step(
         's04',
-        'Three copies, three different states. In More than one copy, this was the problem.',
+        'Three copies, three different states. In Copies that disagree, this was the problem.',
         highlight(['alice.tags', 'bob.tags', 'carol.tags']),
       ),
       step(
@@ -175,7 +175,7 @@ export default topic({
       [
         step(
           's01',
-          'Back to the title from More than one copy. This time we pick a rule first: the newest write wins (a preview of Unit II).',
+          'Back to the title from Copies that disagree. This time we pick a rule first: the newest write wins (a preview of Unit II).',
           note('rule', 'Rule: newest timestamp wins'),
           crdt.init(['server', 'alice', 'bob'], 'title', 'lww-register', {
             seed: [seed('set', 'Q3 plan')],

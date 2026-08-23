@@ -36,7 +36,7 @@ const RULE =
 export default topic({
   id: 'in-context-notes-sync',
   title: 'In context: a notes app',
-  goal: 'Walk a note through a sync and say, at each push, what the vector clock decided, what the CRDT merged, and what the app must show.',
+  goal: 'Learn what happens at each push of a note sync: what the vector clock decided, what the CRDT merged, and what the app must show.',
   whenToUse: [
     'Personal data across devices: notes, todos, settings, bookmarks.',
     'Most syncs are fast-forwards and you want them to cost nothing.',

@@ -1,5 +1,5 @@
 /**
- * I.6 — Where they are used. A gallery of five kinds of product that share one shape (many
+ * I.6 — CRDTs in real products. A gallery of five kinds of product that share one shape (many
  * copies, one merge rule, nobody waits for a lock), then a notes app with a relay that only forwards
  * (`notes-sync`, in context). The notes scene uses plain values and per-field messages; the
  * narration says "(simplified)". Storyboard: docs/curriculum/unit-1-2.md §I.6.
@@ -30,8 +30,8 @@ const noteDoc = () => rec({ title: 'Trip', body: 'pack socks' })
 
 export default topic({
   id: 'where-they-are-used',
-  title: 'Where they are used',
-  goal: 'Recognise the one shape behind every CRDT product (many copies, one merge rule, nobody waits for a lock) and name a few real examples.',
+  title: 'CRDTs in real products',
+  goal: 'Learn what shape every CRDT product shares (many copies, one merge rule, nobody waits for a lock) and which products use it.',
   whenToUse: [
     'Collaborative documents and whiteboards: many cursors, no lock.',
     'Apps that must work offline: notes, to-dos, field work.',

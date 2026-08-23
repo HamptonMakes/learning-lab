@@ -9,7 +9,7 @@ export const crdts: ModuleMeta = {
   title: 'Distributed Data Types (CRDTs)',
   short: 'CRDTs',
   summary:
-    'How many copies of the same data can change at the same time and still agree in the end — and how to pick the right type for your data.',
+    'How copies of the same data can change at the same time and still agree in the end — and how to pick the right type for your data.',
   status: 'live',
   units: [
     {
@@ -20,7 +20,7 @@ export const crdts: ModuleMeta = {
       topics: [
         {
           id: 'more-than-one-copy',
-          title: 'More than one copy',
+          title: 'Copies that disagree',
           summary: 'Two devices edit the same thing at the same time. Whoops.',
         },
         {
@@ -30,22 +30,22 @@ export const crdts: ModuleMeta = {
         },
         {
           id: 'locks-need-a-connection',
-          title: 'Locks need a connection',
+          title: 'The cost of a lock',
           summary: 'Offline devices cannot take a lock.',
         },
         {
           id: 'not-everything-needs-a-transaction',
-          title: 'Not everything needs a transaction',
+          title: 'Transactions vs merges',
           summary: 'Some data must be exact; a lot of data only needs to agree eventually.',
         },
         {
           id: 'meet-crdts',
-          title: 'Meet CRDTs',
+          title: 'The CRDT idea',
           summary: 'Rules set up front, merge in any order, every copy ends the same.',
         },
         {
           id: 'where-they-are-used',
-          title: 'Where they are used',
+          title: 'CRDTs in real products',
           summary: 'Docs, design tools, notes, databases — and more than you think.',
         },
       ],
@@ -95,7 +95,7 @@ export const crdts: ModuleMeta = {
         { id: 'or-set', title: 'OR-Set', summary: 'Unique tags make re-adding work.' },
         {
           id: 'in-context-shopping-list',
-          title: 'In context: a shared shopping list',
+          title: 'In context: a shopping list',
           summary: 'Compose LWW fields, an OR-Set, and PN-Counters.',
         },
         {
@@ -118,8 +118,8 @@ export const crdts: ModuleMeta = {
         },
         {
           id: 'every-device-needs-a-name',
-          title: 'Every device needs a name',
-          summary: 'Node ids and op ids. Hello, UUIDs.',
+          title: 'Node ids and op ids',
+          summary: 'Every device picks a stable id, so every op has a unique name.',
         },
         {
           id: 'op-counter',
@@ -138,7 +138,7 @@ export const crdts: ModuleMeta = {
         },
         {
           id: 'in-context-collab-text',
-          title: 'In context: typing together',
+          title: 'In context: a text editor',
           summary: 'Two people type in one text at once.',
         },
         {
@@ -156,7 +156,7 @@ export const crdts: ModuleMeta = {
       topics: [
         {
           id: 'wall-clocks-lie',
-          title: 'Wall clocks lie',
+          title: 'Wall-clock timestamps',
           summary: 'Clock skew makes "newest" wrong.',
         },
         {
@@ -194,7 +194,7 @@ export const crdts: ModuleMeta = {
       topics: [
         {
           id: 'which-crdt-for-which-data',
-          title: 'Which CRDT for which data',
+          title: 'The decision table',
           summary: 'Register, counter, set, map, or list?',
         },
         {
@@ -212,7 +212,11 @@ export const crdts: ModuleMeta = {
           title: 'Real systems',
           summary: 'What Automerge, Yjs, Riak, Redis, Figma, and Apple Notes use.',
         },
-        { id: 'course-complete', title: 'Course complete', summary: 'Your checklist.' },
+        {
+          id: 'course-complete',
+          title: 'Course summary',
+          summary: 'Your checklist, and when a CRDT is the wrong tool.',
+        },
       ],
     },
   ],

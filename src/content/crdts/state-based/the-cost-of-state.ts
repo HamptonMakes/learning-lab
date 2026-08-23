@@ -32,7 +32,7 @@ const PANTRY = ['apples', 'bread', 'butter', 'cheese', 'flour', 'rice', 'salt']
 export default topic({
   id: 'the-cost-of-state',
   title: 'The cost of state',
-  goal: 'Explain what state-based sync costs on the wire and in memory, and know when deltas are worth it.',
+  goal: 'Learn what state-based sync costs on the wire and in memory, and when deltas are worth it.',
   whenToUse: [
     'The state is small: a status, a counter, a short set.',
     'Syncs are rare: on reconnect, every few seconds, not per keystroke.',

@@ -41,7 +41,7 @@ const COMPARE =
 export default topic({
   id: 'vector-clocks',
   title: 'Vector clocks',
-  goal: 'Keep a vector clock by hand and compare two of them to say before, after, or concurrent.',
+  goal: 'Learn how to keep a vector clock by hand and compare two of them to say before, after, or concurrent.',
   whenToUse: [
     'You must detect concurrent writes: siblings, conflict flags, "someone else edited this".',
     'Few nodes (tens), or you can prune old entries.',

@@ -1,5 +1,5 @@
 /**
- * I.1 — More than one copy. Unit I has no CRDTs: copies are plain values changed with `set`, and
+ * I.1 — Copies that disagree. Unit I has no CRDTs: copies are plain values changed with `set`, and
  * the "save" is a message whose payload overwrites the server's copy. The point of the topic is
  * the silent loss in the `copies` scene; `copies-everywhere` shows where copies hide in a normal
  * app. Storyboard: docs/curriculum/unit-1-2.md §I.1.
@@ -31,8 +31,8 @@ const doc = () => rec({ title: 'Q3 plan' })
 
 export default topic({
   id: 'more-than-one-copy',
-  title: 'More than one copy',
-  goal: 'Spot the places where your data has more than one copy, and explain how two edits at the same time can silently lose one.',
+  title: 'Copies that disagree',
+  goal: 'Learn how two edits at the same time can silently lose one, and where your data already has more than one copy.',
   whenToUse: [
     'Reads must be fast and close to the user (a cache, a phone).',
     'Devices must keep working without a connection.',

@@ -1,5 +1,5 @@
 /**
- * I.3 — Locks need a connection. What a lock costs: a live connection to one coordinator
+ * I.3 — The cost of a lock. What a lock costs: a live connection to one coordinator
  * (`offline`), a round trip per request (`latency`, clock in ms), and a queue when many people
  * edit one thing (`shared-doc`, in context). Plain values throughout.
  * Storyboard: docs/curriculum/unit-1-2.md §I.3.
@@ -34,8 +34,8 @@ const doc = () => rec({ title: 'Q3 plan' })
 
 export default topic({
   id: 'locks-need-a-connection',
-  title: 'Locks need a connection',
-  goal: 'Name the three costs of a lock (a live connection, a round trip per request, a queue) and say when they are worth paying.',
+  title: 'The cost of a lock',
+  goal: 'Learn what a lock costs (a live connection, a round trip per request, a queue) and when that price is worth paying.',
   whenToUse: [
     'Writers are servers in one data center with fast, reliable links.',
     'Writes are rare and short, so nobody queues for long.',
@@ -84,7 +84,7 @@ export default topic({
         ),
         step.long(
           's05',
-          'Whoops — she edits anyway, and we are back in More than one copy. The lock did not help.',
+          'Whoops — she edits anyway, and we are back in Copies that disagree. The lock did not help.',
           clearMarks(),
           set('alice.doc.title', 'Q3 plan v2'),
           cross('server.lock'),

@@ -51,7 +51,7 @@ const WIRE_MAX = 240
 export default topic({
   id: 'tradeoffs',
   title: 'Trade-offs',
-  goal: 'Name what each choice costs — bytes on the wire, delivery guarantees, metadata that never leaves — and pick the cheaper option for a given workload.',
+  goal: 'Learn what each choice costs (bytes on the wire, delivery guarantees, metadata that never leaves) and how to pick for a workload.',
   whenToUse: [
     'State-based: small state, lossy or reordering networks, few replicas, simplest code.',
     'Delta-state: state-based safety with op-sized messages; many real systems do this.',

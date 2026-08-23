@@ -33,7 +33,7 @@ import {
 export default topic({
   id: 'g-set',
   title: 'G-Set',
-  goal: 'Pick a G-Set for data that is only ever added, and explain why union needs no extra bookkeeping.',
+  goal: 'Learn when a G-Set fits data that is only ever added, and why union needs no extra bookkeeping.',
   whenToUse: [
     'Things that are only ever added: message ids you have seen, peers you have met, events.',
     'Questions of the form "has this ever happened?".',

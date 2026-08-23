@@ -1,5 +1,5 @@
 /**
- * V.1 — Which CRDT for which data. The payoff of Units II–IV as one decision table (`board.t`),
+ * V.1 — The decision table. The payoff of Units II–IV as one decision table (`board.t`),
  * built row by row. Each scene races two types on the same data and lets the real merge show
  * which one keeps what the user meant. Scenes re-declare the table with the rows so far, so every
  * stage starts clean. Storyboard: docs/curriculum/unit-5-prototypes.md §V.1.
@@ -91,8 +91,8 @@ const cast = () => [alice({ icon: 'phone' }), bob({ icon: 'laptop' })]
 
 export default topic({
   id: 'which-crdt-for-which-data',
-  title: 'Which CRDT for which data',
-  goal: 'Given one piece of data and how it changes, pick a register, counter, map, set or list (or say it needs a transaction instead) and explain why in one sentence.',
+  title: 'The decision table',
+  goal: 'Learn how to pick a register, counter, map, set or list for one piece of data (or say it needs a transaction) and why, in one sentence.',
   whenToUse: [
     'A field is edited on more than one device, and merges must not wait for a server.',
     'You can say how the field changes: replaced, added up, members come and go, ordered.',
@@ -335,7 +335,7 @@ export default topic({
         ),
         step(
           's11',
-          'Last row, and a different answer: a rule that must hold across copies needs a transaction, not a CRDT ([Not everything needs a transaction](/crdts/the-problem/not-everything-needs-a-transaction)).',
+          'Last row, and a different answer: a rule that must hold across copies needs a transaction, not a CRDT ([Transactions vs merges](/crdts/the-problem/not-everything-needs-a-transaction)).',
           insert('board.t', ROWS.r6),
           highlight('board.t[r6]', { tone: 'warn' }),
         ),

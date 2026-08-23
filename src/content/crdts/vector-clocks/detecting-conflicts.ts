@@ -42,7 +42,7 @@ const world = () => ({
 export default topic({
   id: 'detecting-conflicts',
   title: 'Detecting conflicts',
-  goal: 'Explain how a version vector turns a concurrent write into siblings, and who is responsible for resolving them.',
+  goal: 'Learn how a version vector turns a concurrent write into siblings, and who is responsible for resolving them.',
   whenToUse: [
     'The store must never silently drop a concurrent write (carts, inventory, medical records).',
     'The app, not the database, knows how to merge two versions (union, ask the user, a rule).',

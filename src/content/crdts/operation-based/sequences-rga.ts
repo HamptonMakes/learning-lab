@@ -37,7 +37,7 @@ const RULE =
 export default topic({
   id: 'sequences-rga',
   title: 'Sequences (RGA)',
-  goal: 'Explain why a sequence CRDT names every element, inserts after a name, keeps deleted names as tombstones, and how two inserts at one spot are ordered.',
+  goal: 'Learn why a sequence CRDT names every element, inserts after a name, keeps tombstones, and how two inserts at one spot are ordered.',
   whenToUse: [
     'Ordered data edited at the same time: text, block lists, bullet lists, layer order.',
     'Inserts anywhere plus deletes, and everyone must agree on the order.',

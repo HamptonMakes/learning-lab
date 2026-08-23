@@ -34,7 +34,7 @@ import {
 export default topic({
   id: 'lww-element-set',
   title: 'LWW-Element-Set',
-  goal: 'Pick an LWW-Element-Set when the newest add or remove should win, and choose its bias on purpose.',
+  goal: 'Learn when an LWW-Element-Set is right (the newest add or remove should win) and how to choose its bias on purpose.',
   whenToUse: [
     'Add and remove both happen often and the latest intent should win (favorites, follows).',
     'You already have good-enough timestamps, for example because you use LWW elsewhere.',

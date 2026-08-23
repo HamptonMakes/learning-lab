@@ -1,5 +1,5 @@
 /**
- * I.4 — Not everything needs a transaction. Sort data by what a wrong answer costs: the same race
+ * I.4 — Transactions vs merges. Sort data by what a wrong answer costs: the same race
  * on a balance and on a shopping list (`money-vs-list`), then one online order sorted field by
  * field into a decision table (`sort-the-order`, in context). Plain values; the "good" merge of
  * the list is written by hand and the narration says so. Storyboard: docs/curriculum/unit-1-2.md §I.4.
@@ -31,8 +31,8 @@ const holds = () => ({ account: rec({ balance: 100 }), list: sset(['bread']) })
 
 export default topic({
   id: 'not-everything-needs-a-transaction',
-  title: 'Not everything needs a transaction',
-  goal: 'Sort the fields of a real document by what a wrong answer costs, and say which ones need a transaction and which can merge.',
+  title: 'Transactions vs merges',
+  goal: 'Learn how to sort fields by what a wrong answer costs, so you know which need a transaction and which can merge.',
   whenToUse: [
     'Money could be lost or created.',
     'Something could be given away twice (one seat, one username, one coupon).',

@@ -30,7 +30,7 @@ const doc = () => rec({ title: 'Q3 plan' })
 export default topic({
   id: 'locks-the-classic-answer',
   title: 'Locks: the classic answer',
-  goal: 'Explain how a lock makes writers take turns, so the second writer always sees the first change before writing.',
+  goal: 'Learn how a lock makes writers take turns, so the second writer always sees the first change before writing.',
   whenToUse: [
     'The data must never be wrong, even for a moment (money, stock levels, unique usernames).',
     'All writers can reach the one server that holds the lock, and quickly.',
@@ -40,7 +40,7 @@ export default topic({
   whenNotToUse: [
     'Writers are often offline or far away (next topic).',
     'Many people edit the same thing at once; a lock makes them queue.',
-    'A short wrong period is cheap to fix (see Not everything needs a transaction).',
+    'A short wrong period is cheap to fix (see Transactions vs merges).',
   ],
   realWorld:
     'A database row lock (SELECT ... FOR UPDATE), a wiki page lock, a file "checked out" in a design tool.',

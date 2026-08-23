@@ -36,7 +36,7 @@ const TIME = { show: true, format: 'time', start: '10:00' } as const
 export default topic({
   id: 'hybrid-logical-clocks',
   title: 'Hybrid logical clocks',
-  goal: 'Read an HLC stamp, run its two rules, and say why it is a safe LWW timestamp along a causal chain.',
+  goal: 'Learn how to read an HLC stamp, run its two rules, and why it is a safe LWW timestamp along a causal chain.',
   whenToUse: [
     'LWW stamps where humans also want to know "when" (notes, settings, CRMs).',
     'Replacing raw wall-clock stamps in an existing LWW design: same size, fewer surprises.',
@@ -138,7 +138,7 @@ export default topic({
       [
         step(
           's01',
-          "Same phone and laptop as in Wall clocks lie: Bob's laptop is five minutes slow. But now the LWW title takes its stamps from an HLC.",
+          "Same phone and laptop as in Wall-clock timestamps: Bob's laptop is five minutes slow. But now the LWW title takes its stamps from an HLC.",
           crdt.init(['alice', 'bob'], 'hlc', 'hlc'),
           crdt.init(['alice', 'bob'], 'title', 'lww-register', {
             clock: { slot: 'hlc' },

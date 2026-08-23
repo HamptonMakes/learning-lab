@@ -37,7 +37,7 @@ const RULE = 'merge: per node, keep the max · value = sum of rows'
 export default topic({
   id: 'g-counter',
   title: 'G-Counter',
-  goal: 'Pick a G-Counter for a count that only goes up, and explain why max per node can never lose or double count an increment.',
+  goal: 'Learn when a G-Counter fits a count that only goes up, and why max per node can never lose or double count an increment.',
   whenToUse: [
     'Counts that only go up (views, downloads, times opened).',
     'Many writers, each incrementing locally, often offline or far apart.',

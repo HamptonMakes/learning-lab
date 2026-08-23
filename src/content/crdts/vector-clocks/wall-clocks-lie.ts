@@ -1,5 +1,5 @@
 /**
- * IV.1 — Wall clocks lie. An LWW register stamped with device wall clocks: Bob's laptop runs five
+ * IV.1 — Wall-clock timestamps. An LWW register stamped with device wall clocks: Bob's laptop runs five
  * minutes slow, so the write that happened last carries the smaller stamp and loses
  * (`two-clocks`). `clock-jumps-back` shows a device losing its own newest edit after its clock is
  * corrected backwards; `settings-keep-reverting` puts the same bug in context with an LWW map.
@@ -33,8 +33,8 @@ const TIME = { show: true, format: 'time', start: '10:00' } as const
 
 export default topic({
   id: 'wall-clocks-lie',
-  title: 'Wall clocks lie',
-  goal: 'Explain why a wall-clock timestamp is not the same as "happened later", and spot where that breaks an LWW field.',
+  title: 'Wall-clock timestamps',
+  goal: 'Learn why a wall-clock timestamp is not the same as "happened later", and where that breaks an LWW field.',
   whenToUse: [
     'Low-stakes fields where a wrong pick costs little, on devices that sync their clocks.',
     'In practice one writer per field, so two devices rarely race.',

@@ -35,7 +35,7 @@ import {
 export default topic({
   id: 'tombstones-and-garbage',
   title: 'Tombstones and garbage',
-  goal: 'Explain why deletes leave tombstones, measure what they cost, and say when one can be collected safely and what happens when you collect too early.',
+  goal: 'Learn why deletes leave tombstones, what they cost, when one can be collected safely, and what breaks when you collect too early.',
   whenToUse: [
     'Keep a tombstone while any copy may still send an op that points at the dead element.',
     'Collect when every copy has seen the delete: a stability point you can prove.',

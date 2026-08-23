@@ -52,7 +52,7 @@ const CARD_SEED = [
 export default topic({
   id: 'composing-a-document',
   title: 'Composing a document',
-  goal: 'Design a document out of CRDT parts — one type per field, ids on every item — and predict what one merge of the whole document does.',
+  goal: 'Learn how to design a document out of CRDT parts (one type per field, ids on every item) and what one merge of the whole does.',
   whenToUse: [
     'A JSON-like document (card, note, profile) is edited on several devices, offline included.',
     'Different fields change in different ways and you control the schema.',

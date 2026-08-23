@@ -38,7 +38,7 @@ const RULE = 'merge: for each field, newer ts wins · tie → higher node id'
 export default topic({
   id: 'lww-map',
   title: 'LWW Map',
-  goal: 'Pick an LWW map for a record of independent fields, and explain which edits survive a merge and which one loses.',
+  goal: 'Learn when an LWW map fits a record of independent fields, which edits survive a merge, and which one loses.',
   whenToUse: [
     'Records of independent fields edited by different people (task cards, profiles, settings).',
     'Each field is small and set as a whole.',

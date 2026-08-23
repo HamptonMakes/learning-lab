@@ -34,7 +34,7 @@ import {
 export default topic({
   id: 'op-counter',
   title: 'Op-based counter',
-  goal: 'Build a counter from +1 and −1 ops, explain why arrival order never matters, and why every op must still be applied exactly once.',
+  goal: 'Learn how a counter is built from +1 and −1 ops, why arrival order never matters, and why each op must still be applied exactly once.',
   whenToUse: [
     'Likes, votes, view counts, tallies: anything that is a stream of +n / −n events.',
     'Many writers, and nobody needs an instantly exact global number.',

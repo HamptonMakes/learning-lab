@@ -11,7 +11,7 @@ const M = 'matcher'
 export default topic({
   id: 'step-by-step-matching',
   title: 'Step-by-step matching',
-  goal: 'See a regex as a list of small tests run left to right with a cursor, and recognize a match, a failed start and a restart.',
+  goal: 'Learn how a regex runs as a list of small tests, left to right with a cursor, and what a match, a failed start and a restart look like.',
   whenToUse: [
     'Validating or pulling out text with a fixed shape: ids, dates, codes, log fields.',
     'Search and replace in editors and scripts.',

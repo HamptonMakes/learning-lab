@@ -35,7 +35,7 @@ const RULE = 'event: c = c + 1 · send: tick, stamp = c · receive: c = max(c, s
 export default topic({
   id: 'lamport-clocks',
   title: 'Lamport clocks',
-  goal: 'Run the Lamport rules by hand, and say what a smaller number does and does not tell you about two events.',
+  goal: 'Learn how to run the Lamport rules by hand, and what a smaller number does and does not tell you about two events.',
   whenToUse: [
     'You need an order that respects cause and effect: op logs, RGA stamps, LWW with logical stamps.',
     'One integer per replica is all the space you can afford.',

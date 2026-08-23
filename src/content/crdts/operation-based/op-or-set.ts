@@ -36,7 +36,7 @@ const RULE = 'add → new tag · remove → the tags you have seen · in the set
 export default topic({
   id: 'op-or-set',
   title: 'Op-based OR-Set',
-  goal: 'Drive an OR-Set with add and remove ops, read a remove as "kill these tags", and predict who wins when an add and a remove cross.',
+  goal: 'Learn how add and remove ops drive an OR-Set, why a remove means "kill these tags", and who wins when an add and a remove cross.',
   whenToUse: [
     'Membership people add and remove freely: labels, attendees, collaborators, list items.',
     'Re-add after remove must work (a 2P-Set cannot).',

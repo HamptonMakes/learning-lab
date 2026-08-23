@@ -25,7 +25,7 @@ const M = 'matcher'
 export default topic({
   id: 'backtracking',
   title: 'Backtracking',
-  goal: 'Watch a greedy test take too much and give characters back one at a time, and spot the patterns that backtrack too much.',
+  goal: 'Learn how a greedy test takes too much and gives characters back one at a time, and which patterns backtrack too much.',
   whenToUse: [
     'Short lines with a fixed tail: key=.* on a config line.',
     'Lazy .*? for the shortest span between two markers.',

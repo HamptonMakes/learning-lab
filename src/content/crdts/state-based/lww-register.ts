@@ -34,7 +34,7 @@ const RULE = 'merge: newer ts wins · tie → higher node id'
 
 export default topic({
   ...lwwRegisterTopic,
-  goal: 'Pick an LWW register for a single field and explain which write wins, why, and what you lose.',
+  goal: 'Learn when an LWW register fits a single field, which write wins a race, why, and what you lose.',
   whenToUse: [
     'Single-value fields where "newest edit wins" is what users expect (title, status, colour).',
     'The field is set as a whole, not edited inside.',
@@ -43,7 +43,7 @@ export default topic({
   ],
   whenNotToUse: [
     'Two edits should both survive (use a set, a counter, or a sequence).',
-    'Device clocks cannot be trusted and a lost edit is costly (Unit IV, Wall clocks lie).',
+    'Device clocks cannot be trusted and a lost edit is costly (Unit IV, Wall-clock timestamps).',
     'The value is long text edited by several people at once (Unit III, Sequences).',
     'Writers often tie and users would notice an arbitrary winner.',
   ],

@@ -41,7 +41,7 @@ const nodes = () => [
 export default topic({
   id: 'partition-and-clustering',
   title: 'Partition and clustering keys',
-  goal: 'Explain how a partition key picks the node and a clustering key sets the order inside a partition, and why a query that names both is fast.',
+  goal: 'Learn how a partition key picks the node, a clustering key sets the order inside it, and why a query that names both is fast.',
   whenToUse: [
     'Huge write volume with queries known up front, keyed by an entity plus time.',
     'Many data centres and no single primary.',

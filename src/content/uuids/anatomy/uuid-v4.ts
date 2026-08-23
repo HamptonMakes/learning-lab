@@ -38,7 +38,7 @@ const TABLET_ID = uuid.v4('9c017e5502a14f3d910b7ae266041cd8')
 export default topic({
   id: 'uuid-v4',
   title: 'UUID v4',
-  goal: 'Read a v4 id byte by byte and explain why two devices can make ids without talking to each other.',
+  goal: 'Learn how to read a v4 id byte by byte, and why two devices can make ids without talking to each other.',
   whenToUse: [
     'Ids minted on many devices or services with no coordinator (offline apps, CRDT op ids).',
     'Public ids in URLs that must not reveal order, count or time.',

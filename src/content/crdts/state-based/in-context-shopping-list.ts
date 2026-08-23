@@ -1,5 +1,5 @@
 /**
- * II.10 — In context: a shared shopping list. One composed document (`crdt.doc`): an LWW title,
+ * II.10 — In context: a shopping list. One composed document (`crdt.doc`): an LWW title,
  * an OR-Set of items, and per item an LWW name and a PN-Counter qty. A phone and a laptop edit
  * offline and sync through a server; each part merges by its own rule. Scenes: `build-it`,
  * `offline-weekend` (title race, remove, counter), `one-more-race` (remove vs edit-inside).
@@ -36,8 +36,8 @@ const syncRound = () => syncAll('list', ['alice', 'server'], ['bob', 'server'], 
 
 export default topic({
   id: 'in-context-shopping-list',
-  title: 'In context: a shared shopping list',
-  goal: 'Compose LWW fields, an OR-Set and PN-Counters into one document, and predict how each part merges.',
+  title: 'In context: a shopping list',
+  goal: 'Learn how LWW fields, an OR-Set and PN-Counters compose into one document, and how each part merges on its own.',
   whenToUse: [
     'Shared lists and boards edited offline: groceries, packing, chores.',
     'Each piece of data has an obvious right merge when you look at it alone.',

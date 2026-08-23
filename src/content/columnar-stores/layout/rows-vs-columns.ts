@@ -51,7 +51,7 @@ const MAX_BYTES = 96 // 24 values × 4 bytes
 export default topic({
   id: 'rows-vs-columns',
   title: 'Rows vs columns',
-  goal: 'See the same table laid out on disk row by row and column by column, and say which queries each layout makes cheap.',
+  goal: 'Learn how the same table is laid out on disk row by row and column by column, and which queries each layout makes cheap.',
   whenToUse: [
     'Analytics: scan a few columns over many rows (sums, averages, group by).',
     'Append-heavy event and log data, where compression matters.',

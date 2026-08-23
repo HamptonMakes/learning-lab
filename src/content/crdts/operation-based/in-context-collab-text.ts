@@ -1,5 +1,5 @@
 /**
- * III.6 — In context: typing together. Two RGA scenes driven by ops through the real delivery
+ * III.6 — In context: a text editor. Two RGA scenes driven by ops through the real delivery
  * layer: `two-people-typing` runs the `type` macro (one real op per character) against a
  * concurrent insert at the same anchor, and `todo-list-move` shows that delete + insert is not a
  * move: two concurrent moves converge on a list with the item twice. Every id, stamp and order
@@ -28,8 +28,8 @@ import {
 
 export default topic({
   id: 'in-context-collab-text',
-  title: 'In context: typing together',
-  goal: 'Follow two people typing in one line and moving items in one list, and say what RGA guarantees (one order) and what it does not (meaning).',
+  title: 'In context: a text editor',
+  goal: 'Learn what RGA guarantees (one order) and what it does not (meaning) when two people type in one line and move items in one list.',
   whenToUse: [
     'Collaborative text and block lists: typing is many tiny inserts and deletes.',
     'Two people edit the same spot and both edits must survive in one agreed order.',

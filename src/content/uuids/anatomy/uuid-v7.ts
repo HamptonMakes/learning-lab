@@ -42,7 +42,7 @@ const canonical = (id: { bytes: number[] }) => bytes(id.bytes, { display: 'canon
 export default topic({
   id: 'uuid-v7',
   title: 'UUID v7',
-  goal: 'Read a v7 id byte by byte and say why ids made later sort after ids made earlier.',
+  goal: 'Learn how to read a v7 id byte by byte, and why ids made later sort after ids made earlier.',
   whenToUse: [
     'Database keys that should sort by creation time (new rows land together in the index).',
     'Ids minted on many machines with no coordination.',
