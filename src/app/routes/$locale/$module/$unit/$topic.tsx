@@ -254,27 +254,6 @@ function LessonPlayer({
       </ol>
 
       <div className="flex flex-col gap-3" data-testid="lesson-frame">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={frame.sceneId}
-            initial={instant ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={instant ? undefined : { opacity: 0 }}
-            transition={{ duration: instant ? 0 : 0.2 / player.state.speed }}
-            className="flex flex-col"
-          >
-            <Stage
-              frame={frame}
-              speed={player.state.speed}
-              reducedSetting={reducedPref === 'on'}
-              instant={instant}
-              dir={dir}
-            />
-          </motion.div>
-        </AnimatePresence>
-
-        <Narration say={frame.step.say} stepId={frame.step.id} />
-
         <TransportBar
           index={player.state.index}
           total={player.state.total}
@@ -303,6 +282,27 @@ function LessonPlayer({
             ) : undefined
           }
         />
+
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={frame.sceneId}
+            initial={instant ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={instant ? undefined : { opacity: 0 }}
+            transition={{ duration: instant ? 0 : 0.2 / player.state.speed }}
+            className="flex flex-col"
+          >
+            <Stage
+              frame={frame}
+              speed={player.state.speed}
+              reducedSetting={reducedPref === 'on'}
+              instant={instant}
+              dir={dir}
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        <Narration say={frame.step.say} stepId={frame.step.id} />
       </div>
 
       {ended && (
