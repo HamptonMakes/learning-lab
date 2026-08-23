@@ -36,6 +36,22 @@ export default topic({
   id: 'tombstones-and-garbage',
   title: 'Tombstones and garbage',
   goal: 'Learn why deletes leave tombstones, what they cost, when one can be collected safely, and what breaks when you collect too early.',
+  rules: [
+    'A delete does not remove the element. It marks it dead: a tombstone that keeps its name.',
+    'The tombstone stays because an op still on its way may point at that name.',
+    'Tombstones are not free: every copy stores them, ships them and walks past them on every edit.',
+    'Collect a tombstone only when every copy has seen the delete. Collect early, and a lagging copy brings the element back.',
+  ],
+  shape: {
+    name: 'RGA copy',
+    fields: [
+      { key: 'text', example: 'at', role: 'value', note: 'what readers see' },
+      { key: 'stored', example: '3', note: 'elements kept, tombstones included' },
+      { key: 'visible', example: '2', note: 'elements that are not tombstones' },
+      { key: 'seen', example: 'alice 4', note: 'how far this copy has read from each writer' },
+    ],
+    note: 'stored − visible = tombstones. Only a tombstone every copy has seen can go.',
+  },
   whenToUse: [
     'Keep a tombstone while any copy may still send an op that points at the dead element.',
     'Collect when every copy has seen the delete: a stability point you can prove.',

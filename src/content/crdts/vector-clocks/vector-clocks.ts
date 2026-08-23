@@ -42,6 +42,26 @@ export default topic({
   id: 'vector-clocks',
   title: 'Vector clocks',
   goal: 'Learn how to keep a vector clock by hand and compare two of them to say before, after, or concurrent.',
+  rules: [
+    'Every device keeps one counter per device. On a local event, add 1 to your own entry.',
+    'On a send, add 1 to your entry and put the whole clock on the message.',
+    'On a receive, take the max of each entry, then add 1 to your own: {alice 2, bob 1, carol 0}.',
+    'Compare entry by entry: all ≤ is before, all ≥ is after, bigger on both sides is concurrent.',
+  ],
+  shape: {
+    name: 'Vector clock',
+    fields: [
+      { key: 'alice', example: '2', role: 'value', note: 'events heard of from Alice' },
+      {
+        key: 'bob',
+        example: '1',
+        role: 'value',
+        note: 'his own entry: events, sends and receives',
+      },
+      { key: 'carol', example: '0', role: 'value', note: 'nothing heard from Carol yet' },
+    ],
+    note: "One counter per device. This is Bob's clock after he receives Alice's message.",
+  },
   whenToUse: [
     'You must detect concurrent writes: siblings, conflict flags, "someone else edited this".',
     'Few nodes (tens), or you can prune old entries.',

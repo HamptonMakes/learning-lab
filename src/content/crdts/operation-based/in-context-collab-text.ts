@@ -30,6 +30,25 @@ export default topic({
   id: 'in-context-collab-text',
   title: 'In context: a text editor',
   goal: 'Learn what RGA guarantees (one order) and what it does not (meaning) when two people type in one line and move items in one list.',
+  rules: [
+    'Typing is one op per character. Each character is inserted after the one before it.',
+    'Two inserts after the same name: the higher stamp goes first, then the higher node id.',
+    'RGA has insert and delete, and no move. A move done as delete + insert is two ops.',
+    'Converged is not the same as correct: RGA promises one order on every copy, not your intent.',
+  ],
+  shape: {
+    name: 'RGA element (one character)',
+    fields: [
+      { key: 'id', example: 'bob:1', note: 'node + counter, never changes' },
+      { key: 'value', example: '!', role: 'value' },
+      { key: 'after', example: 'alice:2', note: 'the i in Hi' },
+      {
+        key: 'stamp',
+        example: '1',
+        note: "the same stamp as Alice's space, so the node id decides",
+      },
+    ],
+  },
   whenToUse: [
     'Collaborative text and block lists: typing is many tiny inserts and deletes.',
     'Two people edit the same spot and both edits must survive in one agreed order.',

@@ -42,6 +42,20 @@ export default topic({
   id: 'ops-instead-of-state',
   title: 'Ops instead of state',
   goal: 'Learn what an op-based CRDT puts on the wire, and the two delivery rules it needs: every op once, and in causal order.',
+  rules: [
+    'Send what you did, not what you have: one small op per change.',
+    'Every op gets an id: node + counter, like alice:1.',
+    'Each copy keeps the ids it has applied. A repeat is ignored.',
+    'An op waits until the ops it depends on have been applied: causal order.',
+  ],
+  shape: {
+    name: 'An op on the wire',
+    fields: [
+      { key: 'id', example: 'alice:1', note: 'node + counter; a retry carries the same id' },
+      { key: 'change', example: 'add butter', role: 'value' },
+    ],
+    note: 'Each copy also keeps a list of the op ids it has applied, and parks an op that arrives too early.',
+  },
   whenToUse: [
     'Ops are small and the state is big (long documents, long lists).',
     'You have a reliable channel: a sync server, a log, a queue that can drop repeats.',

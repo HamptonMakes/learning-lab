@@ -53,6 +53,32 @@ export default topic({
   id: 'composing-a-document',
   title: 'Composing a document',
   goal: 'Learn how to design a document out of CRDT parts (one type per field, ids on every item) and what one merge of the whole does.',
+  rules: [
+    'Pick one CRDT type per part before you write code: the title replaces, votes add up, labels come and go, the checklist keeps an order.',
+    'Give every item a stable id, node + counter, so an edit and a delete point at the same thing. Never use the position as the id.',
+    'One merge of the whole document merges every part by its own rule, then puts the parts back together.',
+    'A move is one change to the user, so make it one write: a column field on the card, not a delete plus an insert.',
+  ],
+  shape: {
+    name: 'Card',
+    fields: [
+      { key: 'title', example: 'Fix login', role: 'value', note: 'LWW register: replaces' },
+      {
+        key: 'description',
+        example: '(long text)',
+        role: 'value',
+        note: 'RGA of characters: order matters',
+      },
+      { key: 'labels', example: 'bug', role: 'value', note: 'OR-Set: add wins' },
+      { key: 'votes', example: '0', role: 'value', note: 'PN-Counter: adds up' },
+      {
+        key: 'checklist',
+        example: 'write test · fix',
+        role: 'value',
+        note: 'RGA of {text, done} items, each with its own id',
+      },
+    ],
+  },
   whenToUse: [
     'A JSON-like document (card, note, profile) is edited on several devices, offline included.',
     'Different fields change in different ways and you control the schema.',

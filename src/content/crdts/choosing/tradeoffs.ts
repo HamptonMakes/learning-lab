@@ -52,6 +52,33 @@ export default topic({
   id: 'tradeoffs',
   title: 'Trade-offs',
   goal: 'Learn what each choice costs (bytes on the wire, delivery guarantees, metadata that never leaves) and how to pick for a workload.',
+  rules: [
+    'State-based: send the whole state. Big messages, but a lost or repeated message does no harm.',
+    'Op-based: send one small op per change. Every op must arrive once and in causal order, or you keep a log and resend.',
+    'Delta-state: send only what changed, and the same merge accepts it. Small, and safe if you can resend a lost one.',
+    'Metadata stays: tombstones and tags outlive the delete. Drop one only when every copy has seen the delete.',
+  ],
+  shape: {
+    name: 'One change on the wire',
+    fields: [
+      {
+        key: 'full state',
+        example: '200 bytes',
+        note: 'all four fields travel; safe to repeat or lose',
+      },
+      {
+        key: 'delta',
+        example: '57 bytes',
+        note: 'only the changed field; the same merge takes it',
+      },
+      {
+        key: 'one op',
+        example: 'owner = Bob',
+        note: 'the one write she did; smallest, but it must arrive once and in order',
+      },
+    ],
+    note: 'The same change, sent three ways. The first scene measures the first two.',
+  },
   whenToUse: [
     'State-based: small state, lossy or reordering networks, few replicas, simplest code.',
     'Delta-state: state-based safety with op-sized messages; many real systems do this.',

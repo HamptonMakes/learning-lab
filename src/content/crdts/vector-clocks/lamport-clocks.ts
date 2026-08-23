@@ -36,6 +36,20 @@ export default topic({
   id: 'lamport-clocks',
   title: 'Lamport clocks',
   goal: 'Learn how to run the Lamport rules by hand, and what a smaller number does and does not tell you about two events.',
+  rules: [
+    'Every device keeps one counter. On a local event, add 1.',
+    'On a send, add 1 and put the counter on the message as its stamp: 2.',
+    'On a receive, take the larger of your counter and the stamp, then add 1: max(0, 2) + 1 = 3.',
+    'If one event led to another, the second has the bigger number. A bigger number alone does not prove a cause.',
+  ],
+  shape: {
+    name: 'Lamport clock',
+    fields: [
+      { key: 'counter', example: '3', role: 'value', note: 'one integer per device' },
+      { key: 'node', example: 'bob', note: 'breaks a tie between equal counters' },
+    ],
+    note: 'Bob, after he receives the stamp 2: max(0, 2) + 1 = 3.',
+  },
   whenToUse: [
     'You need an order that respects cause and effect: op logs, RGA stamps, LWW with logical stamps.',
     'One integer per replica is all the space you can afford.',

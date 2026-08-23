@@ -62,6 +62,12 @@ export default topic({
   id: 'real-systems',
   title: 'Real systems',
   goal: 'Learn what Yjs, Automerge, Riak, Redis Enterprise, Apple Notes and Figma use, and which kind of system your own problem needs.',
+  rules: [
+    'A document library (Yjs, Automerge) when the client must merge on its own, offline included.',
+    'A database CRDT type (Riak, Redis Enterprise) when the server holds the data and you want no sync code.',
+    'Server-ordered per-field writes (Figma) when a server is always in the path: one order, easy rules.',
+    '"Uses CRDTs" does not mean "works offline for weeks". Check what is documented, and the clean-up story.',
+  ],
   whenToUse: [
     'A document library (Yjs, Automerge) when the client must keep working alone.',
     'Yjs for editors: rich text, many editor bindings, small binary updates.',

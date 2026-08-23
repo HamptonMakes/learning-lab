@@ -35,6 +35,23 @@ export default topic({
   id: 'op-counter',
   title: 'Op-based counter',
   goal: 'Learn how a counter is built from +1 and −1 ops, why arrival order never matters, and why each op must still be applied exactly once.',
+  rules: [
+    'Every like is an op: +1 or −1, with an id like alice:1.',
+    'Each copy adds the op to its total. Order does not matter: 1 + 1 + 1 is 3 in any order.',
+    'Each copy keeps the ids it has applied. A repeat is skipped, or it would count twice.',
+    'The counter has no floor. It adds what it is told, and it can go below zero.',
+  ],
+  shape: {
+    name: 'Op-based counter',
+    fields: [
+      { key: 'total', example: '3', role: 'value' },
+      {
+        key: 'applied',
+        example: 'alice:1 alice:2 bob:1',
+        note: 'op ids seen, so a repeat is ignored',
+      },
+    ],
+  },
   whenToUse: [
     'Likes, votes, view counts, tallies: anything that is a stream of +n / −n events.',
     'Many writers, and nobody needs an instantly exact global number.',

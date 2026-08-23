@@ -38,6 +38,23 @@ export default topic({
   id: 'sequences-rga',
   title: 'Sequences (RGA)',
   goal: 'Learn why a sequence CRDT names every element, inserts after a name, keeps tombstones, and how two inserts at one spot are ordered.',
+  rules: [
+    'Every character gets a name that never moves: node + counter, like alice:1.',
+    'An insert says "after alice:1", never "at position 1".',
+    'A delete does not remove the character. It marks it dead: a tombstone, so a late insert still finds its anchor.',
+    'Two inserts after the same name: the higher stamp goes first, then the higher node id. Every copy applies the same rule.',
+  ],
+  shape: {
+    name: 'RGA element',
+    fields: [
+      { key: 'id', example: 'bob:1', note: 'its name: node + counter, never changes' },
+      { key: 'value', example: 'h', role: 'value' },
+      { key: 'after', example: 'alice:1', note: 'the name it was inserted after' },
+      { key: 'stamp', example: '1', note: 'one bigger than any stamp the writer has seen' },
+      { key: 'tombstone', example: 'no', note: 'a delete flips this; the name stays' },
+    ],
+    note: 'The text is the live elements in order, tombstones skipped: chat.',
+  },
   whenToUse: [
     'Ordered data edited at the same time: text, block lists, bullet lists, layer order.',
     'Inserts anywhere plus deletes, and everyone must agree on the order.',

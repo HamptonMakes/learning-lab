@@ -35,6 +35,21 @@ export default topic({
   id: 'wall-clocks-lie',
   title: 'Wall-clock timestamps',
   goal: 'Learn why a wall-clock timestamp is not the same as "happened later", and where that breaks an LWW field.',
+  rules: [
+    'On every write, the device stamps the value with its own wall clock: Draft at 10:06.',
+    'On merge, the higher stamp wins. A tie goes to the higher node id.',
+    'Clocks drift and jump. The write that happened last can carry the smaller stamp, and then it loses.',
+    'A higher stamp means "stamped later", not "happened later".',
+  ],
+  shape: {
+    name: 'LWW register',
+    fields: [
+      { key: 'value', example: 'Draft', role: 'value' },
+      { key: 'time', example: '10:06', note: 'the wall clock of the device that wrote it' },
+      { key: 'by', example: 'alice', note: 'breaks a tie' },
+    ],
+    note: "Bob's Final, written at 10:08 by a clock five minutes slow, is stamped 10:03 and loses.",
+  },
   whenToUse: [
     'Low-stakes fields where a wrong pick costs little, on devices that sync their clocks.',
     'In practice one writer per field, so two devices rarely race.',

@@ -39,6 +39,24 @@ export default topic({
   id: 'every-device-needs-a-name',
   title: 'Node ids and op ids',
   goal: 'Learn why every replica needs a unique, stable node id, how to read an op id as (node, counter), and where the name comes from.',
+  rules: [
+    'Every device picks one node id. It must be unique, and it must never change.',
+    'An op id is the node id plus a counter: alice:1, alice:2, alice:3.',
+    'Two devices with the same name mint the same ids, and a real op is dropped as a repeat.',
+    'A server can hand out the name, or the device rolls a random UUID. A fresh install gets a fresh name.',
+  ],
+  shape: {
+    name: 'Op id',
+    fields: [
+      { key: 'node', example: 'alice', note: 'the device name: unique, never changes' },
+      {
+        key: 'counter',
+        example: '1',
+        note: 'the next number on that device; a gap means a missing op',
+      },
+    ],
+    note: 'Written together: alice:1. Some papers call it a dot.',
+  },
   whenToUse: [
     '(node, counter) op ids when one node makes ops in sequence: cheap, sortable, gaps show.',
     'Random 128-bit node ids (UUID v4) when devices must start offline with no server.',

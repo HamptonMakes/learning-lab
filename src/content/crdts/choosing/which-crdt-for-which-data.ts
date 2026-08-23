@@ -93,6 +93,43 @@ export default topic({
   id: 'which-crdt-for-which-data',
   title: 'The decision table',
   goal: 'Learn how to pick a register, counter, map, set or list for one piece of data (or say it needs a transaction) and why, in one sentence.',
+  rules: [
+    'Ask how the data changes on merge, not what it is.',
+    'A new write replaces the old value → LWW register. Writes add up → counter.',
+    'Fields change alone → LWW map. Members come and go → OR-Set. Order matters → sequence (RGA).',
+    'A rule must hold across all copies (balance ≥ 0, unique name) → a transaction, not a CRDT.',
+  ],
+  shape: {
+    name: 'Task card',
+    fields: [
+      {
+        key: 'title',
+        example: 'Fix login bug',
+        role: 'value',
+        note: 'replaced as a whole → LWW register',
+      },
+      {
+        key: 'owner',
+        example: 'Carol',
+        role: 'value',
+        note: 'changed alone → the LWW map holds one register per field',
+      },
+      { key: 'likes', example: '2', role: 'value', note: 'adds up → PN-Counter' },
+      {
+        key: 'labels',
+        example: 'backend, bug, urgent',
+        role: 'value',
+        note: 'come and go → OR-Set',
+      },
+      {
+        key: 'steps',
+        example: 'write test, fix, deploy, review',
+        role: 'value',
+        note: 'order matters → RGA (sequence)',
+      },
+    ],
+    note: 'One type per field, picked by how the field changes. A rule across copies needs a transaction instead.',
+  },
   whenToUse: [
     'A field is edited on more than one device, and merges must not wait for a server.',
     'You can say how the field changes: replaced, added up, members come and go, ordered.',

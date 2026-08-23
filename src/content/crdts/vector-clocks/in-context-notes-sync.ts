@@ -37,6 +37,30 @@ export default topic({
   id: 'in-context-notes-sync',
   title: 'In context: a notes app',
   goal: 'Learn what happens at each push of a note sync: what the vector clock decided, what the CRDT merged, and what the app must show.',
+  rules: [
+    'Every copy of the note carries a version vector: how many changes it holds from each device, {alice 2}.',
+    'On a push, compare vectors first. Before: fast-forward, and just take the newer copy.',
+    'Concurrent: merge part by part, each part by its own rule. The vector becomes the join.',
+    'Only the body can end as siblings: it is an MV register, and the app shows both texts to the user.',
+  ],
+  shape: {
+    name: 'Note',
+    fields: [
+      { key: 'title', example: 'Groceries', role: 'value', note: 'LWW register: newest wins' },
+      {
+        key: 'body',
+        example: 'Buy milk',
+        role: 'value',
+        note: 'MV register: concurrent writes become siblings',
+      },
+      { key: 'tags', example: 'home', role: 'value', note: 'OR-Set: union, add wins' },
+      {
+        key: 'vector',
+        example: '{alice 2}',
+        note: 'changes held from each device; decides fast-forward or merge',
+      },
+    ],
+  },
   whenToUse: [
     'Personal data across devices: notes, todos, settings, bookmarks.',
     'Most syncs are fast-forwards and you want them to cost nothing.',

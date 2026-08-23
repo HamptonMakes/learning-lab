@@ -37,6 +37,26 @@ export default topic({
   id: 'hybrid-logical-clocks',
   title: 'Hybrid logical clocks',
   goal: 'Learn how to read an HLC stamp, run its two rules, and why it is a safe LWW timestamp along a causal chain.',
+  rules: [
+    'An HLC is a wall time plus a small counter: (10:06, 0).',
+    'On an event, take the larger of your wall part and your clock. Same wall: counter + 1. New wall: counter 0.',
+    'On a receive, the stamp on the message joins the compare: the largest wall wins, and the counter goes one past the winner: (10:06, 1).',
+    'The HLC never goes backwards, even when the wall clock does. Cause before effect, and close to real time.',
+  ],
+  shape: {
+    name: 'HLC',
+    fields: [
+      { key: 'wall', example: '10:06', role: 'value', note: 'the largest wall time seen so far' },
+      {
+        key: 'counter',
+        example: '1',
+        role: 'value',
+        note: 'breaks ties while the wall part cannot move; resets when it does',
+      },
+      { key: 'node', example: 'bob', note: 'breaks a full tie' },
+    ],
+    note: 'Written (10:06, 1). Compared wall first, then counter, then node.',
+  },
   whenToUse: [
     'LWW stamps where humans also want to know "when" (notes, settings, CRMs).',
     'Replacing raw wall-clock stamps in an existing LWW design: same size, fewer surprises.',

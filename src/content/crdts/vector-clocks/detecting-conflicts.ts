@@ -43,6 +43,31 @@ export default topic({
   id: 'detecting-conflicts',
   title: 'Detecting conflicts',
   goal: 'Learn how a version vector turns a concurrent write into siblings, and who is responsible for resolving them.',
+  rules: [
+    'Every write carries a version vector: everything the writer had seen, plus 1 on its own entry: {alice 2}.',
+    'On merge, compare vectors. Before or after: keep the newer version. Concurrent: keep both as siblings.',
+    'The store never resolves siblings. The app reads both and writes one value whose vector covers both.',
+    'A vector clock detects the conflict. Only a data type with the right merge rule can resolve it.',
+  ],
+  shape: {
+    name: 'MV register',
+    fields: [
+      { key: 'value', example: 'milk, eggs', role: 'value' },
+      { key: 'clock', example: '{alice 2}', note: 'the vector the write was based on, plus 1' },
+      {
+        key: 'sibling',
+        example: 'milk, bread',
+        role: 'value',
+        note: 'a concurrent write the store kept too',
+      },
+      {
+        key: 'sibling clock',
+        example: '{alice 1, bob 1}',
+        note: 'concurrent with {alice 2}: neither saw the other',
+      },
+    ],
+    note: 'One value = no conflict. A sibling = a concurrent write; the app must resolve it.',
+  },
   whenToUse: [
     'The store must never silently drop a concurrent write (carts, inventory, medical records).',
     'The app, not the database, knows how to merge two versions (union, ask the user, a rule).',

@@ -50,6 +50,23 @@ export default topic({
   id: 'course-complete',
   title: 'Course summary',
   goal: 'Learn what you can now do: name every type, law, clock and choice rule, and say out loud when a CRDT is the wrong tool.',
+  rules: [
+    'A CRDT fixes its merge rule up front, so copies can change alone and still end up equal.',
+    'Pick the type by how the data changes: replace, add up, come and go, keep an order.',
+    'A clock says what a copy has seen: Lamport for an order, vector for before, after or concurrent, HLC to stay near wall time.',
+    'A rule that must hold across copies (balance ≥ 0, unique name) needs coordination, not a merge.',
+  ],
+  shape: {
+    name: 'Note',
+    fields: [
+      { key: 'title', example: 'Trip', role: 'value', note: 'LWW register: newest wins' },
+      { key: 'body', example: 'Pack', role: 'value', note: 'RGA of characters: one order' },
+      { key: 'tags', example: 'travel', role: 'value', note: 'OR-Set: union, add wins' },
+      { key: 'pinned', example: 'false', role: 'value', note: 'LWW register' },
+      { key: 'views', example: '0', role: 'value', note: 'G-Counter: adds up' },
+    ],
+    note: 'Five parts, five rules, one merge. The last scene runs it through a round trip.',
+  },
   whenToUse: [
     'More than one writer, sometimes disconnected, and the data must come back together.',
     '"Briefly different, then the same everywhere" is acceptable for this data.',

@@ -37,6 +37,24 @@ export default topic({
   id: 'op-or-set',
   title: 'Op-based OR-Set',
   goal: 'Learn how add and remove ops drive an OR-Set, why a remove means "kill these tags", and who wins when an add and a remove cross.',
+  rules: [
+    'Every add mints a fresh tag: node + counter, like alice:1. The same word added twice has two tags.',
+    'A remove does not delete the word. It kills the tags its author has seen.',
+    'An element is in the set while at least one of its tags is alive.',
+    'When an add and a remove cross, the add wins: the remover never saw the new tag.',
+  ],
+  shape: {
+    name: 'OR-Set element',
+    fields: [
+      { key: 'element', example: 'urgent', role: 'value' },
+      {
+        key: 'tags',
+        example: 'alice:1, alice:2',
+        note: 'one per add, each alive or dead; a remove kills the ones it names',
+      },
+    ],
+    note: 'In the set = at least one live tag. A dead tag stays as the record of a remove.',
+  },
   whenToUse: [
     'Membership people add and remove freely: labels, attendees, collaborators, list items.',
     'Re-add after remove must work (a 2P-Set cannot).',
