@@ -10,6 +10,7 @@ verification
 docs
 e2e
 scripts
+!scripts/generate-seo.mjs
 .kamal
 .env
 .env.*

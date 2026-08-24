@@ -1,0 +1,23 @@
+# learn.hamptonmakes.com — everything is public and free; index away.
+# The whole course is also available as plain text for agents and LLMs:
+#   /llms.txt       — map of the site with links
+#   /llms-full.txt  — every lesson, full narration, one file
+
+User-agent: *
+Allow: /
+
+# AI/agent crawlers are explicitly welcome
+User-agent: GPTBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://learn.hamptonmakes.com/sitemap.xml

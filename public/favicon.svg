@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- The lab mark (src/app/components/brand.tsx): a small grid with one lit cell, on a putty tile
+       so it reads on light and dark tabs. Colors are fixed here: favicons cannot read CSS tokens. -->
+  <rect width="24" height="24" rx="5" fill="#ece6d9"/>
+  <rect x="4" y="4" width="16" height="16" rx="2.5" fill="none" stroke="#2b2721" stroke-width="1.5"/>
+  <path d="M4 9.33h16M4 14.66h16M9.33 4v16M14.66 4v16" stroke="#2b2721" stroke-width="1" opacity="0.4"/>
+  <rect x="10" y="10" width="4" height="4" rx="1" fill="#1d7480"/>
+</svg>

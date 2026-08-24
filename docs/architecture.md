@@ -76,3 +76,19 @@ content  ──►  lesson  ──►  stage  ──►  app
   no CSS `transition-*`/`animate-*` classes inside the stage.
 - Every user-visible string goes through `t()` or is a localizable lesson field.
 - Colour is never the only signal: every tone pairs with an icon, glyph or word.
+
+## SEO & agent indexing
+
+The app is client-rendered, so discoverability has three layers:
+
+1. **Route head tags** — every route sets title/description/canonical/OG + JSON-LD via `head()`
+   (helpers in `src/app/seo.ts`; `<HeadContent/>` in `__root.tsx` writes them). English is the
+   canonical locale until translations land: every locale variant's canonical points at `/en/…`.
+   `/​$locale/design` is `noindex`.
+2. **Static files** — `public/robots.txt` (AI crawlers explicitly welcome), `public/favicon.svg`,
+   `public/og.png` (regenerate with `node scripts/generate-og.mjs`), and static OG/description
+   defaults in `index.html`.
+3. **Build-time text artifacts** — most AI crawlers do not run JavaScript, so `pnpm build` runs
+   `scripts/generate-seo.mjs` (Vite SSR-loads the real catalog + topics) and writes git-ignored
+   `public/sitemap.xml`, `public/llms.txt` (site map for agents) and `public/llms-full.txt`
+   (every lesson's full narration as plain text). For a JS-less crawler, those files ARE the site.

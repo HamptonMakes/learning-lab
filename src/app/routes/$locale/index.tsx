@@ -16,8 +16,18 @@ import { useProgress, topicKey } from '@/settings'
 import { cn } from '@/lib/utils'
 import { HeroDemo } from '@/app/components/landing/HeroDemo'
 import portrait from '@/app/components/landing/hampton.jpg'
+import { pageHead, SITE_NAME, siteJsonLd } from '@/app/seo'
 
 export const Route = createFileRoute('/$locale/')({
+  head: () => ({
+    ...pageHead({
+      path: '',
+      title: SITE_NAME,
+      description:
+        'Press play on computer science: animated, step-by-step lessons on CRDTs and the ideas working programmers usually skip. Real implementations, a sandbox on every lesson, free and open source.',
+      jsonLd: siteJsonLd(),
+    }),
+  }),
   component: HomePage,
 })
 

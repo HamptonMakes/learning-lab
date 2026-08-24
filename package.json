@@ -10,7 +10,7 @@
   "packageManager": "pnpm@11.22.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && node scripts/generate-seo.mjs && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
     "lint": "oxlint",

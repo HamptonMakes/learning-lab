@@ -16,6 +16,7 @@ import { useSetting } from '@/settings'
 import { TransportBar } from '@/app/components/transport-bar'
 import { Narration } from '@/app/components/narration'
 import { TryIt, TryItTrigger } from '@/app/components/try-it/TryIt'
+import { pageHead, topicJsonLd } from '@/app/seo'
 import { FlowStage } from '@/app/components/flow/FlowStage'
 
 // TanStack Router JSON-parses search values, so `?lab=1` arrives as the number 1; normalise.
@@ -38,6 +39,22 @@ export const Route = createFileRoute('/$locale/$module/$unit/$topic')({
     if (!module || !ref) throw notFound()
     const topic = await loadTopic(params.module, params.unit, params.topic)
     return { module, ref, nav: neighbors(module, ref), topic }
+  },
+  head: ({ loaderData }) => {
+    if (!loaderData) return {}
+    const { module, ref } = loaderData
+    const path = `/${module.id}/${ref.unit.id}/${ref.topic.id}`
+    return pageHead({
+      path,
+      title: `${ref.topic.title} — ${module.short}`,
+      description: ref.topic.summary,
+      jsonLd: topicJsonLd({
+        path,
+        title: ref.topic.title,
+        description: ref.topic.summary,
+        moduleTitle: module.title,
+      }),
+    })
   },
   component: TopicPage,
 })

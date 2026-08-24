@@ -5,11 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
-    <meta
-      name="description"
-      content="Hampton's Computer Science Concept Learning Lab — interactive, animated lessons that make hard CS ideas practical. Start with CRDTs."
-    />
     <title>Hampton's CS Concept Lab</title>
+    <!-- description + canonical are route-managed (src/app/seo.ts via <HeadContent/>); only the
+         OG/twitter fallbacks live here, for link unfurlers that never execute JavaScript. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Hampton's CS Concept Lab" />
+    <meta property="og:title" content="Hampton's CS Concept Lab" />
+    <meta
+      property="og:description"
+      content="Press play on computer science: animated lessons on CRDTs and friends, computed by real code."
+    />
+    <meta property="og:image" content="https://learn.hamptonmakes.com/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
     <script>
       // Apply the saved theme before first paint to avoid a flash. Mirrors src/settings/theme.ts.
       try {

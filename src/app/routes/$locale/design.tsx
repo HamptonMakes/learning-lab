@@ -7,6 +7,7 @@ import { Switch } from '@/ui/switch'
 import { Slider } from '@/ui/slider'
 
 export const Route = createFileRoute('/$locale/design')({
+  head: () => ({ meta: [{ name: 'robots', content: 'noindex' }] }),
   component: DesignPage,
 })
 

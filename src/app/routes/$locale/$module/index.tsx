@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from '@tanstack/react-router'
+import { pageHead } from '@/app/seo'
 import { Check, Circle, CircleDot } from 'lucide-react'
 import { findModule } from '@/content/catalog'
 import { useI18n } from '@/i18n'
@@ -11,6 +12,14 @@ export const Route = createFileRoute('/$locale/$module/')({
     if (!module) throw notFound()
     return { module }
   },
+  head: ({ loaderData }) =>
+    loaderData
+      ? pageHead({
+          path: `/${loaderData.module.id}`,
+          title: loaderData.module.title,
+          description: loaderData.module.summary,
+        })
+      : {},
   component: ModulePage,
 })
 
